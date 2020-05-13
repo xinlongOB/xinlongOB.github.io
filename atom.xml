@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-13T08:02:26.959Z</updated>
+  <updated>2020-05-13T08:30:06.035Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>docker--容器创建后添加端口映射</title>
-    <link href="http://yoursite.com/2020/05/13/docker/"/>
-    <id>http://yoursite.com/2020/05/13/docker/</id>
-    <published>2020-05-13T07:02:36.000Z</published>
-    <updated>2020-05-13T08:02:26.959Z</updated>
+    <title>code</title>
+    <link href="http://yoursite.com/2020/05/13/code/"/>
+    <id>http://yoursite.com/2020/05/13/code/</id>
+    <published>2020-05-13T08:30:06.035Z</published>
+    <updated>2020-05-13T08:30:06.035Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,32 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;p&gt;categories: 测试&lt;br&gt;    #!/usr/bin/python3&lt;br&gt;    def main():&lt;br&gt;        print(“hello world”)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if __name__ ==
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>docker--容器创建后添加端口映射</title>
+    <link href="http://yoursite.com/2020/05/13/docker/"/>
+    <id>http://yoursite.com/2020/05/13/docker/</id>
+    <published>2020-05-13T07:02:36.000Z</published>
+    <updated>2020-05-13T08:34:25.388Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;标注：[hash_of_the_container] 为容器id&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在
         
       
     
@@ -46,34 +71,11 @@
   </entry>
   
   <entry>
-    <title>code</title>
-    <link href="http://yoursite.com/2020/05/13/code/"/>
-    <id>http://yoursite.com/2020/05/13/code/</id>
-    <published>2020-05-13T06:39:31.191Z</published>
-    <updated>2020-05-13T06:39:31.191Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
-        
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
     <title>python-str</title>
     <link href="http://yoursite.com/2020/04/23/python-str/"/>
     <id>http://yoursite.com/2020/04/23/python-str/</id>
     <published>2020-04-23T02:38:18.000Z</published>
-    <updated>2020-05-13T06:39:31.354Z</updated>
+    <updated>2020-05-13T08:30:06.040Z</updated>
     
     <summary type="html">
     
@@ -81,7 +83,10 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;p&gt;code here&lt;br&gt;从字符串中提取字符&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;str = &amp;quot;hello python&amp;quot;
+print(str[7])&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;for循环遍历字符串中每一个字符&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;for c
         
       
     
@@ -102,7 +107,7 @@
     <link href="http://yoursite.com/2020/01/16/jiasu/"/>
     <id>http://yoursite.com/2020/01/16/jiasu/</id>
     <published>2020-01-16T09:47:15.000Z</published>
-    <updated>2020-05-13T06:39:31.353Z</updated>
+    <updated>2020-05-13T08:30:06.038Z</updated>
     
     <summary type="html">
     
@@ -110,7 +115,7 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;h1 id=&quot;全球加速&quot;&gt;&lt;a href=&quot;#全球加速&quot; class=&quot;headerlink&quot;
         
       
     
@@ -129,7 +134,7 @@
     <link href="http://yoursite.com/2020/01/08/mongo/"/>
     <id>http://yoursite.com/2020/01/08/mongo/</id>
     <published>2020-01-08T08:09:50.000Z</published>
-    <updated>2020-05-13T06:39:31.354Z</updated>
+    <updated>2020-05-13T08:34:19.984Z</updated>
     
     <summary type="html">
     
@@ -137,7 +142,8 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;h1 id=&quot;安装mongo数据库&quot;&gt;&lt;a href=&quot;#安装mongo数据库&quot; class=&quot;headerlink&quot; title=&quot;安装mongo数据库&quot;&gt;&lt;/a&gt;安装mongo数据库&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;cd  /etc/yum.repos.d/
+vim  
         
       
     
@@ -158,7 +164,7 @@
     <link href="http://yoursite.com/2019/12/27/sshpass/"/>
     <id>http://yoursite.com/2019/12/27/sshpass/</id>
     <published>2019-12-27T07:09:20.000Z</published>
-    <updated>2020-05-13T06:39:31.355Z</updated>
+    <updated>2020-05-13T08:30:06.040Z</updated>
     
     <summary type="html">
     
@@ -166,7 +172,7 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;h3 id=&quot;使用前提：对于未连接过的主机。而又不输入yes进行确认。需要sshd服务的优化：&quot;&gt;&lt;a href=&quot;#使用前提：对于未连接过的主机。而又不输入yes进行确认。需要sshd服务的优化：&quot; class=&quot;headerlink&quot;
         
       
     
@@ -187,7 +193,7 @@
     <link href="http://yoursite.com/2019/12/24/remove/"/>
     <id>http://yoursite.com/2019/12/24/remove/</id>
     <published>2019-12-24T09:20:58.000Z</published>
-    <updated>2020-05-13T06:39:31.355Z</updated>
+    <updated>2020-05-13T08:30:06.040Z</updated>
     
     <summary type="html">
     
@@ -195,7 +201,9 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;pre&gt;&lt;code&gt;systemctl stop jenkins
+cp -rp /var/lib/jenkins /home/jenkins
+sed -i s&amp;apos;@/var/lib/jenkins@/home/jenkins@&amp;apos;
         
       
     
@@ -214,7 +222,7 @@
     <link href="http://yoursite.com/2019/12/24/jenkins/"/>
     <id>http://yoursite.com/2019/12/24/jenkins/</id>
     <published>2019-12-24T08:20:58.000Z</published>
-    <updated>2020-05-13T06:39:31.191Z</updated>
+    <updated>2020-05-13T08:30:06.036Z</updated>
     
     <summary type="html">
     
@@ -222,7 +230,7 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;h3 id=&quot;jenkins创建普通用户并配置权限&quot;&gt;&lt;a href=&quot;#jenkins创建普通用户并配置权限&quot; class=&quot;headerlink&quot;
         
       
     
@@ -241,7 +249,7 @@
     <link href="http://yoursite.com/2019/12/03/test/"/>
     <id>http://yoursite.com/2019/12/03/test/</id>
     <published>2019-12-03T09:20:03.000Z</published>
-    <updated>2020-05-13T06:39:31.368Z</updated>
+    <updated>2020-05-13T08:30:06.042Z</updated>
     
     <summary type="html">
     
@@ -249,7 +257,11 @@
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+          &lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#1&quot;&gt;1.subversion+jenkins安装部署&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#2&quot;&gt;1.1配置环境&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#3&quot;&gt;1.2安装jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
         
       
     
