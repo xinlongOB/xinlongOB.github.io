@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-14T09:52:09.727Z</updated>
+  <updated>2020-05-14T09:57:33.443Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/2020/05/14/samba/"/>
     <id>http://yoursite.com/2020/05/14/samba/</id>
     <published>2020-05-14T07:24:46.000Z</published>
-    <updated>2020-05-14T09:52:09.727Z</updated>
+    <updated>2020-05-14T09:57:33.443Z</updated>
     
     <summary type="html">
     
@@ -36,6 +36,8 @@
     </summary>
     
     
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
     
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
@@ -48,7 +50,7 @@
     <link href="http://yoursite.com/2020/05/14/MongoError/"/>
     <id>http://yoursite.com/2020/05/14/MongoError/</id>
     <published>2020-05-14T07:04:47.000Z</published>
-    <updated>2020-05-14T07:26:53.904Z</updated>
+    <updated>2020-05-14T09:57:42.792Z</updated>
     
     <summary type="html">
     
@@ -63,6 +65,8 @@
     
     </summary>
     
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>

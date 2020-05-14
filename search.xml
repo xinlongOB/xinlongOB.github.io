@@ -27,7 +27,7 @@ vim /etc/samba/smb.conf
     config file = /etc/samba/%U.smb.conf   #指定扩展文件
 
 
-[dome]       #共享名称为common
+[dome]       #共享名称为dome
     comment = Common share
     path = /common        #指定共享目录
     valid users = tom jerry    #有效账户列表
@@ -112,6 +112,9 @@ chown  yanfa.yanfa  yanfa/ -R</code></pre><h2 id="启动服务就可以访问了
 /etc/init.d/nmb  start</code></pre><h2 id="好礼大放送–wind客户端清理已保存的samba用户和密码"><a href="#好礼大放送–wind客户端清理已保存的samba用户和密码" class="headerlink" title="好礼大放送–wind客户端清理已保存的samba用户和密码"></a>好礼大放送–wind客户端清理已保存的samba用户和密码</h2><pre><code>net  use      # 查看已保存的用户和密码
 
 net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
       <tags>
         <tag>liunx</tag>
         <tag>samba</tag>
@@ -129,6 +132,9 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
 <pre><code>db.serverStatus().connections
 { &quot;current&quot; : 80, &quot;available&quot; : 52348, &quot;totalCreated&quot; : NumberLong(367) }</code></pre><p>Current表示当前到实例上正在运行的连接数。<br><br>Available表示当前实例还可以支持的并发连接数。<br></p>
 ]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
       <tags>
         <tag>mongo</tag>
         <tag>liunx</tag>
