@@ -1,8 +1,8 @@
 ---
 title: lamp
 tags:
-  - python
   - liunx
+categories: 运维
 date: 2020-05-13 23:00:44
 ---
 <!-- 文章头部设置 -->
