@@ -3,6 +3,7 @@ title: centos安装samba文件共享--隐藏目录
 tags:
   - samba
   - liunx
+categories: 运维
 date: 2020-05-14 15:24:46
 ---
 ## 配置环境--关闭防火墙和selinux
@@ -52,7 +53,7 @@ centos7
         config file = /etc/samba/%U.smb.conf   #指定扩展文件
 
 
-    [dome]       #共享名称为common
+    [dome]       #共享名称为dome
         comment = Common share
         path = /common        #指定共享目录
         valid users = tom jerry    #有效账户列表
