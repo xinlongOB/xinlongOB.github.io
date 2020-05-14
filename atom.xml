@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-14T01:12:11.185Z</updated>
+  <updated>2020-05-14T09:52:09.727Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,61 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>centos安装samba文件共享--隐藏目录</title>
+    <link href="http://yoursite.com/2020/05/14/samba/"/>
+    <id>http://yoursite.com/2020/05/14/samba/</id>
+    <published>2020-05-14T07:24:46.000Z</published>
+    <updated>2020-05-14T09:52:09.727Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;配置环境–关闭防火墙和selinux&quot;&gt;&lt;a href=&quot;#配置环境–关闭防火墙和selinux&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="samba" scheme="http://yoursite.com/tags/samba/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mongo常见报错</title>
+    <link href="http://yoursite.com/2020/05/14/MongoError/"/>
+    <id>http://yoursite.com/2020/05/14/MongoError/</id>
+    <published>2020-05-14T07:04:47.000Z</published>
+    <updated>2020-05-14T07:26:53.904Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;mongod宕机常见报错&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/data/lib/mongo//WiredTiger.turtle: handle-open: open: Permission denied&lt;/code&gt;&lt;/pre&gt;&lt;p&gt; 
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+  </entry>
   
   <entry>
     <title>lamp</title>
@@ -94,9 +149,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
     
   </entry>
   

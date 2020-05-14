@@ -1,6 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>centos安装samba文件共享--隐藏目录</title>
+    <url>/2020/05/14/samba/</url>
+    <content><![CDATA[<h2 id="配置环境–关闭防火墙和selinux"><a href="#配置环境–关闭防火墙和selinux" class="headerlink" title="配置环境–关闭防火墙和selinux"></a>配置环境–关闭防火墙和selinux</h2><p><br>centos6<br></p>
+<pre><code>service  iptables  stop
+service  ip6tables  stop</code></pre><p>centos7</p>
+<pre><code>systemctl stop  firewalld</code></pre><p>永久关闭</p>
+<pre><code>chkconfig  iptables  off   
+chkconfig  ip6tables  off   </code></pre><p>临时关闭selinux</p>
+<pre><code>setenforce 0</code></pre><p>永久关闭selinux</p>
+<pre><code>vim  /etc/selinux/config
+    SELINUX=disabled</code></pre><p>重启生效</p>
+<h2 id="安装samba服务"><a href="#安装samba服务" class="headerlink" title="安装samba服务"></a>安装samba服务</h2><pre><code>yum  install samba  samba-client  samba-common  samba-doc  -y </code></pre><h2 id="配置samba服务"><a href="#配置samba服务" class="headerlink" title="配置samba服务"></a>配置samba服务</h2><pre><code>cp  /etc/samba/smb.conf  /etc/samba/smb.conf_bak
+vim /etc/samba/smb.conf
+[global]     #定义全局策略
+    workgroup = MYGROUP   #定义工作组
+    server string = Samba Server Version %v #服务器提示字符，默认显示samba版本
+    log file = /var/log/samba/log.%m    #定义日志文件
+    max log size = 50      #定义日志文件单个文件最大容量为50KB
+    security = user        #security选项将会影响客户端访问方式       #可以设置user、share、server、domain。User代表用户名和密码验证；share代表匿名访问；server代表基于验证身份的访问，账户信息在另一台SMB服务器上；domain:同样基于验证身份验证，账户信息在活动目录中    
+    passdb backend = tdbsam    #账户与密码存储方式，smbpasswd使用老的明文格式存储账户及密码；tdbsam代表基于TDB的密文格式存储；ldapsam代表使用LDAP存储账户资料。
+    load printers = yes        #客户端在10分钟内没有打开任何Samba资源，服务器将自动关闭回话。
+    cups options = raw       #打印属性
+
+    config file = /etc/samba/%U.smb.conf   #指定扩展文件
+
+
+[dome]       #共享名称为common
+    comment = Common share
+    path = /common        #指定共享目录
+    valid users = tom jerry    #有效账户列表
+    create mask = 0750        #客户端上传文件的默认权限
+    directorymask = 0775       #客户端创建目录的默认权限 
+    browseable = yes       #客户端是否对所有人可见    
+    writable= no          #是否允许写入
+    write list = tom       #写权限账户列表
+    admin users = tom       #该共享的管理员，具有完全权限
+    invalid users = root bin    #禁止root与bin访问common共享
+      guest ok = no       #是否允许匿名访问
+
+
+[server]
+    path = /share/samba/server
+    directory  mask = 0755
+    create mask = 0644
+    valid users = yanfa
+    browseable = no
+
+[meishu]
+    path = /share/samba/meishu
+    directory  mask =0755
+    create mask =0644
+    valid users = meishu
+    browseable = no
+
+[yunyingmeishu]
+    path = /share/samba/yunyingmeishu
+    directory  mask =0755
+    create mask =0644
+    valid users = yunying
+    browseable = no</code></pre><h2 id="创建扩展文件"><a href="#创建扩展文件" class="headerlink" title="创建扩展文件"></a>创建扩展文件</h2><pre><code>cd /etc/samba/
+
+vim   yanfa.smb.conf  
+    [share]
+    security = user
+    path = /share/samba/yanfa
+    valid users = @yanfa
+    read list = @yanfa
+    write list = @yanfa
+    writable = yes
+    create mask = 0644
+    directory mask = 0755 
+
+
+vim   meishu.smb.conf   
+    [meishu]
+    security = user
+    path = /share/samba/meishu
+    valid users = @meishu
+    read list = @meishu
+    write list = @meishu
+    writable = yes
+    create mask = 0644
+    directory mask = 0755
+
+
+vim   yunying.smb.conf 
+    [yunying]
+    security = user
+    path = /share/samba/yunyingmeishu
+    valid users = @yunying
+    read list = @yunying
+    write list = @yunying
+    writable = yes
+    create mask = 0644
+    directory mask = 0755</code></pre><h2 id="创建共享文件夹"><a href="#创建共享文件夹" class="headerlink" title="创建共享文件夹"></a>创建共享文件夹</h2><p>  mkdir /share/samba/{yanfa,meishu,yunyingmeishu}    -p</p>
+<h2 id="创建登录用户"><a href="#创建登录用户" class="headerlink" title="创建登录用户"></a>创建登录用户</h2><pre><code>useradd  yanfa
+useradd  meishu
+useradd  yunying</code></pre><h2 id="创建samba用户–需要交互式输入密码，此密码和系统用户密码无关"><a href="#创建samba用户–需要交互式输入密码，此密码和系统用户密码无关" class="headerlink" title="创建samba用户–需要交互式输入密码，此密码和系统用户密码无关"></a>创建samba用户–需要交互式输入密码，此密码和系统用户密码无关</h2><pre><code>pdbedit -a  yanfa
+pdbedit -a  meishu
+pdbedit -a  yunying</code></pre><p>pdbedit常用参数</p>
+<pre><code>pdbedit -L  ：查看samba用户
+pdbedit -Lv：列出Samba用户列表详细信息
+pdbedit -a  -u  user：添加samba用户
+pdbedit -r  -u  user：修改samba用户信息
+pdbedit -x  -u  user： 删除samba用户</code></pre><h2 id="共享文件夹更改权限"><a href="#共享文件夹更改权限" class="headerlink" title="共享文件夹更改权限"></a>共享文件夹更改权限</h2><pre><code>cd  /share/samba/
+chown  meishu.meishu  meishu/ -R
+chown   yunying.yunying  yunyingmeishu/ -R
+chown  yanfa.yanfa  yanfa/ -R</code></pre><h2 id="启动服务就可以访问了"><a href="#启动服务就可以访问了" class="headerlink" title="启动服务就可以访问了"></a>启动服务就可以访问了</h2><pre><code>/etc/init.d/smb  start
+/etc/init.d/nmb  start</code></pre><h2 id="好礼大放送–wind客户端清理已保存的samba用户和密码"><a href="#好礼大放送–wind客户端清理已保存的samba用户和密码" class="headerlink" title="好礼大放送–wind客户端清理已保存的samba用户和密码"></a>好礼大放送–wind客户端清理已保存的samba用户和密码</h2><pre><code>net  use      # 查看已保存的用户和密码
+
+net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
+      <tags>
+        <tag>liunx</tag>
+        <tag>samba</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Mongo常见报错</title>
+    <url>/2020/05/14/MongoError/</url>
+    <content><![CDATA[<p>mongod宕机常见报错</p>
+<pre><code>/data/lib/mongo//WiredTiger.turtle: handle-open: open: Permission denied</code></pre><p>  解决办法直接给权限</p>
+<pre><code>sudo chown  mongod.mongod   ./*  -R</code></pre><p>还有一种是非正常关闭mongo再次启动会失败  使用</p>
+<pre><code>sudo  journalctl -xe</code></pre><p>查看到报错</p>
+<pre><code>Error starting mongod. /var/run/mongodb/mongod.pid exists.</code></pre><p>是因为非正常关闭mongo的时候pid文件还存在，删除后启动就正常了</p>
+<p>查看mongo连接数</p>
+<pre><code>db.serverStatus().connections
+{ &quot;current&quot; : 80, &quot;available&quot; : 52348, &quot;totalCreated&quot; : NumberLong(367) }</code></pre><p>Current表示当前到实例上正在运行的连接数。<br><br>Available表示当前实例还可以支持的并发连接数。<br></p>
+]]></content>
+      <tags>
+        <tag>mongo</tag>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>lamp</title>
     <url>/2020/05/13/lamp/</url>
     <content><![CDATA[<!-- 文章头部设置 -->
@@ -132,8 +266,8 @@ echo &quot;ceshi&quot;</code></pre><p> cehshi</p>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>docker</tag>
         <tag>liunx</tag>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
