@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>parted</title>
+    <title>大于2T的硬盘需要parted磁盘分区</title>
     <url>/2020/05/16/parted/</url>
     <content><![CDATA[<h2 id="首先安装parted"><a href="#首先安装parted" class="headerlink" title="首先安装parted"></a>首先安装parted</h2><pre><code>yum install parted   -y</code></pre><p>查看硬盘情况使用fdisk -l 查看分区情况，对于大于2TB的硬盘用parted分区<br><br>格式化 /dev/sdb<br></p>
 <pre><code>parted /dev/sdb</code></pre><p>使用print打印分区信息</p>
