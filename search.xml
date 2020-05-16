@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>parted</title>
+    <url>/2020/05/16/parted/</url>
+    <content><![CDATA[<h2 id="首先安装parted"><a href="#首先安装parted" class="headerlink" title="首先安装parted"></a>首先安装parted</h2><pre><code>yum install parted   -y</code></pre><p>查看硬盘情况使用fdisk -l 查看分区情况，对于大于2TB的硬盘用parted分区<br><br>格式化 /dev/sdb<br></p>
+<pre><code>parted /dev/sdb</code></pre><p>使用print打印分区信息</p>
+<pre><code>(parted) print</code></pre><p>将分区设置成gpt格式</p>
+<pre><code>mklabel gpt    </code></pre><p>将所有空间创建一个分区</p>
+<pre><code>mkpart primary 0 100%</code></pre><p>退出</p>
+<pre><code>quit</code></pre><h2 id="将硬盘分为两个主分区"><a href="#将硬盘分为两个主分区" class="headerlink" title="将硬盘分为两个主分区"></a>将硬盘分为两个主分区</h2><pre><code>[root@localhost ~]# parted /dev/sdb   
+GNU Parted 1.8.1 Using /dev/sdb Welcome to GNU Parted! Type ‘help’ to view a list of commands.
+(parted) mklabel gpt           # 将MBR磁盘格式化为GPT
+(parted) print                       #打印当前分区
+(parted) mkpart primary 0 4.5TB                # 分一个4.5T的主分区
+(parted) mkpart primary 4.5TB 12TB      # 分一个7.5T的主分区
+(parted) print                         #打印当前分区
+(parted) quit 退出</code></pre>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>parted</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>centos安装samba文件共享--隐藏目录</title>
     <url>/2020/05/14/samba/</url>
     <content><![CDATA[<h2 id="配置环境–关闭防火墙和selinux"><a href="#配置环境–关闭防火墙和selinux" class="headerlink" title="配置环境–关闭防火墙和selinux"></a>配置环境–关闭防火墙和selinux</h2><p><br>centos6<br></p>
