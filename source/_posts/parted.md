@@ -1,5 +1,5 @@
 ---
-title: parted
+title: 大于2T的硬盘需要parted磁盘分区
 tags:
   - parted
   - liunx
