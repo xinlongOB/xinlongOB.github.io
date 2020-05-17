@@ -1,6 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>code</title>
+    <url>/2020/05/13/code/</url>
+    <content><![CDATA[<p>categories: 测试<br>    #!/usr/bin/python3<br>    def main():<br>        print(“hello world”)</p>
+<pre><code>if __name__ == &quot;__mian__&quot;:
+    main()</code></pre><h1 id="ceshi"><a href="#ceshi" class="headerlink" title="ceshi"></a>ceshi</h1><pre><code>#!/bin/bash
+echo &quot;ceshi&quot;</code></pre><p> cehshi</p>
+<pre><code>#!/usr/bin/python3
+    def main():
+        print(&quot;hello world&quot;)
+
+    if __name__ == &quot;__mian__&quot;:
+        main()</code></pre><p>hexo 文章插入图片的方法<br><br>设置站点配置_config.yml:将post_asset_folder: false改为post_asset_folder: true<br><br>安装插件:npm install <a href="https://github.com/CodeFalling/hexo-asset-image" target="_blank" rel="noopener">https://github.com/CodeFalling/hexo-asset-image</a> – save<br><br>运行hexo n “XXXXXX”,生成XXXXX.md博文时就会在/source/_posts目录下生成XXXXXX的文件夹，将你想在XXXXX博文中插入的照片放置到这个同名文件夹中即可，图片的命名随意<br><br>添加图片:在想添加的位置写入![](图片名字.图片格式),例如![](1.png)</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>docker--容器创建后添加端口映射</title>
+    <url>/2020/05/13/docker/</url>
+    <content><![CDATA[<p>标注：[hash_of_the_container] 为容器id</p>
+<pre><code>vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json</code></pre><p>在 hostconfig.json 里有 “PortBindings”:{} 这个配置项，</p>
+<p>改成 </p>
+<pre><code>&quot;PortBindings&quot;:{&quot;9001/tcp&quot;:[{&quot;HostIp&quot;:&quot;&quot;,&quot;HostPort&quot;:&quot;900&quot;}]}
+      前者为容器端口，后者为宿主机端口</code></pre><p>如果容器内端口从没有暴露，需要在修改config.v2.json</p>
+<pre><code>vim /var/lib/docker/containers/[hash_of_the_container]/config.v2.json</code></pre><p>在 config.v2.json 里面添加一个配置项 </p>
+<pre><code>&quot;ExposedPorts&quot;:{&quot;80/tcp&quot;:{}} ,</code></pre><p><font color="#FF0000">必须将这个配置项添加到 “Tty”: true, 前面</font></p>
+<p>最后重启 docker的守护进程 systemctl restart  docker<br><br>启动容器id   docker start   ID<br></p>
+<p>使用docker ps  查看容器端口是否映射<br><img src="/2020/05/13/docker/1.png" alt></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jenkins添加普通用户设置权限</title>
+    <url>/2019/12/24/jenkins/</url>
+    <content><![CDATA[<h3 id="jenkins创建普通用户并配置权限"><a href="#jenkins创建普通用户并配置权限" class="headerlink" title="jenkins创建普通用户并配置权限"></a>jenkins创建普通用户并配置权限</h3><p><br>1、首先在Manage Jenkins –&gt; 用户管理  创建用户<br><br>2、然后在Manage Jenkins –&gt; 全局设置 授权策略选择：<br><br>项目矩阵授权策略  添加用户或者用户组 选择权限<br><br><img src="/2019/12/24/jenkins/1.png" alt><br><br>3、找到需要授权的项目点击配置<br><br><img src="/2019/12/24/jenkins/2.png" alt><br><br>启用项目安全<br><br><img src="/2019/12/24/jenkins/3.png" alt><br><br>添加admin用户以及其他用户<br><br><img src="/2019/12/24/jenkins/4.png" alt><br><br>最后登录测试<br><br><br><br></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>全球加速--阿里云</title>
+    <url>/2020/01/16/jiasu/</url>
+    <content><![CDATA[<h1 id="全球加速"><a href="#全球加速" class="headerlink" title="全球加速"></a>全球加速</h1><p>首先确定加速区域以及服务区域<br><br>例如：业务服务器在华北2（北京）,想让美国的玩家流畅访问,需要购买加速区域在北美,服务区域在中国大陆<br></p>
+<p>创建全球加速后，会得到一个美国IP，把这个IP和华北2服务器的IP绑定同一个域名，根据解析路线区分解析。<br><br>如果是北京地区访问这个IP，返回的是华北2的服务器IP。相反如果是美国玩家访问，则会返回全球加速的IP。<br></p>
+<pre><code>解析路线：比如，DnsCEO的智能DNS就会自动判断用户的上网路线是联通还是电信，然后智能返回联通或者电信的服务器IP。多线多地区智能DNS，能自动判断用户的上网路线是上海电信还是广东电信，然后智能返回对应的上海电信和广东电信的服务器IP。</code></pre><p>例如：<br>    <br>新加坡实例需要拥有弹性公网IP   (ECS控制台–&gt;更多–&gt;网络和安全组–&gt;公网IP转为弹性公网IP)<br></p>
+<pre><code>还需要创建个弹性网卡
+    网卡名称：自定义
+    专有网络：需同ECS同一网络
+    交换机：需同ECS同一网络
+    安全组：需同ECS同一网络
+然后绑定ECS</code></pre><p>创建一个全球加速实例，在全球加速主界面找到实例，然后添加IP(购买个ip就好)。然后点击创建的ip，绑定一个新加坡的实例</p>
+<p>最后域名解析</p>
+<p>需要购买一个域名版本管理套餐 绑定一个子域名<br>然后用子域名解析A记录</p>
+<pre><code>test    A    世界_北美洲     xxx.xxx.xxx.xxx(全球加速ip)
+test    A    默认         xxx.xxx.xxx.xxx(服务器ip)</code></pre>]]></content>
+      <categories>
+        <category>阿里云</category>
+      </categories>
+      <tags>
+        <tag>阿里云</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>lamp</title>
+    <url>/2020/05/13/lamp/</url>
+    <content><![CDATA[<!-- 文章头部设置 -->
+
+<blockquote>
+<p>&amp;  表示任务在后台执行，如要在后台运行redis-server,则有  redis-server &amp;<br>&amp;&amp; 表示前一条命令执行成功时，才执行后一条命令 ，如 echo ‘1’ &amp;&amp; echo ‘2’<br>| 表示管道，上一条命令的输出，作为下一条命令参数，如 echo ‘yes’ | wc -l<br>|| 表示上一条命令执行失败后，才执行下一条命令，如 cat nofile || echo “fail”</p>
+</blockquote>
+<h1 id="安装apache"><a href="#安装apache" class="headerlink" title="安装apache"></a>安装apache</h1><h2 id="下载和安装依赖"><a href="#下载和安装依赖" class="headerlink" title="下载和安装依赖"></a>下载和安装依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum -y install autoconf libtool gcc expat expat-devel make zlib-devel gcc-c++ openssl-devel pcre-devel openssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入 https://mirror.bit.edu.cn/apache//apr/ 找到最新的 apr 和 apr-util 包即可</span></span><br><span class="line">wget https://mirror.bit.edu.cn/apache//apr/apr-1.7.0.tar.gz</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/httpd/httpd-2.4.43.tar.gz</span><br><span class="line">wget https://mirror.bit.edu.cn/apache//apr/apr-util-1.6.1.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译安装apr"><a href="#编译安装apr" class="headerlink" title="编译安装apr"></a>编译安装apr</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑 configure文件，查找 $RM "$cfgfile" 这个地方，用#注释掉</span></span><br><span class="line">31880行 <span class="comment">#    $RM "$cfgfile"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在configure里面 RM='$RM  -f' 这里的$RM后面一定有一个空格。 如果后面没有空格，直接连接减号，就依然会报错。把 RM='$RM' 改为 RM='$RM -f'</span></span><br><span class="line">31279行     RM=<span class="string">'$RM -f'</span></span><br><span class="line"><span class="comment"># 更改上面两行，否则./configure会报错：rm: cannot remove `libtoolT': No such file or directory</span></span><br><span class="line">./configure --prefix=/home/lamp/apr</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译安装apr-util"><a href="#编译安装apr-util" class="headerlink" title="编译安装apr-util"></a>编译安装apr-util</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 指明apr的安装位置--with-apr=/home/lamp/apr</span></span><br><span class="line">./configure --prefix=/home/lamp/apr-util --with-apr=/home/lamp/apr</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译安装apache"><a href="#编译安装apache" class="headerlink" title="编译安装apache"></a>编译安装apache</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/home/lamp/apache2 --with-apr=/home/lamp/apr --with-apr-util=/home/lamp/apr-util</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<h1 id="启动apache"><a href="#启动apache" class="headerlink" title="启动apache"></a>启动apache</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/lamp/apache2</span><br><span class="line"><span class="comment"># 修改端口为800</span></span><br><span class="line">./bin/httpd -k start</span><br><span class="line">curl localhost:800</span><br><span class="line"><span class="comment"># 显示&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置基于域名访问不同资源目录"><a href="#配置基于域名访问不同资源目录" class="headerlink" title="配置基于域名访问不同资源目录"></a>配置基于域名访问不同资源目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑httpd.conf，在文件最后加入以下几行：</span></span><br><span class="line"></span><br><span class="line">&lt;/IfModule&gt;</span><br><span class="line">&lt;VirtualHost *:800&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/"</span></span><br><span class="line">    ServerName www.example.com</span><br><span class="line">    <span class="comment"># 访问www.example.com会访问/home/lamp/apache2/htdocs/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"></span><br><span class="line">&lt;VirtualHost *:800&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/org/"</span></span><br><span class="line">    ServerName www.example.org</span><br><span class="line">    <span class="comment"># 访问www.example.org会访问/home/lamp/apache2/htdocs/org/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置hosts文件！！！</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /home/lamp/apache2/</span><br><span class="line">mkdir htdocs/org/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑htdocs/index.html填入www.example.com</span></span><br><span class="line">cat &gt; htdocs/index.html &lt;&lt; EOF</span><br><span class="line">www.example.com</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑htdocs/org/index.html填入www.example.org</span></span><br><span class="line">cat &gt; htdocs/org/index.html &lt;&lt; EOF</span><br><span class="line">www.example.org</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 访问</span></span><br><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.org:800</span></span><br><span class="line">www.example.org</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:800</span></span><br><span class="line">www.example.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置基于端口访问不同资源目录"><a href="#配置基于端口访问不同资源目录" class="headerlink" title="配置基于端口访问不同资源目录"></a>配置基于端口访问不同资源目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在上文的基础上增加www.example.com:8000端口，直接在配置文件最下面添加以下内容</span></span><br><span class="line">&lt;VirtualHost *:8000&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/8000/"</span></span><br><span class="line">    ServerName www.example.com</span><br><span class="line">    <span class="comment"># 访问www.example.com:8000会访问/htdocs/8000/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"><span class="comment"># 在监听端口下面增加新的监听端口</span></span><br><span class="line">Listen 800</span><br><span class="line">Listen 8000</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证-1"><a href="#验证-1" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir htdocs/8000</span><br><span class="line"></span><br><span class="line">cat &gt; htdocs/8000/index.html &lt;&lt; EOF</span><br><span class="line">www.example.com:8000</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查</span></span><br><span class="line">./bin/httpd -t   <span class="comment"># 显示Syntax OK即可</span></span><br><span class="line"></span><br><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:8000</span></span><br><span class="line">www.example.com:8000</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:800</span></span><br><span class="line">www.example.com</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.org:800</span></span><br><span class="line">www.example.org</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置基于虚拟主机访问不同资源目录"><a href="#配置基于虚拟主机访问不同资源目录" class="headerlink" title="配置基于虚拟主机访问不同资源目录"></a>配置基于虚拟主机访问不同资源目录</h2><p>&emsp;&emsp;注释掉上面的3个配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 增加新的配置</span></span><br><span class="line"><span class="comment"># 注意！IP地址是主机自带的IP地址，并非虚拟不存在的。改完配置要修改hosts解析！！！</span></span><br><span class="line">&lt;VirtualHost 192.168.1.100&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/100/"</span></span><br><span class="line">    ServerName www.example.com</span><br><span class="line">    <span class="comment"># 访问www.example.com:800会访问htdocs/100/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"></span><br><span class="line">&lt;VirtualHost 192.168.1.200&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/200/"</span></span><br><span class="line">    ServerName www.example.org</span><br><span class="line">    <span class="comment"># 访问www.example.org:800会访问htdocs/200/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="验证-2"><a href="#验证-2" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">mkdir htdocs/&#123;1,2&#125;00</span><br><span class="line">cat &gt; htdocs/100/index.html &lt;&lt; EOF</span><br><span class="line">www.example.com  100</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &gt; htdocs/200/index.html &lt;&lt; EOF</span><br><span class="line">www.example.org  200</span><br><span class="line">EOF</span><br><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:800</span></span><br><span class="line">www.example.com  100</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.org:800</span></span><br><span class="line">www.example.org  200</span><br></pre></td></tr></table></figure>
+<h2 id="配置基于简单的用户密码验证访问"><a href="#配置基于简单的用户密码验证访问" class="headerlink" title="配置基于简单的用户密码验证访问"></a>配置基于简单的用户密码验证访问</h2><p>&emsp;&emsp;注释掉上面的配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;Directory /usr/<span class="built_in">local</span>/apache2/htdocs/wang&gt;</span><br><span class="line">        AuthName <span class="string">"wang Auth"</span></span><br><span class="line">        AuthType basic</span><br><span class="line">        AuthUserFile /usr/<span class="built_in">local</span>/apache2/.htpasswd</span><br><span class="line">        Require user wang</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"><span class="comment"># AuthName "wang Auth"   该字符串显示在网页访问时输入用户密码的对话框之上，实际测试并未显示</span></span><br><span class="line"><span class="comment"># AuthType basic         定义验证模块类型</span></span><br><span class="line"><span class="comment"># AuthUserFile /file     密码文件的存放地址</span></span><br><span class="line"><span class="comment"># Require user wang      设置哪些用户生效</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面这些注释也能实现用户密码访问，建议留存以便解决一些未知的bug，如果你是yum安装的httpd，你可以直接修改conf.d/userdir.conf文件，直接在最下面增加上述配置即可。</span></span><br><span class="line">&lt;IfModule mod_userdir.c&gt;</span><br><span class="line">    UserDir public_html</span><br><span class="line">&lt;/IfModule&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory /home/*/public_html&gt;</span><br><span class="line">    AllowOverride FileInfo AuthConfig Limit</span><br><span class="line">    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec</span><br><span class="line">    &lt;Limit GET POST OPTIONS&gt;</span><br><span class="line">        Order allow,deny</span><br><span class="line">        Allow from all</span><br><span class="line">    &lt;/Limit&gt;</span><br><span class="line">    &lt;LimitExcept GET POST OPTIONS&gt;</span><br><span class="line">        Order deny,allow</span><br><span class="line">        Deny from all</span><br><span class="line">    &lt;/LimitExcept&gt;</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证-3"><a href="#验证-3" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bin/httpd -k restart</span><br><span class="line"><span class="comment"># 创建用户：</span></span><br><span class="line">useradd wang</span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache2</span><br><span class="line">mkdir htdocs/wang</span><br><span class="line">cat &gt; htdocs/wang/index.html &lt;&lt; EOF</span><br><span class="line">wang auth</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成密码文件，修改密码再次执行此命令即可</span></span><br><span class="line">./bin/htpasswd -c -m /home/lamp/apache2/.htpasswd wang</span><br><span class="line"><span class="comment"># 输入密码a123456</span></span><br><span class="line"></span><br><span class="line">cat .htpasswd</span><br><span class="line"><span class="comment"># 显示 wang:$apr1$eL9wB7zB$F6bE1abbu1vGDVrW4Ji9V1</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-c</td>
+<td align="left">自动创建文件，仅应该在文件不存在时使用(初建时使用-c,再次创建不取消该选项则会覆盖之前内容)</td>
+</tr>
+<tr>
+<td align="left">-m</td>
+<td align="left">md5格式加密</td>
+</tr>
+<tr>
+<td align="left">-s</td>
+<td align="left">sha格式加密</td>
+</tr>
+<tr>
+<td align="left">-D</td>
+<td align="left">删除指定用户</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 访问</span></span><br><span class="line">curl www.example.com:800/wang</span><br><span class="line"><span class="comment"># 报错401</span></span><br><span class="line"><span class="comment"># 下载elinks</span></span><br><span class="line">wget http://rpmfind.net/linux/centos/8.1.1911/PowerTools/x86_64/os/Packages/elinks-0.12-0.58.pre6.el8.x86_64.rpm</span><br><span class="line">rpm -ivh elinks-0.12-0.58.pre6.el8.x86_64.rpm</span><br><span class="line"><span class="comment"># elinks访问</span></span><br><span class="line">elinks http://www.example.com:800/wang</span><br><span class="line"><span class="comment"># 输入用户名密码 &gt;&gt; 点击OK &gt;&gt; 点击here （①可以鼠标操作，②可以通过方向键移动光标，enter确认）</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/05/13/lamp/lamp/0.jpg" alt><br><img src="/2020/05/13/lamp/lamp/1.jpg" alt><br><img src="/2020/05/13/lamp/lamp/2.jpg" alt></p>
+<h3 id="扩展基于组用户密码访问"><a href="#扩展基于组用户密码访问" class="headerlink" title="扩展基于组用户密码访问"></a>扩展基于组用户密码访问</h3><p>&emsp;&emsp;上面的<strong>配置不变</strong>，增加两行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;Directory /usr/<span class="built_in">local</span>/apache2/htdocs/wang&gt;</span><br><span class="line">        AuthName <span class="string">"wang Auth"</span></span><br><span class="line">        AuthType basic</span><br><span class="line">        AuthUserFile /usr/<span class="built_in">local</span>/apache2/.htpasswd</span><br><span class="line">        Require user wang</span><br><span class="line">        AuthGroupFile /usr/<span class="built_in">local</span>/apache2/groupfile   <span class="comment"># 组文件</span></span><br><span class="line">        Require group wang   <span class="comment"># 允许的组</span></span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"><span class="comment"># 通过上面的配置文件可知，允许wang组里面的用户访问，允许用户wang访问</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="验证-4"><a href="#验证-4" class="headerlink" title="验证"></a>验证</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bin/httpd -k restart</span><br><span class="line">cat &gt; groupfile &lt;&lt; EOF</span><br><span class="line">wang:<span class="built_in">test</span></span><br><span class="line">test0:test0</span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># :前面是组名，后面是用户名；组名等于http.conf中的Require group wang规定的组名</span></span><br><span class="line"><span class="comment"># 增加用户test，test0</span></span><br><span class="line">./bin/htpasswd -m /home/lamp/apache2/.htpasswd <span class="built_in">test</span></span><br><span class="line">./bin/htpasswd -m /home/lamp/apache2/.htpasswd test0</span><br><span class="line"><span class="comment"># 由配置文件可知，允许test，和wang访问，不允许test0访问</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分别输入wang，test，test0用户密码验证即可</span></span><br><span class="line">elinks http://www.example.com:800/wang</span><br></pre></td></tr></table></figure>
+
+<h1 id="一般遇到的问题"><a href="#一般遇到的问题" class="headerlink" title="一般遇到的问题"></a>一般遇到的问题</h1><ol>
+<li>httpd.conf配置文件中，填写的路径不对</li>
+<li>多使用./bin/httpd -t检查，可以避免很多的粗心错误</li>
+<li>修改完配置文件一定记得重启，./bin/httpd -k restart</li>
+<li>端口，资源目录，目录权限等，一定要再三验证</li>
+<li>你遇到的其它问题欢迎留言~</li>
+</ol>
+<h1 id="编译MySQL"><a href="#编译MySQL" class="headerlink" title="编译MySQL"></a>编译MySQL</h1><p>&emsp;&emsp;安装依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># MySQL源码地址：https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.20.tar.gz</span></span><br><span class="line">yum install -y ncurses-devel libtirpc-devel cmake</span><br><span class="line"></span><br><span class="line"><span class="comment"># 缺少：libtirpc-devel</span></span><br><span class="line"><span class="comment"># 报错：Could not find rpc/rpc.h in /usr/include or /usr/include/tirpc</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缺少：ncurses-devel</span></span><br><span class="line"><span class="comment"># 报错：Curses library not found. Please install appropriate package</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缺少：rpcsvc</span></span><br><span class="line"><span class="comment"># 报错：Could not find rpcgen</span></span><br><span class="line"><span class="comment"># 编译安装</span></span><br><span class="line">wget https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4.1/rpcsvc-proto-1.4.1.tar.xz</span><br><span class="line">tar xf rpcsvc-proto-1.4.1.tar.xz</span><br><span class="line"><span class="built_in">cd</span> rpcsvc-proto-1.4.1/</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /home/lamp/mysql/data -p</span><br><span class="line"></span><br><span class="line">cmake . \</span><br><span class="line">-DCMAKE_INSTALL_PREFIX=/home/lamp/mysql \</span><br><span class="line">-DMYSQL_DATADIR=/home/lamp/mysql/data \</span><br><span class="line">-DMYSQL_UNIX_ADDR=/home/lamp/mysql/mysql.sock \</span><br><span class="line">-DWITH_INNODBBASE_STORAGE_ENGINE=1 \</span><br><span class="line">-DENABLE_LOCAL_INFILE=1 \</span><br><span class="line">-DEXTRA_CHARSETS=all \</span><br><span class="line">-DDEFAULT_CHARSET=utf8 \</span><br><span class="line">-DDEFAULT_COLLATION=utf8_general_ci \</span><br><span class="line">-DMYSQL_USER=mysql \</span><br><span class="line">-DWITH_DEBUG=0 \</span><br><span class="line">-DFORCE_INSOURCE_BUILD=1 \</span><br><span class="line">-DDOWNLOAD_BOOST=1 -DWITH_BOOST=/home/lamp/boost \</span><br><span class="line">-DWITH_EMBEDED_SERVER=0</span><br><span class="line"><span class="comment"># boost下载超时的话，记录下载地址：https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.gz</span></span><br><span class="line"><span class="comment"># 使用迅雷下载，大约不到1min就下载好了</span></span><br><span class="line"><span class="comment"># 移动到/home/lamp/boost目录下面</span></span><br></pre></td></tr></table></figure>
+<p>编译时间较长长长长长长长长长长长长长长长长😡</p>
+<h2 id="一般遇到的问题-1"><a href="#一般遇到的问题-1" class="headerlink" title="一般遇到的问题"></a>一般遇到的问题</h2><ol>
+<li>依赖问题</li>
+<li>网速太慢</li>
+<li>编译的时候内存不足</li>
+<li>目录权限</li>
+</ol>
+<p>不等待直接编译PHP</p>
+<h1 id="编译PHP"><a href="#编译PHP" class="headerlink" title="编译PHP"></a>编译PHP</h1><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install libxml2-devel bzip2-devel net-snmp-devel curl-devel libpng-devel freetype-devel libjpeg-devel -y</span><br><span class="line"></span><br><span class="line">wget http://ftp.gnu.org/gnu/libiconv/libiconv-1.16.tar.gz</span><br><span class="line"><span class="comment"># wget http://ftp.gnu.org/gnu/libiconv/libiconv-1.14.tar.gz</span></span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span> --with-apr=/home/lamp/apr</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">wget https://sourceforge.net/projects/mcrypt/files/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install &amp;&amp; /sbin/ldconfig</span><br><span class="line"><span class="built_in">cd</span> libltdl/</span><br><span class="line">./configure --<span class="built_in">enable</span>-ltdl-install &amp;&amp; make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">wget https://jaist.dl.sourceforge.net/project/mhash/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/lib/* /usr/lib/</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/bin/libmcrypt-config /usr/bin/</span><br><span class="line"></span><br><span class="line">wget https://jaist.dl.sourceforge.net/project/mcrypt/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz</span><br><span class="line"><span class="comment"># 解决报错：configure: error: *** libmcrypt was not found</span></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/bin/libmcrypt_config /usr/bin/libmcrypt_config</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/lib: LD_LIBRARY_PATH</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h2 id="安装PHP"><a href="#安装PHP" class="headerlink" title="安装PHP"></a>安装PHP</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.php.net/distributions/php-7.4.5.tar.gz</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mongodb安装以及基础操作</title>
+    <url>/2020/01/08/mongo/</url>
+    <content><![CDATA[<h1 id="安装mongo数据库"><a href="#安装mongo数据库" class="headerlink" title="安装mongo数据库"></a>安装mongo数据库</h1><pre><code>cd  /etc/yum.repos.d/
+vim   mongodb-org-3.2.repo
+[mogodb-org]
+name=MongoDB Repository
+baseurl=http://mirrors.aliyun.com/mongodb/yum/redhat/6Server/mongodb-org/3.4/x86_64/
+gpgcheck=0
+enabled=1</code></pre><p>然后保存退出</p>
+<pre><code>yum clean all    # 清除缓存
+yum install  mongod-org  -y</code></pre><h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><pre><code># mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log     #  日志文件路径
+
+# Where and how to store data.
+storage:
+  dbPath: /var/lib/mongo    # 数据保存路径
+  journal:
+    enabled: true        # 是否开启
+#  engine:
+#  mmapv1:
+#  wiredTiger:
+
+# how the process runs
+processManagement:
+  fork: true  # fork and run in background
+  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
+
+# network interfaces
+net:
+  port: 27017        # 监听端口
+  bindIp: 192.168.1.163  # 允许连接的IP
+
+
+#security:
+#security:
+
+#  authorization: enabled
+
+#operationProfiling:
+
+#replication:
+
+#sharding:
+## Enterprise-Only Options
+
+#auditLog:
+
+#snmp:</code></pre><h1 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h1><pre><code>mongo   IP   #  进入数据库
+
+show  dbs    # 查看所有库
+
+show tables    # 查看当前库的所有表
+
+use   DBNAME    # 进入数据库
+
+db.table.find()        # 查看表中的所有数据
+
+db.table.find({name : xxx})    # 查看表中name为xxx的数据
+
+db.table.find({name : xxx}).pretty()    # 查看表中name为xxx的数据   以json格式显示
+
+db.table.count()    # 统计数据行数
+
+db.tables.find().count()    # 统计行数   同上
+
+db.table.count({name : xxx})    # 统计name为xxx的行数
+
+db.table.update({},{$set:{name : xxx}})        # 把表中所有数据的name 改为 xxx
+
+db.table.update({name : xxx},{$set:{ID : 666}})        # 把name 为 xxx 的ID 改为666  （只更改匹配到的第一条数据）
+
+db.table.update({name : xxx},{$set:{ID : 666}},false,true)    # 把全部name 为 xxx的ID 改为666  （匹配到的所有数据）
+
+db.copyDatabase(&apos;old_name&apos;, &apos;new_name&apos;, &apos;localhost&apos;)    # 复制数据库
+
+use  DBNAME     # 进入数据库
+db.dropDatabase()    # 删除当前所在的库
+
+db.table.drop()        # 删除表
+
+db.table.remove({})    # 删除表中所有数据
+
+db.table.remove({name : xxx})    # 删除表中被匹配到的第一条数据
+
+db.table.remove({name : xxx},false,true)    # 删除表中被匹配到的所有数据
+
+use DBNAME     # 进入数据库
+db.create.table()    # 创建一个表      如果这个数据库之前不存在  创建表后会自动创建库</code></pre><h1 id="增删改查–扩展"><a href="#增删改查–扩展" class="headerlink" title="增删改查–扩展"></a>增删改查–扩展</h1><pre><code>db.roles.find({&quot;ID&quot;:{&quot;$lte&quot;: 200,&quot;$gte&quot;:155 },userType:41})    # 范围查询  查看ID 小于等于200  大于等于155 并且userType=41 的数据
+
+db.roles.find({ &quot;name&quot; : {$regex:/大气的.*/i}})        # 模糊查询    匹配name 包含&quot;大气的&quot; 数据
+
+db.towers.update({&quot;_id&quot; : ObjectId(&quot;5a6205e275a50f321e04b8ae&quot;)},{$set:{ &quot;levelCustomList.1.state&quot;:2}})        # 把匹配数据的levelCustomlist的第二个字段(state) 的值改为 2
+
+db.oreseasons.update({&quot;_id&quot; : ObjectId(&quot;5ad227d8da0d2e0522930156&quot;)},{$unset:{&quot;groups.0&quot;:&apos;&apos;}},false, true)    # 把匹配数据的groups中第一个字段删除</code></pre><h1 id="数据库的备份以及恢复"><a href="#数据库的备份以及恢复" class="headerlink" title="数据库的备份以及恢复"></a>数据库的备份以及恢复</h1><pre><code>mongodump   -h  IP    -d  DBNAME    -o  dir    # 备份数据库
+
+mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code></pre>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>mongo</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>大于2T的硬盘需要parted磁盘分区</title>
     <url>/2020/05/16/parted/</url>
     <content><![CDATA[<h2 id="首先安装parted"><a href="#首先安装parted" class="headerlink" title="首先安装parted"></a>首先安装parted</h2><pre><code>yum install parted   -y</code></pre><p>查看硬盘情况使用fdisk -l 查看分区情况，对于大于2TB的硬盘用parted分区<br><br>格式化 /dev/sdb<br></p>
@@ -22,6 +306,46 @@ GNU Parted 1.8.1 Using /dev/sdb Welcome to GNU Parted! Type ‘help’ to view a
       <tags>
         <tag>liunx</tag>
         <tag>parted</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python-str</title>
+    <url>/2020/04/23/python-str/</url>
+    <content><![CDATA[<p>code here<br>从字符串中提取字符</p>
+<pre><code>str = &quot;hello python&quot;
+print(str[7])</code></pre><p>for循环遍历字符串中每一个字符</p>
+<pre><code>for c in str:
+    print(c)</code></pre><p>统计字符串长度</p>
+<pre><code>str = &quot;hello python&quot;
+print(len(str))</code></pre><p>统计一个字符在字符串中出现的次数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str = <span class="string">"hello python"</span></span><br><span class="line">print(str.count(<span class="string">"l"</span>))</span><br></pre></td></tr></table></figure>
+<pre><code>puts &quot;Awesome!&quot; unless lame</code></pre><pre><code>
+
+    代码
+
+</code></pre>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jenkins项目迁移</title>
+    <url>/2019/12/24/remove/</url>
+    <content><![CDATA[<pre><code>systemctl stop jenkins
+cp -rp /var/lib/jenkins /home/jenkins
+sed -i s&apos;@/var/lib/jenkins@/home/jenkins@&apos; /etc/sysconfig/jenkins #修改主目录
+systemctl start jenkins
+rm -rf /var/lib/jenkins</code></pre>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -145,323 +469,6 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
       </tags>
   </entry>
   <entry>
-    <title>Mongo常见报错</title>
-    <url>/2020/05/14/MongoError/</url>
-    <content><![CDATA[<p>mongod宕机常见报错</p>
-<pre><code>/data/lib/mongo//WiredTiger.turtle: handle-open: open: Permission denied</code></pre><p>  解决办法直接给权限</p>
-<pre><code>sudo chown  mongod.mongod   ./*  -R</code></pre><p>还有一种是非正常关闭mongo再次启动会失败  使用</p>
-<pre><code>sudo  journalctl -xe</code></pre><p>查看到报错</p>
-<pre><code>Error starting mongod. /var/run/mongodb/mongod.pid exists.</code></pre><p>是因为非正常关闭mongo的时候pid文件还存在，删除后启动就正常了</p>
-<p>查看mongo连接数</p>
-<pre><code>db.serverStatus().connections
-{ &quot;current&quot; : 80, &quot;available&quot; : 52348, &quot;totalCreated&quot; : NumberLong(367) }</code></pre><p>Current表示当前到实例上正在运行的连接数。<br><br>Available表示当前实例还可以支持的并发连接数。<br></p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>mongo</tag>
-        <tag>liunx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lamp</title>
-    <url>/2020/05/13/lamp/</url>
-    <content><![CDATA[<!-- 文章头部设置 -->
-
-<blockquote>
-<p>&amp;  表示任务在后台执行，如要在后台运行redis-server,则有  redis-server &amp;<br>&amp;&amp; 表示前一条命令执行成功时，才执行后一条命令 ，如 echo ‘1’ &amp;&amp; echo ‘2’<br>| 表示管道，上一条命令的输出，作为下一条命令参数，如 echo ‘yes’ | wc -l<br>|| 表示上一条命令执行失败后，才执行下一条命令，如 cat nofile || echo “fail”</p>
-</blockquote>
-<h1 id="安装apache"><a href="#安装apache" class="headerlink" title="安装apache"></a>安装apache</h1><h2 id="下载和安装依赖"><a href="#下载和安装依赖" class="headerlink" title="下载和安装依赖"></a>下载和安装依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum -y install autoconf libtool gcc expat expat-devel make zlib-devel gcc-c++ openssl-devel pcre-devel openssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入 https://mirror.bit.edu.cn/apache//apr/ 找到最新的 apr 和 apr-util 包即可</span></span><br><span class="line">wget https://mirror.bit.edu.cn/apache//apr/apr-1.7.0.tar.gz</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/httpd/httpd-2.4.43.tar.gz</span><br><span class="line">wget https://mirror.bit.edu.cn/apache//apr/apr-util-1.6.1.tar.gz</span><br></pre></td></tr></table></figure>
-
-<h2 id="编译安装apr"><a href="#编译安装apr" class="headerlink" title="编译安装apr"></a>编译安装apr</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑 configure文件，查找 $RM "$cfgfile" 这个地方，用#注释掉</span></span><br><span class="line">31880行 <span class="comment">#    $RM "$cfgfile"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在configure里面 RM='$RM  -f' 这里的$RM后面一定有一个空格。 如果后面没有空格，直接连接减号，就依然会报错。把 RM='$RM' 改为 RM='$RM -f'</span></span><br><span class="line">31279行     RM=<span class="string">'$RM -f'</span></span><br><span class="line"><span class="comment"># 更改上面两行，否则./configure会报错：rm: cannot remove `libtoolT': No such file or directory</span></span><br><span class="line">./configure --prefix=/home/lamp/apr</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-
-<h2 id="编译安装apr-util"><a href="#编译安装apr-util" class="headerlink" title="编译安装apr-util"></a>编译安装apr-util</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 指明apr的安装位置--with-apr=/home/lamp/apr</span></span><br><span class="line">./configure --prefix=/home/lamp/apr-util --with-apr=/home/lamp/apr</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-
-<h2 id="编译安装apache"><a href="#编译安装apache" class="headerlink" title="编译安装apache"></a>编译安装apache</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/home/lamp/apache2 --with-apr=/home/lamp/apr --with-apr-util=/home/lamp/apr-util</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-
-<h1 id="启动apache"><a href="#启动apache" class="headerlink" title="启动apache"></a>启动apache</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/lamp/apache2</span><br><span class="line"><span class="comment"># 修改端口为800</span></span><br><span class="line">./bin/httpd -k start</span><br><span class="line">curl localhost:800</span><br><span class="line"><span class="comment"># 显示&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="配置基于域名访问不同资源目录"><a href="#配置基于域名访问不同资源目录" class="headerlink" title="配置基于域名访问不同资源目录"></a>配置基于域名访问不同资源目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑httpd.conf，在文件最后加入以下几行：</span></span><br><span class="line"></span><br><span class="line">&lt;/IfModule&gt;</span><br><span class="line">&lt;VirtualHost *:800&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/"</span></span><br><span class="line">    ServerName www.example.com</span><br><span class="line">    <span class="comment"># 访问www.example.com会访问/home/lamp/apache2/htdocs/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"></span><br><span class="line">&lt;VirtualHost *:800&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/org/"</span></span><br><span class="line">    ServerName www.example.org</span><br><span class="line">    <span class="comment"># 访问www.example.org会访问/home/lamp/apache2/htdocs/org/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置hosts文件！！！</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /home/lamp/apache2/</span><br><span class="line">mkdir htdocs/org/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑htdocs/index.html填入www.example.com</span></span><br><span class="line">cat &gt; htdocs/index.html &lt;&lt; EOF</span><br><span class="line">www.example.com</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑htdocs/org/index.html填入www.example.org</span></span><br><span class="line">cat &gt; htdocs/org/index.html &lt;&lt; EOF</span><br><span class="line">www.example.org</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 访问</span></span><br><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.org:800</span></span><br><span class="line">www.example.org</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:800</span></span><br><span class="line">www.example.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置基于端口访问不同资源目录"><a href="#配置基于端口访问不同资源目录" class="headerlink" title="配置基于端口访问不同资源目录"></a>配置基于端口访问不同资源目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在上文的基础上增加www.example.com:8000端口，直接在配置文件最下面添加以下内容</span></span><br><span class="line">&lt;VirtualHost *:8000&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/8000/"</span></span><br><span class="line">    ServerName www.example.com</span><br><span class="line">    <span class="comment"># 访问www.example.com:8000会访问/htdocs/8000/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"><span class="comment"># 在监听端口下面增加新的监听端口</span></span><br><span class="line">Listen 800</span><br><span class="line">Listen 8000</span><br></pre></td></tr></table></figure>
-
-<h3 id="验证-1"><a href="#验证-1" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir htdocs/8000</span><br><span class="line"></span><br><span class="line">cat &gt; htdocs/8000/index.html &lt;&lt; EOF</span><br><span class="line">www.example.com:8000</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查</span></span><br><span class="line">./bin/httpd -t   <span class="comment"># 显示Syntax OK即可</span></span><br><span class="line"></span><br><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:8000</span></span><br><span class="line">www.example.com:8000</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:800</span></span><br><span class="line">www.example.com</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.org:800</span></span><br><span class="line">www.example.org</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置基于虚拟主机访问不同资源目录"><a href="#配置基于虚拟主机访问不同资源目录" class="headerlink" title="配置基于虚拟主机访问不同资源目录"></a>配置基于虚拟主机访问不同资源目录</h2><p>&emsp;&emsp;注释掉上面的3个配置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 增加新的配置</span></span><br><span class="line"><span class="comment"># 注意！IP地址是主机自带的IP地址，并非虚拟不存在的。改完配置要修改hosts解析！！！</span></span><br><span class="line">&lt;VirtualHost 192.168.1.100&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/100/"</span></span><br><span class="line">    ServerName www.example.com</span><br><span class="line">    <span class="comment"># 访问www.example.com:800会访问htdocs/100/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"></span><br><span class="line">&lt;VirtualHost 192.168.1.200&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/home/lamp/apache2/htdocs/200/"</span></span><br><span class="line">    ServerName www.example.org</span><br><span class="line">    <span class="comment"># 访问www.example.org:800会访问htdocs/200/目录下的资源</span></span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="验证-2"><a href="#验证-2" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">mkdir htdocs/&#123;1,2&#125;00</span><br><span class="line">cat &gt; htdocs/100/index.html &lt;&lt; EOF</span><br><span class="line">www.example.com  100</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &gt; htdocs/200/index.html &lt;&lt; EOF</span><br><span class="line">www.example.org  200</span><br><span class="line">EOF</span><br><span class="line">./bin/httpd -k restart</span><br><span class="line"></span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.com:800</span></span><br><span class="line">www.example.com  100</span><br><span class="line">[root@www apache2]<span class="comment"># curl www.example.org:800</span></span><br><span class="line">www.example.org  200</span><br></pre></td></tr></table></figure>
-<h2 id="配置基于简单的用户密码验证访问"><a href="#配置基于简单的用户密码验证访问" class="headerlink" title="配置基于简单的用户密码验证访问"></a>配置基于简单的用户密码验证访问</h2><p>&emsp;&emsp;注释掉上面的配置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;Directory /usr/<span class="built_in">local</span>/apache2/htdocs/wang&gt;</span><br><span class="line">        AuthName <span class="string">"wang Auth"</span></span><br><span class="line">        AuthType basic</span><br><span class="line">        AuthUserFile /usr/<span class="built_in">local</span>/apache2/.htpasswd</span><br><span class="line">        Require user wang</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"><span class="comment"># AuthName "wang Auth"   该字符串显示在网页访问时输入用户密码的对话框之上，实际测试并未显示</span></span><br><span class="line"><span class="comment"># AuthType basic         定义验证模块类型</span></span><br><span class="line"><span class="comment"># AuthUserFile /file     密码文件的存放地址</span></span><br><span class="line"><span class="comment"># Require user wang      设置哪些用户生效</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面这些注释也能实现用户密码访问，建议留存以便解决一些未知的bug，如果你是yum安装的httpd，你可以直接修改conf.d/userdir.conf文件，直接在最下面增加上述配置即可。</span></span><br><span class="line">&lt;IfModule mod_userdir.c&gt;</span><br><span class="line">    UserDir public_html</span><br><span class="line">&lt;/IfModule&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory /home/*/public_html&gt;</span><br><span class="line">    AllowOverride FileInfo AuthConfig Limit</span><br><span class="line">    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec</span><br><span class="line">    &lt;Limit GET POST OPTIONS&gt;</span><br><span class="line">        Order allow,deny</span><br><span class="line">        Allow from all</span><br><span class="line">    &lt;/Limit&gt;</span><br><span class="line">    &lt;LimitExcept GET POST OPTIONS&gt;</span><br><span class="line">        Order deny,allow</span><br><span class="line">        Deny from all</span><br><span class="line">    &lt;/LimitExcept&gt;</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="验证-3"><a href="#验证-3" class="headerlink" title="验证"></a>验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bin/httpd -k restart</span><br><span class="line"><span class="comment"># 创建用户：</span></span><br><span class="line">useradd wang</span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache2</span><br><span class="line">mkdir htdocs/wang</span><br><span class="line">cat &gt; htdocs/wang/index.html &lt;&lt; EOF</span><br><span class="line">wang auth</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成密码文件，修改密码再次执行此命令即可</span></span><br><span class="line">./bin/htpasswd -c -m /home/lamp/apache2/.htpasswd wang</span><br><span class="line"><span class="comment"># 输入密码a123456</span></span><br><span class="line"></span><br><span class="line">cat .htpasswd</span><br><span class="line"><span class="comment"># 显示 wang:$apr1$eL9wB7zB$F6bE1abbu1vGDVrW4Ji9V1</span></span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th align="left">选项</th>
-<th align="left">注释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">-c</td>
-<td align="left">自动创建文件，仅应该在文件不存在时使用(初建时使用-c,再次创建不取消该选项则会覆盖之前内容)</td>
-</tr>
-<tr>
-<td align="left">-m</td>
-<td align="left">md5格式加密</td>
-</tr>
-<tr>
-<td align="left">-s</td>
-<td align="left">sha格式加密</td>
-</tr>
-<tr>
-<td align="left">-D</td>
-<td align="left">删除指定用户</td>
-</tr>
-</tbody></table>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 访问</span></span><br><span class="line">curl www.example.com:800/wang</span><br><span class="line"><span class="comment"># 报错401</span></span><br><span class="line"><span class="comment"># 下载elinks</span></span><br><span class="line">wget http://rpmfind.net/linux/centos/8.1.1911/PowerTools/x86_64/os/Packages/elinks-0.12-0.58.pre6.el8.x86_64.rpm</span><br><span class="line">rpm -ivh elinks-0.12-0.58.pre6.el8.x86_64.rpm</span><br><span class="line"><span class="comment"># elinks访问</span></span><br><span class="line">elinks http://www.example.com:800/wang</span><br><span class="line"><span class="comment"># 输入用户名密码 &gt;&gt; 点击OK &gt;&gt; 点击here （①可以鼠标操作，②可以通过方向键移动光标，enter确认）</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2020/05/13/lamp/lamp/0.jpg" alt><br><img src="/2020/05/13/lamp/lamp/1.jpg" alt><br><img src="/2020/05/13/lamp/lamp/2.jpg" alt></p>
-<h3 id="扩展基于组用户密码访问"><a href="#扩展基于组用户密码访问" class="headerlink" title="扩展基于组用户密码访问"></a>扩展基于组用户密码访问</h3><p>&emsp;&emsp;上面的<strong>配置不变</strong>，增加两行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;Directory /usr/<span class="built_in">local</span>/apache2/htdocs/wang&gt;</span><br><span class="line">        AuthName <span class="string">"wang Auth"</span></span><br><span class="line">        AuthType basic</span><br><span class="line">        AuthUserFile /usr/<span class="built_in">local</span>/apache2/.htpasswd</span><br><span class="line">        Require user wang</span><br><span class="line">        AuthGroupFile /usr/<span class="built_in">local</span>/apache2/groupfile   <span class="comment"># 组文件</span></span><br><span class="line">        Require group wang   <span class="comment"># 允许的组</span></span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"><span class="comment"># 通过上面的配置文件可知，允许wang组里面的用户访问，允许用户wang访问</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="验证-4"><a href="#验证-4" class="headerlink" title="验证"></a>验证</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bin/httpd -k restart</span><br><span class="line">cat &gt; groupfile &lt;&lt; EOF</span><br><span class="line">wang:<span class="built_in">test</span></span><br><span class="line">test0:test0</span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># :前面是组名，后面是用户名；组名等于http.conf中的Require group wang规定的组名</span></span><br><span class="line"><span class="comment"># 增加用户test，test0</span></span><br><span class="line">./bin/htpasswd -m /home/lamp/apache2/.htpasswd <span class="built_in">test</span></span><br><span class="line">./bin/htpasswd -m /home/lamp/apache2/.htpasswd test0</span><br><span class="line"><span class="comment"># 由配置文件可知，允许test，和wang访问，不允许test0访问</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分别输入wang，test，test0用户密码验证即可</span></span><br><span class="line">elinks http://www.example.com:800/wang</span><br></pre></td></tr></table></figure>
-
-<h1 id="一般遇到的问题"><a href="#一般遇到的问题" class="headerlink" title="一般遇到的问题"></a>一般遇到的问题</h1><ol>
-<li>httpd.conf配置文件中，填写的路径不对</li>
-<li>多使用./bin/httpd -t检查，可以避免很多的粗心错误</li>
-<li>修改完配置文件一定记得重启，./bin/httpd -k restart</li>
-<li>端口，资源目录，目录权限等，一定要再三验证</li>
-<li>你遇到的其它问题欢迎留言~</li>
-</ol>
-<h1 id="编译MySQL"><a href="#编译MySQL" class="headerlink" title="编译MySQL"></a>编译MySQL</h1><p>&emsp;&emsp;安装依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># MySQL源码地址：https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.20.tar.gz</span></span><br><span class="line">yum install -y ncurses-devel libtirpc-devel cmake</span><br><span class="line"></span><br><span class="line"><span class="comment"># 缺少：libtirpc-devel</span></span><br><span class="line"><span class="comment"># 报错：Could not find rpc/rpc.h in /usr/include or /usr/include/tirpc</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缺少：ncurses-devel</span></span><br><span class="line"><span class="comment"># 报错：Curses library not found. Please install appropriate package</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缺少：rpcsvc</span></span><br><span class="line"><span class="comment"># 报错：Could not find rpcgen</span></span><br><span class="line"><span class="comment"># 编译安装</span></span><br><span class="line">wget https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4.1/rpcsvc-proto-1.4.1.tar.xz</span><br><span class="line">tar xf rpcsvc-proto-1.4.1.tar.xz</span><br><span class="line"><span class="built_in">cd</span> rpcsvc-proto-1.4.1/</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /home/lamp/mysql/data -p</span><br><span class="line"></span><br><span class="line">cmake . \</span><br><span class="line">-DCMAKE_INSTALL_PREFIX=/home/lamp/mysql \</span><br><span class="line">-DMYSQL_DATADIR=/home/lamp/mysql/data \</span><br><span class="line">-DMYSQL_UNIX_ADDR=/home/lamp/mysql/mysql.sock \</span><br><span class="line">-DWITH_INNODBBASE_STORAGE_ENGINE=1 \</span><br><span class="line">-DENABLE_LOCAL_INFILE=1 \</span><br><span class="line">-DEXTRA_CHARSETS=all \</span><br><span class="line">-DDEFAULT_CHARSET=utf8 \</span><br><span class="line">-DDEFAULT_COLLATION=utf8_general_ci \</span><br><span class="line">-DMYSQL_USER=mysql \</span><br><span class="line">-DWITH_DEBUG=0 \</span><br><span class="line">-DFORCE_INSOURCE_BUILD=1 \</span><br><span class="line">-DDOWNLOAD_BOOST=1 -DWITH_BOOST=/home/lamp/boost \</span><br><span class="line">-DWITH_EMBEDED_SERVER=0</span><br><span class="line"><span class="comment"># boost下载超时的话，记录下载地址：https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.gz</span></span><br><span class="line"><span class="comment"># 使用迅雷下载，大约不到1min就下载好了</span></span><br><span class="line"><span class="comment"># 移动到/home/lamp/boost目录下面</span></span><br></pre></td></tr></table></figure>
-<p>编译时间较长长长长长长长长长长长长长长长长😡</p>
-<h2 id="一般遇到的问题-1"><a href="#一般遇到的问题-1" class="headerlink" title="一般遇到的问题"></a>一般遇到的问题</h2><ol>
-<li>依赖问题</li>
-<li>网速太慢</li>
-<li>编译的时候内存不足</li>
-<li>目录权限</li>
-</ol>
-<p>不等待直接编译PHP</p>
-<h1 id="编译PHP"><a href="#编译PHP" class="headerlink" title="编译PHP"></a>编译PHP</h1><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install libxml2-devel bzip2-devel net-snmp-devel curl-devel libpng-devel freetype-devel libjpeg-devel -y</span><br><span class="line"></span><br><span class="line">wget http://ftp.gnu.org/gnu/libiconv/libiconv-1.16.tar.gz</span><br><span class="line"><span class="comment"># wget http://ftp.gnu.org/gnu/libiconv/libiconv-1.14.tar.gz</span></span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span> --with-apr=/home/lamp/apr</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">wget https://sourceforge.net/projects/mcrypt/files/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install &amp;&amp; /sbin/ldconfig</span><br><span class="line"><span class="built_in">cd</span> libltdl/</span><br><span class="line">./configure --<span class="built_in">enable</span>-ltdl-install &amp;&amp; make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">wget https://jaist.dl.sourceforge.net/project/mhash/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/lib/* /usr/lib/</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/bin/libmcrypt-config /usr/bin/</span><br><span class="line"></span><br><span class="line">wget https://jaist.dl.sourceforge.net/project/mcrypt/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz</span><br><span class="line"><span class="comment"># 解决报错：configure: error: *** libmcrypt was not found</span></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/bin/libmcrypt_config /usr/bin/libmcrypt_config</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/lib: LD_LIBRARY_PATH</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-<h2 id="安装PHP"><a href="#安装PHP" class="headerlink" title="安装PHP"></a>安装PHP</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.php.net/distributions/php-7.4.5.tar.gz</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>liunx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>code</title>
-    <url>/2020/05/13/code/</url>
-    <content><![CDATA[<p>categories: 测试<br>    #!/usr/bin/python3<br>    def main():<br>        print(“hello world”)</p>
-<pre><code>if __name__ == &quot;__mian__&quot;:
-    main()</code></pre><h1 id="ceshi"><a href="#ceshi" class="headerlink" title="ceshi"></a>ceshi</h1><pre><code>#!/bin/bash
-echo &quot;ceshi&quot;</code></pre><p> cehshi</p>
-<pre><code>#!/usr/bin/python3
-    def main():
-        print(&quot;hello world&quot;)
-
-    if __name__ == &quot;__mian__&quot;:
-        main()</code></pre><p>hexo 文章插入图片的方法<br><br>设置站点配置_config.yml:将post_asset_folder: false改为post_asset_folder: true<br><br>安装插件:npm install <a href="https://github.com/CodeFalling/hexo-asset-image" target="_blank" rel="noopener">https://github.com/CodeFalling/hexo-asset-image</a> – save<br><br>运行hexo n “XXXXXX”,生成XXXXX.md博文时就会在/source/_posts目录下生成XXXXXX的文件夹，将你想在XXXXX博文中插入的照片放置到这个同名文件夹中即可，图片的命名随意<br><br>添加图片:在想添加的位置写入![](图片名字.图片格式),例如![](1.png)</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>docker--容器创建后添加端口映射</title>
-    <url>/2020/05/13/docker/</url>
-    <content><![CDATA[<p>标注：[hash_of_the_container] 为容器id</p>
-<pre><code>vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json</code></pre><p>在 hostconfig.json 里有 “PortBindings”:{} 这个配置项，</p>
-<p>改成 </p>
-<pre><code>&quot;PortBindings&quot;:{&quot;9001/tcp&quot;:[{&quot;HostIp&quot;:&quot;&quot;,&quot;HostPort&quot;:&quot;900&quot;}]}
-      前者为容器端口，后者为宿主机端口</code></pre><p>如果容器内端口从没有暴露，需要在修改config.v2.json</p>
-<pre><code>vim /var/lib/docker/containers/[hash_of_the_container]/config.v2.json</code></pre><p>在 config.v2.json 里面添加一个配置项 </p>
-<pre><code>&quot;ExposedPorts&quot;:{&quot;80/tcp&quot;:{}} ,</code></pre><p><font color="#FF0000">必须将这个配置项添加到 “Tty”: true, 前面</font></p>
-<p>最后重启 docker的守护进程 systemctl restart  docker<br><br>启动容器id   docker start   ID<br></p>
-<p>使用docker ps  查看容器端口是否映射<br><img src="/2020/05/13/docker/1.png" alt></p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>liunx</tag>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python-str</title>
-    <url>/2020/04/23/python-str/</url>
-    <content><![CDATA[<p>code here<br>从字符串中提取字符</p>
-<pre><code>str = &quot;hello python&quot;
-print(str[7])</code></pre><p>for循环遍历字符串中每一个字符</p>
-<pre><code>for c in str:
-    print(c)</code></pre><p>统计字符串长度</p>
-<pre><code>str = &quot;hello python&quot;
-print(len(str))</code></pre><p>统计一个字符在字符串中出现的次数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str = <span class="string">"hello python"</span></span><br><span class="line">print(str.count(<span class="string">"l"</span>))</span><br></pre></td></tr></table></figure>
-<pre><code>puts &quot;Awesome!&quot; unless lame</code></pre><pre><code>
-
-    代码
-
-</code></pre>
-]]></content>
-      <categories>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>liunx</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>全球加速--阿里云</title>
-    <url>/2020/01/16/jiasu/</url>
-    <content><![CDATA[<h1 id="全球加速"><a href="#全球加速" class="headerlink" title="全球加速"></a>全球加速</h1><p>首先确定加速区域以及服务区域<br><br>例如：业务服务器在华北2（北京）,想让美国的玩家流畅访问,需要购买加速区域在北美,服务区域在中国大陆<br></p>
-<p>创建全球加速后，会得到一个美国IP，把这个IP和华北2服务器的IP绑定同一个域名，根据解析路线区分解析。<br><br>如果是北京地区访问这个IP，返回的是华北2的服务器IP。相反如果是美国玩家访问，则会返回全球加速的IP。<br></p>
-<pre><code>解析路线：比如，DnsCEO的智能DNS就会自动判断用户的上网路线是联通还是电信，然后智能返回联通或者电信的服务器IP。多线多地区智能DNS，能自动判断用户的上网路线是上海电信还是广东电信，然后智能返回对应的上海电信和广东电信的服务器IP。</code></pre><p>例如：<br>    <br>新加坡实例需要拥有弹性公网IP   (ECS控制台–&gt;更多–&gt;网络和安全组–&gt;公网IP转为弹性公网IP)<br></p>
-<pre><code>还需要创建个弹性网卡
-    网卡名称：自定义
-    专有网络：需同ECS同一网络
-    交换机：需同ECS同一网络
-    安全组：需同ECS同一网络
-然后绑定ECS</code></pre><p>创建一个全球加速实例，在全球加速主界面找到实例，然后添加IP(购买个ip就好)。然后点击创建的ip，绑定一个新加坡的实例</p>
-<p>最后域名解析</p>
-<p>需要购买一个域名版本管理套餐 绑定一个子域名<br>然后用子域名解析A记录</p>
-<pre><code>test    A    世界_北美洲     xxx.xxx.xxx.xxx(全球加速ip)
-test    A    默认         xxx.xxx.xxx.xxx(服务器ip)</code></pre>]]></content>
-      <categories>
-        <category>阿里云</category>
-      </categories>
-      <tags>
-        <tag>阿里云</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mongodb安装以及基础操作</title>
-    <url>/2020/01/08/mongo/</url>
-    <content><![CDATA[<h1 id="安装mongo数据库"><a href="#安装mongo数据库" class="headerlink" title="安装mongo数据库"></a>安装mongo数据库</h1><pre><code>cd  /etc/yum.repos.d/
-vim   mongodb-org-3.2.repo
-[mogodb-org]
-name=MongoDB Repository
-baseurl=http://mirrors.aliyun.com/mongodb/yum/redhat/6Server/mongodb-org/3.4/x86_64/
-gpgcheck=0
-enabled=1</code></pre><p>然后保存退出</p>
-<pre><code>yum clean all    # 清除缓存
-yum install  mongod-org  -y</code></pre><h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><pre><code># mongod.conf
-
-# for documentation of all options, see:
-#   http://docs.mongodb.org/manual/reference/configuration-options/
-
-# where to write logging data.
-systemLog:
-  destination: file
-  logAppend: true
-  path: /var/log/mongodb/mongod.log     #  日志文件路径
-
-# Where and how to store data.
-storage:
-  dbPath: /var/lib/mongo    # 数据保存路径
-  journal:
-    enabled: true        # 是否开启
-#  engine:
-#  mmapv1:
-#  wiredTiger:
-
-# how the process runs
-processManagement:
-  fork: true  # fork and run in background
-  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
-
-# network interfaces
-net:
-  port: 27017        # 监听端口
-  bindIp: 192.168.1.163  # 允许连接的IP
-
-
-#security:
-#security:
-
-#  authorization: enabled
-
-#operationProfiling:
-
-#replication:
-
-#sharding:
-## Enterprise-Only Options
-
-#auditLog:
-
-#snmp:</code></pre><h1 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h1><pre><code>mongo   IP   #  进入数据库
-
-show  dbs    # 查看所有库
-
-show tables    # 查看当前库的所有表
-
-use   DBNAME    # 进入数据库
-
-db.table.find()        # 查看表中的所有数据
-
-db.table.find({name : xxx})    # 查看表中name为xxx的数据
-
-db.table.find({name : xxx}).pretty()    # 查看表中name为xxx的数据   以json格式显示
-
-db.table.count()    # 统计数据行数
-
-db.tables.find().count()    # 统计行数   同上
-
-db.table.count({name : xxx})    # 统计name为xxx的行数
-
-db.table.update({},{$set:{name : xxx}})        # 把表中所有数据的name 改为 xxx
-
-db.table.update({name : xxx},{$set:{ID : 666}})        # 把name 为 xxx 的ID 改为666  （只更改匹配到的第一条数据）
-
-db.table.update({name : xxx},{$set:{ID : 666}},false,true)    # 把全部name 为 xxx的ID 改为666  （匹配到的所有数据）
-
-db.copyDatabase(&apos;old_name&apos;, &apos;new_name&apos;, &apos;localhost&apos;)    # 复制数据库
-
-use  DBNAME     # 进入数据库
-db.dropDatabase()    # 删除当前所在的库
-
-db.table.drop()        # 删除表
-
-db.table.remove({})    # 删除表中所有数据
-
-db.table.remove({name : xxx})    # 删除表中被匹配到的第一条数据
-
-db.table.remove({name : xxx},false,true)    # 删除表中被匹配到的所有数据
-
-use DBNAME     # 进入数据库
-db.create.table()    # 创建一个表      如果这个数据库之前不存在  创建表后会自动创建库</code></pre><h1 id="增删改查–扩展"><a href="#增删改查–扩展" class="headerlink" title="增删改查–扩展"></a>增删改查–扩展</h1><pre><code>db.roles.find({&quot;ID&quot;:{&quot;$lte&quot;: 200,&quot;$gte&quot;:155 },userType:41})    # 范围查询  查看ID 小于等于200  大于等于155 并且userType=41 的数据
-
-db.roles.find({ &quot;name&quot; : {$regex:/大气的.*/i}})        # 模糊查询    匹配name 包含&quot;大气的&quot; 数据
-
-db.towers.update({&quot;_id&quot; : ObjectId(&quot;5a6205e275a50f321e04b8ae&quot;)},{$set:{ &quot;levelCustomList.1.state&quot;:2}})        # 把匹配数据的levelCustomlist的第二个字段(state) 的值改为 2
-
-db.oreseasons.update({&quot;_id&quot; : ObjectId(&quot;5ad227d8da0d2e0522930156&quot;)},{$unset:{&quot;groups.0&quot;:&apos;&apos;}},false, true)    # 把匹配数据的groups中第一个字段删除</code></pre><h1 id="数据库的备份以及恢复"><a href="#数据库的备份以及恢复" class="headerlink" title="数据库的备份以及恢复"></a>数据库的备份以及恢复</h1><pre><code>mongodump   -h  IP    -d  DBNAME    -o  dir    # 备份数据库
-
-mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code></pre>]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>mongo</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>sshpass</title>
     <url>/2019/12/27/sshpass/</url>
     <content><![CDATA[<h3 id="使用前提：对于未连接过的主机。而又不输入yes进行确认。需要sshd服务的优化："><a href="#使用前提：对于未连接过的主机。而又不输入yes进行确认。需要sshd服务的优化：" class="headerlink" title="使用前提：对于未连接过的主机。而又不输入yes进行确认。需要sshd服务的优化："></a>使用前提：对于未连接过的主机。而又不输入yes进行确认。需要sshd服务的优化：</h3><pre><code># vim /etc/ssh/ssh_config   
@@ -484,33 +491,6 @@ restartserver</code></pre>]]></content>
       <tags>
         <tag>linux</tag>
         <tag>sshpass</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>jenkins项目迁移</title>
-    <url>/2019/12/24/remove/</url>
-    <content><![CDATA[<pre><code>systemctl stop jenkins
-cp -rp /var/lib/jenkins /home/jenkins
-sed -i s&apos;@/var/lib/jenkins@/home/jenkins@&apos; /etc/sysconfig/jenkins #修改主目录
-systemctl start jenkins
-rm -rf /var/lib/jenkins</code></pre>]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>jenkins</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>jenkins添加普通用户设置权限</title>
-    <url>/2019/12/24/jenkins/</url>
-    <content><![CDATA[<h3 id="jenkins创建普通用户并配置权限"><a href="#jenkins创建普通用户并配置权限" class="headerlink" title="jenkins创建普通用户并配置权限"></a>jenkins创建普通用户并配置权限</h3><p><br>1、首先在Manage Jenkins –&gt; 用户管理  创建用户<br><br>2、然后在Manage Jenkins –&gt; 全局设置 授权策略选择：<br><br>项目矩阵授权策略  添加用户或者用户组 选择权限<br><br><img src="/2019/12/24/jenkins/1.png" alt><br><br>3、找到需要授权的项目点击配置<br><br><img src="/2019/12/24/jenkins/2.png" alt><br><br>启用项目安全<br><br><img src="/2019/12/24/jenkins/3.png" alt><br><br>添加admin用户以及其他用户<br><br><img src="/2019/12/24/jenkins/4.png" alt><br><br>最后登录测试<br><br><br><br></p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -628,6 +608,26 @@ SSLCertificateKeyFile /etc/httpd/ssl/httpd.key</code></pre><p>如果要停用 ht
       <tags>
         <tag>jenkins</tag>
         <tag>subversion</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Mongo常见报错</title>
+    <url>/2020/05/14/MongoError/</url>
+    <content><![CDATA[<p>mongod宕机常见报错</p>
+<pre><code>/data/lib/mongo//WiredTiger.turtle: handle-open: open: Permission denied</code></pre><p>  解决办法直接给权限</p>
+<pre><code>sudo chown  mongod.mongod   ./*  -R</code></pre><p>还有一种是非正常关闭mongo再次启动会失败  使用</p>
+<pre><code>sudo  journalctl -xe</code></pre><p>查看到报错</p>
+<pre><code>Error starting mongod. /var/run/mongodb/mongod.pid exists.</code></pre><p>是因为非正常关闭mongo的时候pid文件还存在，删除后启动就正常了</p>
+<p>查看mongo连接数</p>
+<pre><code>db.serverStatus().connections
+{ &quot;current&quot; : 80, &quot;available&quot; : 52348, &quot;totalCreated&quot; : NumberLong(367) }</code></pre><p>Current表示当前到实例上正在运行的连接数。<br><br>Available表示当前实例还可以支持的并发连接数。<br></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
 </search>
