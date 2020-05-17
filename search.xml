@@ -160,8 +160,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>liunx</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -296,8 +296,8 @@ echo &quot;ceshi&quot;</code></pre><p> cehshi</p>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>docker</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
