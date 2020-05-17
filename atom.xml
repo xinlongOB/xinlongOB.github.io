@@ -98,9 +98,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
@@ -182,9 +182,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
     
   </entry>
   
