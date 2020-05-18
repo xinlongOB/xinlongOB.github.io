@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>mvn环境配置</title>
+    <url>/2020/05/18/mvn/</url>
+    <content><![CDATA[<h2 id="配置jdk环境变量"><a href="#配置jdk环境变量" class="headerlink" title="配置jdk环境变量"></a>配置jdk环境变量</h2><p>创建目录</p>
+<pre><code>mkdir /application/ </code></pre><p>解压jdk包到创建的目录中</p>
+<pre><code>tar xf jdk-8u60-linux-x64.tar.gz   -C /application/</code></pre><p>做软连接</p>
+<pre><code>ln -s  /application/jdk1.8.0_60/ /application/jdk</code></pre><p>设置环境变量</p>
+<pre><code>sed -i.ori &apos;$a export  JAVA_HOME=/application/jdk\nexport PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH\nexport  CLASSPATH=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar&apos;  /etc/profile</code></pre><p>source一下生效环境变量</p>
+<h2 id="配置mvn环境变量"><a href="#配置mvn环境变量" class="headerlink" title="配置mvn环境变量"></a>配置mvn环境变量</h2><pre><code>cd /application/ </code></pre><p>下载mvn包</p>
+<pre><code>wget http://mirrors.hust.edu.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz</code></pre><p>解压</p>
+<pre><code>tar -zxvf apache-maven-3.5.4-bin.tar.gz</code></pre><p>vim /etc/profile</p>
+<pre><code>export MAVEN_HOME=/application/apache-maven-3.0.5
+export PATH=$PATH:$MAVEN_HOME/bin</code></pre><p>source一下生效环境变量</p>
+<p>最后可以使用mvn -v 查看</p>
+<pre><code>[sgsm@localhost weblog]$ mvn  -v
+Apache Maven 3.5.4 (1edded0938998edf8bf061f1ceb3cfdeccf443fe; 2018-06-18T02:33:14+08:00)
+Maven home: /home/sgsm/test3/apache-maven-3.5.4
+Java version: 1.8.0_60, vendor: Oracle Corporation, runtime: /application/jdk1.8.0_60/jre
+Default locale: zh_CN, platform encoding: UTF-8
+OS name: &quot;linux&quot;, version: &quot;3.10.0-514.21.2.el7.x86_64&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;</code></pre>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>mvn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git无法添加主题文件夹</title>
+    <url>/2020/05/17/gitremove/</url>
+    <content><![CDATA[<p>由于主题都是在git上下载的所以默认会有一个.git的文件，这样导致提交的时候无法提交主题文件<br><br>解决办法<br></p>
+<p>删除主题文件夹下.git</p>
+<pre><code>git rm --cached themes/hexo-theme-ayer
+git add .
+git commit -m &quot;xxx&quot;
+git push origin master</code></pre>]]></content>
+      <tags>
+        <tag>liunx</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>大于2T的硬盘需要parted磁盘分区</title>
     <url>/2020/05/16/parted/</url>
     <content><![CDATA[<h2 id="首先安装parted"><a href="#首先安装parted" class="headerlink" title="首先安装parted"></a>首先安装parted</h2><pre><code>yum install parted   -y</code></pre><p>查看硬盘情况使用fdisk -l 查看分区情况，对于大于2TB的硬盘用parted分区<br><br>格式化 /dev/sdb<br></p>
