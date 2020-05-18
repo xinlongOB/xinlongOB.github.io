@@ -19,7 +19,8 @@ Apache Maven 3.5.4 (1edded0938998edf8bf061f1ceb3cfdeccf443fe; 2018-06-18T02:33:1
 Maven home: /home/sgsm/test3/apache-maven-3.5.4
 Java version: 1.8.0_60, vendor: Oracle Corporation, runtime: /application/jdk1.8.0_60/jre
 Default locale: zh_CN, platform encoding: UTF-8
-OS name: &quot;linux&quot;, version: &quot;3.10.0-514.21.2.el7.x86_64&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;</code></pre>]]></content>
+OS name: &quot;linux&quot;, version: &quot;3.10.0-514.21.2.el7.x86_64&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;</code></pre><p>接下来就可以使用mvn打jar包了</p>
+<pre><code>mvn clean package </code></pre>]]></content>
       <categories>
         <category>运维</category>
       </categories>
