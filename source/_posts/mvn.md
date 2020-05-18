@@ -53,3 +53,7 @@ source一下生效环境变量
     Default locale: zh_CN, platform encoding: UTF-8
     OS name: "linux", version: "3.10.0-514.21.2.el7.x86_64", arch: "amd64", family: "unix"
     
+
+接下来就可以使用mvn打jar包了
+
+    mvn clean package 
