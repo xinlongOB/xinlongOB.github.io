@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">141</span>
+            <span class="post-count">199</span>
         </span>
     </span>
 
@@ -121,7 +121,7 @@ var _hmt = _hmt || [];
 <pre><code>sudo netstat -ntpla  |grep  80</code></pre><p>结果什么都没有</p>
 <pre><code>sudo  lsof -i:80</code></pre><p>也没有查到这个端口，百度各种搜资料也是无望马上要爆炸的时候一位神秘的大佬给了一个网站</p>
 <p><img src="/2020/05/19/strange/1.png" alt><br>看到后就崩溃了</p>
-<p>结语：官方文档看到不够多</p>
+<pre><code>翻译：如果 需要在80端口上运行服务，则需要使用反向代理（如nginx），它将使用首选端口上的系统账户运行，并将请求代理到运行在未观端口（&gt;1024）</code></pre><p>结语：官方文档看到不够多</p>
 
       
       <!-- reward -->
