@@ -119,7 +119,8 @@ var _hmt = _hmt || [];
       <p>前因：因为程序需要node的启动进行需要改到80端口，改过之后却报错</p>
 <pre><code>Error: listen EACCES 0.0.0.0:80</code></pre><p>过程：这个报错是端口冲突，然后就排查服务器是否某个进程把80端口占用</p>
 <pre><code>sudo netstat -ntpla  |grep  80</code></pre><p>结果什么都没有</p>
-<pre><code>sudo  lsof -i:80</code></pre><p>也没有查到这个端口，百度各种搜资料也是无望马上要爆炸的时候一位神秘的大佬给了一个网站<br><br><img src="/2020/05/19/strange/1.png" alt><br><br>看到后就崩溃了</p>
+<pre><code>sudo  lsof -i:80</code></pre><p>也没有查到这个端口，百度各种搜资料也是无望马上要爆炸的时候一位神秘的大佬给了一个网站</p>
+<p><img src="/2020/05/19/strange/1.png" alt><br>看到后就崩溃了</p>
 <p>结语：官方文档看到不够多</p>
 
       
