@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-18T09:58:18.712Z</updated>
+  <updated>2020-05-19T12:32:13.116Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个奇怪的报错</title>
+    <link href="http://yoursite.com/2020/05/19/strange/"/>
+    <id>http://yoursite.com/2020/05/19/strange/</id>
+    <published>2020-05-19T09:24:08.000Z</published>
+    <updated>2020-05-19T12:32:13.116Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;前因：因为程序需要node的启动进行需要改到80端口，改过之后却报错&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Error: listen EACCES
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+  </entry>
   
   <entry>
     <title>mvn环境配置</title>
