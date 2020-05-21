@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-19T13:06:30.431Z</updated>
+  <updated>2020-05-21T01:02:19.497Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>pm2安装报错</title>
+    <link href="http://yoursite.com/2020/05/20/pm2/"/>
+    <id>http://yoursite.com/2020/05/20/pm2/</id>
+    <published>2020-05-20T07:19:18.000Z</published>
+    <updated>2020-05-21T01:02:19.497Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;使用npm安装pm2报错&quot;&gt;&lt;a href=&quot;#使用npm安装pm2报错&quot; class=&quot;headerlink&quot; title=&quot;使用npm安装pm2报错&quot;&gt;&lt;/a&gt;使用npm安装pm2报错&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;sudo  npm  -g 
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维,开发" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4-%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="pm2" scheme="http://yoursite.com/tags/pm2/"/>
+    
+  </entry>
   
   <entry>
     <title>一个奇怪的报错</title>
