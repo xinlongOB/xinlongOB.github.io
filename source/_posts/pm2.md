@@ -3,8 +3,9 @@ title: pm2安装报错
 tags:
   - pm2
   - liunx
-categories: 运维
-categories: 开发
+categories:
+  - 运维
+  - 开发
 date: 2020-05-20 15:19:18
 ---
 ## 使用npm安装pm2报错

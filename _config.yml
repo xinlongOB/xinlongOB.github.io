@@ -113,6 +113,8 @@ theme: hexo-theme-ayer
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-#  repository: git@github.com:xinlongOB/xinlongOB.github.io.git
-  repository: https://e.coding.net/xinlongob/xinlong/xinlong.git
+  repository: 
+    - git@github.com:xinlongOB/xinlongOB.github.io.git
+    - https://e.coding.net/xinlongob/xinlong/xinlong.git
+    #  repository: https://e.coding.net/xinlongob/xinlong/xinlong.git
   branch: master
