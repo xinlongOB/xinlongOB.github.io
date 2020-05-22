@@ -317,8 +317,11 @@ b) 针对目标服务器做 ssh 免密登录，依次执行：
     <title>ssl证书申请</title>
     <url>/2020/05/21/ssl/</url>
     <content><![CDATA[<h2 id="SSL证书申请"><a href="#SSL证书申请" class="headerlink" title="SSL证书申请"></a>SSL证书申请</h2><p><br>1、 购买证书 （免费版一年）<br><br>2、证书申请   –&gt; 绑定域名    子域名随便起   例如     qwer.effc.ltd    qwer任意<br><br>3、在此域名解析看到有一条TXT记录值，然后返回证书申请点击认证  然后提交<br></p>
-<p>认证通过后直接下载证书   （nginx证书    会有.key    .pem  两个秘钥文件）</p>
+<p>认证通过后直接下载证书   （nginx证书   会有.key    .pem  两个秘钥文件）</p>
 ]]></content>
+      <categories>
+        <category>阿里云</category>
+      </categories>
       <tags>
         <tag>liunx</tag>
         <tag>阿里云</tag>
