@@ -6,8 +6,8 @@
     <content><![CDATA[<p>在我们的实验环境中准备了四台台服务器，配置与角色如下（如果需要增加 Minion/Worker 节点请自行准备即可）：<br>主机名         IP地址            角色                  OS                   组件<br>deploy        192.168.9.10     BreezeDeploy           CentOS7.6 x64    docker / docker-compose / Breeze<br>master01      192.168.9.11     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>master02      192.168.9.12     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>master03      192.168.9.13     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>worker01      192.168.9.21     K8S Worker Node     CentOS7.6 x64    K8S Worker / Prometheus<br>harbor           192.168.9.20     Harbor                     CentOS7.6 x64    Harbor 1.7.0<br>               192.168.9.30     VIP                                                HA 虚 IP 地址在 3 台 K8S Master 浮动  </p>
 ]]></content>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -386,8 +386,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>mongo</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>

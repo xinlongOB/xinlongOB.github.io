@@ -37,9 +37,9 @@
     
     
     
-      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
     
   </entry>
   
@@ -270,9 +270,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
