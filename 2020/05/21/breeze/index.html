@@ -73,6 +73,10 @@ var _hmt = _hmt || [];
   <time datetime="2020-05-21T07:34:40.000Z" itemprop="datePublished">2020-05-21</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -80,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">153</span>
+            <span class="post-count">493</span>
         </span>
     </span>
 
@@ -89,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -100,6 +104,8 @@ var _hmt = _hmt || [];
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -112,7 +118,68 @@ var _hmt = _hmt || [];
       
 
       
-      <p>在我们的实验环境中准备了四台台服务器，配置与角色如下（如果需要增加 Minion/Worker 节点请自行准备即可）：<br>主机名         IP地址            角色                  OS                   组件<br>deploy        192.168.9.10     BreezeDeploy           CentOS7.6 x64    docker / docker-compose / Breeze<br>master01      192.168.9.11     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>master02      192.168.9.12     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>master03      192.168.9.13     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>worker01      192.168.9.21     K8S Worker Node     CentOS7.6 x64    K8S Worker / Prometheus<br>harbor           192.168.9.20     Harbor                     CentOS7.6 x64    Harbor 1.7.0<br>               192.168.9.30     VIP                                                HA 虚 IP 地址在 3 台 K8S Master 浮动  </p>
+      <p>在我们的实验环境中准备了四台服务器，配置与角色如下（如果需要增加 Minion/Worker 节点请自行准备即可）：<br><img src="/2020/05/21/breeze/1.png" alt></p>
+<h2 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h2><h2 id="一、准备部署主机（deploy-192-168-9-10）"><a href="#一、准备部署主机（deploy-192-168-9-10）" class="headerlink" title="一、准备部署主机（deploy / 192.168.9.10）"></a>一、准备部署主机（deploy / 192.168.9.10）</h2><p>（1）以标准 Minimal 方式安装 CentOS 7.6 (1810) x64 之后(7.4 和 7.5 也支持)，登录 shell 环境，执行以下命令关闭防火墙：<br>setenforce 0</p>
+<pre><code>systemctl stop firewalld.service
+
+systemctl stop iptables.service
+
+systemctl disable firewalld.service
+
+systemctl disable iptables.service</code></pre><p>（2）安装 docker-compose 命令</p>
+<pre><code>curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
+chmod +x /usr/local/bin/docker-compose</code></pre><p>（3）安装 docker</p>
+<pre><code>yum install docker
+systemctl enable docker &amp;&amp; systemctl start docker</code></pre><p>（4）建立部署主机到其它所有服务器的 ssh 免密登录途径<br>    a) 生成秘钥，执行：</p>
+<pre><code>    ssh-keygen
+
+b) 针对目标服务器做 ssh 免密登录，依次执行：
+
+    ssh-copy-id 192.168.1.100
+    ssh-copy-id 192.168.1.101
+    ssh-copy-id 192.168.1.102
+    ssh-copy-id 192.168.1.103
+    ssh-copy-id 192.168.1.104</code></pre><h2 id="二、获取针对-K8S-某个具体版本的-Breeze-资源文件并启动部署工具，例如此次实验针对刚刚发布的-K8S-v1-13-1"><a href="#二、获取针对-K8S-某个具体版本的-Breeze-资源文件并启动部署工具，例如此次实验针对刚刚发布的-K8S-v1-13-1" class="headerlink" title="二、获取针对 K8S 某个具体版本的 Breeze 资源文件并启动部署工具，例如此次实验针对刚刚发布的 K8S v1.13.1"></a>二、获取针对 K8S 某个具体版本的 Breeze 资源文件并启动部署工具，例如此次实验针对刚刚发布的 K8S v1.13.1</h2><pre><code>curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.13.1/docker-compose.yml -o docker-compose.yml</code></pre><p>  如果无法访问此网站，复制一下内容到文件中命名为   docker-compose.yml</p>
+<pre><code>vim   docker-compose.yml
+
+  version: &apos;2&apos;
+  services:
+    deploy:
+      container_name: deploy-main
+      image: registry.cn-shenzhen.aliyuncs.com/breeze-project/pagoda:v1.2.0
+      restart: always
+      entrypoint: sh
+      command:
+      - -c
+      - &quot;/root/pagoda -logtostderr -v 4 -w /workspace&quot;
+      ports:
+      - 88:80
+      - 8088:8080
+      volumes:
+      - $HOME/.ssh:/root/.ssh
+      - $PWD/deploy:/deploy
+      volumes_from:
+      - playbook
+    ui:
+      container_name: deploy-ui
+      image: registry.cn-shenzhen.aliyuncs.com/breeze-project/deploy-ui:v1.8
+      restart: always
+      network_mode: &quot;service:deploy&quot;
+    playbook:
+      container_name: deploy-playbook
+      image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.18.2
+      volumes:
+      - playbook:/workspace
+    yum-repo:
+      container_name: deploy-yumrepo
+      image: registry.cn-shenzhen.aliyuncs.com/breeze-project/yum-repo:v1.18.2
+      ports:
+      - 2009:2009 
+      restart: always
+  volumes:
+    playbook:
+      external: false</code></pre><h2 id="三、访问部署工具的浏览器页面-部署机-IP-及端口-88-，开始部署工作"><a href="#三、访问部署工具的浏览器页面-部署机-IP-及端口-88-，开始部署工作" class="headerlink" title="三、访问部署工具的浏览器页面(部署机 IP 及端口 88)，开始部署工作"></a>三、访问部署工具的浏览器页面(部署机 IP 及端口 88)，开始部署工作</h2><p>  <a href="http://192.168.1.199:88" target="_blank" rel="noopener">http://192.168.1.199:88</a></p>
 
       
       <!-- reward -->
@@ -194,6 +261,15 @@ var _hmt = _hmt || [];
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/05/22/kubeadm/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            使用kubeadm安装kubernetes
+          
+        </div>
+      </a>
     
     
       <a href="/2020/05/21/ssl/" class="article-nav-link">

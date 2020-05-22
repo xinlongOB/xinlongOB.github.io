@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-22T01:11:50.130Z</updated>
+  <updated>2020-05-22T07:49:16.399Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>史上最全breeze安装k8s文档</title>
-    <link href="http://yoursite.com/2020/05/21/breeze/"/>
-    <id>http://yoursite.com/2020/05/21/breeze/</id>
-    <published>2020-05-21T07:34:40.000Z</published>
-    <updated>2020-05-22T01:11:50.130Z</updated>
+    <title>使用kubeadm安装kubernetes</title>
+    <link href="http://yoursite.com/2020/05/22/kubeadm/"/>
+    <id>http://yoursite.com/2020/05/22/kubeadm/</id>
+    <published>2020-05-22T06:39:17.000Z</published>
+    <updated>2020-05-22T07:49:16.399Z</updated>
     
     <summary type="html">
     
@@ -29,12 +29,45 @@
       
         
         
-          &lt;p&gt;在我们的实验环境中准备了四台台服务器，配置与角色如下（如果需要增加 Minion/Worker 节点请自行准备即可）：&lt;br&gt;主机名         IP地址            角色                  OS                  
+          &lt;p&gt;Kubernetes技术已经成为了原生云技术的事实标准，它是目前基础软件领域最为热门的分布式调度和管理平台。于是，Kubernetes也几乎成了时下开发工程师和运维工程师必备的技能之一。&lt;/p&gt;
+&lt;h2 id=&quot;一、主机环境预设&quot;&gt;&lt;a href=&quot;#一、主机环境预设&quot;
         
       
     
     </summary>
     
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>史上最全breeze安装k8s文档</title>
+    <link href="http://yoursite.com/2020/05/21/breeze/"/>
+    <id>http://yoursite.com/2020/05/21/breeze/</id>
+    <published>2020-05-21T07:34:40.000Z</published>
+    <updated>2020-05-22T06:50:28.616Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在我们的实验环境中准备了四台服务器，配置与角色如下（如果需要增加 Minion/Worker 节点请自行准备即可）：&lt;br&gt;&lt;img src=&quot;/2020/05/21/breeze/1.png&quot; alt&gt;&lt;/p&gt;
+&lt;h2 id=&quot;步骤：&quot;&gt;&lt;a href=&quot;#步骤：&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
