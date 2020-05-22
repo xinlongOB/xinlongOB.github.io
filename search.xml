@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>史上最全breeze安装k8s文档</title>
+    <url>/2020/05/21/breeze/</url>
+    <content><![CDATA[<p>在我们的实验环境中准备了四台台服务器，配置与角色如下（如果需要增加 Minion/Worker 节点请自行准备即可）：<br>主机名         IP地址            角色                  OS                   组件<br>deploy        192.168.9.10     BreezeDeploy           CentOS7.6 x64    docker / docker-compose / Breeze<br>master01      192.168.9.11     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>master02      192.168.9.12     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>master03      192.168.9.13     K8S Master Node     CentOS7.6 x64    K8S Master /etcd /HAProxy /Keepalived<br>worker01      192.168.9.21     K8S Worker Node     CentOS7.6 x64    K8S Worker / Prometheus<br>harbor           192.168.9.20     Harbor                     CentOS7.6 x64    Harbor 1.7.0<br>               192.168.9.30     VIP                                                HA 虚 IP 地址在 3 台 K8S Master 浮动  </p>
+]]></content>
+      <tags>
+        <tag>liunx</tag>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ssl证书申请</title>
     <url>/2020/05/21/ssl/</url>
     <content><![CDATA[<h2 id="SSL证书申请"><a href="#SSL证书申请" class="headerlink" title="SSL证书申请"></a>SSL证书申请</h2><p><br>1、 购买证书 （免费版一年）<br><br>2、证书申请   –&gt; 绑定域名    子域名随便起   例如     qwer.effc.ltd    qwer任意<br><br>3、在此域名解析看到有一条TXT记录值，然后返回证书申请点击认证  然后提交<br></p>

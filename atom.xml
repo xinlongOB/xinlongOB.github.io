@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-21T07:33:22.245Z</updated>
+  <updated>2020-05-22T01:11:50.130Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>史上最全breeze安装k8s文档</title>
+    <link href="http://yoursite.com/2020/05/21/breeze/"/>
+    <id>http://yoursite.com/2020/05/21/breeze/</id>
+    <published>2020-05-21T07:34:40.000Z</published>
+    <updated>2020-05-22T01:11:50.130Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在我们的实验环境中准备了四台台服务器，配置与角色如下（如果需要增加 Minion/Worker 节点请自行准备即可）：&lt;br&gt;主机名         IP地址            角色                  OS                  
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
+    
+  </entry>
   
   <entry>
     <title>ssl证书申请</title>
