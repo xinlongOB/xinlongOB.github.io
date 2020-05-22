@@ -167,8 +167,8 @@ cnzz:
 # Google Analytics
 google_analytics: ""
 # 百度统计
-baidu_analytics: "b67415e769cf821f4f0b7db65a16e914,c95fc358646e2d5720a8869fd1c2cc8c"
-
+baidu_analytics: "b67415e769cf821f4f0b7db65a16e914"
+# baidu_analytics: "c95fc358646e2d5720a8869fd1c2cc8c"
 
 # Mathjax数学公式
 mathjax: true
