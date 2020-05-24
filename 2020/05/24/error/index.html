@@ -80,7 +80,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">777</span>
+            <span class="post-count">798</span>
         </span>
     </span>
 
@@ -168,8 +168,7 @@ error execution phase preflight: [preflight] Some fatal errors occurred:
 正在连接 raw.githubusercontent.com (raw.githubusercontent.com)|::|:443... 失败：拒绝连接。
 
 [root@master01 ~]# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-The connection to the server raw.githubusercontent.com was refused - did you specify the right host or port?</code></pre><p>  如果无法访问网站需要手动创建文件    kube-flannel.yaml<br>  <br>内容：<br></p>
-<p>  <br>然后执行<br></p>
+The connection to the server raw.githubusercontent.com was refused - did you specify the right host or port?</code></pre><p>  如果无法访问网站需要手动创建文件    kube-flannel.yaml<br>  <br>由于内容太长保存在下面网站中：<br><br>    <a href="https://xinlong.youare.ink/2020/05/24/kube-flannel/" target="_blank" rel="noopener">https://xinlong.youare.ink/2020/05/24/kube-flannel/</a><br>  <br>然后执行<br></p>
 <pre><code>kubectl apply -f kube-flannel.yaml</code></pre><p>  稍等几秒后使用如下命令确认其输出结果中Pod的状态为“Running”，</p>
 <pre><code>kubectl get pods -n kube-system -l app=flannel</code></pre><p>  类似如下所示：</p>
 <pre><code>NAME READY STATUS RESTARTS AGE

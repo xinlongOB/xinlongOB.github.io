@@ -266,8 +266,7 @@ scheduler Healthy ok
 
 etcd-0 Healthy {&quot;health&quot;: &quot;true&quot;}</code></pre><p>3、添加flannel网络附件  </p>
 <p>  Kubernetes系统上Pod网络的实现依赖于第三方插件进行，这类插件有近数十种之多，较为著名的有flannel、calico、canal和kube-router等，简单易用的实现是为CoreOS提供的flannel项目。下面的命令用于在线部署flannel至Kubernetes系统之上：</p>
-<pre><code>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</code></pre><p>  如果无法访问网站需要手动创建文件    kube-flannel.yaml<br>  <br>内容：<br></p>
-<p>  <br>然后执行<br></p>
+<pre><code>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</code></pre><p>  如果无法访问网站需要手动创建文件    kube-flannel.yaml<br>  <br>由于内容太长保存在下面网站中：<br><br>    <a href="https://xinlong.youare.ink/2020/05/24/kube-flannel/" target="_blank" rel="noopener">https://xinlong.youare.ink/2020/05/24/kube-flannel/</a><br>  <br>然后执行<br></p>
 <pre><code>kubectl apply -f kube-flannel.yaml</code></pre><p>  稍等几秒后使用如下命令确认其输出结果中Pod的状态为“Running”，</p>
 <pre><code>kubectl get pods -n kube-system -l app=flannel</code></pre><p>  类似如下所示：</p>
 <pre><code>NAME READY STATUS RESTARTS AGE

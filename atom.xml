@@ -50,7 +50,7 @@ metadata:
     <link href="http://yoursite.com/2020/05/24/error/"/>
     <id>http://yoursite.com/2020/05/24/error/</id>
     <published>2020-05-24T06:40:27.000Z</published>
-    <updated>2020-05-24T07:30:53.917Z</updated>
+    <updated>2020-05-24T07:44:50.740Z</updated>
     
     <summary type="html">
     
@@ -66,9 +66,9 @@ metadata:
     
     
     
-      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
     
   </entry>
   
@@ -77,7 +77,7 @@ metadata:
     <link href="http://yoursite.com/2020/05/22/kubeadm/"/>
     <id>http://yoursite.com/2020/05/22/kubeadm/</id>
     <published>2020-05-22T06:39:17.000Z</published>
-    <updated>2020-05-24T07:30:53.919Z</updated>
+    <updated>2020-05-24T07:44:48.193Z</updated>
     
     <summary type="html">
     
@@ -96,9 +96,9 @@ metadata:
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
     
   </entry>
   
@@ -126,9 +126,9 @@ metadata:
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
     
   </entry>
   
@@ -361,9 +361,9 @@ metadata:
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
