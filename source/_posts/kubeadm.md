@@ -175,16 +175,15 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
     docker images
 
   使用docker pull镜像后  就不用修改代理配置了
-  批量修改脚本：
+ <br/> 批量修改脚本： <br/> 
+
       #!/bin/bash
       KUBE_VERSION=v1.13.0
       KUBE_PAUSE_VERSION=3.1
       ETCD_VERSION=3.1.12
       DNS_VERSION=1.14.8
-
       GCR_URL=k8s.gcr.io
       ALIYUN_URL=registry.cn-shenzhen.aliyuncs.com/cookcodeblog
-
       images=(kube-proxy:${KUBE_VERSION}
       kube-scheduler:${KUBE_VERSION}
       kube-controller-manager:${KUBE_VERSION}
@@ -351,7 +350,15 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 
  将节点加入第二步中创建的master的集群中，要使用主节点初始化过程中记录的kubeadm join命令，并且在未禁用Swap设备的情况下，额外附加“--ignore-preflight-errors=Swap”选项；下面的命令来自于前面初始master时运行的kubeadm init命令的输出结果。
 
-    kubeadm join 172.20.0.71:6443 --token gwxgdg.igg5728t1vt8ahhx --discovery-token-ca-cert-hash sha256:9b63cd1530b50da4733d2e7dace9270782211e25ec2e4bbac395e59adc56a26c --ignore-preflight-errors=Swap
+   kubeadm join 192.168.1.100:6443 --token 946w2y.xhj1wukp35zu6ppb     --discovery-token-ca-cert-hash sha256:93253b79ac5f2a3f32ee7d76e4d7d75cb2bbcd9190132a931c7ea5d5985521a1 	--ignore-preflight-errors=Swap
+
+在node服务器上执行scp  把master上的admin.conf文件拉取到/etc/kubernetes/admin.conf 			
+
+    scp root@192.168.1.100:/etc/kubernetes/admin.conf /etc/kubernetes/admin.conf 			
+
+设置环境变量
+
+    export KUBECONFIG=/etc/kubernetes/admin.conf 
 
   在每个节点添加完成后，即可通过kubectl验正添加结果。下面的命令及其输出是在node01和node02均添加完成后运行的，其输出结果表明两个Node已经准备就绪。
 

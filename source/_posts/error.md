@@ -120,3 +120,36 @@ date: 2020-05-24 14:40:27
     NAME STATUS ROLES AGE VERSION
 
     master01.ilinux.io Ready master 4m9s v1.12.1
+
+## 添加node节点报错
+
+node节点报错
+    [root@node01 yum.repos.d]# kubectl get node  
+    The connection to the server localhost:8080 was refused - did you specify the right host or port?	
+
+    kubeadm join 192.168.1.100:6443 --token 946w2y.xhj1wukp35zu6ppb     --discovery-token-ca-cert-hash sha256:93253b79ac5f2a3f32ee7d76e4d7d75cb2bbcd9190132a931c7ea5d5985521a1 		
+
+在node上执行kubeadm join后 在master服务器查询状态为 NotReady 在node上查询报错为上述日志
+<br/>解决办法：<br/>
+
+在node服务器上执行scp  把master上的admin.conf文件拉取到/etc/kubernetes/admin.conf 			
+
+    scp root@192.168.1.100:/etc/kubernetes/admin.conf /etc/kubernetes/admin.conf 			
+
+设置环境变量
+
+    export KUBECONFIG=/etc/kubernetes/admin.conf 
+
+再次执行 kubectl get node 
+
+    [root@node01 yum.repos.d]# kubectl get node 
+    NAME       STATUS   ROLES    AGE     VERSION
+    master01   Ready    master   7h58m   v1.18.3
+    master02   Ready    <none>   14m     v1.18.3
+
+master执行 kubectl get node 
+
+    [root@master01 ~]# kubectl get nodes
+    NAME       STATUS   ROLES    AGE     VERSION
+    master01   Ready    master   7h58m   v1.18.3
+    master02   Ready    <none>   14m     v1.18.3
