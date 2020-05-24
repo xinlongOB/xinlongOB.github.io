@@ -273,6 +273,38 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 
     kubeadm init --kubernetes-version=1.18.2 --apiserver-advertise-address=192.168.1.100  --image-repository registry.aliyuncs.com/google_containers  --service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16  
 
+  master初始化日志
+
+		[mark-control-plane] Marking the node master01 as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+		[bootstrap-token] Using token: 946w2y.xhj1wukp35zu6ppb
+		[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+		[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to get nodes
+		[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+		[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+		[bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+		[bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+		[kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
+		[addons] Applied essential addon: CoreDNS
+		[addons] Applied essential addon: kube-proxy
+
+		Your Kubernetes control-plane has initialized successfully!
+
+		To start using your cluster, you need to run the following as a regular user:
+
+		  mkdir -p $HOME/.kube
+		  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+		  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+		You should now deploy a pod network to the cluster.
+		Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+		  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+		Then you can join any number of worker nodes by running the following on each as root:
+
+		kubeadm join 192.168.1.100:6443 --token 946w2y.xhj1wukp35zu6ppb \
+			--discovery-token-ca-cert-hash sha256:93253b79ac5f2a3f32ee7d76e4d7d75cb2bbcd9190132a931c7ea5d5985521a1 
+
+  上面master初始化的日志需要保留   token值创建node节点的时候需要用到
 
 2、初始化kubectl
 
