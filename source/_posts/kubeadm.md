@@ -43,15 +43,23 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 
     server CHRONY-SERVER-NAME-OR-IP iburst
 
+  或者使用ntpdate
+
+      yum -y install wget vim net-tools ntpdate
+      ntpdate time.pool.aliyun.com
+
 3、主机名称解析
 
   出于简化配置步骤的目的，本测试环境使用hosts文件进行各节点名称解析，文件内容如下所示：
 
-    172.20.0.71 master01.ilinux.io master01
+    [root@master01 ~]# cat /etc/hosts
+    127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+    ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+    192.168.1.100 master01
 
-    172.20.0.61 node01.ilinux.io node01
+    192.168.1.101 node1
 
-    172.20.0.62 node02.ilinux.io node02
+    192.168.1.102 node2
 
  
 
@@ -116,6 +124,12 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 
     bash /etc/sysconfig/modules/ipvs.modules
 
+8、master对node节点ssh互信
+
+     ssh-keygen
+     ssh-copy-id node01
+     ssh-copy-id node02
+
 ## 二、安装程序包（在各主机上完成如下设定）
 
 1、生成yum仓库配置
@@ -134,6 +148,7 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
     gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
     enabled=1
 
+
 2、安装相关的程序包
 
   Kubernetes会对经过充分验正的Docker程序版本进行认证，目前认证完成的最高版本是17.03，但docker-ce的最新版本已经高出了几个版本号。管理员可忽略此认证而直接使用最新版本的docker-ce程序，不过，建议根据后面的说明，将安装命令替换为安装17.03版。
@@ -148,36 +163,9 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 
 ## 三、配置并启动docker服务（在各节点执行）
 
-    #!/bin/bash
-    KUBE_VERSION=v1.13.0
-    KUBE_PAUSE_VERSION=3.1
-    ETCD_VERSION=3.1.12
-    DNS_VERSION=1.14.8
+安装组件的几种方法：
 
-    GCR_URL=k8s.gcr.io
-    ALIYUN_URL=registry.cn-shenzhen.aliyuncs.com/cookcodeblog
-
-    images=(kube-proxy:${KUBE_VERSION}
-    kube-scheduler:${KUBE_VERSION}
-    kube-controller-manager:${KUBE_VERSION}
-    kube-apiserver:${KUBE_VERSION}
-    pause:${KUBE_PAUSE_VERSION}
-    etcd:${ETCD_VERSION}
-    k8s-dns-sidecar:${DNS_VERSION}
-    k8s-dns-kube-dns:${DNS_VERSION}
-    k8s-dns-dnsmasq-nanny:${DNS_VERSION})
-
-
-    for imageName in ${images[@]} ; do
-      docker pull $ALIYUN_URL/$imageName
-      docker tag  $ALIYUN_URL/$imageName $GCR_URL/$imageName
-      docker rmi $ALIYUN_URL/$imageName
-    done
-
-    docker images
-
-
-  从阿里云镜像仓库拉取镜像
+1、从阿里云镜像仓库拉取镜像
     
     docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.13.0      
 
@@ -187,14 +175,81 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
     docker images
 
   使用docker pull镜像后  就不用修改代理配置了
+  批量修改脚本：
+      #!/bin/bash
+      KUBE_VERSION=v1.13.0
+      KUBE_PAUSE_VERSION=3.1
+      ETCD_VERSION=3.1.12
+      DNS_VERSION=1.14.8
+
+      GCR_URL=k8s.gcr.io
+      ALIYUN_URL=registry.cn-shenzhen.aliyuncs.com/cookcodeblog
+
+      images=(kube-proxy:${KUBE_VERSION}
+      kube-scheduler:${KUBE_VERSION}
+      kube-controller-manager:${KUBE_VERSION}
+      kube-apiserver:${KUBE_VERSION}
+      pause:${KUBE_PAUSE_VERSION}
+      etcd:${ETCD_VERSION}
+      k8s-dns-sidecar:${DNS_VERSION}
+      k8s-dns-kube-dns:${DNS_VERSION}
+      k8s-dns-dnsmasq-nanny:${DNS_VERSION})
+
+
+      for imageName in ${images[@]} ; do
+        docker pull $ALIYUN_URL/$imageName
+        docker tag  $ALIYUN_URL/$imageName $GCR_URL/$imageName
+        docker rmi $ALIYUN_URL/$imageName
+      done
+
+      docker images
+
  
-  若要通过默认的k8s.gcr.io镜像仓库获取Kubernetes系统组件的相关镜像，需要配置docker Unit  #File（/usr/lib/systemd/system/docker.service文件）中的Environment变量，为其定义合用的HTTPS_PROXY，格式如下：
+2、若要通过默认的k8s.gcr.io镜像仓库获取Kubernetes系统组件的相关镜像，需要配置docker Unit  #File（/usr/lib/systemd/system/docker.service文件）中的Environment变量，为其定义合用的HTTPS_PROXY，格式如下：
 
     Environment="HTTPS_PROXY=PROTOCOL://HOST:PORT"
 
     Environment="NO_PROXY=172.20.0.0/16,127.0.0.0/8"
 
   如果没有国外的服务器最好还是先使用docker pull下镜像 然后修改
+
+3、生成配置文件
+  
+      kubeadm config print init-defaults ClusterConfiguration >kubeadm.conf  
+
+  修改kubeadm.conf
+
+      vi kubeadm.conf
+    # 修改 imageRepository: k8s.gcr.io
+    # 改为 registry.aliyuncs.com/google_containers
+    imageRepository: registry.aliyuncs.com/google_containers
+    # 修改kubernetes版本kubernetesVersion: v1.13.0
+    # 改为kubernetesVersion: v1.18.2
+    kubernetesVersion: v1.18.2
+
+  查看所以下载的镜像
+
+    kubeadm config images list --config kubeadm.conf
+
+      W0524 14:25:08.505708   14715 configset.go:202] WARNING: kubeadm cannot validate component configs for API groups [kubelet.config.k8s.io kubeproxy.config.k8s.io]
+      registry.aliyuncs.com/google_containers/kube-apiserver:v1.18.2
+      registry.aliyuncs.com/google_containers/kube-controller-manager:v1.18.2
+      registry.aliyuncs.com/google_containers/kube-scheduler:v1.18.2
+      registry.aliyuncs.com/google_containers/kube-proxy:v1.18.2
+      registry.aliyuncs.com/google_containers/pause:3.2
+      registry.aliyuncs.com/google_containers/etcd:3.4.3-0
+      registry.aliyuncs.com/google_containers/coredns:1.6.7
+
+  拉取镜像
+
+      kubeadm config images pull --config kubeadm.conf
+
+4、初始化的时候指定镜像库 -- 个人推荐这种方式比较简单
+<br/>例如：<br/>
+
+    kubeadm init --kubernetes-version=1.18.2 --apiserver-advertise-address=192.168.1.100  --image-repository registry.aliyuncs.com/google_containers  --service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16  
+
+
 
   另外，docker自1.13版起会自动设置iptables的FORWARD默认策略为DROP，这可能会影响Kubernetes集群依赖的报文转发功能，因此，需要在docker服务启动后，重新将FORWARD链的默认策略设备为ACCEPT，方式是修改/usr/lib/systemd/system/docker.service文件，在“ExecStart=/usr/bin/dockerd”一行之后新增一行如下内容：
 
@@ -215,105 +270,9 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 
 ## 四、初始化主节点（在master01上完成如下操作）
 
-1、初始化master节点
+1、初始化init
 
-  若未禁用Swap设备，则需要编辑kubelet的配置文件/etc/sysconfig/kubelet，设置其忽略Swap启用的状态错误，内容如下：
-
-    KUBELET_EXTRA_ARGS="--fail-swap-on=false"
-
- （可选步骤）而后，在运行初始化命令之前先运行如下命令单独获取相关的镜像文件，而后再运行后面的kubeadm init命令，以便于观察到镜像文件的下载过程。
-
-    kubeadm config images pull
-
-  而后即可进行master节点初始化。kubeadm init命令支持两种初始化方式，一是通过命令行选项传递关键的部署设定，另一个是基于yaml格式的专用配置文件，后一种允许用户自定义各个部署参数。下面分别给出了两种实现方式的配置步骤，建议读者采用第二种方式进行。
-
-初始化方式一：
-
-  运行如下命令完成master01节点的初始化：
-
-    kubeadm init --kubernetes-version=v1.12.1 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.96.0.0/12 --ignore-preflight-errors=Swap
-
-  命令中的各选项简单说明如下：
-
-    --kubernetes-version选项的版本号用于指定要部署的Kubenretes程序版本，它需要与当前的kubeadm支持的版本保持一致；
-
-     --pod-network-cidr选项用于指定分Pod分配使用的网络地址，它通常应该与要部署使用的网络插件（例如flannel、calico等）的默认设定保持一致，10.244.0.0/16是flannel默认使用的网络；
-
-    --service-cidr用于指定为Service分配使用的网络地址，它由kubernetes管理，默认即为10.96.0.0/12；
-
-    最后一个选项“--ignore-preflight-errors=Swap”仅应该在未禁用Swap设备的状态下使用。
-
- 
-
-初始化方式二：
-
-  kubeadm也可通过配置文件加载配置，以定制更丰富的部署选项。以下是个符合前述命令设定方式的使用示例，不过，它明确定义了kubeProxy的模式为ipvs，并支持通过修改imageRepository的值修改获取系统镜像时使用的镜像仓库。
-
-      apiVersion: kubeadm.k8s.io/v1alpha2
-
-      kind: MasterConfiguration
-
-      kubernetesVersion: v1.12.1
-
-      api:
-
-      advertiseAddress: 172.20.0.71
-
-      bindPort: 6443
-
-      controlPlaneEndpoint: ""
-
-      imageRepository: k8s.gcr.io
-
-      kubeProxy:
-
-      config:
-
-      mode: "ipvs"
-
-      ipvs:
-
-      ExcludeCIDRs: null
-
-      minSyncPeriod: 0s
-
-      scheduler: ""
-
-      syncPeriod: 30s
-
-      kubeletConfiguration:
-
-      baseConfig:
-
-      cgroupDriver: cgroupfs
-
-      clusterDNS:
-
-      - 10.96.0.10
-
-      clusterDomain: cluster.local
-
-      failSwapOn: false
-
-      resolvConf: /etc/resolv.conf
-
-      staticPodPath: /etc/kubernetes/manifests
-
-      networking:
-
-      dnsDomain: cluster.local
-
-      podSubnet: 10.244.0.0/16
-
-      serviceSubnet: 10.96.0.0/12
-
-将上面的内容保存于配置文件中，例如kubeadm-config.yaml，而后执行相应的命令：
-
-    kubeadm init --config kubeadm-config.yaml --ignore-preflight-errors=Swap
-
-
-  
-<font color=red>注意：对于Kubernetes系统的新用户来说，无论使用上述哪种方法，命令运行结束后，请记录最后的kubeadm join命令输出的最后提示的操作步骤。下图的内容是需要用户记录的一个命令输出示例，它提示了后续需要的操作步骤：另外，kubeadm init命令完整参考指南请移步官方文档。https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/。</font>   
+    kubeadm init --kubernetes-version=1.18.2 --apiserver-advertise-address=192.168.1.100  --image-repository registry.aliyuncs.com/google_containers  --service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16  
 
 
 2、初始化kubectl
@@ -324,9 +283,9 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 
   下面复制认证为Kubernetes系统管理员的配置文件至目标用户（例如当前用户root）的家目录下：
 
-    mkdir ~/.kube
-
-    cp /etc/kubernetes/admin.conf ~/.kube/config
+     mkdir -p $HOME/.kube
+     cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+     chown $(id -u):$(id -g) $HOME/.kube/config
 
   而后，即可通过kubectl进行客户端命令测试，并借此了解集群组件的当前状态：
 
@@ -343,13 +302,20 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
     etcd-0 Healthy {"health": "true"}
 
 
-3、添加flannel网络附件
+3、添加flannel网络附件  
 
   Kubernetes系统上Pod网络的实现依赖于第三方插件进行，这类插件有近数十种之多，较为著名的有flannel、calico、canal和kube-router等，简单易用的实现是为CoreOS提供的flannel项目。下面的命令用于在线部署flannel至Kubernetes系统之上：
 
     kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
-  而后使用如下命令确认其输出结果中Pod的状态为“Running”，
+  如果无法访问网站需要手动创建文件    kube-flannel.yaml
+  <br/>内容：<br/>
+  
+  <br/>然后执行<br/>
+
+       kubectl apply -f kube-flannel.yaml
+
+  稍等几秒后使用如下命令确认其输出结果中Pod的状态为“Running”，
 
     kubectl get pods -n kube-system -l app=flannel
 
