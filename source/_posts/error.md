@@ -3,6 +3,7 @@ title: kubernetes-1.18.2常见报错--持续更新
 tags:
   - kubernetes
   - liunx
+categories: 运维
 date: 2020-05-24 14:40:27
 ---
 ## 初始化时端口已经启动
@@ -94,8 +95,8 @@ date: 2020-05-24 14:40:27
     The connection to the server raw.githubusercontent.com was refused - did you specify the right host or port?
 
   如果无法访问网站需要手动创建文件    kube-flannel.yaml
-  <br/>内容：<br/>
-  
+  <br/>由于内容太长保存在下面网站中：<br/>
+    https://xinlong.youare.ink/2020/05/24/kube-flannel/
   <br/>然后执行<br/>
 
        kubectl apply -f kube-flannel.yaml

@@ -309,8 +309,8 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
     kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
   如果无法访问网站需要手动创建文件    kube-flannel.yaml
-  <br/>内容：<br/>
-  
+  <br/>由于内容太长保存在下面网站中：<br/>
+    https://xinlong.youare.ink/2020/05/24/kube-flannel/
   <br/>然后执行<br/>
 
        kubectl apply -f kube-flannel.yaml
@@ -387,8 +387,3 @@ Kubernetes技术已经成为了原生云技术的事实标准，它是目前基�
 myapp是一个web应用，因此，用户可以于集群外部通过“http://NodeIP:31257”这个URL访问myapp上的应用，例如于集群外通过浏览器访问“http://172.20.0.61:31257”。
 
 
-
-<br/><br/>
-<br/><br/>
-
-## 使用kubeadm快速部署Kubernetes(v1.12.1)集群------来源：马哥教育马哥原创
