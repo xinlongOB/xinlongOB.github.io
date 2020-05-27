@@ -48,11 +48,11 @@
   </entry>
   
   <entry>
-    <title>svn_remove_passwd</title>
+    <title>centos下清除记录的svn用户名和密码</title>
     <link href="http://yoursite.com/2020/05/26/svn-remove-passwd/"/>
     <id>http://yoursite.com/2020/05/26/svn-remove-passwd/</id>
     <published>2020-05-26T09:05:01.000Z</published>
-    <updated>2020-05-26T09:14:22.849Z</updated>
+    <updated>2020-05-27T10:58:27.986Z</updated>
     
     <summary type="html">
     
@@ -60,7 +60,7 @@
       
         
         
-          &lt;h2 id=&quot;linux下清除记录的svn用户名和密码&quot;&gt;&lt;a href=&quot;#linux下清除记录的svn用户名和密码&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;centos下清除记录的svn用户名和密码&quot;&gt;&lt;a href=&quot;#centos下清除记录的svn用户名和密码&quot; class=&quot;headerlink&quot;
         
       
     

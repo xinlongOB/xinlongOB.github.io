@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    svn_remove_passwd |  我在人间凑数的日子
+    centos下清除记录的svn用户名和密码 |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -60,7 +60,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  svn_remove_passwd
+  centos下清除记录的svn用户名和密码
 </h1>
  
 
@@ -118,10 +118,10 @@ var _hmt = _hmt || [];
       
 
       
-      <h2 id="linux下清除记录的svn用户名和密码"><a href="#linux下清除记录的svn用户名和密码" class="headerlink" title="linux下清除记录的svn用户名和密码"></a>linux下清除记录的svn用户名和密码</h2><p><br>由于公司人员的变动，离职人员的svn账号也会被删除，使用之前账号检出的代码执行svn update的时候会显示报错<br></p>
+      <h2 id="centos下清除记录的svn用户名和密码"><a href="#centos下清除记录的svn用户名和密码" class="headerlink" title="centos下清除记录的svn用户名和密码"></a>centos下清除记录的svn用户名和密码</h2><p><br>由于公司人员的变动，离职人员的svn账号也会被删除，使用之前账号检出的代码执行svn update的时候会显示报错<br></p>
 <pre><code>svn: E210005: Unable to connect to a repository at URL &apos;svn://xxx&apos;
 svn: E210005: No repository found in &apos;svn://xxx&apos;</code></pre><p>是因为检出代码的是提示是否保存明文密码然后用户选择的yes</p>
-<p><br>解决办法<br><br>inux下删除~/.subversion/auth即可清除之前的用户名和密码：</p>
+<p><br>解决办法<br><br>linux下删除~/.subversion/auth即可清除之前的用户名和密码：</p>
 <pre><code>rm -rf ~/.subversion/auth</code></pre><p>以后再操作svn会提示你输入root密码以及svn用户名和密码，这样就可以输入正常的账号密码了</p>
 
       
