@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">798</span>
+            <span class="post-count">999</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4 分钟</span>
+            <span class="post-count">5 分钟</span>
         </span>
     </span>
 </div>
@@ -181,7 +181,19 @@ kube-flannel-ds-amd64-wscnz 1/1 Running 0 14m</code></pre><p>  验正master节�
 <pre><code>kubectl get nodes</code></pre><p>  上述命令应该会得到类似如下输出：</p>
 <pre><code>NAME STATUS ROLES AGE VERSION
 
-master01.ilinux.io Ready master 4m9s v1.12.1</code></pre>
+master01.ilinux.io Ready master 4m9s v1.12.1</code></pre><h2 id="添加node节点报错"><a href="#添加node节点报错" class="headerlink" title="添加node节点报错"></a>添加node节点报错</h2><p>node节点报错<br>    [root@node01 yum.repos.d]# kubectl get node<br>    The connection to the server localhost:8080 was refused - did you specify the right host or port?    </p>
+<pre><code>kubeadm join 192.168.1.100:6443 --token 946w2y.xhj1wukp35zu6ppb     --discovery-token-ca-cert-hash sha256:93253b79ac5f2a3f32ee7d76e4d7d75cb2bbcd9190132a931c7ea5d5985521a1         </code></pre><p>在node上执行kubeadm join后 在master服务器查询状态为 NotReady 在node上查询报错为上述日志<br><br>解决办法：<br></p>
+<p>在node服务器上执行scp  把master上的admin.conf文件拉取到/etc/kubernetes/admin.conf             </p>
+<pre><code>scp root@192.168.1.100:/etc/kubernetes/admin.conf /etc/kubernetes/admin.conf             </code></pre><p>设置环境变量</p>
+<pre><code>export KUBECONFIG=/etc/kubernetes/admin.conf </code></pre><p>再次执行 kubectl get node </p>
+<pre><code>[root@node01 yum.repos.d]# kubectl get node 
+NAME       STATUS   ROLES    AGE     VERSION
+master01   Ready    master   7h58m   v1.18.3
+master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre><p>master执行 kubectl get node </p>
+<pre><code>[root@master01 ~]# kubectl get nodes
+NAME       STATUS   ROLES    AGE     VERSION
+master01   Ready    master   7h58m   v1.18.3
+master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre>
       
       <!-- reward -->
       

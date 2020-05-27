@@ -1,6 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>centos7设置python3环境</title>
+    <url>/2020/05/26/python3huanjing/</url>
+    <content><![CDATA[<h2 id="配置yum源-使用阿里云的镜像"><a href="#配置yum源-使用阿里云的镜像" class="headerlink" title="配置yum源-使用阿里云的镜像"></a>配置yum源-使用阿里云的镜像</h2><pre><code>sudo  wget http://mirrors.aliyun.com/repo/Centos-7.repo
+sudo  wget http://mirrors.aliyun.com/repo/epel-7.repo
+yum clean  all</code></pre><p>安装依赖工具包</p>
+<pre><code>sudo  yum -y install zlib-devel bzip2-devel openssl-devel openssl-static ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel lzma gcc</code></pre><h2 id="下载python3-7安装包"><a href="#下载python3-7安装包" class="headerlink" title="下载python3.7安装包"></a>下载python3.7安装包</h2><pre><code>cd /opt/
+sudo   wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</code></pre><p>解压–&gt;配置–&gt;编译–&gt;安装</p>
+<pre><code>sudo tar xf  Python-3.7.0.tar.xz    -C /usr/local/
+cd  /usr/local/Python-3.7.0/
+sudo  ./configure --prefix=/usr/local/sbin/python-3.7
+sudo   make &amp;&amp; sudo  make install</code></pre><p>  安装成功会打印</p>
+<pre><code>Collecting setuptools
+Collecting pip
+Installing collected packages: setuptools, pip
+Successfully installed pip-10.0.1 setuptools-39.0.1</code></pre><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><pre><code>[sgsm@bogon Python-3.7.0]$ /usr/local/sbin/python-3.7/bin/python3
+Python 3.7.0 (default, Jun  3 2020, 23:49:44) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-39)] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; exit()</code></pre><h2 id="创建软连接"><a href="#创建软连接" class="headerlink" title="创建软连接"></a>创建软连接</h2><p><br>查看目前的链接文件<br></p>
+<pre><code>[sgsm@bogon Python-3.7.0]$ ll /usr/bin/ |grep python
+lrwxrwxrwx.   1 root root           7 4月  13 2017 python -&gt; python2
+lrwxrwxrwx.   1 root root           9 4月  13 2017 python2 -&gt; python2.7
+-rwxr-xr-x.   1 root root        7136 11月  6 2016 python2.7
+-rwxr-xr-x.   1 root root        1835 11月  6 2016 python2.7-config
+lrwxrwxrwx.   1 root root          16 4月  13 2017 python2-config -&gt; python2.7-config
+lrwxrwxrwx.   1 root root          14 4月  13 2017 python-config -&gt; python2-config</code></pre><p>删除原来的连接文件</p>
+<pre><code>sudo rm -rf /usr/bin/python</code></pre><p>创建新的连接文件</p>
+<pre><code>sudo  ln -s /usr/local/sbin/python-3.7/bin/python3   /usr/bin/python</code></pre><p>查看现在的版本</p>
+<pre><code>[sgsm@bogon Python-3.7.0]$ python -V
+Python 3.7.0</code></pre><h2 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h2><p><br>修改完python默认版本之后，会存不能执行yum命令，需要做一些修改，如下<br></p>
+<pre><code> 将/usr/bin/yum的顶部的：
+
+!/usr/bin/python  改成  !/usr/bin/python2.7 
+
+将/usr/libexec/urlgrabber-ext-down的顶部的：
+
+/usr/bin/python  改为   /usr/bin/python2.7
+
+将/usr/bin/yum-config-manager的顶部的
+
+#!/usr/bin/python 改为 #!/usr/bin/python2.7 </code></pre><p>最后将pip指向到python3.7</p>
+<pre><code>[sgsm@bogon Python-3.7.0]$ sudo ln -s /usr/local/sbin/python-3.7/bin/pip3 /usr/bin/pip 
+[sgsm@bogon Python-3.7.0]$ 
+[sgsm@bogon Python-3.7.0]$ pip -v
+pip 10.0.1 from /usr/local/sbin/python-3.7/lib/python3.7/site-packages/pip (python 3.7)</code></pre>]]></content>
+      <categories>
+        <category>运维</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>svn_remove_passwd</title>
+    <url>/2020/05/26/svn-remove-passwd/</url>
+    <content><![CDATA[<h2 id="linux下清除记录的svn用户名和密码"><a href="#linux下清除记录的svn用户名和密码" class="headerlink" title="linux下清除记录的svn用户名和密码"></a>linux下清除记录的svn用户名和密码</h2><p><br>由于公司人员的变动，离职人员的svn账号也会被删除，使用之前账号检出的代码执行svn update的时候会显示报错<br></p>
+<pre><code>svn: E210005: Unable to connect to a repository at URL &apos;svn://xxx&apos;
+svn: E210005: No repository found in &apos;svn://xxx&apos;</code></pre><p>是因为检出代码的是提示是否保存明文密码然后用户选择的yes</p>
+<p><br>解决办法<br><br>inux下删除~/.subversion/auth即可清除之前的用户名和密码：</p>
+<pre><code>rm -rf ~/.subversion/auth</code></pre><p>以后再操作svn会提示你输入root密码以及svn用户名和密码，这样就可以输入正常的账号密码了</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>subversion</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python-1</title>
+    <url>/2020/05/26/python-1/</url>
+    <content><![CDATA[<p>##双引号和单引号的作用</p>
+<pre><code>str = &quot;我是谁&quot;
+print(str)
+str1 = &apos;我是&quot;谁&quot;&apos;
+print(str1)</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>kube-flannel</title>
     <url>/2020/05/24/kube-flannel/</url>
     <content><![CDATA[<pre><code>---
@@ -672,7 +760,19 @@ kube-flannel-ds-amd64-wscnz 1/1 Running 0 14m</code></pre><p>  验正master节�
 <pre><code>kubectl get nodes</code></pre><p>  上述命令应该会得到类似如下输出：</p>
 <pre><code>NAME STATUS ROLES AGE VERSION
 
-master01.ilinux.io Ready master 4m9s v1.12.1</code></pre>]]></content>
+master01.ilinux.io Ready master 4m9s v1.12.1</code></pre><h2 id="添加node节点报错"><a href="#添加node节点报错" class="headerlink" title="添加node节点报错"></a>添加node节点报错</h2><p>node节点报错<br>    [root@node01 yum.repos.d]# kubectl get node<br>    The connection to the server localhost:8080 was refused - did you specify the right host or port?    </p>
+<pre><code>kubeadm join 192.168.1.100:6443 --token 946w2y.xhj1wukp35zu6ppb     --discovery-token-ca-cert-hash sha256:93253b79ac5f2a3f32ee7d76e4d7d75cb2bbcd9190132a931c7ea5d5985521a1         </code></pre><p>在node上执行kubeadm join后 在master服务器查询状态为 NotReady 在node上查询报错为上述日志<br><br>解决办法：<br></p>
+<p>在node服务器上执行scp  把master上的admin.conf文件拉取到/etc/kubernetes/admin.conf             </p>
+<pre><code>scp root@192.168.1.100:/etc/kubernetes/admin.conf /etc/kubernetes/admin.conf             </code></pre><p>设置环境变量</p>
+<pre><code>export KUBECONFIG=/etc/kubernetes/admin.conf </code></pre><p>再次执行 kubectl get node </p>
+<pre><code>[root@node01 yum.repos.d]# kubectl get node 
+NAME       STATUS   ROLES    AGE     VERSION
+master01   Ready    master   7h58m   v1.18.3
+master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre><p>master执行 kubectl get node </p>
+<pre><code>[root@master01 ~]# kubectl get nodes
+NAME       STATUS   ROLES    AGE     VERSION
+master01   Ready    master   7h58m   v1.18.3
+master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre>]]></content>
       <categories>
         <category>运维</category>
       </categories>
@@ -766,10 +866,14 @@ yum install kubelet kubeadm kubectl</code></pre><p>  如果要安装目前经过
 <p>1、从阿里云镜像仓库拉取镜像</p>
 <pre><code>docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.13.0      </code></pre><p>  修改镜像tag</p>
 <pre><code>docker tag  registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.13.0  k8s.gcr.io/kube-apiserver:v1.13.0
-docker images</code></pre><p>  使用docker pull镜像后  就不用修改代理配置了<br>  批量修改脚本：<br>      #!/bin/bash<br>      KUBE_VERSION=v1.13.0<br>      KUBE_PAUSE_VERSION=3.1<br>      ETCD_VERSION=3.1.12<br>      DNS_VERSION=1.14.8</p>
-<pre><code>GCR_URL=k8s.gcr.io
+docker images</code></pre><p>  使用docker pull镜像后  就不用修改代理配置了<br> <br> 批量修改脚本： <br> </p>
+<pre><code>#!/bin/bash
+KUBE_VERSION=v1.13.0
+KUBE_PAUSE_VERSION=3.1
+ETCD_VERSION=3.1.12
+DNS_VERSION=1.14.8
+GCR_URL=k8s.gcr.io
 ALIYUN_URL=registry.cn-shenzhen.aliyuncs.com/cookcodeblog
-
 images=(kube-proxy:${KUBE_VERSION}
 kube-scheduler:${KUBE_VERSION}
 kube-controller-manager:${KUBE_VERSION}
@@ -817,7 +921,36 @@ kubernetesVersion: v1.18.2</code></pre><p>  查看所以下载的镜像</p>
 
 systemctl start docker.service</code></pre><p>  而后设定docker和kubelet随系统引导自动启动：</p>
 <pre><code>systemctl enable docker kubelet</code></pre><h2 id="四、初始化主节点（在master01上完成如下操作）"><a href="#四、初始化主节点（在master01上完成如下操作）" class="headerlink" title="四、初始化主节点（在master01上完成如下操作）"></a>四、初始化主节点（在master01上完成如下操作）</h2><p>1、初始化init</p>
-<pre><code>kubeadm init --kubernetes-version=1.18.2 --apiserver-advertise-address=192.168.1.100  --image-repository registry.aliyuncs.com/google_containers  --service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16  </code></pre><p>2、初始化kubectl</p>
+<pre><code>kubeadm init --kubernetes-version=1.18.2 --apiserver-advertise-address=192.168.1.100  --image-repository registry.aliyuncs.com/google_containers  --service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16  </code></pre><p>  master初始化日志</p>
+<pre><code>[mark-control-plane] Marking the node master01 as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[bootstrap-token] Using token: 946w2y.xhj1wukp35zu6ppb
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to get nodes
+[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstrap-token] Creating the &quot;cluster-info&quot; ConfigMap in the &quot;kube-public&quot; namespace
+[kubelet-finalize] Updating &quot;/etc/kubernetes/kubelet.conf&quot; to point to a rotatable kubelet client certificate and key
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.1.100:6443 --token 946w2y.xhj1wukp35zu6ppb \
+    --discovery-token-ca-cert-hash sha256:93253b79ac5f2a3f32ee7d76e4d7d75cb2bbcd9190132a931c7ea5d5985521a1 </code></pre><p>  上面master初始化的日志需要保留   token值创建node节点的时候需要用到</p>
+<p>2、初始化kubectl</p>
 <p>  kubectl是kube-apiserver的命令行客户端程序，实现了除系统部署之外的几乎全部的管理操作，是kubernetes管理员使用最多的命令之一。kubectl需经由API server认证及授权后方能执行相应的管理操作，kubeadm部署的集群为其生成了一个具有管理员权限的认证配置文件/etc/kubernetes/admin.conf，它可由kubectl通过默认的“$HOME/.kube/config”的路径进行加载。当然，用户也可在kubectl命令上使用–kubeconfig选项指定一个别的位置。</p>
 <p>  下面复制认证为Kubernetes系统管理员的配置文件至目标用户（例如当前用户root）的家目录下：</p>
 <pre><code>mkdir -p $HOME/.kube
@@ -846,7 +979,10 @@ master01.ilinux.io Ready master 4m9s v1.12.1</code></pre><h2 id="五、添加节
 <pre><code>KUBELET_EXTRA_ARGS=&quot;--fail-swap-on=false&quot;</code></pre><p>  提示：若节点禁用了所有的Swap设备，并无须执行此步骤。</p>
 <p>2、添加节点</p>
 <p> 将节点加入第二步中创建的master的集群中，要使用主节点初始化过程中记录的kubeadm join命令，并且在未禁用Swap设备的情况下，额外附加“–ignore-preflight-errors=Swap”选项；下面的命令来自于前面初始master时运行的kubeadm init命令的输出结果。</p>
-<pre><code>kubeadm join 172.20.0.71:6443 --token gwxgdg.igg5728t1vt8ahhx --discovery-token-ca-cert-hash sha256:9b63cd1530b50da4733d2e7dace9270782211e25ec2e4bbac395e59adc56a26c --ignore-preflight-errors=Swap</code></pre><p>  在每个节点添加完成后，即可通过kubectl验正添加结果。下面的命令及其输出是在node01和node02均添加完成后运行的，其输出结果表明两个Node已经准备就绪。</p>
+<p>   kubeadm join 192.168.1.100:6443 –token 946w2y.xhj1wukp35zu6ppb     –discovery-token-ca-cert-hash sha256:93253b79ac5f2a3f32ee7d76e4d7d75cb2bbcd9190132a931c7ea5d5985521a1     –ignore-preflight-errors=Swap</p>
+<p>在node服务器上执行scp  把master上的admin.conf文件拉取到/etc/kubernetes/admin.conf             </p>
+<pre><code>scp root@192.168.1.100:/etc/kubernetes/admin.conf /etc/kubernetes/admin.conf             </code></pre><p>设置环境变量</p>
+<pre><code>export KUBECONFIG=/etc/kubernetes/admin.conf </code></pre><p>  在每个节点添加完成后，即可通过kubectl验正添加结果。下面的命令及其输出是在node01和node02均添加完成后运行的，其输出结果表明两个Node已经准备就绪。</p>
 <pre><code>kubectl get nodes</code></pre><p>  输出：</p>
 <pre><code>NAME STATUS ROLES AGE VERSION
 
