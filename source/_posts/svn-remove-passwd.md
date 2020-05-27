@@ -1,12 +1,12 @@
 ---
-title: svn_remove_passwd
+title: centos下清除记录的svn用户名和密码
 tags:
   - subversion
   - liunx
 categories: 运维
 date: 2020-05-26 17:05:01
 ---
-## linux下清除记录的svn用户名和密码
+## centos下清除记录的svn用户名和密码
 <br/>由于公司人员的变动，离职人员的svn账号也会被删除，使用之前账号检出的代码执行svn update的时候会显示报错<br/>
 
     svn: E210005: Unable to connect to a repository at URL 'svn://xxx'
@@ -16,7 +16,7 @@ date: 2020-05-26 17:05:01
 
 
 <br/>解决办法<br/>
-inux下删除~/.subversion/auth即可清除之前的用户名和密码：
+linux下删除~/.subversion/auth即可清除之前的用户名和密码：
 
     rm -rf ~/.subversion/auth
 
