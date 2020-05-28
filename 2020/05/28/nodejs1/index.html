@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    centos7设置python3环境 |  我在人间凑数的日子
+    初学nodejs |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -52,7 +52,7 @@ var _hmt = _hmt || [];
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-python3huanjing" class="article article-type-post" itemscope
+  <article id="post-nodejs1" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -60,7 +60,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  centos7设置python3环境
+  初学nodejs
 </h1>
  
 
@@ -69,12 +69,12 @@ var _hmt = _hmt || [];
 
     
     <div class="article-meta">
-      <a href="/2020/05/26/python3huanjing/" class="article-date">
-  <time datetime="2020-05-26T09:38:10.000Z" itemprop="datePublished">2020-05-26</time>
+      <a href="/2020/05/28/nodejs1/" class="article-date">
+  <time datetime="2020-05-28T07:11:48.000Z" itemprop="datePublished">2020-05-28</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a> / <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/%E5%BC%80%E5%8F%91/">开发</a>
+    <a class="article-category-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
   </div>
 
       
@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">539</span>
+            <span class="post-count">1.6k</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
@@ -118,49 +118,98 @@ var _hmt = _hmt || [];
       
 
       
-      <h2 id="配置yum源-使用阿里云的镜像"><a href="#配置yum源-使用阿里云的镜像" class="headerlink" title="配置yum源-使用阿里云的镜像"></a>配置yum源-使用阿里云的镜像</h2><pre><code>sudo  wget http://mirrors.aliyun.com/repo/Centos-7.repo
-sudo  wget http://mirrors.aliyun.com/repo/epel-7.repo
-yum clean  all</code></pre><p>安装依赖工具包</p>
-<pre><code>sudo  yum -y install zlib-devel bzip2-devel openssl-devel openssl-static ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel lzma gcc</code></pre><h2 id="下载python3-7安装包"><a href="#下载python3-7安装包" class="headerlink" title="下载python3.7安装包"></a>下载python3.7安装包</h2><pre><code>cd /opt/
-sudo   wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz</code></pre><p>解压–&gt;配置–&gt;编译–&gt;安装</p>
-<pre><code>sudo tar xf  Python-3.7.0.tar.xz    -C /usr/local/
-cd  /usr/local/Python-3.7.0/
-sudo  ./configure --prefix=/usr/local/sbin/python-3.7
-sudo   make &amp;&amp; sudo  make install</code></pre><p>  安装成功会打印</p>
-<pre><code>Collecting setuptools
-Collecting pip
-Installing collected packages: setuptools, pip
-Successfully installed pip-10.0.1 setuptools-39.0.1</code></pre><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><pre><code>[sgsm@bogon Python-3.7.0]$ /usr/local/sbin/python-3.7/bin/python3
-Python 3.7.0 (default, Jun  3 2020, 23:49:44) 
-[GCC 4.8.5 20150623 (Red Hat 4.8.5-39)] on linux
-Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
-&gt;&gt;&gt; exit()</code></pre><h2 id="创建软连接"><a href="#创建软连接" class="headerlink" title="创建软连接"></a>创建软连接</h2><p><br>查看目前的链接文件<br></p>
-<pre><code>[sgsm@bogon Python-3.7.0]$ ll /usr/bin/ |grep python
-lrwxrwxrwx.   1 root root           7 4月  13 2017 python -&gt; python2
-lrwxrwxrwx.   1 root root           9 4月  13 2017 python2 -&gt; python2.7
--rwxr-xr-x.   1 root root        7136 11月  6 2016 python2.7
--rwxr-xr-x.   1 root root        1835 11月  6 2016 python2.7-config
-lrwxrwxrwx.   1 root root          16 4月  13 2017 python2-config -&gt; python2.7-config
-lrwxrwxrwx.   1 root root          14 4月  13 2017 python-config -&gt; python2-config</code></pre><p>删除原来的连接文件</p>
-<pre><code>sudo rm -rf /usr/bin/python</code></pre><p>创建新的连接文件</p>
-<pre><code>sudo  ln -s /usr/local/sbin/python-3.7/bin/python3   /usr/bin/python</code></pre><p>查看现在的版本</p>
-<pre><code>[sgsm@bogon Python-3.7.0]$ python -V
-Python 3.7.0</code></pre><h2 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h2><p><br>修改完python默认版本之后，会存不能执行yum命令，需要做一些修改，如下<br></p>
-<pre><code> 将/usr/bin/yum的顶部的：
+      <h2 id="Node-js-概述"><a href="#Node-js-概述" class="headerlink" title="Node.js 概述"></a>Node.js 概述</h2><p>Node.js 是一个能够在服务器端运行 JavaScript 的开放源代码、跨平台 JavaScript 运行环境。Node.js 由 Node.js 基金会持有和维护，并与 Linux 基金会有合作关系。Node.js 采用 Google 开发的 V8 运行代码，使用事件驱动、非阻塞和异步输入输出模型等技术来提高性能，可优化应用程序的传输量和规模。这些技术通常用于数据密集的即时应用程序。</p>
+<p>Node.js 大部分基本模块都用 JavaScript 语言编写。在 Node.js 出现之前，JavaScript 通常作为客户端程序设计语言使用，以 JavaScript 写出的程序常在用户的浏览器上运行。Node.js 的出现使 JavaScript 也能用于服务端编程。Node.js 含有一系列内置模块，使得程序可以脱离 Apache HTTP Server 或 IIS，作为独立服务器运行。</p>
+<p>注：定义来自维基百科。</p>
+<h2 id="Node-js-特点"><a href="#Node-js-特点" class="headerlink" title="Node.js 特点"></a>Node.js 特点</h2><p>  1、它是一个 JavaScript 运行环境。<br>  <br>2、依赖于 Chrome V8 引擎进行代码解释。<br><br>  3、事件驱动：在 Node.js 中，客户端请求建立连接，提交数据等行为，会触发相应的事件。Node.js 在一个时刻，只能执行一个事件回调函数，但是在执行一个事件回调函数的中途，可以转而处理其他事件，然后返回继续执行原事件的回调函数。<br>  <br>4、非阻塞 I/O：Node.js 中采用了非阻塞型 I/O 机制，在执行了访问数据库的代码之后，将立即转而执行其后面的代码，把数据库返回结果的处理代码放在回调函数中，从而提高了程序的执行效率。<br><br>  5、轻量可伸缩，适用于实时数据交互应用。<br>  <br>6、单线程：好处是减少内存开销，不用像多线程编程那样处处在意状态同步的问题。缺点是错误会引起整个应用的退出。<br></p>
+<h2 id="Node-js-适用场景"><a href="#Node-js-适用场景" class="headerlink" title="Node.js 适用场景"></a>Node.js 适用场景</h2><p>我们从 Node.js 的特点中可以知道 Node.js 擅长处理 I/O，不善于计算（单线程的缺点），因此 Node.js 适用于：当应用程序需要处理大量并发的 I/O，而在向客户端发出响应之前，应用程序内部并不需要进行非常复杂的处理的时候，Node.js 也非常适合与 Web socket 配合，开发长连接的实时交互应用程序。比如：聊天室，博客系统，考试系统等。</p>
+<h2 id="NPM介绍"><a href="#NPM介绍" class="headerlink" title="NPM介绍"></a>NPM介绍</h2><p>npm是随同nodejs一起安装的包管理工具</p>
+<p>在中断中查看系统nodejs的版本：</p>
+<pre><code>node -v</code></pre><p>查看系统中npm版本</p>
+<pre><code>npm  -v</code></pre><h2 id="启动node终端"><a href="#启动node终端" class="headerlink" title="启动node终端"></a>启动node终端</h2><p><br>类似于python的终端，启动node终端直接输入node</p>
+<pre><code>node</code></pre><p>基础的计算</p>
+<pre><code>&gt; 1 + 1
+2
+&gt; 2 * 2
+4
+&gt; 6 / 2
+3
+&gt; 2+(8*3)-10
+16
+&gt; </code></pre><p>多行表达式</p>
+<pre><code>&gt; for(var i=0; i &lt; 8 ; i++){
+... console.log(i);
+... }
+0
+1
+2
+3
+4
+5
+6
+7
+undefined
+&gt; </code></pre><p>三个点的符号是系统自动生成的，回车换行后即可。Node.js 会自动检测是否为连续的表达式。</p>
+<p>下划线变量 – 可以使用下划线（_）获取上一个表达式的运算结果：</p>
+<pre><code>&gt; var a = 10 ; var b = 20 ; a + b;
+30
+&gt; var num = _;
+undefined
+&gt; console.log(num)
+30
+undefined
+&gt; </code></pre><p>REPL 常用命令</p>
+<pre><code>Ctrl + C - 退出当前终端。
+Ctrl + C - 连续按两次退出 Node REPL。
+Ctrl + D - 退出 Node REPL。
+向上/向下键 - 查看输入的历史命令</code></pre><p>运行 JavaScript 文件</p>
+<p>新建两个 JavaScript 文件名为为 test.j写下如下代码：</p>
+<p>test.js 中的代码：</p>
+<pre><code>console.log(&quot;hello world&quot;);</code></pre><p>运行结果</p>
+<pre><code>[sgsm@localhost nodejs]$ node  test.js 
+hello world</code></pre><h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><p>按照 ECMAScript 的定义，满足以下条件的变量是全局变量：</p>
+<pre><code>在最外层定义的变量。
+全局对象的属性。
+隐式定义的变量（未定义直接赋值的变量）。</code></pre><p>注：当你定义一个全局变量的时候，这个变量同时也会成为全局对象的属性，反之亦然。在 Node.js 中你不可能在最外层定义变量，因为所有用户代码都是属于当前模块的，而模块本身不是最外层上下文。定义变量一定要使用 var 关键字，因为全局变量会污染命名空间。</p>
+<p>下面介绍一些常用的全局变量和全局函数：</p>
+<p>  __filename 表示当前正在执行的脚本的文件名。它将输出文件所在位置的绝对路径，且和命令行参数所指定的文件名不一定相同。如果在模块中，返回的值是模块文件的路径。比如创建一个叫 fnTest.js 的文件，输入以下代码：</p>
+<pre><code>console.log(__filename);</code></pre><p>  运行结果</p>
+<pre><code>[sgsm@bogon nodejs]$ node fnTest.js
+/home/sgsm/nodejs/fnTest.js</code></pre><p>  __dirname 表示当前执行脚本所在的目录。比如创建一个 dnTest.js 的文件，输入以下代码：</p>
+<pre><code>console.log(__dirname);</code></pre><p>  运行结果</p>
+<pre><code>[sgsm@bogon nodejs]$ node dnTest.js 
+/home/sgsm/nodejs</code></pre><p>  setTimeout(cb, ms) 全局函数在指定的毫秒（ms）数后执行指定函数（cb），只执行一次函数。比如创建一个 st.js 的文件，输入以下代码：</p>
+<pre><code>function foo() {
+  console.log(&quot;Hello, syl!&quot;);
+}
+// 三秒后执行以上函数
+setTimeout(foo, 3000);</code></pre><p>  运行结果</p>
+<pre><code>[sgsm@bogon nodejs]$ node  st.js 
+Hello, syl!
+[sgsm@bogon nodejs]$</code></pre><p>  clearTimeout(t) 用于停止一个之前通过 setTimeout() 创建的定时器。参数 t 是通过 setTimeout() 函数创建的定时器。比如清除上面案例的定时器：</p>
+<pre><code>function foo() {
+  console.log(&quot;Hello, syl!&quot;);
+}
+// 三秒后执行以上函数
+var t = setTimeout(foo, 3000);
+// 清除定时器
+clearTimeout(t);</code></pre><p>  运行结果</p>
+<pre><code>[sgsm@bogon nodejs]$ node  st.js 
+[sgsm@bogon nodejs]$ </code></pre><p>  setInterval(cb, ms) 与 setTimeout(cb, ms) 类似，不同的是这个方法会不停的执行函数。直到 clearInterval() 被调用或窗口被关闭，也可以按 Ctrl + C 停止。比如创建一个 sI.js 的文件，输入以下代码：</p>
+<pre><code>function foo() {
+  console.log(&quot;Hello, syl!&quot;);
+}
+// 三秒后执行以上函数
+var t = setInterval(foo, 3000);
+// 清除定时器
+clearInterval(t);</code></pre><p>  运行结果</p>
+<pre><code>[sgsm@bogon nodejs]$ node  st.js 
+[sgsm@bogon nodejs]$ </code></pre><p>  如果不加clearInterval的运行结果</p>
+<pre><code>[sgsm@iZ2ze53g8gh7cdxahhcv95Z nodejs]$ node st.js 
+Hello, syl!
+Hello, syl!
+Hello, syl!</code></pre><p>  console.log() 是个全局函数用于进行标准输出流的输出，即在控制台中显示一行字符串，和 JavaScript 中的使用一样</p>
 
-!/usr/bin/python  改成  !/usr/bin/python2.7 
-
-将/usr/libexec/urlgrabber-ext-down的顶部的：
-
-/usr/bin/python  改为   /usr/bin/python2.7
-
-将/usr/bin/yum-config-manager的顶部的
-
-#!/usr/bin/python 改为 #!/usr/bin/python2.7 </code></pre><p>最后将pip指向到python3.7</p>
-<pre><code>[sgsm@bogon Python-3.7.0]$ sudo ln -s /usr/local/sbin/python-3.7/bin/pip3 /usr/bin/pip 
-[sgsm@bogon Python-3.7.0]$ 
-[sgsm@bogon Python-3.7.0]$ pip -v
-pip 10.0.1 from /usr/local/sbin/python-3.7/lib/python3.7/site-packages/pip (python 3.7)</code></pre>
       
       <!-- reward -->
       
@@ -224,14 +273,14 @@ pip 10.0.1 from /usr/local/sbin/python-3.7/lib/python3.7/site-packages/pip (pyth
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/26/python3huanjing/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/28/nodejs1/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/liunx/" rel="tag">liunx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/liunx/" rel="tag">liunx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
 
 
     </footer>
@@ -242,19 +291,19 @@ pip 10.0.1 from /usr/local/sbin/python-3.7/lib/python3.7/site-packages/pip (pyth
   
   <nav class="article-nav">
     
-      <a href="/2020/05/28/nodejs1/" class="article-nav-link">
+      <a href="/2020/05/28/nodejs2/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            初学nodejs
+            Node.js 创建第一个应用
           
         </div>
       </a>
     
     
-      <a href="/2020/05/26/svn-remove-passwd/" class="article-nav-link">
+      <a href="/2020/05/26/python3huanjing/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">centos下清除记录的svn用户名和密码</div>
+        <div class="article-nav-title">centos7设置python3环境</div>
       </a>
     
   </nav>
