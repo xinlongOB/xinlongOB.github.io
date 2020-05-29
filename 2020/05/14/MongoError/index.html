@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">150</span>
+            <span class="post-count">254</span>
         </span>
     </span>
 
@@ -121,7 +121,12 @@ var _hmt = _hmt || [];
 <pre><code>sudo chown  mongod.mongod   ./*  -R</code></pre><p>还有一种是非正常关闭mongo再次启动会失败  使用</p>
 <pre><code>sudo  journalctl -xe</code></pre><p>查看到报错</p>
 <pre><code>Error starting mongod. /var/run/mongodb/mongod.pid exists.</code></pre><p>是因为非正常关闭mongo的时候pid文件还存在，删除后启动就正常了</p>
-<p>查看mongo连接数</p>
+<p>锁文件报错</p>
+<pre><code>2020-06-20T19:55:41.371+0800 W -        [initandlisten] Detected unclean shutdown - /data/lib/mongo/mongod.lock is not empty.</code></pre><p>解决办法</p>
+<pre><code>sudo  rm   /data/lib/mongo/mongod.lock</code></pre><p>最大连接数报错</p>
+<pre><code>[1592654142:807610][13609:0x7fb0fc34bdc0], file:collection-1898--8679891645894746372.wt, WT_SESSION.open_cursor: /data/lib/mongo//collection-1898--8679891645894746372.wt: handle-open: open: Too many open files
+2020-06-20T19:55:42.807+0800 I -        [initandlisten] Invariant failure: ret resulted in status UnknownError: 24: Too many open files at src/mongo/db/storage/wiredtiger/wiredtiger_session_cache.cpp 79</code></pre><p>解决办法</p>
+<pre><code>ulimit -n 4096</code></pre><p>查看mongo连接数</p>
 <pre><code>db.serverStatus().connections
 { &quot;current&quot; : 80, &quot;available&quot; : 52348, &quot;totalCreated&quot; : NumberLong(367) }</code></pre><p>Current表示当前到实例上正在运行的连接数。<br><br>Available表示当前实例还可以支持的并发连接数。<br></p>
 
