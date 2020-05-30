@@ -1,6 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>nodejs之事件监听</title>
+    <url>/2020/05/30/nodejs5/</url>
+    <content><![CDATA[<h2 id="事件概述"><a href="#事件概述" class="headerlink" title="事件概述"></a>事件概述</h2><p>大多数 Node.js 核心 API 构建于惯用的异步事件驱动架构，其中某些类型的对象（又称触发器，Emitter）会触发命名事件来调用函数（又称监听器，Listener）。比如：fs.readStream 打开文件时会发出一个事件。可以通过 require(“events”); 获得 event 模块。通常，事件名采用“小驼峰式”（即第一个单词全小写，后面的单词首字母大写，其它字母小写）命名方式。</p>
+<p>所有能触发事件的对象都是EventEmitter类的实例，这些对象有一个eventEmitter.on()函数，用于将一个或多个函数绑定到命名事件上。当EventEmitter对象触发一个事件时，所有绑定在该事件上的函数都会被同步地调用</p>
+<p>EventEmitter类获取</p>
+<pre><code>// 引入 events模块
+var events = require(&quot;events&quot;)
+// 创建 eventEmitter对象
+var eventEmitter = new events.EventEmitter();</code></pre><h2 id="添加监听器"><a href="#添加监听器" class="headerlink" title="添加监听器"></a>添加监听器</h2><p>emitter.on(eventName,listener)<br><br>使用emitter.on(eventName,listener)方法为指定事件注册一个监听器，添加listener函数到名为eventname的事件的监听器数组的末尾，不会检查listener是否已被添加。多次调用并传入相同的eventname 与 listener会导致listener会被添加多次<br></p>
+<p>  参数说明：</p>
+<pre><code>eventName：事件名称，string类型。
+listener：回调函数</code></pre><p>例子：</p>
+<pre><code>// 引入events模块
+var events = require(&quot;events&quot;);
+// 创建emitter 对象
+var emitter = new events.EventEmitter();
+// 为 connection 事件注册一个监听器
+emitter.on(&quot;connection&quot;,function(){
+    console.log(&quot;已连接&quot;);
+});
+
+// 一秒后调用监视器
+setTimeout(function(){
+    emitter.emit(&quot;connection&quot;);
+},1000)</code></pre><p>运行结果：</p>
+<pre><code>$ node listener.js
+已连接    // 一秒后打印已连接</code></pre><p>默认情况下，事件监听器会按照添加的顺序依次调用。emitter.prependListener() 方法可用于将事件监听器添加到监听器数组的开头。比如：</p>
+<pre><code>// 引入events模块
+var events = require(&quot;events&quot;);
+// 创建emitter 对象
+var emitter = new events.EventEmitter();
+// 为 connection 事件注册一个监听器
+emitter.on(&quot;connection&quot;,function(){
+    console.log(&quot;我是a&quot;);
+});
+
+emitter.prependListener(&quot;connection&quot;,function(){
+    console.log(&quot;我是b&quot;);
+});
+
+
+// 一秒后调用监视器
+setTimeout(function(){
+    emitter.emit(&quot;connection&quot;);
+},1000)</code></pre><p>运行结果：</p>
+<pre><code>$ node listener.js
+我是b
+我是a</code></pre><p>注：emitter.addListener(eventName, listener) 是 emitter.on(eventName, listener) 的别名。</p>
+<h2 id="调用监听器"><a href="#调用监听器" class="headerlink" title="调用监听器"></a>调用监听器</h2><p><br>使用emitter.emit(eventName[, …args])按照监听器注册的顺序，同步地调用每个注册到名为eventName的事件监听器，并传入提供的参数。如果事件有注册监听返回True，否则返回false<br></p>
+<p>  参数说明：</p>
+<pre><code>eventName：事件名称
+args：传递的参数，多个，类型为任意</code></pre><p>例如：</p>
+<pre><code>// 引入event模块
+var events = require(&quot;events&quot;);
+// 创建emitter 对象
+var emitter = new events.EventEmitter();
+// 定义一个回调函数
+var callback1 = function(arg1,arg2){
+    console.log(&quot;print&quot;,arg1,arg2);
+};
+
+var callback2 = function(arg3,arg4){
+    console.log(&quot;echo &quot;,arg3,arg4);
+};
+
+// 为 connection 事件注册监听器
+emitter.on(&quot;connection&quot;,callback1)
+emitter.on(&quot;connection&quot;,callback2)
+
+// 调用监听器
+emitter.emit(&quot;connection&quot;,&quot;愿你&quot;,&quot;安好&quot;)</code></pre><p>运行结果：</p>
+<pre><code>$ node emit.js
+print 愿你 安好
+echo 愿你 安好</code></pre><h2 id="只执行一次的监听器"><a href="#只执行一次的监听器" class="headerlink" title="只执行一次的监听器"></a>只执行一次的监听器</h2><p><br>当时用eventEmitter.on(eventName,listener)注册监听器时，监听器会在每次触发命名事件时被调用。比如：<br></p>
+<pre><code>// 引入 events模块
+var  events = require(&quot;events&quot;);
+// 创建emitter对象
+var emitter = new events.EventEmitter();
+// 为 connectio 事件注册一个监听器
+var n = 0;
+emitter.on(&quot;connection&quot;,function(){
+    ++n;
+    console.log(&quot;调用第&quot; + n + &quot;次&quot;);
+})
+
+// 调用监听器
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)</code></pre><p>运行结果：</p>
+<pre><code>$ node while.js
+调用第1次
+调用第2次
+调用第3次
+调用第4次</code></pre><p>使用 eventEmitter.once(eventName, listener) 可以注册最多可调用一次的监听器。当事件被触发时，监听器会被注销，然后再调用。比如：</p>
+<pre><code>// 引入 events模块
+var  events = require(&quot;events&quot;);
+// 创建emitter对象
+var emitter = new events.EventEmitter();
+// 为 connectio 事件注册一个监听器
+var n = 0;
+emitter.once(&quot;connection&quot;,function(){    // 把emitter.on  换为 emitter.once
+    ++n;
+    console.log(&quot;调用第&quot; + n + &quot;次&quot;);
+})
+
+// 调用监听器
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)</code></pre><p>运行结果：</p>
+<pre><code>$ node while.js
+调用第1次</code></pre><p>默认情况下，事件监听器会按照添加的顺序依次调用。emitter.prependOnceListener() 方法可用于将事件监听器添加到监听器数组的开头。用法与我们前面所学的 emitter.prependListener() 方法一致，区别在于这个方法注册的监听器最多只能调用一次</p>
+<h2 id="移除监听器"><a href="#移除监听器" class="headerlink" title="移除监听器"></a>移除监听器</h2><p><br>使用emitter.removeListener(eventName.listener)移除监听器<br><br>参数说明：</p>
+<pre><code>eventName：事件名称
+listener：监听器也就是回调函数名称</code></pre><p>例如：</p>
+<pre><code>// 引入 events 模块
+var events = require(&quot;events&quot;);
+// 创建 emitter 对象
+var emitter = new events.EventEmitter();
+// 定义一个回调函数
+var callback = function () {
+  console.log(&quot;syl&quot;);
+};
+// 为 connection 事件注册一个监听器
+emitter.on(&quot;connection&quot;, callback);
+// 为 connection 事件移除监听器
+emitter.removeListener(&quot;connection&quot;, callback);
+// 调用监听器
+emitter.emit(&quot;connection&quot;);</code></pre><p>运行结果</p>
+<pre><code>Administrator@WF-20180726HPZY MINGW64 /e/coding/nodejs
+$ node emit.js
+
+Administrator@WF-20180726HPZY MINGW64 /e/coding/nodejs</code></pre><p>注：removeListener() 最多只会从监听器数组中移除一个监听器。我们可以多次调用 removeListener() 的方式来一个个的移除我们需要移除掉的监听器。</p>
+<p>一旦事件被触发，所有绑定到该事件的监听器都会按顺序依次调用。也就是说在事件触发之后、且最后一个监听器执行完成之前，removeListener() 或 removeAllListeners() 不会从 emit() 中移除它们。</p>
+<p>例如：</p>
+<pre><code>// 引入 events 模块
+var events = require(&quot;events&quot;);
+// 创建 emitter 对象
+var emitter = new events.EventEmitter();
+// 定义回调函数
+var callback1 = function () {
+  console.log(&quot;我是1&quot;);
+  emitter.removeListener(&quot;connection&quot;, callback2);
+};
+var callback2 = function () {
+  console.log(&quot;我是2&quot;);
+};
+// 为 connection 事件注册监听器
+emitter.on(&quot;connection&quot;, callback1);
+emitter.on(&quot;connection&quot;, callback2);
+// 第一次调用监听器，callback1 移除了监听器 callback2，但它依然会被调用。触发时内部的监听器数组为 [callback1, callback2]
+emitter.emit(&quot;connection&quot;);
+// 第二次调用监听器，此时 callback2 已经被移除了。内部的监听器数组为 [callback1]
+emitter.emit(&quot;connection&quot;);</code></pre><p>运行结果：</p>
+<pre><code>$ node emit.js
+我是1
+我是2
+我是1</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>nodejs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nodejs之基础函数</title>
+    <url>/2020/05/30/nodejs4/</url>
+    <content><![CDATA[<h2 id="搜索模块"><a href="#搜索模块" class="headerlink" title="搜索模块"></a>搜索模块</h2><pre><code>npm search express</code></pre><p>在JavaScript中，一个函数可以作为另一个函数的参数。我们可以先定义一个函数，然后传递，也可以在传递参数的地方直接定义函数。</p>
+<p>Node.js中函数的使用与Javascript类似，举例来说，你可以这样做： </p>
+<pre><code>function say(word) {
+  console.log(word);
+}
+
+function execute(someFunction, value) {
+  someFunction(value);
+}
+
+execute(say, &quot;Hello&quot;);</code></pre><p>执行结果</p>
+<pre><code>Administrator@WF-20180726HPZY MINGW64 /e/coding/nodejs
+$ node test.js
+word</code></pre><p> 以上代码中，我们把 say 函数作为execute函数的第一个变量进行了传递。这里传递的不是 say 的返回值，而是 say 本身！<br><br>这样一来， say 就变成了execute 中的本地变量 someFunction ，execute可以通过调用 someFunction() （带括号的形式）来使用 say 函数。<br><br>当然，因为 say 有一个变量， execute 在调用 someFunction 时可以传递这样一个变量。 </p>
+<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><p><br>我们可以把一个函数作为变量传递，但是我们不一样要绕这个”先定义，在传递”的圈子，我们可以直接在另一个函数的括号中定义和传递这个参数：<br></p>
+<pre><code>function execute(someFunction,value){
+    someFunction(value);
+}
+execute(function(word){console.log(word)},&quot;hello&quot;)</code></pre><p>运行结果：</p>
+<pre><code>$ node test.js
+hello</code></pre><p> 我们在 execute 接受第一个参数的地方直接定义了我们准备传递给 execute 的函数。用这种方式，我们甚至不用给这个函数起名字，这也是为什么它被叫做匿名函数 。 </p>
+<h2 id="导出函数"><a href="#导出函数" class="headerlink" title="导出函数"></a>导出函数</h2><pre><code>function say(word){
+      console.log(&quot;word&quot;);
+  }
+
+  exports.say = say;</code></pre><p>接收函数</p>
+<pre><code>var test = require(&quot;./test.js&quot;)
+
+test.say();</code></pre><p>执行结果</p>
+<pre><code>$ node a.js
+word</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>nodejs</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Node.js 创建第一个应用</title>
     <url>/2020/05/28/nodejs2/</url>
     <content><![CDATA[<p>  1、引入 required 模块：使用 required 指令来载入 Node.js 模块。<br>  2、创建服务器：服务器可以监听客户端的请求，类似于 Apache、Nginx 等 HTTP 服务器。<br>  3、接受请求与响应请求。</p>
@@ -912,8 +1122,8 @@ master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>kubernetes</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
@@ -1138,8 +1348,8 @@ myapp NodePort 10.102.254.75 &lt;none&gt; 80:31257/TCP 2m32s</code></pre><p>myap
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>kubernetes</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
@@ -1212,8 +1422,8 @@ b) 针对目标服务器做 ssh 免密登录，依次执行：
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>kubernetes</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
@@ -1603,8 +1813,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>liunx</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>

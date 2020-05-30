@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Node.js 创建第一个应用 |  我在人间凑数的日子
+    nodejs之事件监听 |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -52,7 +52,7 @@ var _hmt = _hmt || [];
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-nodejs2" class="article article-type-post" itemscope
+  <article id="post-nodejs5" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -60,7 +60,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Node.js 创建第一个应用
+  nodejs之事件监听
 </h1>
  
 
@@ -69,8 +69,8 @@ var _hmt = _hmt || [];
 
     
     <div class="article-meta">
-      <a href="/2020/05/28/nodejs2/" class="article-date">
-  <time datetime="2020-05-28T09:14:27.000Z" itemprop="datePublished">2020-05-28</time>
+      <a href="/2020/05/30/nodejs5/" class="article-date">
+  <time datetime="2020-05-30T06:14:59.000Z" itemprop="datePublished">2020-05-30</time>
 </a>
       
   <div class="article-category">
@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">269</span>
+            <span class="post-count">1.5k</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
@@ -104,6 +104,8 @@ var _hmt = _hmt || [];
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -116,27 +118,163 @@ var _hmt = _hmt || [];
       
 
       
-      <p>  1、引入 required 模块：使用 required 指令来载入 Node.js 模块。<br>  2、创建服务器：服务器可以监听客户端的请求，类似于 Apache、Nginx 等 HTTP 服务器。<br>  3、接受请求与响应请求。</p>
-<p>新建一个名为 server.js 的文件</p>
-<pre><code>var http = require(&quot;http&quot;); // 加载 http 模块，并将实例化的 HTTP 赋值给变量 http
+      <h2 id="事件概述"><a href="#事件概述" class="headerlink" title="事件概述"></a>事件概述</h2><p>大多数 Node.js 核心 API 构建于惯用的异步事件驱动架构，其中某些类型的对象（又称触发器，Emitter）会触发命名事件来调用函数（又称监听器，Listener）。比如：fs.readStream 打开文件时会发出一个事件。可以通过 require(“events”); 获得 event 模块。通常，事件名采用“小驼峰式”（即第一个单词全小写，后面的单词首字母大写，其它字母小写）命名方式。</p>
+<p>所有能触发事件的对象都是EventEmitter类的实例，这些对象有一个eventEmitter.on()函数，用于将一个或多个函数绑定到命名事件上。当EventEmitter对象触发一个事件时，所有绑定在该事件上的函数都会被同步地调用</p>
+<p>EventEmitter类获取</p>
+<pre><code>// 引入 events模块
+var events = require(&quot;events&quot;)
+// 创建 eventEmitter对象
+var eventEmitter = new events.EventEmitter();</code></pre><h2 id="添加监听器"><a href="#添加监听器" class="headerlink" title="添加监听器"></a>添加监听器</h2><p>emitter.on(eventName,listener)<br><br>使用emitter.on(eventName,listener)方法为指定事件注册一个监听器，添加listener函数到名为eventname的事件的监听器数组的末尾，不会检查listener是否已被添加。多次调用并传入相同的eventname 与 listener会导致listener会被添加多次<br></p>
+<p>  参数说明：</p>
+<pre><code>eventName：事件名称，string类型。
+listener：回调函数</code></pre><p>例子：</p>
+<pre><code>// 引入events模块
+var events = require(&quot;events&quot;);
+// 创建emitter 对象
+var emitter = new events.EventEmitter();
+// 为 connection 事件注册一个监听器
+emitter.on(&quot;connection&quot;,function(){
+    console.log(&quot;已连接&quot;);
+});
 
-http
-  .createServer(function (request, response) {
-    // 发送 HTTP 头部
-    // HTTP 状态值: 200 : OK
-    // 内容类型: text/plain
-    response.writeHead(200, { &quot;Content-Type&quot;: &quot;text/plain&quot; });
+// 一秒后调用监视器
+setTimeout(function(){
+    emitter.emit(&quot;connection&quot;);
+},1000)</code></pre><p>运行结果：</p>
+<pre><code>$ node listener.js
+已连接    // 一秒后打印已连接</code></pre><p>默认情况下，事件监听器会按照添加的顺序依次调用。emitter.prependListener() 方法可用于将事件监听器添加到监听器数组的开头。比如：</p>
+<pre><code>// 引入events模块
+var events = require(&quot;events&quot;);
+// 创建emitter 对象
+var emitter = new events.EventEmitter();
+// 为 connection 事件注册一个监听器
+emitter.on(&quot;connection&quot;,function(){
+    console.log(&quot;我是a&quot;);
+});
 
-    response.end(&quot;Hello World\n&quot;); // 发送响应数据 &quot;Hello World&quot;
-  })
-  .listen(8080);
+emitter.prependListener(&quot;connection&quot;,function(){
+    console.log(&quot;我是b&quot;);
+});
 
-// 终端打印如下信息
-console.log(&quot;Server running at http://127.0.0.1:8080/&quot;);</code></pre><p>以上代码我们完成了一个可以工作的 HTTP 服务器。本地计算机使用 node server.js 命令后，直接在浏览器中访问 <a href="http://127.0.0.1:8888/，你会看到一个写着" target="_blank" rel="noopener">http://127.0.0.1:8888/，你会看到一个写着</a> “Hello World”的网页</p>
-<p>由于我的环境部署在centos系统上，可以直接使用elinks访问，访问结果</p>
-<pre><code>[sgsm@iZ2ze53g8gh7cdxahhcv95Z ~]$ elinks  http://127.0.0.1:8080
-                                                                                                                  http://127.0.0.1:8080/ 
-Hello World     </code></pre>
+
+// 一秒后调用监视器
+setTimeout(function(){
+    emitter.emit(&quot;connection&quot;);
+},1000)</code></pre><p>运行结果：</p>
+<pre><code>$ node listener.js
+我是b
+我是a</code></pre><p>注：emitter.addListener(eventName, listener) 是 emitter.on(eventName, listener) 的别名。</p>
+<h2 id="调用监听器"><a href="#调用监听器" class="headerlink" title="调用监听器"></a>调用监听器</h2><p><br>使用emitter.emit(eventName[, …args])按照监听器注册的顺序，同步地调用每个注册到名为eventName的事件监听器，并传入提供的参数。如果事件有注册监听返回True，否则返回false<br></p>
+<p>  参数说明：</p>
+<pre><code>eventName：事件名称
+args：传递的参数，多个，类型为任意</code></pre><p>例如：</p>
+<pre><code>// 引入event模块
+var events = require(&quot;events&quot;);
+// 创建emitter 对象
+var emitter = new events.EventEmitter();
+// 定义一个回调函数
+var callback1 = function(arg1,arg2){
+    console.log(&quot;print&quot;,arg1,arg2);
+};
+
+var callback2 = function(arg3,arg4){
+    console.log(&quot;echo &quot;,arg3,arg4);
+};
+
+// 为 connection 事件注册监听器
+emitter.on(&quot;connection&quot;,callback1)
+emitter.on(&quot;connection&quot;,callback2)
+
+// 调用监听器
+emitter.emit(&quot;connection&quot;,&quot;愿你&quot;,&quot;安好&quot;)</code></pre><p>运行结果：</p>
+<pre><code>$ node emit.js
+print 愿你 安好
+echo 愿你 安好</code></pre><h2 id="只执行一次的监听器"><a href="#只执行一次的监听器" class="headerlink" title="只执行一次的监听器"></a>只执行一次的监听器</h2><p><br>当时用eventEmitter.on(eventName,listener)注册监听器时，监听器会在每次触发命名事件时被调用。比如：<br></p>
+<pre><code>// 引入 events模块
+var  events = require(&quot;events&quot;);
+// 创建emitter对象
+var emitter = new events.EventEmitter();
+// 为 connectio 事件注册一个监听器
+var n = 0;
+emitter.on(&quot;connection&quot;,function(){
+    ++n;
+    console.log(&quot;调用第&quot; + n + &quot;次&quot;);
+})
+
+// 调用监听器
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)</code></pre><p>运行结果：</p>
+<pre><code>$ node while.js
+调用第1次
+调用第2次
+调用第3次
+调用第4次</code></pre><p>使用 eventEmitter.once(eventName, listener) 可以注册最多可调用一次的监听器。当事件被触发时，监听器会被注销，然后再调用。比如：</p>
+<pre><code>// 引入 events模块
+var  events = require(&quot;events&quot;);
+// 创建emitter对象
+var emitter = new events.EventEmitter();
+// 为 connectio 事件注册一个监听器
+var n = 0;
+emitter.once(&quot;connection&quot;,function(){    // 把emitter.on  换为 emitter.once
+    ++n;
+    console.log(&quot;调用第&quot; + n + &quot;次&quot;);
+})
+
+// 调用监听器
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)
+emitter.emit(&quot;connection&quot;)</code></pre><p>运行结果：</p>
+<pre><code>$ node while.js
+调用第1次</code></pre><p>默认情况下，事件监听器会按照添加的顺序依次调用。emitter.prependOnceListener() 方法可用于将事件监听器添加到监听器数组的开头。用法与我们前面所学的 emitter.prependListener() 方法一致，区别在于这个方法注册的监听器最多只能调用一次</p>
+<h2 id="移除监听器"><a href="#移除监听器" class="headerlink" title="移除监听器"></a>移除监听器</h2><p><br>使用emitter.removeListener(eventName.listener)移除监听器<br><br>参数说明：</p>
+<pre><code>eventName：事件名称
+listener：监听器也就是回调函数名称</code></pre><p>例如：</p>
+<pre><code>// 引入 events 模块
+var events = require(&quot;events&quot;);
+// 创建 emitter 对象
+var emitter = new events.EventEmitter();
+// 定义一个回调函数
+var callback = function () {
+  console.log(&quot;syl&quot;);
+};
+// 为 connection 事件注册一个监听器
+emitter.on(&quot;connection&quot;, callback);
+// 为 connection 事件移除监听器
+emitter.removeListener(&quot;connection&quot;, callback);
+// 调用监听器
+emitter.emit(&quot;connection&quot;);</code></pre><p>运行结果</p>
+<pre><code>Administrator@WF-20180726HPZY MINGW64 /e/coding/nodejs
+$ node emit.js
+
+Administrator@WF-20180726HPZY MINGW64 /e/coding/nodejs</code></pre><p>注：removeListener() 最多只会从监听器数组中移除一个监听器。我们可以多次调用 removeListener() 的方式来一个个的移除我们需要移除掉的监听器。</p>
+<p>一旦事件被触发，所有绑定到该事件的监听器都会按顺序依次调用。也就是说在事件触发之后、且最后一个监听器执行完成之前，removeListener() 或 removeAllListeners() 不会从 emit() 中移除它们。</p>
+<p>例如：</p>
+<pre><code>// 引入 events 模块
+var events = require(&quot;events&quot;);
+// 创建 emitter 对象
+var emitter = new events.EventEmitter();
+// 定义回调函数
+var callback1 = function () {
+  console.log(&quot;我是1&quot;);
+  emitter.removeListener(&quot;connection&quot;, callback2);
+};
+var callback2 = function () {
+  console.log(&quot;我是2&quot;);
+};
+// 为 connection 事件注册监听器
+emitter.on(&quot;connection&quot;, callback1);
+emitter.on(&quot;connection&quot;, callback2);
+// 第一次调用监听器，callback1 移除了监听器 callback2，但它依然会被调用。触发时内部的监听器数组为 [callback1, callback2]
+emitter.emit(&quot;connection&quot;);
+// 第二次调用监听器，此时 callback2 已经被移除了。内部的监听器数组为 [callback1]
+emitter.emit(&quot;connection&quot;);</code></pre><p>运行结果：</p>
+<pre><code>$ node emit.js
+我是1
+我是2
+我是1</code></pre>
       
       <!-- reward -->
       
@@ -200,7 +338,7 @@ Hello World     </code></pre>
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/28/nodejs2/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/30/nodejs5/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -218,19 +356,10 @@ Hello World     </code></pre>
   
   <nav class="article-nav">
     
+    
       <a href="/2020/05/30/nodejs4/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            nodejs之基础函数
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2020/05/28/nodejs1/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">初学nodejs</div>
+        <div class="article-nav-title">nodejs之基础函数</div>
       </a>
     
   </nav>

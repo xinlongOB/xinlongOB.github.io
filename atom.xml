@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-28T09:44:07.843Z</updated>
+  <updated>2020-05-30T10:07:23.495Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,64 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nodejs之事件监听</title>
+    <link href="http://yoursite.com/2020/05/30/nodejs5/"/>
+    <id>http://yoursite.com/2020/05/30/nodejs5/</id>
+    <published>2020-05-30T06:14:59.000Z</published>
+    <updated>2020-05-30T10:07:23.495Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;事件概述&quot;&gt;&lt;a href=&quot;#事件概述&quot; class=&quot;headerlink&quot; title=&quot;事件概述&quot;&gt;&lt;/a&gt;事件概述&lt;/h2&gt;&lt;p&gt;大多数 Node.js 核心 API
+        
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="nodejs" scheme="http://yoursite.com/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nodejs之基础函数</title>
+    <link href="http://yoursite.com/2020/05/30/nodejs4/"/>
+    <id>http://yoursite.com/2020/05/30/nodejs4/</id>
+    <published>2020-05-30T01:44:42.000Z</published>
+    <updated>2020-05-30T06:11:33.998Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;搜索模块&quot;&gt;&lt;a href=&quot;#搜索模块&quot; class=&quot;headerlink&quot; title=&quot;搜索模块&quot;&gt;&lt;/a&gt;搜索模块&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;npm search
+        
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="nodejs" scheme="http://yoursite.com/tags/nodejs/"/>
+    
+  </entry>
   
   <entry>
     <title>Node.js 创建第一个应用</title>
@@ -219,9 +277,9 @@ metadata:
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
@@ -249,9 +307,9 @@ metadata:
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
@@ -279,9 +337,9 @@ metadata:
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="kubernetes" scheme="http://yoursite.com/tags/kubernetes/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
@@ -516,9 +574,9 @@ metadata:
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
     
   </entry>
   
@@ -549,60 +607,6 @@ metadata:
     
     
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>code</title>
-    <link href="http://yoursite.com/2020/05/13/code/"/>
-    <id>http://yoursite.com/2020/05/13/code/</id>
-    <published>2020-05-13T08:30:06.035Z</published>
-    <updated>2020-05-13T08:30:06.035Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;categories: 测试&lt;br&gt;    #!/usr/bin/python3&lt;br&gt;    def main():&lt;br&gt;        print(“hello world”)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;if __name__ ==
-        
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>docker--容器创建后添加端口映射</title>
-    <link href="http://yoursite.com/2020/05/13/docker/"/>
-    <id>http://yoursite.com/2020/05/13/docker/</id>
-    <published>2020-05-13T07:02:36.000Z</published>
-    <updated>2020-05-13T08:34:25.388Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;标注：[hash_of_the_container] 为容器id&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
     
   </entry>
   
