@@ -103,6 +103,10 @@ date: 2020-05-29 22:13:16
 
     npm  uninstall express
 
+搜索包
+
+     npm search express
+     
 注：安装包的时候指定版本使用@  例如： npm install pm2@2.8.0
 
 
