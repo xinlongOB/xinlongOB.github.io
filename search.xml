@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>jenkins报错--秘钥认证失败</title>
+    <url>/2020/06/01/jenkinsbaocuo/</url>
+    <content><![CDATA[<p>测试服更换机器后，新服务器把旧服务器ip顶替，但是秘钥不同。构建的时候报错</p>
+<p>报错日志：</p>
+<pre><code>Pseudo-terminal will not be allocated because stdin is not a terminal.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+SHA256:y0IuKOX1vqISQPtpFZ3zbC+DtBqRMQfd1dXj8foo3Fs.
+Please contact your system administrator.
+Add correct host key in /var/lib/jenkins/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /var/lib/jenkins/.ssh/known_hosts:7
+Password authentication is disabled to avoid man-in-the-middle attacks.
+Keyboard-interactive authentication is disabled to avoid man-in-the-middle attacks.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
+Build step &apos;Execute shell&apos; marked build as failure
+Finished: FAILURE</code></pre><p>解决办法：</p>
+<pre><code>vim  /var/lib/jenkins/.ssh/known_hosts</code></pre><p>找到对应的IP数据删除整行的秘钥</p>
+<p>重新执行构建就ok了</p>
+]]></content>
+      <tags>
+        <tag>liunx</tag>
+        <tag>jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>nodejs之事件监听</title>
     <url>/2020/05/30/nodejs5/</url>
     <content><![CDATA[<h2 id="事件概述"><a href="#事件概述" class="headerlink" title="事件概述"></a>事件概述</h2><p>大多数 Node.js 核心 API 构建于惯用的异步事件驱动架构，其中某些类型的对象（又称触发器，Emitter）会触发命名事件来调用函数（又称监听器，Listener）。比如：fs.readStream 打开文件时会发出一个事件。可以通过 require(“events”); 获得 event 模块。通常，事件名采用“小驼峰式”（即第一个单词全小写，后面的单词首字母大写，其它字母小写）命名方式。</p>
@@ -1122,8 +1152,8 @@ master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -1348,8 +1378,8 @@ myapp NodePort 10.102.254.75 &lt;none&gt; 80:31257/TCP 2m32s</code></pre><p>myap
         <category>运维</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -1422,8 +1452,8 @@ b) 针对目标服务器做 ssh 免密登录，依次执行：
         <category>运维</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -1813,8 +1843,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>mongo</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
