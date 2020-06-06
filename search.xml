@@ -275,8 +275,8 @@ Openshift(redhat公司k8s发行版)</code></pre><h2 id="安装文档"><a href="#
         <category>运维</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -1578,8 +1578,8 @@ master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -1804,8 +1804,8 @@ myapp NodePort 10.102.254.75 &lt;none&gt; 80:31257/TCP 2m32s</code></pre><p>myap
         <category>运维</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -1878,8 +1878,8 @@ b) 针对目标服务器做 ssh 免密登录，依次执行：
         <category>运维</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>liunx</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -2269,8 +2269,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>mongo</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
