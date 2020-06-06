@@ -98,6 +98,8 @@ date: 2020-01-08 16:09:50
 
 	db.table.update({name : xxx},{$set:{ID : 666}},false,true)	# 把全部name 为 xxx的ID 改为666  （匹配到的所有数据）
 
+	db.payments.update({roleID : xxx, "orderNo" : "xxx"},{$set:{"realMoney_usd" : xxx}},true,false)     # 修改数据如果字段不存在 则新建
+
 	db.copyDatabase('old_name', 'new_name', 'localhost')	# 复制数据库
 
 	use  DBNAME 	# 进入数据库
