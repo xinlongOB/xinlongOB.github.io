@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    mongodb安装以及基础操作 |  我在人间凑数的日子
+    nodejs模块 |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -52,7 +52,7 @@ var _hmt = _hmt || [];
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-mongo" class="article article-type-post" itemscope
+  <article id="post-nodejs3" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -60,7 +60,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  mongodb安装以及基础操作
+  nodejs模块
 </h1>
  
 
@@ -69,12 +69,12 @@ var _hmt = _hmt || [];
 
     
     <div class="article-meta">
-      <a href="/2020/01/08/mongo/" class="article-date">
-  <time datetime="2020-01-08T08:09:50.000Z" itemprop="datePublished">2020-01-08</time>
+      <a href="/2020/05/29/nodejs3/" class="article-date">
+  <time datetime="2020-05-29T14:13:16.000Z" itemprop="datePublished">2020-05-29</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+    <a class="article-category-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
   </div>
 
       
@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">702</span>
+            <span class="post-count">1.9k</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">8 分钟</span>
         </span>
     </span>
 </div>
@@ -118,110 +118,143 @@ var _hmt = _hmt || [];
       
 
       
-      <h1 id="安装mongo数据库"><a href="#安装mongo数据库" class="headerlink" title="安装mongo数据库"></a>安装mongo数据库</h1><pre><code>cd  /etc/yum.repos.d/
-vim   mongodb-org-3.2.repo
-[mogodb-org]
-name=MongoDB Repository
-baseurl=http://mirrors.aliyun.com/mongodb/yum/redhat/6Server/mongodb-org/3.4/x86_64/
-gpgcheck=0
-enabled=1</code></pre><p>然后保存退出</p>
-<pre><code>yum clean all    # 清除缓存
-yum install  mongod-org  -y</code></pre><h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><pre><code># mongod.conf
+      <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><br>包用于管理多个模块及依赖关系，可以对多个模块进行封装，包的根目录必须包含package.jsonwenjian，package.json文件是commonjs规范用于描述包的文件，符合commonjs规范的package.json文件一般包含以下字段：<br><br>  1、name：包名。包名是唯一的，只能包含小写字母、数字和下划线<br>  2、version：包版本号<br>  3、description：包说明<br>  4、keywords：关键字数组，用于搜索<br>  5、homepage：项目主页<br>  6、bugs：提交bug的地址<br>  7、license：许可证<br>  8、maintainers：维护者数组<br>  9、contribution：贡献者数组<br>  10、repositories：项目仓库托管地址数组<br>  11、dependencies：包依赖</p>
+<p>下面是一个package.json示例：</p>
+<pre><code>{
+  &quot;name&quot;: &quot;shiyanlou&quot;,
+  &quot;description&quot;: &quot;Shiyanlou test package.&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;keywords&quot;: [&quot;shiyanlou&quot;, &quot;nodejs&quot;],
+  &quot;maintainers&quot;: [
+    {
+      &quot;name&quot;: &quot;test&quot;,
+      &quot;email&quot;: &quot;test@shiyanlou.com&quot;
+    }
+  ],
+  &quot;contributors&quot;: [
+    {
+      &quot;name&quot;: &quot;test&quot;,
+      &quot;web&quot;: &quot;http://www.shiyanlou.com/&quot;
+    }
+  ],
+  &quot;bugs&quot;: {
+    &quot;mail&quot;: &quot;test@shiyanlou.com&quot;,
+    &quot;web&quot;: &quot;http://www.shiyanlou.com/&quot;
+  },
+  &quot;licenses&quot;: [
+    {
+      &quot;type&quot;: &quot;Apache License v2&quot;,
+      &quot;url&quot;: &quot;http://www.apache.org/licenses/apache2.html&quot;
+    }
+  ],
+  &quot;repositories&quot;: [
+    {
+      &quot;type&quot;: &quot;git&quot;,
+      &quot;url&quot;: &quot;http://github.com/test/test.git&quot;
+    }
+  ],
+  &quot;dependencies&quot;: {
+    &quot;webkit&quot;: &quot;1.2&quot;,
+    &quot;ssl&quot;: {
+      &quot;gnutls&quot;: [&quot;1.0&quot;, &quot;2.0&quot;],
+      &quot;openssl&quot;: &quot;0.9.8&quot;
+    }
+  }
+}</code></pre><p>注：package.json 文件可以自己手动编辑，还可以通过 npm init 命令进行生成。你可以自己尝试在终端中输入 npm init 命令来生成一个包含 package.json 文件的包。直接输入 npm init –yes 跳过回答问题步骤，直接生成默认值的 package.json 文件。此外，我们在 github 上传自己项目的时候，通常是不会把 node_modules 这个文件夹传上去的（太大了），只需要有 package.json 就能通过 npm install 命令安装所有依赖</p>
+<pre><code>npm init --yes</code></pre><p>执行结果</p>
+<pre><code>Wrote to E:\程序代码\nodejs\package.json:
 
-# for documentation of all options, see:
-#   http://docs.mongodb.org/manual/reference/configuration-options/
+{
+  &quot;name&quot;: &quot;nodejs&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;index.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;keywords&quot;: [],
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;ISC&quot;
+}</code></pre><p>注：执行init的文件夹名称必须要符合要求不可以包含中文以及特殊字符</p>
+<h2 id="包操作"><a href="#包操作" class="headerlink" title="包操作"></a>包操作</h2><p>通过命令npm  install  xxx来安装包。比如：<br><br>安装包<br></p>
+<pre><code>npm install  express</code></pre><p>更新包</p>
+<pre><code>npm update  express</code></pre><p>删除包</p>
+<pre><code>npm  uninstall express</code></pre><p>搜索包</p>
+<pre><code>npm search express</code></pre><p>注：安装包的时候指定版本使用@  例如： npm install <a href="mailto:pm2@2.8.0">pm2@2.8.0</a></p>
+<p>在JavaScripts中，我们通常把 JavaScript 代码分为几个 js 文件，然后在浏览器中将这些 js 文件合并运行，但是在 Node.js 中，是通过以模块为单位来划分所有功能的。每一个模块为一个 js 文件，每一个模块中定义的全局变量和函数的作用范围也被限定在这个模块之内，只有使用 exports 对象才能传递到外部使用。Node.js 官方提供了很多模块，这些模块分别实现了一种功能，如操作文件及文件系统的模块 fs，构建 http 服务的模块 http，处理文件路径的模块 path 等。当然我们也可以自己编写模块。</p>
+<p>模块的使用<br><br>在nodejs创建模块很简单，比如我们创建一个myMoudule.js的文件<br></p>
+<pre><code>function foo(){
+  console.log(&quot;hello world&quot;)
+}</code></pre><p>这样就创建好了一个模块，但是别的模块如何来访问它呢？我们使用 module.exports 来导出它。也就是说把 myModule.js 的代码改写成下面这样：</p>
+<pre><code>function foo(){
+  console.log(&quot;hello world&quot;)
+}
+module.exports.foo = foo;</code></pre><p>最后我们在创建一个index.js的文件，使用require()函数来访问上面的模块。输入一下代码：</p>
+<pre><code>var hello = require(&quot;./myModule.js&quot;);
+hello.foo();</code></pre><p>运行结果：</p>
+<pre><code>$ node myModule.js 
 
-# where to write logging data.
-systemLog:
-  destination: file
-  logAppend: true
-  path: /var/log/mongodb/mongod.log     #  日志文件路径
 
-# Where and how to store data.
-storage:
-  dbPath: /var/lib/mongo    # 数据保存路径
-  journal:
-    enabled: true        # 是否开启
-#  engine:
-#  mmapv1:
-#  wiredTiger:
+$ node index.js
+hello world</code></pre><p>注：require() 加载模块，以 ‘/‘ 为前缀的模块是文件的绝对路径。’./‘ 为前缀的模块是相对于调用 require() 的文件的，上面的例子中 index.js 和 myModule.js 是在同一个目录下（project 目录）。当没有以 ‘/‘、’./‘ 或 ‘../‘ 开头来表示文件时，这个模块必须是一个核心模块或加载自 node_modules 目录。如果给定的路径不存在，则 require() 会抛出一个 code 属性为 ‘MODULE_NOT_FOUND’ 的 Error。</p>
+<h2 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h2><p><br>核心模块定义在nodejs源代码的lib/ 目录下。require()总是会优先加载核心模块。例如：require(‘http’)始终返回内置的HTTP模块，即使有同名文件<br></p>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p><br>当循环调用require()时，一个模块可能在未完成执行时被返还。比如：<br></p>
+<p>a.js 的代码为：</p>
+<pre><code>console.log(&quot;a 开始&quot;);
+exports.done = false;
+var b = require(&quot;./b.js&quot;);
+console.log(&quot;在 a 中，b.done = %j&quot;, b.done);
+exports.done = true;
+console.log(&quot;a 结束&quot;);</code></pre><p>b.js 的代码为：</p>
+<pre><code>console.log(&quot;b 开始&quot;);
+exports.done = false;
+var a = require(&quot;./a.js&quot;);
+console.log(&quot;在 b 中，a.done = %j&quot;, a.done);
+exports.done = true;
+console.log(&quot;b 结束&quot;);</code></pre><p>main.js 的代码为：</p>
+<pre><code>console.log(&quot;main 开始&quot;);
+var a = require(&quot;./a.js&quot;);
+var b = require(&quot;./b.js&quot;);
+console.log(&quot;在 main 中，a.done=%j，b.done=%j&quot;, a.done, b.done);</code></pre><p>运行效果为：</p>
+<pre><code>silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+$ node main.js
+main 开始
+a 开始
+b 开始
+在 b 中，a.done = false
+b 结束
+在a 中,b.done = true
+a 结束
+在 main 中，a.done=true，b.done=true
 
-# how the process runs
-processManagement:
-  fork: true  # fork and run in background
-  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
+silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs</code></pre><p>也就是说当 main.js 加载 a.js 时，a.js 又加载 b.js。此时，b.js 会尝试去加载 a.js。为了防止无限的循环，会返回一个 a.js 的 exports 对象的未完成的副本给 b.js 模块。然后 b.js 完成加载，并将 exports 对象提供给 a.js 模块。</p>
+<p>module.exports 和 exports 的区别<br><br>我们发现每次导出接口成员的时候都通过module.exports.xxx = xxx 的方式很麻烦，点儿的太多了。所以，nodejs为了简化你的操作，专门提供了一个变量：exports 等于 module.exports。也就是说在模块中还有这么一句代码<br></p>
+<pre><code>var exports = module.exports;</code></pre><p>我们前面案例中的代码也就可以简写了：</p>
+<pre><code>module.exports.foo = foo;
+exports.foo = foo; // 这两行代码效果是一样的</code></pre><p>但是需要注意的是：就像任何变量，如果一个新的值被赋值给 exports，它就不再绑定到 module.exports。我们具体来看个例子：</p>
+<p>a.js 的代码:</p>
+<pre><code>console.log(module.exports === exports);</code></pre><p>运行结果</p>
+<pre><code>silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+$ node 1.js
+true
 
-# network interfaces
-net:
-  port: 27017        # 监听端口
-  bindIp: 192.168.1.163  # 允许连接的IP
+silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs</code></pre><p>两者一致，说明我们可以用任意一个来导出内部成员</p>
+<p>b.js 的代码：</p>
+<pre><code>exports = {
+  a: 3,
+};
+console.log(exports);
+console.log(module.exports);
+console.log(exports === module.exports);</code></pre><p>运行结果</p>
+<pre><code>silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+$ node 1.js
+{ a: 3 }
+{}
+false
 
+silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs</code></pre><p>也就是说给 exports 赋值会断开和 module.exports 之间的引用，同样的给 module.exports 重新赋值也会断开它们之间的引用。但是最终导出的是 module.exports，在上面的例子中我们另外一个文件来用 require() 加载 b.js 只会得到 {} 而不是 {a:3}。</p>
+<p>总结：require() 得到的是 module.exports 导出的值，导出多个成员可以用 module.exports 和 exports，导出单个成员只能用 module.exports。如果你实在不好区分，那就全部都使用 module.exports 也是没问题的。</p>
 
-#security:
-#security:
-
-#  authorization: enabled
-
-#operationProfiling:
-
-#replication:
-
-#sharding:
-## Enterprise-Only Options
-
-#auditLog:
-
-#snmp:</code></pre><h1 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h1><pre><code>mongo   IP   #  进入数据库
-
-show  dbs    # 查看所有库
-
-show tables    # 查看当前库的所有表
-
-use   DBNAME    # 进入数据库
-
-db.table.find()        # 查看表中的所有数据
-
-db.table.find({name : xxx})    # 查看表中name为xxx的数据
-
-db.table.find({name : xxx}).pretty()    # 查看表中name为xxx的数据   以json格式显示
-
-db.table.count()    # 统计数据行数
-
-db.tables.find().count()    # 统计行数   同上
-
-db.table.count({name : xxx})    # 统计name为xxx的行数
-
-db.table.update({},{$set:{name : xxx}})        # 把表中所有数据的name 改为 xxx
-
-db.table.update({name : xxx},{$set:{ID : 666}})        # 把name 为 xxx 的ID 改为666  （只更改匹配到的第一条数据）
-
-db.table.update({name : xxx},{$set:{ID : 666}},false,true)    # 把全部name 为 xxx的ID 改为666  （匹配到的所有数据）
-
-db.payments.update({roleID : xxx, &quot;orderNo&quot; : &quot;xxx&quot;},{$set:{&quot;realMoney_usd&quot; : xxx}},true,false)     # 修改数据如果字段不存在 则新建
-
-db.copyDatabase(&apos;old_name&apos;, &apos;new_name&apos;, &apos;localhost&apos;)    # 复制数据库
-
-use  DBNAME     # 进入数据库
-db.dropDatabase()    # 删除当前所在的库
-
-db.table.drop()        # 删除表
-
-db.table.remove({})    # 删除表中所有数据
-
-db.table.remove({name : xxx})    # 删除表中被匹配到的第一条数据
-
-db.table.remove({name : xxx},false,true)    # 删除表中被匹配到的所有数据
-
-use DBNAME     # 进入数据库
-db.create.table()    # 创建一个表      如果这个数据库之前不存在  创建表后会自动创建库</code></pre><h1 id="增删改查–扩展"><a href="#增删改查–扩展" class="headerlink" title="增删改查–扩展"></a>增删改查–扩展</h1><pre><code>db.roles.find({&quot;ID&quot;:{&quot;$lte&quot;: 200,&quot;$gte&quot;:155 },userType:41})    # 范围查询  查看ID 小于等于200  大于等于155 并且userType=41 的数据
-
-db.roles.find({ &quot;name&quot; : {$regex:/大气的.*/i}})        # 模糊查询    匹配name 包含&quot;大气的&quot; 数据
-
-db.towers.update({&quot;_id&quot; : ObjectId(&quot;5a6205e275a50f321e04b8ae&quot;)},{$set:{ &quot;levelCustomList.1.state&quot;:2}})        # 把匹配数据的levelCustomlist的第二个字段(state) 的值改为 2
-
-db.oreseasons.update({&quot;_id&quot; : ObjectId(&quot;5ad227d8da0d2e0522930156&quot;)},{$unset:{&quot;groups.0&quot;:&apos;&apos;}},false, true)    # 把匹配数据的groups中第一个字段删除</code></pre><h1 id="数据库的备份以及恢复"><a href="#数据库的备份以及恢复" class="headerlink" title="数据库的备份以及恢复"></a>数据库的备份以及恢复</h1><pre><code>mongodump   -h  IP    -d  DBNAME    -o  dir    # 备份数据库
-
-mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code></pre>
       
       <!-- reward -->
       
@@ -285,14 +318,14 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/01/08/mongo/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/29/nodejs3/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongo/" rel="tag">mongo</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/liunx/" rel="tag">liunx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
 
 
     </footer>
@@ -303,19 +336,19 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
   
   <nav class="article-nav">
     
-      <a href="/2020/01/16/jiasu/" class="article-nav-link">
+      <a href="/2020/05/30/nodejs4/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            全球加速--阿里云
+            nodejs之基础函数
           
         </div>
       </a>
     
     
-      <a href="/2019/12/27/sshpass/" class="article-nav-link">
+      <a href="/2020/05/28/nodejs2/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">sshpass</div>
+        <div class="article-nav-title">Node.js 创建第一个应用</div>
       </a>
     
   </nav>
