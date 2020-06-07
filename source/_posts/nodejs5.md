@@ -231,3 +231,148 @@ emitter.on(eventName,listener)
     我是1
     我是2
     我是1
+
+## emitter.off(eventName, listener)
+
+emitter.off(eventName, listener) 是 emitter.removeListener() 的别名
+
+## emitter.removeAllListeners([eventName])
+
+使用 emitter.removeAllListeners([eventName]) 移除全部监听器或指定的 eventName 事件的监听器
+<br/>例如：<br/>
+
+        // 引入events模块
+        var events = require("events")
+        // 创建emitter对象
+        var emitter = new  events.EventEmitter();
+        // 定义回调函数
+        var callback1 = function(){
+            console.log("我是1");
+        };
+
+        var callback2 = function(){
+            console.log("我是2");
+        };
+
+        // 为connection 事件注册监听器
+        emitter.on("connection",callback1);
+        emitter.on("connection",callback2);
+
+        // 移除 connection事件的所有监听器
+        emitter.removeAllListeners("connection");
+        // 调用监听器
+        emitter.emit("connection");
+
+运行结果：
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+        $ node removealllisteners.js 
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+
+    说明所有监听器已被删除
+
+## 设置监听器最大绑定数
+<br/>emitter.setMaxListeners(n)<br/>
+
+使用 emitter.setMaxListeners(n) 设置同一事件的监听器最大绑定数。默认情况下，如果为特定事件添加了超过 10 个监听器，则 EventEmitter 会打印一个警告，这有助于我们发现内存泄露。显然实际编码中并不是所有的事件都要限制 10 个监听器。emitter.setMaxListeners() 方法可以为指定的 EventEmitter 实例修改限制。当值设为 Infinity（或 0）表示不限制监听器的数量
+
+使用 emitter.listenerCount(eventName) 查看事件绑定的监听器个数
+
+例：
+
+        // 引入 events 模块
+        var events = require("events");
+        // 创建emitter 对象
+        var emitter = new  events.EventEmitter();
+        // 定义回调函数
+        var callback1 = function(){
+            console.log("test1");
+        }
+
+        var callback2 = function(){
+            console.log("test2");
+        }
+
+        // 为connection 事件注册监听器
+        emitter.on("connection",callback1);
+        emitter.on("connection",callback2);
+
+        // 查看connection 事件绑定的监听个数 赋值给num
+        var num = emitter.listenerCount("connection");
+            console.log(num);
+
+运行结果：
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+        $ node maxlisteners.js
+        2
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+    
+## ERROR 事件
+<br/>当EventEmitter 实例出错时，应该触发'error'事件<br/>
+
+如果没有为'error'事件注册监听器，则当'error'事件触发时，会抛出错误、打印堆栈跟踪、并退出nodejs进程
+<br/>例如：<br/>
+
+        var events = require("events");
+        var emitter = new events.EventEmitter();
+        emitter.emit("error");
+
+运行结果：
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+        $ node error.js 
+        events.js:201
+            throw err; // Unhandled 'error' event
+            ^
+
+        Error [ERR_UNHANDLED_ERROR]: Unhandled error. (undefined)
+            at EventEmitter.emit (events.js:199:17)
+            at Object.<anonymous> (E:\程序代码\nodejs\error.js:3:9)
+            at Module._compile (internal/modules/cjs/loader.js:959:30)
+            at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)
+            at Module.load (internal/modules/cjs/loader.js:815:32)
+            at Function.Module._load (internal/modules/cjs/loader.js:727:14)
+            at Function.Module.runMain (internal/modules/cjs/loader.js:1047:10)
+            at internal/main/run_main_module.js:17:11 {
+        code: 'ERR_UNHANDLED_ERROR',
+        context: undefined
+        }
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+
+因为没有定义函数，会报错 undefined
+
+通常我们要为会触发 error 事件的对象设置监听器，避免遇到错误后整个程序崩溃。比如：
+
+        var events = require("events");
+        var emitter = new events.EventEmitter();
+        // 设置监听器
+        var error = function(){
+            console.error("错误信息");
+        }
+        emitter.on("connection",error)
+        emitter.emit("connection");
+
+或者写为箭头函数：
+
+        // 引入 events 模块
+        var events = require("events");
+        // 创建 emitter 对象
+        var emitter = new events.EventEmitter();
+        // 设置监听器
+        emitter.on("error", (err) => {
+        console.error("错误信息");
+        });
+        emitter.emit("error");
+
+运行结果：
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+        $ node error.js
+        错误信息
+
+        silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs
+
