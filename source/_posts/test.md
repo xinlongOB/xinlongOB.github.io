@@ -138,6 +138,8 @@ categories: 运维
 <br/>![](../25.png)<br/>
 启动subversion
 
+		svnserve -d
+
 开通HTTP协议 安装httpd及其svn模块
 	
 	yum -y install httpd mod_dav_svn
