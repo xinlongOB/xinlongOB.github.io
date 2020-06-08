@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>TortoiseSVN使用</title>
+    <url>/2020/06/08/TortoiseSVN/</url>
+    <content><![CDATA[<h2 id="部署subversion服务器"><a href="#部署subversion服务器" class="headerlink" title="部署subversion服务器"></a>部署subversion服务器</h2><p><a href="https://xinlong.youare.ink/2019/12/03/test/#4" target="_blank" rel="noopener">subversion安装部署</a></p>
+<h2 id="TortoiseSVN-安装"><a href="#TortoiseSVN-安装" class="headerlink" title="TortoiseSVN 安装"></a>TortoiseSVN 安装</h2><p>下载地址：<a href="https://tortoisesvn.net/downloads.html" target="_blank" rel="noopener">https://tortoisesvn.net/downloads.html</a>, 页面里有语言包补丁的下载链接。</p>
+<h2 id="TortoiseSVN基础操作"><a href="#TortoiseSVN基础操作" class="headerlink" title="TortoiseSVN基础操作"></a>TortoiseSVN基础操作</h2><p>检出代码<br><br><img src="/2020/06/08/TortoiseSVN/5.png" alt><br><br><img src="/2020/06/08/TortoiseSVN/6.png" alt></p>
+<p>更新代码<br><br><img src="/2020/06/08/TortoiseSVN/7.png" alt><br></p>
+<p>提交代码<br><br><img src="/2020/06/08/TortoiseSVN/8.png" alt><br><br><img src="/2020/06/08/TortoiseSVN/9.png" alt></p>
+<p>切新分支<br><br><img src="/2020/06/08/TortoiseSVN/10.png" alt><br><br><img src="/2020/06/08/TortoiseSVN/14.png" alt><br><br>切出后查看内容<br><br><img src="/2020/06/08/TortoiseSVN/15.png" alt><br><br>主线内容<br><br><img src="/2020/06/08/TortoiseSVN/16.png" alt></p>
+<p>查看提交记录<br><br><img src="/2020/06/08/TortoiseSVN/18.png" alt><br><br><img src="/2020/06/08/TortoiseSVN/19.png" alt><br><br><img src="/2020/06/08/TortoiseSVN/20.png" alt><br><br><img src="/2020/06/08/TortoiseSVN/21.png" alt><br><br><img src="/2020/06/08/TortoiseSVN/22.png" alt><br></p>
+<h2 id="报错解决："><a href="#报错解决：" class="headerlink" title="报错解决："></a>报错解决：</h2><p>提交报错：could not begin a transaction<br><br><img src="/2020/06/08/TortoiseSVN/1.png" alt><br><br>解决办法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span>  /data/svn/program</span><br><span class="line">sudo chown -R apache:apache  ./</span><br></pre></td></tr></table></figure>
+<p>修改之前：<br><br><img src="/2020/06/08/TortoiseSVN/2.png" alt><br><br>修改之后：<br><br><img src="/2020/06/08/TortoiseSVN/3.png" alt><br><br>再次提交：<br><br><img src="/2020/06/08/TortoiseSVN/4.png" alt><br></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>subversion</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>redis基础配置-运维篇</title>
     <url>/2020/06/06/redis/</url>
     <content><![CDATA[<h2 id="Redis-必知"><a href="#Redis-必知" class="headerlink" title="Redis 必知"></a>Redis 必知</h2><p><br>redis基本的数据结构<br><br>最最最重要的并且是最基础的知识–记不住千万别说了解redis,本人有被羞辱的案例</p>
@@ -2679,7 +2701,7 @@ http://pkg.jenkins-ci.org/redhat-stable/</code></pre><p>编辑配置文件更改
     password-db = /data/svn/program/conf/passwd ## 指定账号配置文件   绝对路径
     authz-db = /data/svn/program/conf/authz ## 指定权限配置文件  绝对路径
     realm = /data/svn/program ## 指定版本库的认证域，即在登录时提示的认证域名称。缺省值：一个UUID(Universal Unique IDentifier，全局唯一标示)。</code></pre><p><br><img src="/2019/12/03/test/25.png" alt><br><br>启动subversion</p>
-<p>开通HTTP协议 安装httpd及其svn模块</p>
+<pre><code>svnserve -d</code></pre><p>开通HTTP协议 安装httpd及其svn模块</p>
 <pre><code>yum -y install httpd mod_dav_svn</code></pre><p><br><img src="/2019/12/03/test/26.png" alt><br><br>确认模块 dav/dav_svn 已加载<br><br>(Centos6  路径是/etc/httpd/conf/httpd.conf )<br></p>
 <pre><code>grep -E &quot;dav_module&quot; /etc/httpd/conf.modules.d/00-dav.conf</code></pre><p><br><img src="/2019/12/03/test/27.png" alt><br><br>( Centos6  路径是 /etc/httpd/conf.d/subversion.conf )</p>
 <pre><code>grep -E &quot;dav_svn_module&quot; /etc/httpd/conf.modules.d/10-subversion.conf</code></pre><p><br><img src="/2019/12/03/test/28.png" alt><br><br>SVN HTTP 配置</p>

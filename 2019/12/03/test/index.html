@@ -170,7 +170,7 @@ http://pkg.jenkins-ci.org/redhat-stable/</code></pre><p>编辑配置文件更改
     password-db = /data/svn/program/conf/passwd ## 指定账号配置文件   绝对路径
     authz-db = /data/svn/program/conf/authz ## 指定权限配置文件  绝对路径
     realm = /data/svn/program ## 指定版本库的认证域，即在登录时提示的认证域名称。缺省值：一个UUID(Universal Unique IDentifier，全局唯一标示)。</code></pre><p><br><img src="/2019/12/03/test/25.png" alt><br><br>启动subversion</p>
-<p>开通HTTP协议 安装httpd及其svn模块</p>
+<pre><code>svnserve -d</code></pre><p>开通HTTP协议 安装httpd及其svn模块</p>
 <pre><code>yum -y install httpd mod_dav_svn</code></pre><p><br><img src="/2019/12/03/test/26.png" alt><br><br>确认模块 dav/dav_svn 已加载<br><br>(Centos6  路径是/etc/httpd/conf/httpd.conf )<br></p>
 <pre><code>grep -E &quot;dav_module&quot; /etc/httpd/conf.modules.d/00-dav.conf</code></pre><p><br><img src="/2019/12/03/test/27.png" alt><br><br>( Centos6  路径是 /etc/httpd/conf.d/subversion.conf )</p>
 <pre><code>grep -E &quot;dav_svn_module&quot; /etc/httpd/conf.modules.d/10-subversion.conf</code></pre><p><br><img src="/2019/12/03/test/28.png" alt><br><br>SVN HTTP 配置</p>

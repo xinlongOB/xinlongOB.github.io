@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-06T10:42:35.043Z</updated>
+  <updated>2020-06-08T08:56:23.866Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TortoiseSVN使用</title>
+    <link href="http://yoursite.com/2020/06/08/TortoiseSVN/"/>
+    <id>http://yoursite.com/2020/06/08/TortoiseSVN/</id>
+    <published>2020-06-08T06:07:17.000Z</published>
+    <updated>2020-06-08T08:56:23.866Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;部署subversion服务器&quot;&gt;&lt;a href=&quot;#部署subversion服务器&quot; class=&quot;headerlink&quot; title=&quot;部署subversion服务器&quot;&gt;&lt;/a&gt;部署subversion服务器&lt;/h2&gt;&lt;p&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="subversion" scheme="http://yoursite.com/tags/subversion/"/>
+    
+  </entry>
   
   <entry>
     <title>redis基础配置-运维篇</title>
@@ -571,37 +600,6 @@ metadata:
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
       <category term="mvn" scheme="http://yoursite.com/tags/mvn/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git无法添加主题文件夹</title>
-    <link href="http://yoursite.com/2020/05/17/gitremove/"/>
-    <id>http://yoursite.com/2020/05/17/gitremove/</id>
-    <published>2020-05-17T09:07:14.000Z</published>
-    <updated>2020-05-24T07:48:29.518Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;由于主题都是在git上下载的所以默认会有一个.git的文件，这样导致提交的时候无法提交主题文件&lt;br&gt;&lt;br&gt;解决办法&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;删除主题文件夹下.git&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;git rm --cached
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
-      <category term="git" scheme="http://yoursite.com/tags/git/"/>
     
   </entry>
   
