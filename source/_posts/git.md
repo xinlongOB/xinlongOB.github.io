@@ -521,7 +521,7 @@ git remote add [shortname] [url]
 
 例如：
 ```bash
-# 创建秘钥       -t  指定秘钥类型(默认就是rsa)  -P 可以指定密码
+# 创建秘钥       -t  指定秘钥类型(默认就是rsa)  -P 可以指定密码   更详细的文档点击[]
 [sgsm@centos sgsm]$ ssh-keygen 
 ```
 ```bash
