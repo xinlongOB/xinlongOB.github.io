@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-09T10:24:19.847Z</updated>
+  <updated>2020-06-11T10:14:48.207Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>docker安装部署以及Dockerfile</title>
+    <link href="http://yoursite.com/2020/06/11/install-docker/"/>
+    <id>http://yoursite.com/2020/06/11/install-docker/</id>
+    <published>2020-06-11T07:36:06.000Z</published>
+    <updated>2020-06-11T10:14:48.207Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;docker安装准备&quot;&gt;&lt;a href=&quot;#docker安装准备&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos下生成多份密钥对</title>
+    <link href="http://yoursite.com/2020/06/11/ssh/"/>
+    <id>http://yoursite.com/2020/06/11/ssh/</id>
+    <published>2020-06-11T06:25:31.000Z</published>
+    <updated>2020-06-11T06:44:08.108Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;常用选项&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="ssh" scheme="http://yoursite.com/tags/ssh/"/>
+    
+  </entry>
   
   <entry>
     <title>git基础操作</title>
@@ -541,65 +600,6 @@ metadata:
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
       <category term="阿里云" scheme="http://yoursite.com/tags/%E9%98%BF%E9%87%8C%E4%BA%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>pm2安装报错</title>
-    <link href="http://yoursite.com/2020/05/20/pm2/"/>
-    <id>http://yoursite.com/2020/05/20/pm2/</id>
-    <published>2020-05-20T07:19:18.000Z</published>
-    <updated>2020-05-21T01:04:19.442Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;使用npm安装pm2报错&quot;&gt;&lt;a href=&quot;#使用npm安装pm2报错&quot; class=&quot;headerlink&quot; title=&quot;使用npm安装pm2报错&quot;&gt;&lt;/a&gt;使用npm安装pm2报错&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;sudo  npm  -g 
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
-      <category term="pm2" scheme="http://yoursite.com/tags/pm2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一个奇怪的报错</title>
-    <link href="http://yoursite.com/2020/05/19/strange/"/>
-    <id>http://yoursite.com/2020/05/19/strange/</id>
-    <published>2020-05-19T09:24:08.000Z</published>
-    <updated>2020-05-19T13:06:30.431Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;前因：因为程序需要node的启动进行需要改到80端口，改过之后却报错&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Error: listen EACCES
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
