@@ -44,7 +44,6 @@ date: 2020-05-26 17:01:34
     for c in str:
         print(c)
 ```     
-
 运行结果：
 
     D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
