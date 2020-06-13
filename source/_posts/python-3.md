@@ -1,5 +1,5 @@
 ---
-title: python-列表
+title: Python基础之列表
 tags:
   - python
   - liunx

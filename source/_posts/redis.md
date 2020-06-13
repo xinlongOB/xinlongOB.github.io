@@ -60,7 +60,7 @@ date: 2020-06-06 15:16:56
 
 ## Redis 配置文件
 主要用到的配置项
-    
+```bash    
     # 绑定的IP     redis-cli 的时候需要 加-h 选项 指定ip
     bind 192.168.1.163  
 
@@ -187,7 +187,7 @@ date: 2020-06-06 15:16:56
 
     # redis 认证密码
     requirepass GwJMMSdSHezfeMRMP34fQ0F0F
-
+```
 ## Redis 语法
 
 连接redis
@@ -281,7 +281,7 @@ date: 2020-06-06 15:16:56
     echo  'set aaa aaaa' |redis-cli -h   127.0.0.1  -a mima
 
 附一个redis批量操作的脚本
-
+```bash
     server=$1     # 传入的第一个参数定义为server
     host=$2     # 传入的第二个参数定义为host
     echo   "AUTH mima  
@@ -300,5 +300,4 @@ date: 2020-06-06 15:16:56
       
     done            # for循环 $1_linshi.txt 文件   添加0 到每个键值对中
     cat  insert.txt |   redis-cli  -h  $host     执行redis语句
-
-    
+```
