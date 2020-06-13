@@ -2744,6 +2744,119 @@ echo &quot;ceshi&quot;</code></pre><p> cehshi</p>
       </tags>
   </entry>
   <entry>
+    <title>python-列表</title>
+    <url>/2020/04/23/python-3/</url>
+    <content><![CDATA[<h2 id="定义一个列表"><a href="#定义一个列表" class="headerlink" title="定义一个列表"></a>定义一个列表</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">num_list = [<span class="string">"1"</span>,<span class="string">"3"</span>,<span class="string">"2"</span>,<span class="string">"0"</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="增加列表内的指定参数索引和参数"><a href="#增加列表内的指定参数索引和参数" class="headerlink" title="增加列表内的指定参数索引和参数"></a>增加列表内的指定参数索引和参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">name_list.insert(<span class="number">0</span>,<span class="string">"long"</span>)</span><br><span class="line">print(name_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[&apos;long&apos;, &apos;zhangsan&apos;, &apos;lisi&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="增加另一个列表内容到此列表中"><a href="#增加另一个列表内容到此列表中" class="headerlink" title="增加另一个列表内容到此列表中"></a>增加另一个列表内容到此列表中</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">num_list = [<span class="string">"1"</span>,<span class="string">"2"</span>,<span class="string">"3"</span>]</span><br><span class="line">name_list.extend(num_list)</span><br><span class="line">print(name_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[&apos;zhangsan&apos;, &apos;lisi&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="增加一个参数到列表的尾部"><a href="#增加一个参数到列表的尾部" class="headerlink" title="增加一个参数到列表的尾部"></a>增加一个参数到列表的尾部</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">name_list.append(<span class="string">"long"</span>)</span><br><span class="line">print(name_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[&apos;zhangsan&apos;, &apos;lisi&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;long&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除列表内指定的参数"><a href="#删除列表内指定的参数" class="headerlink" title="删除列表内指定的参数"></a>删除列表内指定的参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">name_list.remove(<span class="string">"lisi"</span>)</span><br><span class="line">print(name_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[&apos;zhangsan&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除列表内最后一个参数"><a href="#删除列表内最后一个参数" class="headerlink" title="删除列表内最后一个参数"></a>删除列表内最后一个参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">name_list.pop()</span><br><span class="line">print(name_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[&apos;zhangsan&apos;, &apos;lisi&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;wangwu&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="修改列表内的参数"><a href="#修改列表内的参数" class="headerlink" title="修改列表内的参数"></a>修改列表内的参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">name_list[<span class="number">0</span>] = <span class="string">"xinxin"</span></span><br><span class="line">print(name_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[&apos;xinxin&apos;, &apos;lisi&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;, &apos;wangwu&apos;, &apos;wangxiaoer&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="清空列表中的数据"><a href="#清空列表中的数据" class="headerlink" title="清空列表中的数据"></a>清空列表中的数据</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">name_list.clear()</span><br><span class="line">print(name_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[]
+
+进程已结束，退出代码 0</code></pre><h2 id="统计列表长度"><a href="#统计列表长度" class="headerlink" title="统计列表长度"></a>统计列表长度</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">lenght = len(name_list)</span><br><span class="line">print(lenght)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+6
+
+进程已结束，退出代码 0</code></pre><h2 id="统计数据在列表中出现的次数"><a href="#统计数据在列表中出现的次数" class="headerlink" title="统计数据在列表中出现的次数"></a>统计数据在列表中出现的次数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"zhangsan"</span>,<span class="string">"lisi"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>,<span class="string">"wangwu"</span>,<span class="string">"wangxiaoer"</span>]</span><br><span class="line">num = name_list.count(<span class="string">"wangxiaoer"</span>)</span><br><span class="line">print(num)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+2
+
+进程已结束，退出代码 0</code></pre><h2 id="列表中数据排序"><a href="#列表中数据排序" class="headerlink" title="列表中数据排序"></a>列表中数据排序</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name_list = [<span class="string">"CC"</span>,<span class="string">"BB"</span>,<span class="string">"AA"</span>,<span class="string">"DD"</span>,<span class="string">"WW"</span>,<span class="string">"YY"</span>]</span><br><span class="line">num_list = [<span class="string">"1"</span>,<span class="string">"3"</span>,<span class="string">"2"</span>,<span class="string">"0"</span>]</span><br><span class="line">print(num_list)   <span class="comment"># 排序前打印</span></span><br><span class="line">print(name_list)  <span class="comment"># 排序前打印</span></span><br><span class="line">num_list.sort()   <span class="comment"># 排序</span></span><br><span class="line">name_list.sort()  <span class="comment"># 排序</span></span><br><span class="line">print(num_list)   <span class="comment"># 排序后打印</span></span><br><span class="line">print(name_list)   <span class="comment"># 排序后打印</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+[&apos;1&apos;, &apos;3&apos;, &apos;2&apos;, &apos;0&apos;]          #  排序前打印
+[&apos;CC&apos;, &apos;BB&apos;, &apos;AA&apos;, &apos;DD&apos;, &apos;WW&apos;, &apos;YY&apos;]    # 排序前打印
+[&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;]         # 排序后打印
+[&apos;AA&apos;, &apos;BB&apos;, &apos;CC&apos;, &apos;DD&apos;, &apos;WW&apos;, &apos;YY&apos;]         # 排序后打印
+
+进程已结束，退出代码 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      申请书</code></pre><p>  由于本人手机年代久远,性能无法满足日常需求,所以需要更新换代，望批准。</p>
+<p>实施条件：<br>  乙方需要先行帮助甲方还清目前白条花费(约2000元),还清后甲方给乙方购买手机,并且需要甲方还清前几个月的手机分期(约2000元)</p>
+<p>  执行细节：<br>      首先乙方一次性帮助甲方还清白条,然后由甲方购买手机(苹果11 256G  12期免息),邮寄到马家堡月桂树酒店由甲方代表或者乙方代表签收<br>      然后甲方需要帮助乙方还前几个月的分期(具体金额以及分期 根据乙方还款白条金额而定),</p>
+<p>  项目分红：<br>      暂定</p>
+<pre><code>甲方：
+乙方：梁鑫龙</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python-str</title>
     <url>/2020/04/23/python-str/</url>
     <content><![CDATA[<p>code here<br>从字符串中提取字符</p>
