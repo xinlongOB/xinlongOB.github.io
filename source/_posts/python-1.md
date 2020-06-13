@@ -37,13 +37,14 @@ date: 2020-05-26 17:01:34
 
     进程已结束，退出代码 0
 
-## for循环遍历字符串中的每一个字符
+## 循环遍历字符串中的每一个字符
 ```python
     str = "hello"
 
     for c in str:
         print(c)
-```     
+
+```
 运行结果：
 
     D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
