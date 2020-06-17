@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    python-1 |  我在人间凑数的日子
+    Python基础之字符串 |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -60,7 +60,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  python-1
+  Python基础之字符串
 </h1>
  
 
@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">28</span>
+            <span class="post-count">2.9k</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">13 分钟</span>
         </span>
     </span>
 </div>
@@ -118,10 +118,259 @@ var _hmt = _hmt || [];
       
 
       
-      <h2 id="双引号和单引号的作用"><a href="#双引号和单引号的作用" class="headerlink" title="双引号和单引号的作用"></a>双引号和单引号的作用</h2><pre><code>str = &quot;我是谁&quot;
-print(str)
-str1 = &apos;我是&quot;谁&quot;&apos;
-print(str1)</code></pre>
+      <h2 id="print函数"><a href="#print函数" class="headerlink" title="print函数"></a>print函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'hello world!'</span>)</span><br><span class="line">	print(<span class="string">'hello'</span>, <span class="string">'world!'</span>)  <span class="comment"># 逗号自动添加默认的分隔符：空格</span></span><br><span class="line">	print(<span class="string">'hello'</span> + <span class="string">'world!'</span>)  <span class="comment"># 加号表示字符拼接</span></span><br><span class="line">	print(<span class="string">'hello'</span>, <span class="string">'world'</span>, sep=<span class="string">'***'</span>)  <span class="comment"># 单词间用***分隔</span></span><br><span class="line">	print(<span class="string">'#'</span> * <span class="number">50</span>)  <span class="comment"># *号表示重复50遍</span></span><br><span class="line">	print(<span class="string">'how are you?'</span>, end=<span class="string">''</span>) <span class="comment"># 默认print会打印回车，end=''表示不要回车</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="双引号和单引号的作用"><a href="#双引号和单引号的作用" class="headerlink" title="双引号和单引号的作用"></a>双引号和单引号的作用</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"我是谁"</span></span><br><span class="line">print(str)</span><br><span class="line"></span><br><span class="line">str1 = <span class="string">'我是"谁"'</span></span><br><span class="line">print(str1)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+我是谁
+我是&quot;谁&quot;
+
+进程已结束，退出代码 0</code></pre><h2 id="从字符串中提取字符"><a href="#从字符串中提取字符" class="headerlink" title="从字符串中提取字符"></a>从字符串中提取字符</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"hello python"</span></span><br><span class="line"><span class="comment">##提取里面的y</span></span><br><span class="line">print(str[<span class="number">7</span>])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+y
+
+进程已结束，退出代码 0</code></pre><h2 id="循环遍历字符串中的每一个字符"><a href="#循环遍历字符串中的每一个字符" class="headerlink" title="循环遍历字符串中的每一个字符"></a>循环遍历字符串中的每一个字符</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"hello"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> str:</span><br><span class="line">    print(c)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+h
+e
+l
+l
+o
+
+进程已结束，退出代码 0</code></pre><h2 id="统计字符串长度"><a href="#统计字符串长度" class="headerlink" title="统计字符串长度"></a>统计字符串长度</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"hello world"</span></span><br><span class="line">print(len(str))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+11
+
+进程已结束，退出代码 0</code></pre><h2 id="统计一个字符在字符串出现的次数-如果不存在不会报错-会显示出现0次"><a href="#统计一个字符在字符串出现的次数-如果不存在不会报错-会显示出现0次" class="headerlink" title="统计一个字符在字符串出现的次数(如果不存在不会报错,会显示出现0次)"></a>统计一个字符在字符串出现的次数(如果不存在不会报错,会显示出现0次)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"hello world"</span></span><br><span class="line"><span class="comment"># 查看字符"l"  在字符串中出现的次数</span></span><br><span class="line">print(str.count(<span class="string">"l"</span>))</span><br><span class="line"><span class="comment"># 如果不存在则显示0次</span></span><br><span class="line">print(str.count(<span class="string">"a"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+3
+0
+
+进程已结束，退出代码 0</code></pre><h2 id="取出索引-如果不存在则报错"><a href="#取出索引-如果不存在则报错" class="headerlink" title="取出索引(如果不存在则报错)"></a>取出索引(如果不存在则报错)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"hello world"</span></span><br><span class="line">print(str.index(<span class="string">"d"</span>))</span><br><span class="line">print(str.index(<span class="string">"K"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+10
+Traceback (most recent call last):
+  File &quot;E:/程序代码/hexo/test.py&quot;, line 4, in &lt;module&gt;
+    print(str.index(&quot;K&quot;))
+ValueError: substring not found
+
+进程已结束，退出代码 1</code></pre><h2 id="字符串操作–判断类型"><a href="#字符串操作–判断类型" class="headerlink" title="字符串操作–判断类型"></a>字符串操作–判断类型</h2><p>判断字符串中是否只包含空格,如果只包含空格会显示True,否则打印false (\t \n \r都属于空格)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">space_str = <span class="string">" \t \n \r"</span></span><br><span class="line">print(space_str.isspace())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><p>判断字符串至少有一个字符并且所有字符都为字母或数字则返回True   （有一个空格或者符号都返还false）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alnum = <span class="string">"skill2"</span></span><br><span class="line">print(alnum.isalnum())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><p>判断字符串至少有一个字符并且所有字符都为字母则返回True   （有一个空格、数字或者符号都返还false）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alpha = <span class="string">"string"</span></span><br><span class="line">print(alpha.isalpha())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><p>判断字符串只包含数字则返还True</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">digit = <span class="string">"942868591"</span></span><br><span class="line">print(digit.isdigit())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><p>注：</p>
+<pre><code>isdigit   isdecimal  isnumeric    三个方法都不能判断小数
+isdigit 可以判断unicode字符串   例如：\u00b2      isnumeric  可以判断中文数字  例如：一千零一</code></pre><p>判断字符串是标题化的(每个单词的首字母大写)则返回 True  (单词首字母不是大写则返回false）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title = <span class="string">"Hello World"</span></span><br><span class="line">print(title.istitle())</span><br><span class="line">title1 = <span class="string">"Hello world"</span></span><br><span class="line">print(title1.istitle())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+False
+
+进程已结束，退出代码 0</code></pre><p>判断字符串全是小写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lower = <span class="string">"abc"</span></span><br><span class="line">print(lower.islower())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><p>判断字符串全是大写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">upper = <span class="string">"PWD"</span></span><br><span class="line">print(upper.isupper())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><h2 id="字符串操作–查找和替换"><a href="#字符串操作–查找和替换" class="headerlink" title="字符串操作–查找和替换"></a>字符串操作–查找和替换</h2><p>检查字符串师傅以na开头,是则返还True</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start = <span class="string">"name is xxx"</span></span><br><span class="line">print(start.startswith(<span class="string">"na"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><p>检查字符串是否是以xxx结束,是则返回True</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start = <span class="string">"name is xxx"</span></span><br><span class="line">print(start.endswith(<span class="string">"xxx"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+True
+
+进程已结束，退出代码 0</code></pre><p>检测 server 是否包含在 string 中，如果 start 和 end 指定范围，则检查是否包含在指定范围内，如果是返回开始的索引值，否则返回 -1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find = <span class="string">"all the servers is Ok and set ableConnect"</span></span><br><span class="line"><span class="comment">##查找find字符串中是否包含server</span></span><br><span class="line">print(find.find(<span class="string">"server"</span>))</span><br><span class="line"><span class="comment">##查找find字符串中是否包含server   开始索引0   结束索引20</span></span><br><span class="line">print(find.find(<span class="string">"server"</span>,<span class="number">0</span>,<span class="number">20</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+8
+8
+
+进程已结束，退出代码 0</code></pre><p>rfind()类似于find(),不过是从右边开始查找</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rfind = <span class="string">"all the servers is Ok and set ableConnect"</span></span><br><span class="line">print(rfind.rfind(<span class="string">"server"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+8
+
+进程已结束，退出代码 0</code></pre><p>index()和find()方法类型,不过如果str不在string中会报错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index = <span class="string">"all the servers is Ok and set ableConnect"</span></span><br><span class="line">print(index.index(<span class="string">"server"</span>))</span><br><span class="line">print(index.index(<span class="string">"problem"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+Traceback (most recent call last):
+8
+  File &quot;E:/程序代码/hexo/test.py&quot;, line 3, in &lt;module&gt;
+    print(index.index(&quot;problem&quot;))
+ValueError: substring not found
+
+进程已结束，退出代码 1</code></pre><p>把 string 中的 all 替换成 two，如果 num 指定，则替换不超过 num 次</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">replace = <span class="string">"all the servers is Ok and set ableConnect  all  all  all"</span></span><br><span class="line"><span class="comment">##把 string 中的 all 全部替换成 two</span></span><br><span class="line">print(replace.replace(<span class="string">"all"</span>,<span class="string">"two"</span>))</span><br><span class="line"><span class="comment">##把 string 中的前两个 all 替换成 two</span></span><br><span class="line">print(replace.replace(<span class="string">"all"</span>,<span class="string">"two"</span>,<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+two the servers is Ok and set ableConnect  two  two  two
+two the servers is Ok and set ableConnect  two  all  all
+
+进程已结束，退出代码 0</code></pre><h2 id="字符串操作–大小写转换"><a href="#字符串操作–大小写转换" class="headerlink" title="字符串操作–大小写转换"></a>字符串操作–大小写转换</h2><p>把字符串的第一个字符大写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">capitalize = <span class="string">"all the servers is Ok and set ableConnect"</span></span><br><span class="line">print(capitalize.capitalize())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+All the servers is ok and set ableconnect
+
+进程已结束，退出代码 0</code></pre><p>把字符串的每个单词首字母大写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">title = <span class="string">"all the servers is Ok and set aBleConnect"</span></span><br><span class="line">print(title.title())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+All The Servers Is Ok And Set Ableconnect
+
+进程已结束，退出代码 0</code></pre><p>转换 string 中所有大写字符为小写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lower = <span class="string">"All The Servers Is Ok And Set Ableconnect"</span></span><br><span class="line">print(lower.lower())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+all the servers is ok and set ableconnect
+
+进程已结束，退出代码 0</code></pre><p>转换 string 中所有小写字母为大写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">upper = <span class="string">"all the servers is ok and set ableconnect"</span></span><br><span class="line">print(upper.upper())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+ALL THE SERVERS IS OK AND SET ABLECONNECT
+
+进程已结束，退出代码 0</code></pre><p>翻转 string 中的大小写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">swapcase = <span class="string">"A b C d E f"</span></span><br><span class="line">print(swapcase.swapcase())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+a B c D e F
+
+进程已结束，退出代码 0</code></pre><h2 id="字符串操作–文本对齐"><a href="#字符串操作–文本对齐" class="headerlink" title="字符串操作–文本对齐"></a>字符串操作–文本对齐</h2><p>返回一个原字符串左对齐      例如str.ljust(width[, fillchar])      width是个数  fillchar是填充符 默认空格<br> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">just = <span class="string">"all the servers is Ok and set ableConnect"</span></span><br><span class="line"><span class="comment">## 49 意思就是加上原来的字符串 一共的长度  +为填充符</span></span><br><span class="line">print(just.ljust(<span class="number">49</span>,<span class="string">"+"</span>))</span><br></pre></td></tr></table></figure><br>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+all the servers is Ok and set ableConnect++++++++
+
+进程已结束，退出代码 0</code></pre><p>返回一个原字符串右对齐<br> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">just = <span class="string">"all the servers is Ok and set ableConnect"</span></span><br><span class="line">print(just.rjust(<span class="number">49</span>,<span class="string">"+"</span>))</span><br><span class="line">print(just.center(<span class="number">49</span>,<span class="string">"+"</span>))</span><br></pre></td></tr></table></figure><br>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+++++++++all the servers is Ok and set ableConnect
+++++all the servers is Ok and set ableConnect++++
+
+进程已结束，退出代码 0</code></pre><h2 id="字符串操作–去除空白字符"><a href="#字符串操作–去除空白字符" class="headerlink" title="字符串操作–去除空白字符"></a>字符串操作–去除空白字符</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"       all the servers is Ok and set ableConnect      "</span></span><br><span class="line">print(str)</span><br><span class="line"><span class="comment">##截掉 string 左边（开始）的空白字符</span></span><br><span class="line">print(str.lstrip())</span><br><span class="line"><span class="comment">##截掉 string 右边（开始）的空白字符</span></span><br><span class="line">print(str.rstrip())</span><br><span class="line"><span class="comment">##截掉 string 左右两边的空白字符</span></span><br><span class="line">print(str.strip())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+      all the servers is Ok and set ableConnect      
+all the servers is Ok and set ableConnect      
+      all the servers is Ok and set ableConnect
+all the servers is Ok and set ableConnect</code></pre><p>进程已结束，退出代码 0</p>
+<h2 id="字符串操作–拆分和连接"><a href="#字符串操作–拆分和连接" class="headerlink" title="字符串操作–拆分和连接"></a>字符串操作–拆分和连接</h2><p>把字符串 string 分成一个 3 元素的元组 (str前面, str, str后面)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">partition = <span class="string">"all the servers is Ok and set ableConnect"</span></span><br><span class="line">print(partition.partition(<span class="string">"the"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+(&apos;all &apos;, &apos;the&apos;, &apos; servers is Ok and set ableConnect&apos;)
+
+进程已结束，退出代码 0</code></pre><p>rpartition()类似于 partition() 方法，不过是从右边开始查找</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">partition = <span class="string">"all the and servers is Ok and set ableConnect"</span></span><br><span class="line">print(partition.rpartition(<span class="string">"and"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+(&apos;all the and servers is Ok &apos;, &apos;and&apos;, &apos; set ableConnect&apos;)
+
+进程已结束，退出代码 0</code></pre><p>string.split(str=””, num) | 以 str 为分隔符拆分 string，如果 num 有指定值，则仅分隔 num + 1 个子字符串，str 默认包含 ‘\r’, ‘\t’, ‘\n’ 和空格</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pome = <span class="string">"登鹤雀楼 \t  王之涣  \t  白日依山尽  \t \n  黄河入海流  \t  \t 欲穷千里目   \n  更上一层楼"</span></span><br><span class="line">print(pome)</span><br><span class="line">print(<span class="string">"-"</span>*<span class="number">50</span>)</span><br><span class="line">pome_list = pome.split()</span><br><span class="line">print(pome_list)</span><br><span class="line">print(<span class="string">"-"</span>*<span class="number">50</span>)</span><br><span class="line">lastpome = <span class="string">" "</span>.join(pome_list)</span><br><span class="line">print(lastpome)</span><br><span class="line">print(<span class="string">"-"</span>*<span class="number">50</span>)</span><br><span class="line">print(lastpome.replace(<span class="string">" "</span>,<span class="string">"\n"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+登鹤雀楼       王之涣        白日依山尽       
+  黄河入海流             欲穷千里目   
+  更上一层楼
+--------------------------------------------------
+[&apos;登鹤雀楼&apos;, &apos;王之涣&apos;, &apos;白日依山尽&apos;, &apos;黄河入海流&apos;, &apos;欲穷千里目&apos;, &apos;更上一层楼&apos;]
+--------------------------------------------------
+登鹤雀楼 王之涣 白日依山尽 黄河入海流 欲穷千里目 更上一层楼
+--------------------------------------------------
+登鹤雀楼
+王之涣
+白日依山尽
+黄河入海流
+欲穷千里目
+更上一层楼
+
+进程已结束，退出代码 0</code></pre><h2 id="字符串切片"><a href="#字符串切片" class="headerlink" title="字符串切片"></a>字符串切片</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">num_str = <span class="string">"0123456789"</span></span><br><span class="line"><span class="comment">##1、截取从2 - 5位置的字符串</span></span><br><span class="line">print(num_str[<span class="number">2</span>:<span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+2345
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##2、截取2 - 末尾的字符串</span><br><span class="line">print(num_str[2:])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+23456789
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##3、截取从开始 - 5 位置的字符串</span><br><span class="line">print(num_str[:6])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+012345
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##4、截取完整的字符串</span><br><span class="line">print(num_str[:])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+0123456789
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##5、从开始位置，每隔一个字符截取字符串</span><br><span class="line">print(num_str[::2])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+02468
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##6、从索引 1 开始，每隔一个取一个</span><br><span class="line">print(num_str[1::2])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+13579
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##7、截取从2 - 末尾 -1  的字符串</span><br><span class="line">print(num_str[2:-1])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+2345678
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##8、截取字符串末尾两个字符</span><br><span class="line">print(num_str[-2:])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+89
+
+进程已结束，退出代码 0</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##9、字符串的逆序</span><br><span class="line">print(num_str[-1::-1])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+9876543210
+
+进程已结束，退出代码 0</code></pre>
       
       <!-- reward -->
       
