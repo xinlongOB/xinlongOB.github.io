@@ -92,3 +92,38 @@ for i in range(2,20):
     19 是一个单数
 
     进程已结束，退出代码 0
+
+## 跳出当前循环和退出循环
+break退出循环
+```python
+for letter in "python":
+    if letter == "h":
+        break
+    print("当前字母 %s" % letter)
+```
+运行结果：
+
+    D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+    当前字母 p
+    当前字母 y
+    当前字母 t
+
+    进程已结束，退出代码 0
+
+continue跳出当前循环
+```python
+for letter in "python":
+    if letter == "h":
+        continue
+    print("当前字母 %s" % letter)
+```
+运行结果：
+
+    D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+    当前字母 p
+    当前字母 y
+    当前字母 t
+    当前字母 o
+    当前字母 n
+
+    进程已结束，退出代码 0
