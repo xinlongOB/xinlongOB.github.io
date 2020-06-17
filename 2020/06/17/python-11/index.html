@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">428</span>
+            <span class="post-count">575</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -165,6 +165,24 @@ Good bye
 17 是一个单数
 18 是一个双数
 19 是一个单数
+
+进程已结束，退出代码 0</code></pre><h2 id="跳出当前循环和退出循环"><a href="#跳出当前循环和退出循环" class="headerlink" title="跳出当前循环和退出循环"></a>跳出当前循环和退出循环</h2><p>break退出循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> letter <span class="keyword">in</span> <span class="string">"python"</span>:</span><br><span class="line">    <span class="keyword">if</span> letter == <span class="string">"h"</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    print(<span class="string">"当前字母 %s"</span> % letter)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+当前字母 p
+当前字母 y
+当前字母 t
+
+进程已结束，退出代码 0</code></pre><p>continue跳出当前循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> letter <span class="keyword">in</span> <span class="string">"python"</span>:</span><br><span class="line">    <span class="keyword">if</span> letter == <span class="string">"h"</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    print(<span class="string">"当前字母 %s"</span> % letter)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+当前字母 p
+当前字母 y
+当前字母 t
+当前字母 o
+当前字母 n
 
 进程已结束，退出代码 0</code></pre>
       
