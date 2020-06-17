@@ -150,3 +150,24 @@ print(name_list)   # 排序后打印
 
     进程已结束，退出代码 0
 
+## 打印列表中的数据
+```python
+alist = [10, 20, 30, 'bob', 'alice', [1,2,3]]
+# 打印最后一项
+print(alist[-1])
+# 因为最后一列是列表,列表还可以继续取下标
+print(alist[-1][-1])
+# 10 是否在列表中
+print(10 in alist)
+# 字符 "qq" 是否在列表中
+print("qq" in alist)
+```
+运行结果：
+
+    D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+    [1, 2, 3]
+    3
+    True
+    False
+
+    进程已结束，退出代码 0

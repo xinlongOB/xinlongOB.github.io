@@ -6,6 +6,17 @@ tags:
 categories: 开发
 date: 2020-05-26 17:01:34
 ---
+## print函数
+
+```python
+print('hello world!')
+	print('hello', 'world!')  # 逗号自动添加默认的分隔符：空格
+	print('hello' + 'world!')  # 加号表示字符拼接
+	print('hello', 'world', sep='***')  # 单词间用***分隔
+	print('#' * 50)  # *号表示重复50遍
+	print('how are you?', end='') # 默认print会打印回车，end=''表示不要回车
+```
+
 ## 双引号和单引号的作用
 
 ```python
