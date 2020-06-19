@@ -73,6 +73,10 @@ var _hmt = _hmt || [];
   <time datetime="2020-06-14T04:21:21.000Z" itemprop="datePublished">2020-06-14</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -80,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.2k</span>
+            <span class="post-count">3.1k</span>
         </span>
     </span>
 
@@ -89,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4 分钟</span>
+            <span class="post-count">12 分钟</span>
         </span>
     </span>
 </div>
@@ -166,8 +170,110 @@ return [表达式] 结束函数，选择性地返回一个值给调用方。不�
 温度为 36 
 湿度为 50 
 
-进程已结束，退出代码 0</code></pre><p>使用多个变量一次接受函数返回结果<br><br>如果函数返回的类型是元祖,希望单独处理元祖中的元素,可以使用多个变量一次接受函数的返回结果<br></p>
+进程已结束，退出代码 0</code></pre><p>使用多个变量一次接受函数返回结果<br><br>如果函数返回的类型是元祖,希望单独处理元祖中的元素,可以使用多个变量一次接受函数的返回结果<br><br>注意：使用多个遍历接收结果时,变量的个数和元祖中的元素个数保持一致</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">measure</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 测量温度和湿度</span></span><br><span class="line">    print(<span class="string">"测量开始..."</span>)</span><br><span class="line">    temp = <span class="number">36</span></span><br><span class="line">    wetness = <span class="number">50</span></span><br><span class="line">    print(<span class="string">"测量结束..."</span>)</span><br><span class="line">    <span class="keyword">return</span>  temp,wetness</span><br><span class="line">gl_wen,gl_shi = measure()</span><br><span class="line">print(<span class="string">"温度为 %d"</span> % gl_wen)</span><br><span class="line">print(<span class="string">"湿度为 %d"</span> % gl_shi)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+测量开始...
+测量结束...
+温度为 36
+湿度为 50
 
+进程已结束，退出代码 0</code></pre><p>在函数内部,针对参数使用赋值语句,不会修改到外部的实参变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num,num_list)</span>:</span></span><br><span class="line">    print(<span class="string">"函数内部的代码"</span>)</span><br><span class="line">    num = <span class="number">100</span></span><br><span class="line">    num_list= [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line">    print(num_list)</span><br><span class="line">    print(<span class="string">"函数执行完成"</span>)</span><br><span class="line"></span><br><span class="line">gl_num = <span class="number">99</span></span><br><span class="line">gl_list = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">demo(gl_num,gl_list)</span><br><span class="line">print(gl_num)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+函数内部的代码
+100
+[1, 2, 3]
+函数执行完成
+99
+[4, 5, 6]
+
+进程已结束，退出代码 0</code></pre><p>使用方法修改数据内容,会影响到外部的数据 (此修改不是重新定义变量,而是直接修改append或者是remove)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num_list)</span>:</span></span><br><span class="line">    print(<span class="string">"函数内部的代码"</span>)</span><br><span class="line">    gl_list.append(<span class="string">"999"</span>)</span><br><span class="line">    <span class="comment"># 在列表中新增999</span></span><br><span class="line">    <span class="comment"># 使用方法修改了数据的内容,会影响到外部的数据</span></span><br><span class="line"></span><br><span class="line">    print(num_list)</span><br><span class="line">    print(<span class="string">"函数执行完成"</span>)</span><br><span class="line"></span><br><span class="line">gl_list = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">print(gl_list)</span><br><span class="line">demo(gl_list)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[4, 5, 6]
+函数内部的代码
+[4, 5, 6, &apos;999&apos;]
+函数执行完成
+[4, 5, 6, &apos;999&apos;]
+
+进程已结束，退出代码 0</code></pre><p>列表变量使用 + 不会做相加在赋值的操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num,num_list)</span>:</span></span><br><span class="line">    print(<span class="string">"函数开始"</span>)</span><br><span class="line">    <span class="comment"># num += num  就是 num = num + num 数字先相加在赋值</span></span><br><span class="line">    num += num</span><br><span class="line"></span><br><span class="line">    <span class="comment"># num_list = num_list + num_list</span></span><br><span class="line">    <span class="comment"># 列表变量使用 + 不会做相加在赋值的操作</span></span><br><span class="line">    <span class="comment"># 本质是在调用列表的extend方法(增加另一个列表内容到此列表中  list.extend(list))</span></span><br><span class="line">    <span class="comment"># num_list += num_list 这样相当于调用extend方法会修改外部变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#  num_list = num_list + num_list  这样只是赋值  不会修改</span></span><br><span class="line">    num_list = num_list + num_list</span><br><span class="line">    print(num)</span><br><span class="line">    print(num_list)</span><br><span class="line">    print(<span class="string">"函数完成"</span>)</span><br><span class="line"></span><br><span class="line">gl_num = <span class="number">9</span></span><br><span class="line">gl_list = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">demo(gl_num,gl_list)</span><br><span class="line">print(gl_num)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+函数开始
+18
+[1, 2, 3, 1, 2, 3]
+函数完成
+9
+[1, 2, 3]
+
+进程已结束，退出代码 0</code></pre><h2 id="缺省参数"><a href="#缺省参数" class="headerlink" title="缺省参数"></a>缺省参数</h2><p>缺省参数,就是讲常见的值设为参数的缺省值,从而简化函数的调用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">gl_list = [<span class="number">6</span>,<span class="number">3</span>,<span class="number">9</span>]</span><br><span class="line"><span class="comment">#默认按照升序排序</span></span><br><span class="line">gl_list.sort()</span><br><span class="line">print(gl_list)</span><br><span class="line"><span class="comment">##如果需要降序排序，需要执行reverse参数</span></span><br><span class="line">gl_list.sort(reverse=<span class="literal">True</span>)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[3, 6, 9]
+[9, 6, 3]
+
+进程已结束，退出代码 0</code></pre><p>定义函数指定缺省参数,需要在末尾指定,不然后面无法写参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_info</span><span class="params">(name,gender=True)</span>:</span></span><br><span class="line">    <span class="comment"># :param name：同学姓名</span></span><br><span class="line">    <span class="comment"># :param gender：True 男生 False 女生</span></span><br><span class="line">    <span class="comment"># :return</span></span><br><span class="line">    gender_test = <span class="string">"男生"</span>  <span class="comment"># 默认参数为男生</span></span><br><span class="line">    print(gender)</span><br><span class="line">    <span class="comment"># if gender != True:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> gender:    <span class="comment"># 如果gender 不等于True  则赋值 gender_test = 女生</span></span><br><span class="line">        gender_test = <span class="string">"女生"</span></span><br><span class="line">    print(<span class="string">"%s 是 %s "</span> % (name,gender_test))</span><br><span class="line"></span><br><span class="line"><span class="comment">#提示：在指定缺省参数的默认值时，应该使用最常见的值作为默认值</span></span><br><span class="line">print_info(<span class="string">"小明"</span>)</span><br><span class="line">print_info(<span class="string">"小红"</span>,<span class="string">"女"</span>)</span><br><span class="line">print_info(<span class="string">"小明"</span>)</span><br><span class="line">print_info(<span class="string">"老王"</span>)</span><br><span class="line">print_info(<span class="string">"小美"</span>,<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+True
+小明 是 男生 
+女
+小红 是 男生 
+True
+小明 是 男生 
+True
+老王 是 男生 
+False
+小美 是 女生 
+
+进程已结束，退出代码 0</code></pre><h2 id="多值参数"><a href="#多值参数" class="headerlink" title="多值参数"></a>多值参数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num,*nums,**person)</span>:</span></span><br><span class="line">    print(num)</span><br><span class="line">    print(nums)</span><br><span class="line">    print(person)</span><br><span class="line"></span><br><span class="line">demo(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,name = <span class="string">"小明"</span>,age = <span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2
+(3, 4, 5)
+{&apos;name&apos;: &apos;小明&apos;, &apos;age&apos;: 18}
+
+进程已结束，退出代码 0</code></pre><p>多值参数–数字累加<br><em>args:args中保存的是没有利用的所有多余参数，保存方式为元组，*</em>args即输入多余参数有变量名，就保存在**args中保存，保存方式为字典</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(*args)</span>:</span>    <span class="comment"># 传递一个元祖</span></span><br><span class="line">    num = <span class="number">0</span>      <span class="comment"># 定义 num = 0</span></span><br><span class="line">    print(args)</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span>  args:     <span class="comment"># 循环相加</span></span><br><span class="line">        num += n</span><br><span class="line">    <span class="keyword">return</span> num          <span class="comment"># 返还相加后的数</span></span><br><span class="line">result = sum_numbers(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)   <span class="comment"># 调用函数传递元祖 赋值给result</span></span><br><span class="line">print(result)    <span class="comment">#  打印结果</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(1, 2, 3, 4, 5)
+15
+
+进程已结束，退出代码 0</code></pre><h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p>递归就是函数内部调用自己的函数被称之为递归</p>
+<pre><code>1、必须有一个明确的结束条件
+2、每次进入更深一层递归时，问题规模(计算量)相比上次递归都应有所减少
+3、递归效率不高，递归层次过多会导致栈溢出（在计算机中，函数调用是通过栈（stack）这种数据结构实现的，每当进入一个函数调用，栈就会加一层栈帧，每当函数返回，栈就会减一层栈帧。
+    由于栈的大小不是无限的，所以，递归调用的次数过多，会导致栈溢出
+python默认的层次是1000(传递的数大于1000就会报错)    centos系统是根据limit决定</code></pre><p>递归还有两个名词用来概括递归实现的过程：</p>
+<pre><code>递推：像上边递归实现所拆解，递归每一次都是基于上一次进行下一次的执行，这叫递推
+
+回溯：则是在遇到终止条件，则从最后往回返一级一级的把值返回来，这叫回溯</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(num)</span>:</span></span><br><span class="line">    print(num)</span><br><span class="line">    <span class="comment">#递归的出口，当参数满足某个条件，不在执行参数</span></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="comment">#递归的特点就是自己调用自己</span></span><br><span class="line">    sum_numbers(num - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">sum_numbers(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+3
+2
+1
+
+进程已结束，退出代码 0</code></pre><p>递归是一个编程技巧,在处理不确定的循环条件时是格外有用,例如：遍历整个文件目录的结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="comment"># 1、定义出口</span></span><br><span class="line">    <span class="comment">#递归的出口，当参数满足某个条件，不在执行参数</span></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="comment"># 2、数字累加 num + (1...num -1)</span></span><br><span class="line">    <span class="comment"># 假设sum_numbers 能够正确的处理 1...num -1</span></span><br><span class="line">    temp = sum_numbers(num - <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 两个数字相加</span></span><br><span class="line">    <span class="keyword">return</span> num + temp</span><br><span class="line"></span><br><span class="line">result = sum_numbers(<span class="number">100</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+5050
+
+进程已结束，退出代码 0</code></pre><p>示例1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1！+2！+3！+4！+5！+...+n!</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="string">''' n表示要求的数的阶乘 '''</span></span><br><span class="line">    <span class="keyword">if</span> n==<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> n <span class="comment"># 阶乘为1的时候，结果为1,返回结果并退出</span></span><br><span class="line">    n = n*factorial(n<span class="number">-1</span>) <span class="comment"># n! = n*(n-1)!</span></span><br><span class="line">    <span class="keyword">return</span> n  <span class="comment"># 返回结果并退出</span></span><br><span class="line">res = factorial(<span class="number">5</span>) <span class="comment">#调用函数，并将返回的结果赋给res</span></span><br><span class="line">print(res) <span class="comment"># 打印结果</span></span><br></pre></td></tr></table></figure>
+<p>示例2：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1，1，2，3，5，8，13，21，34，55，试判断数列第十五个数是哪个？</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fabonacci</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="string">''' n为斐波那契数列 '''</span></span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">2</span>:</span><br><span class="line">        <span class="string">''' 数列前两个数都是1 '''</span></span><br><span class="line">        v = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> v <span class="comment"># 返回结果，并结束函数</span></span><br><span class="line">    v = fabonacci(n<span class="number">-1</span>)+fabonacci(n<span class="number">-2</span>) <span class="comment"># 由数据的规律可知，第三个数的结果都是前两个数之和，所以进行递归叠加</span></span><br><span class="line">    <span class="keyword">return</span> v  <span class="comment"># 返回结果，并结束函数</span></span><br><span class="line">print(fabonacci(<span class="number">15</span>)) <span class="comment"># 610    调用函数并打印结果</span></span><br></pre></td></tr></table></figure>
+<p>示例3：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">data = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">13</span>,<span class="number">56</span>,<span class="number">123</span>,<span class="number">345</span>,<span class="number">1024</span>,<span class="number">3223</span>,<span class="number">6688</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dichotomy</span><span class="params">(min,max,d,n)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    min表示有序列表头部索引</span></span><br><span class="line"><span class="string">    max表示有序列表尾部索引</span></span><br><span class="line"><span class="string">    d表示有序列表</span></span><br><span class="line"><span class="string">    n表示需要寻找的元素</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    mid = (min+max)//<span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> mid==<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'None'</span></span><br><span class="line">    <span class="keyword">elif</span> d[mid]&lt;n:</span><br><span class="line">        print(<span class="string">'向右侧找！'</span>)</span><br><span class="line">        <span class="keyword">return</span> dichotomy(mid,max,d,n)</span><br><span class="line">    <span class="keyword">elif</span> d[mid]&gt;n:</span><br><span class="line">        print(<span class="string">'向左侧找！'</span>)</span><br><span class="line">        <span class="keyword">return</span> dichotomy(min,mid,d,n)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'找到了%s'</span>%d[mid])</span><br><span class="line">        <span class="keyword">return</span> </span><br><span class="line">res = dichotomy(<span class="number">0</span>,len(data),data,<span class="number">222</span>)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       

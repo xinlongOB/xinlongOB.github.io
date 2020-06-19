@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-17T11:17:41.906Z</updated>
+  <updated>2020-06-19T11:31:43.120Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,64 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>python基础之常用模块-os</title>
+    <link href="http://yoursite.com/2020/06/18/python-13/"/>
+    <id>http://yoursite.com/2020/06/18/python-13/</id>
+    <published>2020-06-18T10:06:21.000Z</published>
+    <updated>2020-06-19T11:31:43.120Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;列出指定目录下的所有文件&quot;&gt;&lt;a href=&quot;#列出指定目录下的所有文件&quot; class=&quot;headerlink&quot; title=&quot;列出指定目录下的所有文件&quot;&gt;&lt;/a&gt;列出指定目录下的所有文件&lt;/h2&gt;&lt;figure class=&quot;highlight
+        
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python基础之模块导入</title>
+    <link href="http://yoursite.com/2020/06/18/python-12/"/>
+    <id>http://yoursite.com/2020/06/18/python-12/</id>
+    <published>2020-06-18T08:59:23.000Z</published>
+    <updated>2020-06-18T09:55:53.913Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;模块的概念&quot;&gt;&lt;a href=&quot;#模块的概念&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
   
   <entry>
     <title>python基础之for循环</title>
@@ -166,7 +224,7 @@
     <link href="http://yoursite.com/2020/06/14/python-7/"/>
     <id>http://yoursite.com/2020/06/14/python-7/</id>
     <published>2020-06-14T04:21:21.000Z</published>
-    <updated>2020-06-17T07:23:58.231Z</updated>
+    <updated>2020-06-18T08:59:46.853Z</updated>
     
     <summary type="html">
     
@@ -181,6 +239,8 @@
     </summary>
     
     
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
     
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
@@ -193,7 +253,7 @@
     <link href="http://yoursite.com/2020/06/14/python-6/"/>
     <id>http://yoursite.com/2020/06/14/python-6/</id>
     <published>2020-06-14T03:45:15.000Z</published>
-    <updated>2020-06-17T07:31:54.625Z</updated>
+    <updated>2020-06-18T09:00:19.232Z</updated>
     
     <summary type="html">
     
@@ -209,6 +269,8 @@
     </summary>
     
     
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
     
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
@@ -221,7 +283,7 @@
     <link href="http://yoursite.com/2020/06/14/python-5/"/>
     <id>http://yoursite.com/2020/06/14/python-5/</id>
     <published>2020-06-14T03:10:59.000Z</published>
-    <updated>2020-06-17T07:23:58.230Z</updated>
+    <updated>2020-06-18T09:00:09.205Z</updated>
     
     <summary type="html">
     
@@ -235,6 +297,8 @@
     
     </summary>
     
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
     
     
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
@@ -295,9 +359,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
@@ -532,64 +596,6 @@
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
       <category term="jenkins" scheme="http://yoursite.com/tags/jenkins/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nodejs之事件监听</title>
-    <link href="http://yoursite.com/2020/05/30/nodejs5/"/>
-    <id>http://yoursite.com/2020/05/30/nodejs5/</id>
-    <published>2020-05-30T06:14:59.000Z</published>
-    <updated>2020-06-16T06:17:10.808Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;事件概述&quot;&gt;&lt;a href=&quot;#事件概述&quot; class=&quot;headerlink&quot; title=&quot;事件概述&quot;&gt;&lt;/a&gt;事件概述&lt;/h2&gt;&lt;p&gt;大多数 Node.js 核心 API
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
-      <category term="nodejs" scheme="http://yoursite.com/tags/nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nodejs之基础函数</title>
-    <link href="http://yoursite.com/2020/05/30/nodejs4/"/>
-    <id>http://yoursite.com/2020/05/30/nodejs4/</id>
-    <published>2020-05-30T01:44:42.000Z</published>
-    <updated>2020-06-06T06:19:18.282Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;函数&quot;&gt;&lt;a href=&quot;#函数&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
-      <category term="nodejs" scheme="http://yoursite.com/tags/nodejs/"/>
     
   </entry>
   

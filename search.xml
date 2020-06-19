@@ -1,6 +1,395 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>python基础之常用模块-os</title>
+    <url>/2020/06/18/python-13/</url>
+    <content><![CDATA[<h2 id="列出指定目录下的所有文件"><a href="#列出指定目录下的所有文件" class="headerlink" title="列出指定目录下的所有文件"></a>列出指定目录下的所有文件</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))  <span class="comment"># 列出指定目录下的所有文件并打印</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;test.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>)) </span><br><span class="line">os.remove(<span class="string">"pwd.py"</span>)  <span class="comment"># 删除pwd.py文件</span></span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;pwd.py&apos;, &apos;test.py&apos;, &apos;test2.py&apos;]
+[&apos;test.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.unlink(<span class="string">"pwd.py"</span>)  <span class="comment"># 删除pwd.py文件   与remove相同</span></span><br></pre></td></tr></table></figure>
+<h2 id="重命名文件"><a href="#重命名文件" class="headerlink" title="重命名文件"></a>重命名文件</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br><span class="line">os.rename(<span class="string">"test.py"</span>,<span class="string">"numcount.py"</span>)  <span class="comment"># (原来名字,新名字)</span></span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;test.py&apos;, &apos;test2.py&apos;]
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="改变当前工作目录"><a href="#改变当前工作目录" class="headerlink" title="改变当前工作目录"></a>改变当前工作目录</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br><span class="line">os.chdir(<span class="string">"../python"</span>)  <span class="comment"># 切换工作目录至python下</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+[&apos;video.html&apos;,  &apos;自动偷取.js&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="获取当前文件路径"><a href="#获取当前文件路径" class="headerlink" title="获取当前文件路径"></a>获取当前文件路径</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo
+
+进程已结束，退出代码 0</code></pre><h2 id="新建目录"><a href="#新建目录" class="headerlink" title="新建目录"></a>新建目录</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.mkdir(<span class="string">"../hexo/mkdir"</span>)  <span class="comment"># 在hexo目录下创建名为mkdir的目录</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;mkdir&apos;, &apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除空目录-删除非空目录-使用shutil-rmtree"><a href="#删除空目录-删除非空目录-使用shutil-rmtree" class="headerlink" title="删除空目录(删除非空目录,使用shutil.rmtree())"></a>删除空目录(删除非空目录,使用shutil.rmtree())</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.rmdir(<span class="string">"../hexo/mkdir"</span>)   <span class="comment"># 删除名为mkdir的空目录</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="创建多级目录"><a href="#创建多级目录" class="headerlink" title="创建多级目录"></a>创建多级目录</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.makedirs(<span class="string">"../hexo/mkdir/screen"</span>)  <span class="comment"># 创建目录mkdir 并在mkdir下创建screen</span></span><br><span class="line">print(os.listdir(<span class="string">"mkdir"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;screen&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除多级目录"><a href="#删除多级目录" class="headerlink" title="删除多级目录"></a>删除多级目录</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.removedirs(<span class="string">"../hexo/mkdir/screen"</span>)  <span class="comment"># 删除递归目录</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="获取文件属性"><a href="#获取文件属性" class="headerlink" title="获取文件属性"></a>获取文件属性</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>))   <span class="comment"># 获取文件属性并打印</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+os.stat_result(st_mode=33206, st_ino=17732923533531673, st_dev=1744964457, st_nlink=1, st_uid=0, st_gid=0, st_size=171, st_atime=1592297075, st_mtime=1592297075, st_ctime=1591942241)
+
+进程已结束，退出代码 0</code></pre><h2 id="修改文件权限"><a href="#修改文件权限" class="headerlink" title="修改文件权限"></a>修改文件权限</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line"><span class="keyword">import</span> stat   <span class="comment"># 权限模块</span></span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mode)</span><br><span class="line">print(oct(os.stat(<span class="string">"numcount.py"</span>).st_mode)[<span class="number">-3</span>:])</span><br><span class="line">os.chmod(<span class="string">"numcount.py"</span>,stat.S_IWRITE)   </span><br><span class="line">print(oct(os.stat(<span class="string">"numcount.py"</span>).st_mode)[<span class="number">-3</span>:])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+33060
+444
+666
+
+进程已结束，退出代码 0</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 常用权限</span></span><br><span class="line">stat.S_ISVTX: Save text image after execution. 在执行之后保存文字和图片</span><br><span class="line">stat.S_IREAD: Read by owner. 对于拥有者读的权限</span><br><span class="line">stat.S_IWRITE: Write by owner. 对于拥有者写的权限</span><br><span class="line">stat.S_IEXEC: Execute by owner. 对于拥有者执行的权限</span><br><span class="line">stat.S_IRWXU: Read, write, <span class="keyword">and</span> execute by owner. 对于拥有者读写执行的权限</span><br><span class="line">stat.S_IRUSR: Read by owner. 对于拥有者读的权限</span><br><span class="line">stat.S_IWUSR: Write by owner. 对于拥有者写的权限</span><br><span class="line">stat.S_IXUSR: Execute by owner. 对于拥有者执行的权限</span><br><span class="line">stat.S_IRWXG: Read, write, <span class="keyword">and</span> execute by group. 对于同组的人读写执行的权限</span><br><span class="line">stat.S_IRGRP: Read by group. 对于同组读的权限</span><br><span class="line">stat.S_IWGRP: Write by group. 对于同组写的权限</span><br><span class="line">stat.S_IXGRP: Execute by group. 对于同组执行的权限</span><br><span class="line">stat.S_IRWXO: Read, write, <span class="keyword">and</span> execute by others. 对于其他组读写执行的权限</span><br><span class="line">stat.S_IROTH: Read by others. 对于其他组读的权限</span><br><span class="line">stat.S_IWOTH: Write by others. 对于其他组写的权限</span><br><span class="line">stat.S_IXOTH: Execute by others. 对于其他组执行的权限</span><br></pre></td></tr></table></figure>
+<h2 id="修改文件时间戳"><a href="#修改文件时间戳" class="headerlink" title="修改文件时间戳"></a>修改文件时间戳</h2><p>参数</p>
+<pre><code>path -- 文件路径
+
+times -- 如果时间是 None, 则文件的访问和修改设为当前时间 。 否则, 时间是一个 2-tuple数字, (atime, mtime) 用来分别作为访问和修改的时间。</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime)  <span class="comment">#  打印修改前时间戳</span></span><br><span class="line">os.utime(<span class="string">"numcount.py"</span>,<span class="literal">None</span>)   <span class="comment"># 将时间戳修改为当前时间</span></span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime)</span><br><span class="line">print(time.time())    <span class="comment"># 查看当前时间戳</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime) <span class="comment">#  打印修改前时间戳</span></span><br><span class="line">os.utime(<span class="string">"numcount.py"</span>,(<span class="number">1592534641</span>,<span class="number">1592534641</span>))  <span class="comment"># 将时间戳修改为指定时间</span></span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime)</span><br><span class="line">print(time.time())</span><br></pre></td></tr></table></figure>
+<h2 id="执行操作系统命令"><a href="#执行操作系统命令" class="headerlink" title="执行操作系统命令"></a>执行操作系统命令</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os       <span class="comment"># 导入模块</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.system(<span class="string">"ls"</span>)    <span class="comment"># 执行ls操作</span></span><br><span class="line">db              nohup.out                 update.js  find_date.sh    qq.sh                </span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.system(<span class="string">"pwd"</span>)   <span class="comment"># 执行pwd操作</span></span><br><span class="line">/home/sgsm</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h2 id="os-path模块"><a href="#os-path模块" class="headerlink" title="os.path模块"></a>os.path模块</h2><p>os.path.split(filename) 将文件路径和文件名分割(会将最后一个目录作为文件名而分离)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.split(<span class="string">"numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(&apos;&apos;, &apos;numcount.py&apos;)
+
+进程已结束，退出代码 0</code></pre><p>os.path.splitext(filename) 将文件路径和文件扩展名分割成一个元组</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.splitext(<span class="string">"numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(&apos;numcount&apos;, &apos;.py&apos;)
+
+进程已结束，退出代码 0</code></pre><p>os.path.dirname(filename) 返回文件路径的目录部分</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))  <span class="comment"># 查看文件的绝对路径 </span></span><br><span class="line">print(os.path.dirname(<span class="string">"E:\资料\python\hexo\\test2.py"</span>))   <span class="comment"># 因为\t是特殊符号所以需要转义</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo
+
+进程已结束，退出代码 0</code></pre><p>os.path.basename(filename) 返回文件路径的文件名部分</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.basename(<span class="string">"E:\资料\python\hexo\\test2.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+test2.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.join(dirname,basename) 将文件路径和文件名凑成完整文件路径</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.join(<span class="string">"E:\资料\python\hexo\\test2.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo\test2.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.abspath(name) 获得绝对路径   (<strong>file</strong>) 代表当前文件</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.abspath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.splitunc(path) 把路径分割为挂载点和文件名</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.splitunc(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+(&apos;&apos;, &apos;E:\\资料\\python\\hexo\\numcount.py&apos;)
+
+进程已结束，退出代码 0</code></pre><p>os.path.normpath(path) 规范path字符串形式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.normpath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.exists() 判断文件或目录是否存在</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.exists(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.isabs() 如果path是绝对路径，返回True</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os </span><br><span class="line">print(os.path.isabs(<span class="string">"../numcount.py"</span>))     <span class="comment"># 相对路径</span></span><br><span class="line">print(os.path.isabs(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))  <span class="comment"># 绝对路径</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.realpath(path) #返回path的真实路径  (realpath 返回的是 使用软链 的真实地址   abspath 返回目标地址)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(<span class="string">"numcount.py"</span>))</span><br><span class="line">print(os.path.realpath(<span class="string">"numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\numcount.py
+E:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.relpath(path[, start]) #从start开始计算相对路径 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.relpath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>, <span class="string">"E:\资料"</span>))  <span class="comment"># 从"E:\资料"开始计算</span></span><br><span class="line">print(os.path.relpath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>, <span class="string">""</span>))  <span class="comment"># 如果不指定 默认从当前位置计算</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+python\hexo\numcount.py
+numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.normcase(path) #转换path的大小写和斜杠</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.normcase(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+e:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.isdir() 判断name是不是一个目录，name不是目录就返回false</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.isdir(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.isdir(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.isfile() 判断name是不是一个文件，不存在返回false</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.isfile(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.isfile(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+True
+False
+
+进程已结束，退出代码 0</code></pre><p>os.path.islink() 判断文件是否连接文件,返回boolean</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.islink(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.islink(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+False
+
+进程已结束，退出代码 0</code></pre><p>os.path.ismount() 指定路径是否存在且为一个挂载点，返回boolean</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.ismount(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.ismount(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+False
+
+进程已结束，退出代码 0</code></pre><p>os.path.samefile() 是否相同路径的文件，返回boolean</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.samefile(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>,<span class="string">"E:\资料\python\hexo"</span>))</span><br><span class="line">print(os.path.samefile(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>,<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.getatime() 返回最近访问时间 浮点型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getatime(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592534641.0
+
+进程已结束，退出代码 0</code></pre><p>os.path.getmtime() 返回上一次修改时间 浮点型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getmtime(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592534641.0
+
+进程已结束，退出代码 0</code></pre><p>os.path.getctime() 返回文件创建时间 浮点型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getctime(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1591942241.7330246
+
+进程已结束，退出代码 0</code></pre><p>os.path.getsize() 返回文件大小 字节单位</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getsize(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+171
+
+进程已结束，退出代码 0</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.path.commonprefix(list) <span class="comment">#返回list(多个路径)中，所有path共有的最长的路径</span></span><br><span class="line">os.path.lexists <span class="comment">#路径存在则返回True,路径损坏也返回True</span></span><br><span class="line">os.path.expanduser(path) <span class="comment">#把path中包含的”~”和”~user”转换成用户目录</span></span><br><span class="line">os.path.expandvars(path) <span class="comment">#根据环境变量的值替换path中包含的”$name”和”$&#123;name&#125;”</span></span><br><span class="line">os.path.sameopenfile(fp1, fp2) <span class="comment">#判断fp1和fp2是否指向同一文件</span></span><br><span class="line">os.path.samestat(stat1, stat2) <span class="comment">#判断stat tuple stat1和stat2是否指向同一个文件</span></span><br><span class="line">os.path.splitdrive(path) <span class="comment">#一般用在windows下，返回驱动器名和路径组成的元组</span></span><br><span class="line">os.path.walk(path, visit, arg) <span class="comment">#遍历path，给每个path执行一个函数详细见手册</span></span><br><span class="line">os.path.supports_unicode_filenames() 设置是否支持unicode路径名</span><br></pre></td></tr></table></figure>
+
+<h2 id="stat模块"><a href="#stat模块" class="headerlink" title="stat模块"></a>stat模块</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">描述os.stat()返回的文件属性列表中各值的意义</span><br><span class="line">fileStats = os.stat(path) 获取到的文件属性列表</span><br><span class="line">fileStats[stat.ST_MODE] 获取文件的模式</span><br><span class="line">fileStats[stat.ST_SIZE] 文件大小</span><br><span class="line">fileStats[stat.ST_MTIME] 文件最后修改时间</span><br><span class="line">fileStats[stat.ST_ATIME] 文件最后访问时间</span><br><span class="line">fileStats[stat.ST_CTIME] 文件创建时间</span><br><span class="line">stat.S_ISDIR(fileStats[stat.ST_MODE]) 是否目录</span><br><span class="line">stat.S_ISREG(fileStats[stat.ST_MODE]) 是否一般文件</span><br><span class="line">stat.S_ISLNK(fileStats[stat.ST_MODE]) 是否连接文件</span><br><span class="line">stat.S_ISSOCK(fileStats[stat.ST_MODE]) 是否COCK文件</span><br><span class="line">stat.S_ISFIFO(fileStats[stat.ST_MODE]) 是否命名管道</span><br><span class="line">stat.S_ISBLK(fileStats[stat.ST_MODE]) 是否块设备</span><br><span class="line">stat.S_ISCHR(fileStats[stat.ST_MODE]) 是否字符设置</span><br></pre></td></tr></table></figure>
+
+<h2 id="sys模块"><a href="#sys模块" class="headerlink" title="sys模块"></a>sys模块</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sys.argv 命令行参数List，第一个元素是程序本身路径 </span><br><span class="line">sys.path 返回模块的搜索路径，初始化时使用PYTHONPATH环境变量的值 </span><br><span class="line">sys.modules.keys() 返回所有已经导入的模块列表</span><br><span class="line">sys.modules 返回系统导入的模块字段，key是模块名，value是模块 </span><br><span class="line">sys.exc_info() 获取当前正在处理的异常类,exc_type、exc_value、exc_traceback当前处理的异常详细信息</span><br><span class="line">sys.exit(n) 退出程序，正常退出时exit(<span class="number">0</span>)</span><br><span class="line">sys.hexversion 获取Python解释程序的版本值，<span class="number">16</span>进制格式如：<span class="number">0x020403F0</span></span><br><span class="line">sys.version 获取Python解释程序的版本信息</span><br><span class="line">sys.platform 返回操作系统平台名称</span><br><span class="line">sys.stdout 标准输出</span><br><span class="line">sys.stdout.write(‘aaa‘) 标准输出内容</span><br><span class="line">sys.stdout.writelines() 无换行输出</span><br><span class="line">sys.stdin 标准输入</span><br><span class="line">sys.stdin.read() 输入一行</span><br><span class="line">sys.stderr 错误输出</span><br><span class="line">sys.exc_clear() 用来清除当前线程所出现的当前的或最近的错误信息 </span><br><span class="line">sys.exec_prefix 返回平台独立的python文件安装的位置 </span><br><span class="line">sys.byteorder 本地字节规则的指示器，big-endian平台的值是‘big‘,little-endian平台的值是‘little‘ </span><br><span class="line">sys.copyright 记录python版权相关的东西 </span><br><span class="line">sys.api_version 解释器的C的API版本 </span><br><span class="line">sys.version_info ‘final‘表示最终,也有‘candidate‘表示候选，表示版本级别，是否有后继的发行 </span><br><span class="line">sys.getdefaultencoding() 返回当前你所用的默认的字符编码格式 </span><br><span class="line">sys.getfilesystemencoding() 返回将Unicode文件名转换成系统文件名的编码的名字 </span><br><span class="line">sys.builtin_module_names Python解释器导入的内建模块列表 </span><br><span class="line">sys.executable Python解释程序路径 </span><br><span class="line">sys.getwindowsversion() 获取Windows的版本 </span><br><span class="line">sys.stdin.readline() 从标准输入读一行，sys.stdout.write(“a”) 屏幕输出a</span><br><span class="line">sys.setdefaultencoding(name) 用来设置当前默认的字符编码(详细使用参考文档) </span><br><span class="line">sys.displayhook(value) 如果value非空，这个函数会把他输出到sys.stdout(详细使用参考文档)</span><br></pre></td></tr></table></figure>
+
+<h2 id="datetime-date-time模块"><a href="#datetime-date-time模块" class="headerlink" title="datetime,date,time模块"></a>datetime,date,time模块</h2><p>datetime.date.today() 本地日期对象,(用str函数可得到它的字面表示(2014-03-24))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">now = datetime.date.today()</span><br><span class="line">print(now)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.isoformat(obj) 当前[年-月-日]字符串表示(2014-03-24)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.today()</span><br><span class="line">print(datetime.date.isoformat(time))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.fromtimestamp() 返回一个日期对象，参数是时间戳,返回 [年-月-日]</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-18
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.weekday(obj) 返回一个日期对象的星期数,周一是0</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time.weekday())    <span class="comment">#  打印当前时间的星期数   周一是0</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+3
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.isoweekday(obj) 返回一个日期对象的星期数,周一是1</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time.isoweekday())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+4
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.isocalendar(obj) 把日期对象返回一个带有年 第几周 周几的元组</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.today()</span><br><span class="line">print(time.isocalendar())</span><br><span class="line">print(datetime.date.isocalendar(time))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(2020, 25, 5)
+(2020, 25, 5)
+
+进程已结束，退出代码 0</code></pre><h2 id="datetime对象："><a href="#datetime对象：" class="headerlink" title="datetime对象："></a>datetime对象：</h2><p>datetime.datetime.today() 返回一个包含本地时间(含微秒数)的datetime对象 2014-03-24 23:31:50.419000</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.today()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19 17:58:32.643581
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.now([tz]) 返回指定时区的datetime对象   默认当前时区 2014-03-24 23:31:50.419000</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.now()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19 18:01:00.380030
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.utcnow() 返回一个零时区的datetime对象   </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.utcnow()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19 10:03:02.280002
+
+进程已结束，退出代码 0</code></pre><p>datetime.fromtimestamp(timestamp[,tz]) 按时间戳返回一个datetime对象，可指定时区,可用于strftime转换为日期表示 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-18 20:00:00
+
+进程已结束，退出代码 0</code></pre><p>datetime.utcfromtimestamp(timestamp) 按时间戳返回一个UTC-datetime对象</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.utcfromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-18 12:00:00
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.strptime(‘2014-03-16 12:21:21‘,”%Y-%m-%d %H:%M:%S”) 将字符串转为datetime对象<br><br>可以自定义格式     就是将时间戳转换成你想要的时间格式<br></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.strptime(<span class="string">"2020-05-01 10:00:00"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-05-01 10:00:00
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.strftime(datetime.datetime.now(), ‘%Y%m%d %H%M%S‘) 将datetime对象转换为str表示形式<br><br>可以自定义格式     就是将时间戳转换成你想要的时间格式<br></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time.strftime(<span class="string">"%Y%m%d %H%M%S"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+20200618 200000
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.today().timetuple() 转换为时间戳datetime元组对象，可用于转换时间戳</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.today(<span class="number">1592481600</span>)</span><br><span class="line">print(time.timetuple())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=18, tm_hour=20, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=170, tm_isdst=-1)
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.now().timetuple()</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.now()</span><br><span class="line">print(time.timetuple())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=15, tm_sec=6, tm_wday=4, tm_yday=171, tm_isdst=-1)
+
+进程已结束，退出代码 0</code></pre><p>time.mktime(timetupleobj) 将datetime元组对象转为时间戳</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">aa = (<span class="number">2020</span>, <span class="number">6</span>, <span class="number">19</span>, <span class="number">19</span>, <span class="number">15</span>, <span class="number">6</span>,<span class="number">4</span>, <span class="number">171</span>,<span class="number">-1</span>)  <span class="comment"># 定义时间元祖</span></span><br><span class="line">time = time.mktime(aa)      <span class="comment"># 转换元祖为时间戳</span></span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592565306.0
+
+进程已结束，退出代码 0</code></pre><p>time.time() 当前时间戳</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = time.time()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592565722.2161117
+
+进程已结束，退出代码 0</code></pre><p>time.localtime()  当前时间  以元祖格式显示</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = time.localtime()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=22, tm_sec=50, tm_wday=4, tm_yday=171, tm_isdst=0)
+
+进程已结束，退出代码 0</code></pre><p>time.gmtime()  和 time.localtime()  时区不同</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">qq = time.gmtime()</span><br><span class="line">print(qq)</span><br><span class="line">aa = time.localtime()</span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=11, tm_min=31, tm_sec=3, tm_wday=4, tm_yday=171, tm_isdst=0)
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=31, tm_sec=3, tm_wday=4, tm_yday=171, tm_isdst=0)
+
+进程已结束，退出代码 0</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python基础之模块导入</title>
+    <url>/2020/06/18/python-12/</url>
+    <content><![CDATA[<h2 id="模块的概念"><a href="#模块的概念" class="headerlink" title="模块的概念"></a>模块的概念</h2><pre><code>模块是python程序架构的一个核心概念
+每一个以扩展名py结尾的python源代码文件都是一个模块
+模块名同样也是一个标识符。需要符合标识符的命名规则
+在模块中定义的全局变量、函数、类都是提供给外界直接使用的工具
+模块就好比是工具包，要想使用这个工具包中的工具，就需要先导入这个模块</code></pre><h2 id="import语句"><a href="#import语句" class="headerlink" title="import语句"></a>import语句</h2><p>当解释器遇到 import 语句，如果模块在当前的搜索路径就会被导入,搜索路径是一个解释器会先进行搜索的所有目录的列表。如想要导入模块 support，需要把命令放在脚本的顶端<br><br>想使用 Python 源文件，只需在另一个源文件里执行 import 语句，语法如下：<br></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 提示：在导入模块时，每个导入应该独占一行</span></span><br><span class="line"><span class="keyword">import</span> 模块名<span class="number">1</span></span><br><span class="line"><span class="keyword">import</span> 模块名<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>导入之后,通过模块名.  使用模块提供的工具–全局变量、函数、类</p>
+<h2 id="import导入指定别名"><a href="#import导入指定别名" class="headerlink" title="import导入指定别名"></a>import导入指定别名</h2><p>import  模块名  as  模块别名</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  test_1  <span class="keyword">as</span>  T1</span><br><span class="line">T1.hello()</span><br></pre></td></tr></table></figure>
+<h2 id="from-…-import-局部导入"><a href="#from-…-import-局部导入" class="headerlink" title="from … import 局部导入"></a>from … import 局部导入</h2><p>如果希望从某一模块中，导入部分工具，就可以使用from…import 的方式<br><br>from  模块名  import 工具名<br><br>使用from导入后  不需要通过模块名.   的方式调用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> test_2  <span class="keyword">import</span> hello</span><br><span class="line"><span class="comment">#直接调用  不需要通过模块名.   的方式调用</span></span><br><span class="line">hello()</span><br></pre></td></tr></table></figure>
+<p>注意：如果两个模块，存在同名的函数，那么后导入模块的函数，会覆盖先导入的函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> ... <span class="keyword">import</span> ... <span class="keyword">as</span> ...</span><br></pre></td></tr></table></figure>
+<h2 id="路径搜索和搜索路径"><a href="#路径搜索和搜索路径" class="headerlink" title="路径搜索和搜索路径"></a>路径搜索和搜索路径</h2><p>上面提到的都是导入同级目录下的模块,如果不在同一级目录下：<br><br>import  module_name 实际上是找 module_name.py文件,是文件就一定有路径<br><br>导入模块就是：找到.py文件的位置,把他执行一遍   使用sys.path.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.path)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;E:\\资料\\python\\hexo&apos;, &apos;E:\\资料\\python&apos;, &apos;E:\\资料\\python\\面向对象\\模块&apos;, &apos;E:\\资料\\python\\自走棋&apos;, &apos;E:\\资料\\python\\飞机大战&apos;, &apos;D:\\软件下载\\python36.zip&apos;, &apos;D:\\软件下载\\DLLs&apos;, &apos;D:\\软件下载\\lib&apos;, &apos;D:\\软件下载&apos;, &apos;C:\\Users\\Administrator\\AppData\\Roaming\\Python\\Python36\\site-packages&apos;, &apos;D:\\软件下载\\lib\\site-packages&apos;, &apos;D:\\install\\PyCharm 2018.3.4\\helpers\\pycharm_matplotlib_backend&apos;]
+
+进程已结束，退出代码 0</code></pre><p>里面的’’指的是当前路径,这也是为何查找模块先从当前目录查找的原因</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  os    <span class="comment"># 导入os模块</span></span><br><span class="line">print(os.path.abspath(__file__))   <span class="comment"># 当前文件绝对路径</span></span><br><span class="line">print(os.path.dirname(os.path.abspath(__file__)))  <span class="comment"># 获取目录名</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo
+
+进程已结束，退出代码 0</code></pre><h2 id="导入优化"><a href="#导入优化" class="headerlink" title="导入优化"></a>导入优化</h2><pre><code class="python"><span class="keyword">import</span> module_test
+<span class="comment"># import 导入情况,如果重复调用,python就会重复查找,避免重复查找,可以使用from的方式导入</span>
+<span class="keyword">from</span> module_test  <span class="keyword">import</span>  test</code></pre>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python基础之for循环</title>
     <url>/2020/06/17/python-11/</url>
     <content><![CDATA[<h2 id="for循环语句"><a href="#for循环语句" class="headerlink" title="for循环语句"></a>for循环语句</h2><p>python中for循环可以遍历任何序列的项目,如一个列表或者一个字符串,语法：</p>
@@ -382,8 +771,113 @@ return [表达式] 结束函数，选择性地返回一个值给调用方。不�
 温度为 36 
 湿度为 50 
 
-进程已结束，退出代码 0</code></pre><p>使用多个变量一次接受函数返回结果<br><br>如果函数返回的类型是元祖,希望单独处理元祖中的元素,可以使用多个变量一次接受函数的返回结果<br></p>
-]]></content>
+进程已结束，退出代码 0</code></pre><p>使用多个变量一次接受函数返回结果<br><br>如果函数返回的类型是元祖,希望单独处理元祖中的元素,可以使用多个变量一次接受函数的返回结果<br><br>注意：使用多个遍历接收结果时,变量的个数和元祖中的元素个数保持一致</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">measure</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 测量温度和湿度</span></span><br><span class="line">    print(<span class="string">"测量开始..."</span>)</span><br><span class="line">    temp = <span class="number">36</span></span><br><span class="line">    wetness = <span class="number">50</span></span><br><span class="line">    print(<span class="string">"测量结束..."</span>)</span><br><span class="line">    <span class="keyword">return</span>  temp,wetness</span><br><span class="line">gl_wen,gl_shi = measure()</span><br><span class="line">print(<span class="string">"温度为 %d"</span> % gl_wen)</span><br><span class="line">print(<span class="string">"湿度为 %d"</span> % gl_shi)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+测量开始...
+测量结束...
+温度为 36
+湿度为 50
+
+进程已结束，退出代码 0</code></pre><p>在函数内部,针对参数使用赋值语句,不会修改到外部的实参变量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num,num_list)</span>:</span></span><br><span class="line">    print(<span class="string">"函数内部的代码"</span>)</span><br><span class="line">    num = <span class="number">100</span></span><br><span class="line">    num_list= [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    print(num)</span><br><span class="line">    print(num_list)</span><br><span class="line">    print(<span class="string">"函数执行完成"</span>)</span><br><span class="line"></span><br><span class="line">gl_num = <span class="number">99</span></span><br><span class="line">gl_list = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">demo(gl_num,gl_list)</span><br><span class="line">print(gl_num)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+函数内部的代码
+100
+[1, 2, 3]
+函数执行完成
+99
+[4, 5, 6]
+
+进程已结束，退出代码 0</code></pre><p>使用方法修改数据内容,会影响到外部的数据 (此修改不是重新定义变量,而是直接修改append或者是remove)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num_list)</span>:</span></span><br><span class="line">    print(<span class="string">"函数内部的代码"</span>)</span><br><span class="line">    gl_list.append(<span class="string">"999"</span>)</span><br><span class="line">    <span class="comment"># 在列表中新增999</span></span><br><span class="line">    <span class="comment"># 使用方法修改了数据的内容,会影响到外部的数据</span></span><br><span class="line"></span><br><span class="line">    print(num_list)</span><br><span class="line">    print(<span class="string">"函数执行完成"</span>)</span><br><span class="line"></span><br><span class="line">gl_list = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">print(gl_list)</span><br><span class="line">demo(gl_list)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[4, 5, 6]
+函数内部的代码
+[4, 5, 6, &apos;999&apos;]
+函数执行完成
+[4, 5, 6, &apos;999&apos;]
+
+进程已结束，退出代码 0</code></pre><p>列表变量使用 + 不会做相加在赋值的操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num,num_list)</span>:</span></span><br><span class="line">    print(<span class="string">"函数开始"</span>)</span><br><span class="line">    <span class="comment"># num += num  就是 num = num + num 数字先相加在赋值</span></span><br><span class="line">    num += num</span><br><span class="line"></span><br><span class="line">    <span class="comment"># num_list = num_list + num_list</span></span><br><span class="line">    <span class="comment"># 列表变量使用 + 不会做相加在赋值的操作</span></span><br><span class="line">    <span class="comment"># 本质是在调用列表的extend方法(增加另一个列表内容到此列表中  list.extend(list))</span></span><br><span class="line">    <span class="comment"># num_list += num_list 这样相当于调用extend方法会修改外部变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#  num_list = num_list + num_list  这样只是赋值  不会修改</span></span><br><span class="line">    num_list = num_list + num_list</span><br><span class="line">    print(num)</span><br><span class="line">    print(num_list)</span><br><span class="line">    print(<span class="string">"函数完成"</span>)</span><br><span class="line"></span><br><span class="line">gl_num = <span class="number">9</span></span><br><span class="line">gl_list = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">demo(gl_num,gl_list)</span><br><span class="line">print(gl_num)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+函数开始
+18
+[1, 2, 3, 1, 2, 3]
+函数完成
+9
+[1, 2, 3]
+
+进程已结束，退出代码 0</code></pre><h2 id="缺省参数"><a href="#缺省参数" class="headerlink" title="缺省参数"></a>缺省参数</h2><p>缺省参数,就是讲常见的值设为参数的缺省值,从而简化函数的调用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">gl_list = [<span class="number">6</span>,<span class="number">3</span>,<span class="number">9</span>]</span><br><span class="line"><span class="comment">#默认按照升序排序</span></span><br><span class="line">gl_list.sort()</span><br><span class="line">print(gl_list)</span><br><span class="line"><span class="comment">##如果需要降序排序，需要执行reverse参数</span></span><br><span class="line">gl_list.sort(reverse=<span class="literal">True</span>)</span><br><span class="line">print(gl_list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[3, 6, 9]
+[9, 6, 3]
+
+进程已结束，退出代码 0</code></pre><p>定义函数指定缺省参数,需要在末尾指定,不然后面无法写参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_info</span><span class="params">(name,gender=True)</span>:</span></span><br><span class="line">    <span class="comment"># :param name：同学姓名</span></span><br><span class="line">    <span class="comment"># :param gender：True 男生 False 女生</span></span><br><span class="line">    <span class="comment"># :return</span></span><br><span class="line">    gender_test = <span class="string">"男生"</span>  <span class="comment"># 默认参数为男生</span></span><br><span class="line">    print(gender)</span><br><span class="line">    <span class="comment"># if gender != True:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> gender:    <span class="comment"># 如果gender 不等于True  则赋值 gender_test = 女生</span></span><br><span class="line">        gender_test = <span class="string">"女生"</span></span><br><span class="line">    print(<span class="string">"%s 是 %s "</span> % (name,gender_test))</span><br><span class="line"></span><br><span class="line"><span class="comment">#提示：在指定缺省参数的默认值时，应该使用最常见的值作为默认值</span></span><br><span class="line">print_info(<span class="string">"小明"</span>)</span><br><span class="line">print_info(<span class="string">"小红"</span>,<span class="string">"女"</span>)</span><br><span class="line">print_info(<span class="string">"小明"</span>)</span><br><span class="line">print_info(<span class="string">"老王"</span>)</span><br><span class="line">print_info(<span class="string">"小美"</span>,<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+True
+小明 是 男生 
+女
+小红 是 男生 
+True
+小明 是 男生 
+True
+老王 是 男生 
+False
+小美 是 女生 
+
+进程已结束，退出代码 0</code></pre><h2 id="多值参数"><a href="#多值参数" class="headerlink" title="多值参数"></a>多值参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">(num,*nums,**person)</span>:</span></span><br><span class="line">    print(num)</span><br><span class="line">    print(nums)</span><br><span class="line">    print(person)</span><br><span class="line"></span><br><span class="line">demo(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,name = <span class="string">"小明"</span>,age = <span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2
+(3, 4, 5)
+{&apos;name&apos;: &apos;小明&apos;, &apos;age&apos;: 18}
+
+进程已结束，退出代码 0</code></pre><p>多值参数–数字累加<br><em>args:args中保存的是没有利用的所有多余参数，保存方式为元组，*</em>args即输入多余参数有变量名，就保存在**args中保存，保存方式为字典</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(*args)</span>:</span>    <span class="comment"># 传递一个元祖</span></span><br><span class="line">    num = <span class="number">0</span>      <span class="comment"># 定义 num = 0</span></span><br><span class="line">    print(args)</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span>  args:     <span class="comment"># 循环相加</span></span><br><span class="line">        num += n</span><br><span class="line">    <span class="keyword">return</span> num          <span class="comment"># 返还相加后的数</span></span><br><span class="line">result = sum_numbers(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)   <span class="comment"># 调用函数传递元祖 赋值给result</span></span><br><span class="line">print(result)    <span class="comment">#  打印结果</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(1, 2, 3, 4, 5)
+15
+
+进程已结束，退出代码 0</code></pre><h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p>递归就是函数内部调用自己的函数被称之为递归</p>
+<pre><code>1、必须有一个明确的结束条件
+2、每次进入更深一层递归时，问题规模(计算量)相比上次递归都应有所减少
+3、递归效率不高，递归层次过多会导致栈溢出（在计算机中，函数调用是通过栈（stack）这种数据结构实现的，每当进入一个函数调用，栈就会加一层栈帧，每当函数返回，栈就会减一层栈帧。
+    由于栈的大小不是无限的，所以，递归调用的次数过多，会导致栈溢出
+python默认的层次是1000(传递的数大于1000就会报错)    centos系统是根据limit决定</code></pre><p>递归还有两个名词用来概括递归实现的过程：</p>
+<pre><code>递推：像上边递归实现所拆解，递归每一次都是基于上一次进行下一次的执行，这叫递推
+
+回溯：则是在遇到终止条件，则从最后往回返一级一级的把值返回来，这叫回溯</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(num)</span>:</span></span><br><span class="line">    print(num)</span><br><span class="line">    <span class="comment">#递归的出口，当参数满足某个条件，不在执行参数</span></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="comment">#递归的特点就是自己调用自己</span></span><br><span class="line">    sum_numbers(num - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">sum_numbers(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+3
+2
+1
+
+进程已结束，退出代码 0</code></pre><p>递归是一个编程技巧,在处理不确定的循环条件时是格外有用,例如：遍历整个文件目录的结构：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_numbers</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="comment"># 1、定义出口</span></span><br><span class="line">    <span class="comment">#递归的出口，当参数满足某个条件，不在执行参数</span></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="comment"># 2、数字累加 num + (1...num -1)</span></span><br><span class="line">    <span class="comment"># 假设sum_numbers 能够正确的处理 1...num -1</span></span><br><span class="line">    temp = sum_numbers(num - <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 两个数字相加</span></span><br><span class="line">    <span class="keyword">return</span> num + temp</span><br><span class="line"></span><br><span class="line">result = sum_numbers(<span class="number">100</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+5050
+
+进程已结束，退出代码 0</code></pre><p>示例1：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1！+2！+3！+4！+5！+...+n!</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="string">''' n表示要求的数的阶乘 '''</span></span><br><span class="line">    <span class="keyword">if</span> n==<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> n <span class="comment"># 阶乘为1的时候，结果为1,返回结果并退出</span></span><br><span class="line">    n = n*factorial(n<span class="number">-1</span>) <span class="comment"># n! = n*(n-1)!</span></span><br><span class="line">    <span class="keyword">return</span> n  <span class="comment"># 返回结果并退出</span></span><br><span class="line">res = factorial(<span class="number">5</span>) <span class="comment">#调用函数，并将返回的结果赋给res</span></span><br><span class="line">print(res) <span class="comment"># 打印结果</span></span><br></pre></td></tr></table></figure>
+<p>示例2：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1，1，2，3，5，8，13，21，34，55，试判断数列第十五个数是哪个？</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fabonacci</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="string">''' n为斐波那契数列 '''</span></span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">2</span>:</span><br><span class="line">        <span class="string">''' 数列前两个数都是1 '''</span></span><br><span class="line">        v = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> v <span class="comment"># 返回结果，并结束函数</span></span><br><span class="line">    v = fabonacci(n<span class="number">-1</span>)+fabonacci(n<span class="number">-2</span>) <span class="comment"># 由数据的规律可知，第三个数的结果都是前两个数之和，所以进行递归叠加</span></span><br><span class="line">    <span class="keyword">return</span> v  <span class="comment"># 返回结果，并结束函数</span></span><br><span class="line">print(fabonacci(<span class="number">15</span>)) <span class="comment"># 610    调用函数并打印结果</span></span><br></pre></td></tr></table></figure>
+<p>示例3：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">13</span>,<span class="number">56</span>,<span class="number">123</span>,<span class="number">345</span>,<span class="number">1024</span>,<span class="number">3223</span>,<span class="number">6688</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dichotomy</span><span class="params">(min,max,d,n)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    min表示有序列表头部索引</span></span><br><span class="line"><span class="string">    max表示有序列表尾部索引</span></span><br><span class="line"><span class="string">    d表示有序列表</span></span><br><span class="line"><span class="string">    n表示需要寻找的元素</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    mid = (min+max)//<span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> mid==<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'None'</span></span><br><span class="line">    <span class="keyword">elif</span> d[mid]&lt;n:</span><br><span class="line">        print(<span class="string">'向右侧找！'</span>)</span><br><span class="line">        <span class="keyword">return</span> dichotomy(mid,max,d,n)</span><br><span class="line">    <span class="keyword">elif</span> d[mid]&gt;n:</span><br><span class="line">        print(<span class="string">'向左侧找！'</span>)</span><br><span class="line">        <span class="keyword">return</span> dichotomy(min,mid,d,n)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'找到了%s'</span>%d[mid])</span><br><span class="line">        <span class="keyword">return</span> </span><br><span class="line">res = dichotomy(<span class="number">0</span>,len(data),data,<span class="number">222</span>)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
       <tags>
         <tag>liunx</tag>
         <tag>python</tag>
@@ -416,6 +910,9 @@ demo1 ==&gt; 100
 demo2 ==&gt; 20
 
 进程已结束，退出代码 0</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
       <tags>
         <tag>liunx</tag>
         <tag>python</tag>
@@ -481,6 +978,9 @@ start - num
 {&apos;name&apos;: &apos;long&apos;, &apos;age&apos;: 21}
 
 进程已结束，退出代码 0</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
       <tags>
         <tag>liunx</tag>
         <tag>python</tag>
@@ -698,8 +1198,8 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>docker</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
@@ -3576,8 +4076,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>liunx</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -3712,8 +4212,33 @@ echo &quot;ceshi&quot;</code></pre><p> cehshi</p>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>docker</tag>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python-str</title>
+    <url>/2020/04/23/python-str/</url>
+    <content><![CDATA[<p>code here<br>从字符串中提取字符</p>
+<pre><code>str = &quot;hello python&quot;
+print(str[7])</code></pre><p>for循环遍历字符串中每一个字符</p>
+<pre><code>for c in str:
+    print(c)</code></pre><p>统计字符串长度</p>
+<pre><code>str = &quot;hello python&quot;
+print(len(str))</code></pre><p>统计一个字符在字符串中出现的次数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str = <span class="string">"hello python"</span></span><br><span class="line">print(str.count(<span class="string">"l"</span>))</span><br></pre></td></tr></table></figure>
+<pre><code>puts &quot;Awesome!&quot; unless lame</code></pre><pre><code>
+
+    代码
+
+</code></pre>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -3782,31 +4307,6 @@ True
 False
 
 进程已结束，退出代码 0</code></pre>]]></content>
-      <categories>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>liunx</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python-str</title>
-    <url>/2020/04/23/python-str/</url>
-    <content><![CDATA[<p>code here<br>从字符串中提取字符</p>
-<pre><code>str = &quot;hello python&quot;
-print(str[7])</code></pre><p>for循环遍历字符串中每一个字符</p>
-<pre><code>for c in str:
-    print(c)</code></pre><p>统计字符串长度</p>
-<pre><code>str = &quot;hello python&quot;
-print(len(str))</code></pre><p>统计一个字符在字符串中出现的次数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str = <span class="string">"hello python"</span></span><br><span class="line">print(str.count(<span class="string">"l"</span>))</span><br></pre></td></tr></table></figure>
-<pre><code>puts &quot;Awesome!&quot; unless lame</code></pre><pre><code>
-
-    代码
-
-</code></pre>
-]]></content>
       <categories>
         <category>开发</category>
       </categories>
@@ -3907,6 +4407,8 @@ db.table.find()        # 查看表中的所有数据
 db.table.find({name : xxx})    # 查看表中name为xxx的数据
 
 db.table.find({name : xxx}).pretty()    # 查看表中name为xxx的数据   以json格式显示
+
+db.roles.find({roleID: 626524320},{&quot;userType&quot; : 1,&quot;_id&quot; : 0}) # 只显示某一列
 
 db.table.count()    # 统计数据行数
 
@@ -4118,8 +4620,8 @@ SSLCertificateKeyFile /etc/httpd/ssl/httpd.key</code></pre><p>如果要停用 ht
         <category>运维</category>
       </categories>
       <tags>
-        <tag>subversion</tag>
         <tag>jenkins</tag>
+        <tag>subversion</tag>
       </tags>
   </entry>
 </search>

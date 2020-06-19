@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">702</span>
+            <span class="post-count">721</span>
         </span>
     </span>
 
@@ -184,6 +184,8 @@ db.table.find()        # 查看表中的所有数据
 db.table.find({name : xxx})    # 查看表中name为xxx的数据
 
 db.table.find({name : xxx}).pretty()    # 查看表中name为xxx的数据   以json格式显示
+
+db.roles.find({roleID: 626524320},{&quot;userType&quot; : 1,&quot;_id&quot; : 0}) # 只显示某一列
 
 db.table.count()    # 统计数据行数
 

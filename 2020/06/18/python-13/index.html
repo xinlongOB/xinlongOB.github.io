@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    python基础之常用模块-os |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-python-13" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  python基础之常用模块-os
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/18/python-13/" class="article-date">
+  <time datetime="2020-06-18T10:06:21.000Z" itemprop="datePublished">2020-06-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.8k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">22 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="列出指定目录下的所有文件"><a href="#列出指定目录下的所有文件" class="headerlink" title="列出指定目录下的所有文件"></a>列出指定目录下的所有文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))  <span class="comment"># 列出指定目录下的所有文件并打印</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;test.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>)) </span><br><span class="line">os.remove(<span class="string">"pwd.py"</span>)  <span class="comment"># 删除pwd.py文件</span></span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;pwd.py&apos;, &apos;test.py&apos;, &apos;test2.py&apos;]
+[&apos;test.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.unlink(<span class="string">"pwd.py"</span>)  <span class="comment"># 删除pwd.py文件   与remove相同</span></span><br></pre></td></tr></table></figure>
+<h2 id="重命名文件"><a href="#重命名文件" class="headerlink" title="重命名文件"></a>重命名文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br><span class="line">os.rename(<span class="string">"test.py"</span>,<span class="string">"numcount.py"</span>)  <span class="comment"># (原来名字,新名字)</span></span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;test.py&apos;, &apos;test2.py&apos;]
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="改变当前工作目录"><a href="#改变当前工作目录" class="headerlink" title="改变当前工作目录"></a>改变当前工作目录</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.listdir(<span class="string">"../hexo"</span>))</span><br><span class="line">os.chdir(<span class="string">"../python"</span>)  <span class="comment"># 切换工作目录至python下</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+[&apos;video.html&apos;,  &apos;自动偷取.js&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="获取当前文件路径"><a href="#获取当前文件路径" class="headerlink" title="获取当前文件路径"></a>获取当前文件路径</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo
+
+进程已结束，退出代码 0</code></pre><h2 id="新建目录"><a href="#新建目录" class="headerlink" title="新建目录"></a>新建目录</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.mkdir(<span class="string">"../hexo/mkdir"</span>)  <span class="comment"># 在hexo目录下创建名为mkdir的目录</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;mkdir&apos;, &apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除空目录-删除非空目录-使用shutil-rmtree"><a href="#删除空目录-删除非空目录-使用shutil-rmtree" class="headerlink" title="删除空目录(删除非空目录,使用shutil.rmtree())"></a>删除空目录(删除非空目录,使用shutil.rmtree())</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.rmdir(<span class="string">"../hexo/mkdir"</span>)   <span class="comment"># 删除名为mkdir的空目录</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="创建多级目录"><a href="#创建多级目录" class="headerlink" title="创建多级目录"></a>创建多级目录</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.makedirs(<span class="string">"../hexo/mkdir/screen"</span>)  <span class="comment"># 创建目录mkdir 并在mkdir下创建screen</span></span><br><span class="line">print(os.listdir(<span class="string">"mkdir"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;screen&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="删除多级目录"><a href="#删除多级目录" class="headerlink" title="删除多级目录"></a>删除多级目录</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">os.removedirs(<span class="string">"../hexo/mkdir/screen"</span>)  <span class="comment"># 删除递归目录</span></span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+[&apos;numcount.py&apos;, &apos;test2.py&apos;]
+
+进程已结束，退出代码 0</code></pre><h2 id="获取文件属性"><a href="#获取文件属性" class="headerlink" title="获取文件属性"></a>获取文件属性</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>))   <span class="comment"># 获取文件属性并打印</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+os.stat_result(st_mode=33206, st_ino=17732923533531673, st_dev=1744964457, st_nlink=1, st_uid=0, st_gid=0, st_size=171, st_atime=1592297075, st_mtime=1592297075, st_ctime=1591942241)
+
+进程已结束，退出代码 0</code></pre><h2 id="修改文件权限"><a href="#修改文件权限" class="headerlink" title="修改文件权限"></a>修改文件权限</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line"><span class="keyword">import</span> stat   <span class="comment"># 权限模块</span></span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mode)</span><br><span class="line">print(oct(os.stat(<span class="string">"numcount.py"</span>).st_mode)[<span class="number">-3</span>:])</span><br><span class="line">os.chmod(<span class="string">"numcount.py"</span>,stat.S_IWRITE)   </span><br><span class="line">print(oct(os.stat(<span class="string">"numcount.py"</span>).st_mode)[<span class="number">-3</span>:])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+33060
+444
+666
+
+进程已结束，退出代码 0</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 常用权限</span></span><br><span class="line">stat.S_ISVTX: Save text image after execution. 在执行之后保存文字和图片</span><br><span class="line">stat.S_IREAD: Read by owner. 对于拥有者读的权限</span><br><span class="line">stat.S_IWRITE: Write by owner. 对于拥有者写的权限</span><br><span class="line">stat.S_IEXEC: Execute by owner. 对于拥有者执行的权限</span><br><span class="line">stat.S_IRWXU: Read, write, <span class="keyword">and</span> execute by owner. 对于拥有者读写执行的权限</span><br><span class="line">stat.S_IRUSR: Read by owner. 对于拥有者读的权限</span><br><span class="line">stat.S_IWUSR: Write by owner. 对于拥有者写的权限</span><br><span class="line">stat.S_IXUSR: Execute by owner. 对于拥有者执行的权限</span><br><span class="line">stat.S_IRWXG: Read, write, <span class="keyword">and</span> execute by group. 对于同组的人读写执行的权限</span><br><span class="line">stat.S_IRGRP: Read by group. 对于同组读的权限</span><br><span class="line">stat.S_IWGRP: Write by group. 对于同组写的权限</span><br><span class="line">stat.S_IXGRP: Execute by group. 对于同组执行的权限</span><br><span class="line">stat.S_IRWXO: Read, write, <span class="keyword">and</span> execute by others. 对于其他组读写执行的权限</span><br><span class="line">stat.S_IROTH: Read by others. 对于其他组读的权限</span><br><span class="line">stat.S_IWOTH: Write by others. 对于其他组写的权限</span><br><span class="line">stat.S_IXOTH: Execute by others. 对于其他组执行的权限</span><br></pre></td></tr></table></figure>
+<h2 id="修改文件时间戳"><a href="#修改文件时间戳" class="headerlink" title="修改文件时间戳"></a>修改文件时间戳</h2><p>参数</p>
+<pre><code>path -- 文件路径
+
+times -- 如果时间是 None, 则文件的访问和修改设为当前时间 。 否则, 时间是一个 2-tuple数字, (atime, mtime) 用来分别作为访问和修改的时间。</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime)  <span class="comment">#  打印修改前时间戳</span></span><br><span class="line">os.utime(<span class="string">"numcount.py"</span>,<span class="literal">None</span>)   <span class="comment"># 将时间戳修改为当前时间</span></span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime)</span><br><span class="line">print(time.time())    <span class="comment"># 查看当前时间戳</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime) <span class="comment">#  打印修改前时间戳</span></span><br><span class="line">os.utime(<span class="string">"numcount.py"</span>,(<span class="number">1592534641</span>,<span class="number">1592534641</span>))  <span class="comment"># 将时间戳修改为指定时间</span></span><br><span class="line">print(os.stat(<span class="string">"numcount.py"</span>).st_mtime)</span><br><span class="line">print(time.time())</span><br></pre></td></tr></table></figure>
+<h2 id="执行操作系统命令"><a href="#执行操作系统命令" class="headerlink" title="执行操作系统命令"></a>执行操作系统命令</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os       <span class="comment"># 导入模块</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.system(<span class="string">"ls"</span>)    <span class="comment"># 执行ls操作</span></span><br><span class="line">db              nohup.out                 update.js  find_date.sh    qq.sh                </span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.system(<span class="string">"pwd"</span>)   <span class="comment"># 执行pwd操作</span></span><br><span class="line">/home/sgsm</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h2 id="os-path模块"><a href="#os-path模块" class="headerlink" title="os.path模块"></a>os.path模块</h2><p>os.path.split(filename) 将文件路径和文件名分割(会将最后一个目录作为文件名而分离)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.split(<span class="string">"numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(&apos;&apos;, &apos;numcount.py&apos;)
+
+进程已结束，退出代码 0</code></pre><p>os.path.splitext(filename) 将文件路径和文件扩展名分割成一个元组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.splitext(<span class="string">"numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(&apos;numcount&apos;, &apos;.py&apos;)
+
+进程已结束，退出代码 0</code></pre><p>os.path.dirname(filename) 返回文件路径的目录部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))  <span class="comment"># 查看文件的绝对路径 </span></span><br><span class="line">print(os.path.dirname(<span class="string">"E:\资料\python\hexo\\test2.py"</span>))   <span class="comment"># 因为\t是特殊符号所以需要转义</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo
+
+进程已结束，退出代码 0</code></pre><p>os.path.basename(filename) 返回文件路径的文件名部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.basename(<span class="string">"E:\资料\python\hexo\\test2.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+test2.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.join(dirname,basename) 将文件路径和文件名凑成完整文件路径</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.join(<span class="string">"E:\资料\python\hexo\\test2.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo\test2.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.abspath(name) 获得绝对路径   (<strong>file</strong>) 代表当前文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.abspath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.splitunc(path) 把路径分割为挂载点和文件名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.splitunc(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+(&apos;&apos;, &apos;E:\\资料\\python\\hexo\\numcount.py&apos;)
+
+进程已结束，退出代码 0</code></pre><p>os.path.normpath(path) 规范path字符串形式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line">print(os.path.normpath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\test2.py
+E:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.exists() 判断文件或目录是否存在</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.exists(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.isabs() 如果path是绝对路径，返回True</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os </span><br><span class="line">print(os.path.isabs(<span class="string">"../numcount.py"</span>))     <span class="comment"># 相对路径</span></span><br><span class="line">print(os.path.isabs(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))  <span class="comment"># 绝对路径</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.realpath(path) #返回path的真实路径  (realpath 返回的是 使用软链 的真实地址   abspath 返回目标地址)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.abspath(<span class="string">"numcount.py"</span>))</span><br><span class="line">print(os.path.realpath(<span class="string">"numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+E:\资料\python\hexo\numcount.py
+E:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.relpath(path[, start]) #从start开始计算相对路径 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.relpath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>, <span class="string">"E:\资料"</span>))  <span class="comment"># 从"E:\资料"开始计算</span></span><br><span class="line">print(os.path.relpath(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>, <span class="string">""</span>))  <span class="comment"># 如果不指定 默认从当前位置计算</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+python\hexo\numcount.py
+numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.normcase(path) #转换path的大小写和斜杠</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.normcase(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+e:\资料\python\hexo\numcount.py
+
+进程已结束，退出代码 0</code></pre><p>os.path.isdir() 判断name是不是一个目录，name不是目录就返回false</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.isdir(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.isdir(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.isfile() 判断name是不是一个文件，不存在返回false</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.isfile(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.isfile(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+True
+False
+
+进程已结束，退出代码 0</code></pre><p>os.path.islink() 判断文件是否连接文件,返回boolean</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.islink(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.islink(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+False
+
+进程已结束，退出代码 0</code></pre><p>os.path.ismount() 指定路径是否存在且为一个挂载点，返回boolean</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.ismount(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br><span class="line">print(os.path.ismount(<span class="string">"E:\资料\python\hexo"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+False
+
+进程已结束，退出代码 0</code></pre><p>os.path.samefile() 是否相同路径的文件，返回boolean</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.samefile(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>,<span class="string">"E:\资料\python\hexo"</span>))</span><br><span class="line">print(os.path.samefile(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>,<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+False
+True
+
+进程已结束，退出代码 0</code></pre><p>os.path.getatime() 返回最近访问时间 浮点型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getatime(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592534641.0
+
+进程已结束，退出代码 0</code></pre><p>os.path.getmtime() 返回上一次修改时间 浮点型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getmtime(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592534641.0
+
+进程已结束，退出代码 0</code></pre><p>os.path.getctime() 返回文件创建时间 浮点型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getctime(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1591942241.7330246
+
+进程已结束，退出代码 0</code></pre><p>os.path.getsize() 返回文件大小 字节单位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  os</span><br><span class="line">print(os.path.getsize(<span class="string">"E:\资料\python\hexo\\numcount.py"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+171
+
+进程已结束，退出代码 0</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">os.path.commonprefix(list) <span class="comment">#返回list(多个路径)中，所有path共有的最长的路径</span></span><br><span class="line">os.path.lexists <span class="comment">#路径存在则返回True,路径损坏也返回True</span></span><br><span class="line">os.path.expanduser(path) <span class="comment">#把path中包含的”~”和”~user”转换成用户目录</span></span><br><span class="line">os.path.expandvars(path) <span class="comment">#根据环境变量的值替换path中包含的”$name”和”$&#123;name&#125;”</span></span><br><span class="line">os.path.sameopenfile(fp1, fp2) <span class="comment">#判断fp1和fp2是否指向同一文件</span></span><br><span class="line">os.path.samestat(stat1, stat2) <span class="comment">#判断stat tuple stat1和stat2是否指向同一个文件</span></span><br><span class="line">os.path.splitdrive(path) <span class="comment">#一般用在windows下，返回驱动器名和路径组成的元组</span></span><br><span class="line">os.path.walk(path, visit, arg) <span class="comment">#遍历path，给每个path执行一个函数详细见手册</span></span><br><span class="line">os.path.supports_unicode_filenames() 设置是否支持unicode路径名</span><br></pre></td></tr></table></figure>
+
+<h2 id="stat模块"><a href="#stat模块" class="headerlink" title="stat模块"></a>stat模块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">描述os.stat()返回的文件属性列表中各值的意义</span><br><span class="line">fileStats = os.stat(path) 获取到的文件属性列表</span><br><span class="line">fileStats[stat.ST_MODE] 获取文件的模式</span><br><span class="line">fileStats[stat.ST_SIZE] 文件大小</span><br><span class="line">fileStats[stat.ST_MTIME] 文件最后修改时间</span><br><span class="line">fileStats[stat.ST_ATIME] 文件最后访问时间</span><br><span class="line">fileStats[stat.ST_CTIME] 文件创建时间</span><br><span class="line">stat.S_ISDIR(fileStats[stat.ST_MODE]) 是否目录</span><br><span class="line">stat.S_ISREG(fileStats[stat.ST_MODE]) 是否一般文件</span><br><span class="line">stat.S_ISLNK(fileStats[stat.ST_MODE]) 是否连接文件</span><br><span class="line">stat.S_ISSOCK(fileStats[stat.ST_MODE]) 是否COCK文件</span><br><span class="line">stat.S_ISFIFO(fileStats[stat.ST_MODE]) 是否命名管道</span><br><span class="line">stat.S_ISBLK(fileStats[stat.ST_MODE]) 是否块设备</span><br><span class="line">stat.S_ISCHR(fileStats[stat.ST_MODE]) 是否字符设置</span><br></pre></td></tr></table></figure>
+
+<h2 id="sys模块"><a href="#sys模块" class="headerlink" title="sys模块"></a>sys模块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">sys.argv 命令行参数List，第一个元素是程序本身路径 </span><br><span class="line">sys.path 返回模块的搜索路径，初始化时使用PYTHONPATH环境变量的值 </span><br><span class="line">sys.modules.keys() 返回所有已经导入的模块列表</span><br><span class="line">sys.modules 返回系统导入的模块字段，key是模块名，value是模块 </span><br><span class="line">sys.exc_info() 获取当前正在处理的异常类,exc_type、exc_value、exc_traceback当前处理的异常详细信息</span><br><span class="line">sys.exit(n) 退出程序，正常退出时exit(<span class="number">0</span>)</span><br><span class="line">sys.hexversion 获取Python解释程序的版本值，<span class="number">16</span>进制格式如：<span class="number">0x020403F0</span></span><br><span class="line">sys.version 获取Python解释程序的版本信息</span><br><span class="line">sys.platform 返回操作系统平台名称</span><br><span class="line">sys.stdout 标准输出</span><br><span class="line">sys.stdout.write(‘aaa‘) 标准输出内容</span><br><span class="line">sys.stdout.writelines() 无换行输出</span><br><span class="line">sys.stdin 标准输入</span><br><span class="line">sys.stdin.read() 输入一行</span><br><span class="line">sys.stderr 错误输出</span><br><span class="line">sys.exc_clear() 用来清除当前线程所出现的当前的或最近的错误信息 </span><br><span class="line">sys.exec_prefix 返回平台独立的python文件安装的位置 </span><br><span class="line">sys.byteorder 本地字节规则的指示器，big-endian平台的值是‘big‘,little-endian平台的值是‘little‘ </span><br><span class="line">sys.copyright 记录python版权相关的东西 </span><br><span class="line">sys.api_version 解释器的C的API版本 </span><br><span class="line">sys.version_info ‘final‘表示最终,也有‘candidate‘表示候选，表示版本级别，是否有后继的发行 </span><br><span class="line">sys.getdefaultencoding() 返回当前你所用的默认的字符编码格式 </span><br><span class="line">sys.getfilesystemencoding() 返回将Unicode文件名转换成系统文件名的编码的名字 </span><br><span class="line">sys.builtin_module_names Python解释器导入的内建模块列表 </span><br><span class="line">sys.executable Python解释程序路径 </span><br><span class="line">sys.getwindowsversion() 获取Windows的版本 </span><br><span class="line">sys.stdin.readline() 从标准输入读一行，sys.stdout.write(“a”) 屏幕输出a</span><br><span class="line">sys.setdefaultencoding(name) 用来设置当前默认的字符编码(详细使用参考文档) </span><br><span class="line">sys.displayhook(value) 如果value非空，这个函数会把他输出到sys.stdout(详细使用参考文档)</span><br></pre></td></tr></table></figure>
+
+<h2 id="datetime-date-time模块"><a href="#datetime-date-time模块" class="headerlink" title="datetime,date,time模块"></a>datetime,date,time模块</h2><p>datetime.date.today() 本地日期对象,(用str函数可得到它的字面表示(2014-03-24))</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">now = datetime.date.today()</span><br><span class="line">print(now)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.isoformat(obj) 当前[年-月-日]字符串表示(2014-03-24)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.today()</span><br><span class="line">print(datetime.date.isoformat(time))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.fromtimestamp() 返回一个日期对象，参数是时间戳,返回 [年-月-日]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-18
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.weekday(obj) 返回一个日期对象的星期数,周一是0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time.weekday())    <span class="comment">#  打印当前时间的星期数   周一是0</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+3
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.isoweekday(obj) 返回一个日期对象的星期数,周一是1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time.isoweekday())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+4
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.isocalendar(obj) 把日期对象返回一个带有年 第几周 周几的元组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.date.today()</span><br><span class="line">print(time.isocalendar())</span><br><span class="line">print(datetime.date.isocalendar(time))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+(2020, 25, 5)
+(2020, 25, 5)
+
+进程已结束，退出代码 0</code></pre><h2 id="datetime对象："><a href="#datetime对象：" class="headerlink" title="datetime对象："></a>datetime对象：</h2><p>datetime.datetime.today() 返回一个包含本地时间(含微秒数)的datetime对象 2014-03-24 23:31:50.419000</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.today()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19 17:58:32.643581
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.now([tz]) 返回指定时区的datetime对象   默认当前时区 2014-03-24 23:31:50.419000</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.now()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19 18:01:00.380030
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.utcnow() 返回一个零时区的datetime对象   </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.utcnow()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-19 10:03:02.280002
+
+进程已结束，退出代码 0</code></pre><p>datetime.fromtimestamp(timestamp[,tz]) 按时间戳返回一个datetime对象，可指定时区,可用于strftime转换为日期表示 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-18 20:00:00
+
+进程已结束，退出代码 0</code></pre><p>datetime.utcfromtimestamp(timestamp) 按时间戳返回一个UTC-datetime对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.utcfromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-18 12:00:00
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.strptime(‘2014-03-16 12:21:21‘,”%Y-%m-%d %H:%M:%S”) 将字符串转为datetime对象<br><br>可以自定义格式     就是将时间戳转换成你想要的时间格式<br></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">time = datetime.datetime.strptime(<span class="string">"2020-05-01 10:00:00"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-05-01 10:00:00
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.strftime(datetime.datetime.now(), ‘%Y%m%d %H%M%S‘) 将datetime对象转换为str表示形式<br><br>可以自定义格式     就是将时间戳转换成你想要的时间格式<br></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.fromtimestamp(<span class="number">1592481600</span>)</span><br><span class="line">print(time.strftime(<span class="string">"%Y%m%d %H%M%S"</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+20200618 200000
+
+进程已结束，退出代码 0</code></pre><p>datetime.date.today().timetuple() 转换为时间戳datetime元组对象，可用于转换时间戳</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.today(<span class="number">1592481600</span>)</span><br><span class="line">print(time.timetuple())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=18, tm_hour=20, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=170, tm_isdst=-1)
+
+进程已结束，退出代码 0</code></pre><p>datetime.datetime.now().timetuple()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = datetime.datetime.now()</span><br><span class="line">print(time.timetuple())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=15, tm_sec=6, tm_wday=4, tm_yday=171, tm_isdst=-1)
+
+进程已结束，退出代码 0</code></pre><p>time.mktime(timetupleobj) 将datetime元组对象转为时间戳</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">aa = (<span class="number">2020</span>, <span class="number">6</span>, <span class="number">19</span>, <span class="number">19</span>, <span class="number">15</span>, <span class="number">6</span>,<span class="number">4</span>, <span class="number">171</span>,<span class="number">-1</span>)  <span class="comment"># 定义时间元祖</span></span><br><span class="line">time = time.mktime(aa)      <span class="comment"># 转换元祖为时间戳</span></span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592565306.0
+
+进程已结束，退出代码 0</code></pre><p>time.time() 当前时间戳</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = time.time()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+1592565722.2161117
+
+进程已结束，退出代码 0</code></pre><p>time.localtime()  当前时间  以元祖格式显示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">time = time.localtime()</span><br><span class="line">print(time)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=22, tm_sec=50, tm_wday=4, tm_yday=171, tm_isdst=0)
+
+进程已结束，退出代码 0</code></pre><p>time.gmtime()  和 time.localtime()  时区不同</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">qq = time.gmtime()</span><br><span class="line">print(qq)</span><br><span class="line">aa = time.localtime()</span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=11, tm_min=31, tm_sec=3, tm_wday=4, tm_yday=171, tm_isdst=0)
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=31, tm_sec=3, tm_wday=4, tm_yday=171, tm_isdst=0)
+
+进程已结束，退出代码 0</code></pre>
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/06/18/python-13/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/liunx/" rel="tag">liunx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/06/18/python-12/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">python基础之模块导入</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
