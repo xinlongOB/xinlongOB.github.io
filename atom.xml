@@ -359,9 +359,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
-    
       <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
     
   </entry>
   
@@ -448,9 +448,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
-    
       <category term="subversion" scheme="http://yoursite.com/tags/subversion/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
     
   </entry>
   
