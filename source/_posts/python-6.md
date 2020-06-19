@@ -3,6 +3,7 @@ title: python基础之变量
 tags:
   - python
   - liunx
+categories: 开发
 date: 2020-06-14 11:45:15
 ---
 在函数中定义的变量,不能在其他地方引用

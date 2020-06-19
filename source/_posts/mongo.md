@@ -86,6 +86,8 @@ date: 2020-01-08 16:09:50
 
 	db.table.find({name : xxx}).pretty()	# 查看表中name为xxx的数据   以json格式显示
 
+	db.roles.find({roleID: 626524320},{"userType" : 1,"_id" : 0}) # 只显示某一列
+
 	db.table.count()	# 统计数据行数
 
 	db.tables.find().count()	# 统计行数   同上

@@ -3,6 +3,7 @@ title: python基础之字典
 tags:
   - python
   - liunx
+categories: 开发
 date: 2020-06-14 11:10:59
 ---
 ## 字典是一个无序的数据集合
