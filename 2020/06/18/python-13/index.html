@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    python基础之常用模块-os |  我在人间凑数的日子
+    python基础之常用模块 |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -36,7 +36,7 @@
 var _hmt = _hmt || [];
 (function() {
 	var hm = document.createElement("script");
-	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	hm.src = "https://hm.baidu.com/hm.js?f12235409b232408e31ca62edc6b11c8";
 	var s = document.getElementsByTagName("script")[0]; 
 	s.parentNode.insertBefore(hm, s);
 })();
@@ -60,7 +60,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  python基础之常用模块-os
+  python基础之常用模块
 </h1>
  
 
@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.8k</span>
+            <span class="post-count">5.7k</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">22 分钟</span>
+            <span class="post-count">26 分钟</span>
         </span>
     </span>
 </div>
@@ -454,6 +454,46 @@ time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=22, tm_s
 time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=11, tm_min=31, tm_sec=3, tm_wday=4, tm_yday=171, tm_isdst=0)
 time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=31, tm_sec=3, tm_wday=4, tm_yday=171, tm_isdst=0)
 
+进程已结束，退出代码 0</code></pre><h2 id="datetime模块案例"><a href="#datetime模块案例" class="headerlink" title="datetime模块案例"></a>datetime模块案例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line"></span><br><span class="line"><span class="comment"># datetime.date</span></span><br><span class="line">localtime = datetime.date.today()   <span class="comment"># 获取当前时间</span></span><br><span class="line">print(localtime.strftime(<span class="string">"%Y-%m-%d"</span>))   <span class="comment"># 打印当前时间的年月日</span></span><br><span class="line">print(localtime.fromtimestamp(<span class="number">1592681600</span>))  <span class="comment"># 打印时间戳的年月日</span></span><br><span class="line">print(localtime.isoweekday())  <span class="comment"># 查看今天周几    周一为1</span></span><br><span class="line">print(localtime.weekday())   <span class="comment"># 查看今天周几  周一为0</span></span><br><span class="line">print(localtime.isocalendar()) <span class="comment"># 以元祖格式显示 年  第几周   周几</span></span><br><span class="line">print(localtime.isoformat())  <span class="comment"># 打印当前时间的年月日</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># datetime.datetime</span></span><br><span class="line">d_localtime = datetime.datetime.now() <span class="comment"># 获取当前时间</span></span><br><span class="line">print(d_localtime)  <span class="comment"># 打印当前时间(包含微秒)</span></span><br><span class="line">print(d_localtime.year,<span class="string">"-"</span>,d_localtime.month,<span class="string">"-"</span>,d_localtime.day)  <span class="comment"># 打印年月日</span></span><br><span class="line">print(d_localtime.hour,<span class="string">":"</span>,d_localtime.minute,<span class="string">":"</span>,d_localtime.second)   <span class="comment"># 打印时分秒</span></span><br><span class="line">print(datetime.datetime.utcnow()) <span class="comment"># 打印零时区的当前时间</span></span><br><span class="line">print(d_localtime.strptime(<span class="string">"2020-10-01 10:10:10"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>))  <span class="comment"># 打印自定义时间</span></span><br><span class="line">print(d_localtime.strftime(<span class="string">"%H:%M:%S"</span>)) <span class="comment"># 打印自定义格式</span></span><br><span class="line">print(d_localtime.timetuple())  <span class="comment"># 以元祖格式显示</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># time</span></span><br><span class="line">now = aa = (<span class="number">2020</span>, <span class="number">6</span>, <span class="number">19</span>, <span class="number">19</span>, <span class="number">15</span>, <span class="number">6</span>,<span class="number">4</span>, <span class="number">171</span>,<span class="number">-1</span>)  <span class="comment"># 定义时间元祖</span></span><br><span class="line">print(time.mktime(now))   <span class="comment"># 元祖转换为时间戳</span></span><br><span class="line">print(time.time())  <span class="comment"># 打印当前时间戳</span></span><br><span class="line">print(time.localtime())  <span class="comment">#  打印当前时间 以元祖的格式</span></span><br><span class="line">print(time.gmtime())  <span class="comment"># 打印零时区的时间   以元祖的格式</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+2020-06-20
+2020-06-21
+6
+5
+(2020, 25, 6)
+2020-06-20
+2020-06-20 09:37:43.631672
+2020 - 6 - 20
+9 : 37 : 43
+2020-06-20 01:37:43.631672
+2020-10-01 10:10:10
+09:37:43
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=20, tm_hour=9, tm_min=37, tm_sec=43, tm_wday=5, tm_yday=172, tm_isdst=-1)
+1592565306.0
+1592617063.6546738
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=20, tm_hour=9, tm_min=37, tm_sec=43, tm_wday=5, tm_yday=172, tm_isdst=0)
+time.struct_time(tm_year=2020, tm_mon=6, tm_mday=20, tm_hour=1, tm_min=37, tm_sec=43, tm_wday=5, tm_yday=172, tm_isdst=0)
+
+进程已结束，退出代码 0</code></pre><h2 id="hashilb-md5模块"><a href="#hashilb-md5模块" class="headerlink" title="hashilb,md5模块"></a>hashilb,md5模块</h2><p>hashlib.md5(‘md5_str‘).hexdigest() 对指定字符串md5加密</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib   <span class="comment"># 导入模块</span></span><br><span class="line">str = <span class="string">"test"</span>  <span class="comment">#  定义需要加密的字符串</span></span><br><span class="line">str1 = hashlib.md5()  <span class="comment">#  md5转码utf-8</span></span><br><span class="line">str1.update(str.encode(<span class="string">"utf-8"</span>))  <span class="comment"># 必须指定转码格式</span></span><br><span class="line">print(str1.hexdigest()) <span class="comment"># 加密字符串</span></span><br><span class="line">print(str1.digest())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/hexo.py
+098f6bcd4621d373cade4e832627b4f6
+b&quot;\t\x8fk\xcdF!\xd3s\xca\xdeN\x83&amp;&apos;\xb4\xf6&quot;
+
+进程已结束，退出代码 0</code></pre><h2 id="random模块"><a href="#random模块" class="headerlink" title="random模块"></a>random模块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="comment"># 产生0-1的随机浮点数</span></span><br><span class="line">print(random.random())</span><br><span class="line"><span class="comment"># 产生指定范围内的随机浮点数</span></span><br><span class="line">print(random.uniform(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line"><span class="comment"># 产生指定范围内的随机整数</span></span><br><span class="line">print(random.randint(<span class="number">5</span>,<span class="number">10</span>))</span><br><span class="line"><span class="comment"># 从一个指定步长的集合中产生随机数</span></span><br><span class="line">print(random.randrange(<span class="number">10</span>,<span class="number">30</span>,<span class="number">5</span>)) <span class="comment"># (从10-30 步长为5 产生随机数 10，15,20,25,30)</span></span><br><span class="line"><span class="comment"># 从序列中获取一个随机元素  random.choice(sequence)</span></span><br><span class="line"><span class="comment"># 参数sequence表示一个有序类型。这里要说明 一下：sequence在python不是一种特定的类型，而是泛指一系列的类型。list, tuple, 字符串都属于sequence</span></span><br><span class="line">str = <span class="string">"test"</span>,<span class="string">"test2"</span>,<span class="string">"test3"</span>,<span class="string">"test4"</span></span><br><span class="line">print(random.choice(str))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将一个列表中的元素打乱</span></span><br><span class="line">list = [<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>,<span class="string">"d"</span>,<span class="string">"e"</span>,<span class="string">"f"</span>,<span class="string">"g"</span>]</span><br><span class="line">random.shuffle(list)</span><br><span class="line">print(list)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从序列中随机获取指定长度的片段</span></span><br><span class="line">list = [<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>,<span class="string">"d"</span>,<span class="string">"e"</span>,<span class="string">"f"</span>,<span class="string">"g"</span>]</span><br><span class="line">print(random.sample(list,<span class="number">4</span>))   <span class="comment"># 打印序列中的前四个</span></span><br><span class="line">num = [<span class="string">"1"</span>,<span class="string">"2"</span>,<span class="string">"3"</span>,<span class="string">"4"</span>,<span class="string">"5"</span>,<span class="string">"6"</span>]</span><br><span class="line">print(random.sample(num,<span class="number">3</span>))  <span class="comment"># 打印序列中的前三个</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/hexo.py
+0.630213372552819
+1.6560316051826613
+7
+25
+test2
+[&apos;d&apos;, &apos;g&apos;, &apos;b&apos;, &apos;f&apos;, &apos;e&apos;, &apos;a&apos;, &apos;c&apos;]
+[&apos;g&apos;, &apos;b&apos;, &apos;e&apos;, &apos;f&apos;]
+[&apos;1&apos;, &apos;6&apos;, &apos;5&apos;]
+
 进程已结束，退出代码 0</code></pre>
       
       <!-- reward -->
@@ -535,6 +575,15 @@ time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=31, tm_s
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/06/20/python-14/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            python基础之抛出异常
+          
+        </div>
+      </a>
     
     
       <a href="/2020/06/18/python-12/" class="article-nav-link">
