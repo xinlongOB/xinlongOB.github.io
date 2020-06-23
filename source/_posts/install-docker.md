@@ -2,7 +2,7 @@
 title: docker安装部署以及Dockerfile
 tags:
   - docker
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-06-11 15:36:06
 ---

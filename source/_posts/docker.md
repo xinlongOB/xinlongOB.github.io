@@ -2,7 +2,7 @@
 title: docker--容器创建后添加端口映射
 tags:
   - docker
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-05-13 15:02:36
 ---

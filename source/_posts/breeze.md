@@ -2,7 +2,7 @@
 title: 史上最全breeze安装k8s文档
 tags:
   - kubernetes
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-05-21 15:34:40
 ---

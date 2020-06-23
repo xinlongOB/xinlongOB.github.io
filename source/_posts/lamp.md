@@ -1,7 +1,7 @@
 ---
 title: lamp
 tags:
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-05-13 23:00:44
 ---

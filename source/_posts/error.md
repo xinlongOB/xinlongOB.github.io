@@ -2,7 +2,7 @@
 title: kubernetes-1.18.2常见报错--持续更新
 tags:
   - kubernetes
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-05-24 14:40:27
 ---
