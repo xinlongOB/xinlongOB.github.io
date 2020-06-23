@@ -2,7 +2,7 @@
 title: Python基础之元祖
 tags:
   - python
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-06-14 08:38:18
 ---

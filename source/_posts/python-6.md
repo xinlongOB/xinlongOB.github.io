@@ -2,7 +2,7 @@
 title: python基础之变量
 tags:
   - python
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-06-14 11:45:15
 ---

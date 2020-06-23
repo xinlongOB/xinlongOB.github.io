@@ -2,7 +2,7 @@
 title: 初学nodejs
 tags:
   - nodejs
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-05-28 15:11:48
 ---

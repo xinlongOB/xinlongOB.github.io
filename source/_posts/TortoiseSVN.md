@@ -2,7 +2,7 @@
 title: TortoiseSVN使用
 tags:
   - subversion
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-06-08 14:07:17
 ---

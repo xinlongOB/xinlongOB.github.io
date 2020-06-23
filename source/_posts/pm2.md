@@ -2,7 +2,7 @@
 title: pm2安装报错
 tags:
   - pm2
-  - liunx
+  - Linux
 categories:
   - 运维
   - 开发

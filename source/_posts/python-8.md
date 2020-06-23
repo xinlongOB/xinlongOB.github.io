@@ -2,7 +2,7 @@
 title: python基础之条件语句
 tags:
   - python
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-06-16 15:31:13
 ---

@@ -1,7 +1,7 @@
 ---
 title: 一个奇怪的报错
 tags:
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-05-19 17:24:08
 ---

@@ -2,7 +2,7 @@
 title: Mongo常见报错
 tags:
   - mongo
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-05-14 15:04:47
 ---

@@ -2,7 +2,7 @@
 title: Python基础之列表
 tags:
   - python
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-04-23 10:38:18
 ---

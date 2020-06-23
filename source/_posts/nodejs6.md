@@ -2,7 +2,7 @@
 title: nodejs之http模块
 tags:
   - nodejs
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-06-02 20:38:58
 ---

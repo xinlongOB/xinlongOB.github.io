@@ -2,7 +2,7 @@
 title: Python基础之字符串
 tags:
   - python
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-05-26 17:01:34
 ---

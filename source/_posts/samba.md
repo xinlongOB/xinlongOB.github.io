@@ -2,7 +2,7 @@
 title: centos安装samba文件共享--隐藏目录
 tags:
   - samba
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-05-14 15:24:46
 ---

@@ -2,7 +2,7 @@
 title: python-str
 tags:
   - python
-  - liunx
+  - Linux
 categories: 开发
 date: 2020-04-23 10:38:18
 ---

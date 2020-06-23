@@ -2,7 +2,7 @@
 title: redis基础配置-运维篇
 tags:
   - redis
-  - liunx
+  - Linux
 categories: 运维
 date: 2020-06-06 15:16:56
 ---
