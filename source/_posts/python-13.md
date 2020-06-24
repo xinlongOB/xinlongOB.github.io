@@ -2,7 +2,7 @@
 title: python基础之常用模块
 tags:
   - python
-  - Linux
+  - linux
 categories: 开发
 date: 2020-06-18 18:06:21
 ---
