@@ -1,5 +1,5 @@
 ---
-title: python基础之常用模块-os
+title: python基础之常用模块
 tags:
   - python
   - liunx
@@ -839,3 +839,119 @@ print(aa)
     time.struct_time(tm_year=2020, tm_mon=6, tm_mday=19, tm_hour=19, tm_min=31, tm_sec=3, tm_wday=4, tm_yday=171, tm_isdst=0)
 
     进程已结束，退出代码 0
+
+
+## datetime模块案例
+```python
+import datetime
+import  time
+
+# datetime.date
+localtime = datetime.date.today()   # 获取当前时间
+print(localtime.strftime("%Y-%m-%d"))   # 打印当前时间的年月日
+print(localtime.fromtimestamp(1592681600))  # 打印时间戳的年月日
+print(localtime.isoweekday())  # 查看今天周几    周一为1
+print(localtime.weekday())   # 查看今天周几  周一为0
+print(localtime.isocalendar()) # 以元祖格式显示 年  第几周   周几
+print(localtime.isoformat())  # 打印当前时间的年月日
+
+# datetime.datetime
+d_localtime = datetime.datetime.now() # 获取当前时间
+print(d_localtime)  # 打印当前时间(包含微秒)
+print(d_localtime.year,"-",d_localtime.month,"-",d_localtime.day)  # 打印年月日
+print(d_localtime.hour,":",d_localtime.minute,":",d_localtime.second)   # 打印时分秒
+print(datetime.datetime.utcnow()) # 打印零时区的当前时间
+print(d_localtime.strptime("2020-10-01 10:10:10","%Y-%m-%d %H:%M:%S"))  # 打印自定义时间
+print(d_localtime.strftime("%H:%M:%S")) # 打印自定义格式
+print(d_localtime.timetuple())  # 以元祖格式显示
+
+# time
+now = aa = (2020, 6, 19, 19, 15, 6,4, 171,-1)  # 定义时间元祖
+print(time.mktime(now))   # 元祖转换为时间戳
+print(time.time())  # 打印当前时间戳
+print(time.localtime())  #  打印当前时间 以元祖的格式
+print(time.gmtime())  # 打印零时区的时间   以元祖的格式
+```
+运行结果：
+
+    D:\软件下载\python.exe E:/资料/python/hexo/test2.py
+    2020-06-20
+    2020-06-21
+    6
+    5
+    (2020, 25, 6)
+    2020-06-20
+    2020-06-20 09:37:43.631672
+    2020 - 6 - 20
+    9 : 37 : 43
+    2020-06-20 01:37:43.631672
+    2020-10-01 10:10:10
+    09:37:43
+    time.struct_time(tm_year=2020, tm_mon=6, tm_mday=20, tm_hour=9, tm_min=37, tm_sec=43, tm_wday=5, tm_yday=172, tm_isdst=-1)
+    1592565306.0
+    1592617063.6546738
+    time.struct_time(tm_year=2020, tm_mon=6, tm_mday=20, tm_hour=9, tm_min=37, tm_sec=43, tm_wday=5, tm_yday=172, tm_isdst=0)
+    time.struct_time(tm_year=2020, tm_mon=6, tm_mday=20, tm_hour=1, tm_min=37, tm_sec=43, tm_wday=5, tm_yday=172, tm_isdst=0)
+
+    进程已结束，退出代码 0
+
+## hashilb,md5模块
+hashlib.md5(‘md5_str‘).hexdigest() 对指定字符串md5加密
+```python
+import hashlib   # 导入模块
+str = "test"  #  定义需要加密的字符串
+str1 = hashlib.md5()  #  md5转码utf-8
+str1.update(str.encode("utf-8"))  # 必须指定转码格式
+print(str1.hexdigest()) # 加密字符串
+print(str1.digest())
+```
+运行结果：
+
+    D:\软件下载\python.exe E:/资料/python/hexo/hexo.py
+    098f6bcd4621d373cade4e832627b4f6
+    b"\t\x8fk\xcdF!\xd3s\xca\xdeN\x83&'\xb4\xf6"
+
+    进程已结束，退出代码 0
+
+## random模块
+```python
+import random
+# 产生0-1的随机浮点数
+print(random.random())
+# 产生指定范围内的随机浮点数
+print(random.uniform(1,2))
+# 产生指定范围内的随机整数
+print(random.randint(5,10))
+# 从一个指定步长的集合中产生随机数
+print(random.randrange(10,30,5)) # (从10-30 步长为5 产生随机数 10，15,20,25,30)
+# 从序列中获取一个随机元素  random.choice(sequence)
+# 参数sequence表示一个有序类型。这里要说明 一下：sequence在python不是一种特定的类型，而是泛指一系列的类型。list, tuple, 字符串都属于sequence
+str = "test","test2","test3","test4"
+print(random.choice(str))
+
+# 将一个列表中的元素打乱
+list = ["a","b","c","d","e","f","g"]
+random.shuffle(list)
+print(list)
+
+# 从序列中随机获取指定长度的片段
+list = ["a","b","c","d","e","f","g"]
+print(random.sample(list,4))   # 打印序列中的前四个
+num = ["1","2","3","4","5","6"]
+print(random.sample(num,3))  # 打印序列中的前三个
+```
+运行结果：
+
+    D:\软件下载\python.exe E:/资料/python/hexo/hexo.py
+    0.630213372552819
+    1.6560316051826613
+    7
+    25
+    test2
+    ['d', 'g', 'b', 'f', 'e', 'a', 'c']
+    ['g', 'b', 'e', 'f']
+    ['1', '6', '5']
+
+    进程已结束，退出代码 0
+
+
