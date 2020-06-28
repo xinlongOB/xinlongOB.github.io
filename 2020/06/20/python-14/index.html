@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">0</span>
+            <span class="post-count">1.7k</span>
         </span>
     </span>
 
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
@@ -104,6 +104,8 @@ var _hmt = _hmt || [];
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -116,7 +118,97 @@ var _hmt = _hmt || [];
       
 
       
-      
+      <h2 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h2><p>在程序开发中,如果对默认代码不能确定是否正确,可以增加try(尝试)来捕获异常,语法格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 不能确定正确执行的代码</span></span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数："</span>))</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="comment"># 错误的处理代码</span></span><br><span class="line">    print(<span class="string">"请输入一个整数"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：66
+
+进程已结束，退出代码 0</code></pre><p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：aa
+请输入一个整数
+
+进程已结束，退出代码 0</code></pre><h2 id="错误类偶像捕获异常"><a href="#错误类偶像捕获异常" class="headerlink" title="错误类偶像捕获异常"></a>错误类偶像捕获异常</h2><p>在程序执行时,可能遇到不同类型的异常,并且需要针对不同的类型的异常,做出不同的响应<br><br>当python解释器抛出异常时,最后一行错误信息的第一个单词就是错误类型,如：ValueError，ZeroDivisionError<br><br>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数："</span>))</span><br><span class="line">    <span class="comment"># 使用 8 除以用户输入的整数并且输出</span></span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"请输入正确的整数"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果(输入 0 )：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：0
+除 0 错误
+
+进程已结束，退出代码 0</code></pre><p>运行结果(输入非整数)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：aa
+请输入正确的整数
+
+进程已结束，退出代码 0</code></pre><p>运行结果(正常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：10
+0.8
+
+进程已结束，退出代码 </code></pre><p>可以填写不同类型的异常   例如ValueError，ZeroDivisionError   以此类推</p>
+<h2 id="捕获未知错误"><a href="#捕获未知错误" class="headerlink" title="捕获未知错误"></a>捕获未知错误</h2><p>在开发时,要预判到所有可能出现的错误,还是有一定难度的,如果需要无论出现任何错误,都不会因为python解释器抛出异常而被终止,可以在增加一个except,语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span>  Exception  <span class="keyword">as</span>   变量名：</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % 变量名)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment">#不能确定正确执行的代码</span></span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数 ："</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#使用 8 除以用户输入的整数并且输出</span></span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br><span class="line">    <span class="comment">#以上代码之后错误类型是0时  会抛出错误  其他的都是导致异常退出</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br><span class="line">    <span class="comment">#这样其他的错误也可以被捕获到</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数 ：aa
+未知错误 invalid literal for int() with base 10: &apos;aa&apos;
+
+进程已结束，退出代码 0</code></pre><h2 id="异常捕获完整语法"><a href="#异常捕获完整语法" class="headerlink" title="异常捕获完整语法"></a>异常捕获完整语法</h2><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> <span class="number">2</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment">#没有异常才会执行的代码</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="comment">#无论是否有异常，都会执行的代码</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>else：只有在没有异常的情况下才会执行的代码<br><br>finally：无论是否有异常都会被执行的代码<br><br>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment">#不能确定正确执行的代码</span></span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数 ："</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#使用 8 除以用户输入的整数并且输出</span></span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"请输入正确的整数"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">"没有错误执行"</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">"全部执行"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果(除 0 错误)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数 ：0
+除 0 错误
+全部执行
+
+进程已结束，退出代码 0</code></pre><p>运行结果(没有错误):</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数 ：8
+1.0
+没有错误执行
+全部执行
+
+进程已结束，退出代码 0</code></pre><h2 id="异常的传递"><a href="#异常的传递" class="headerlink" title="异常的传递"></a>异常的传递</h2><p>异常的传递–当函数/方法执行出现异常,会将异常传递给函数/方法的调用一方,如果传递到主程序,仍然没有异常处理,程序才会被终止<br><br>提示：<br><br>在开发中,可以在主程序中增加异常捕获,而在主函数中调用其他的函数,只要出现异常,都会传递到主函数的异常捕获中,这样就不需要在代码中增加大量的异常捕获,能够保证代码的整洁</p>
+<p>需求：</p>
+<pre><code>1、定义函数demo1()提示用户输入一个整数并且返还
+2、定义函数demo2()调用demo1()
+3、在主程序中调用demo2()</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定义函数demo1 返回用户输入的整数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span>  int(input(<span class="string">"请输入一个整数："</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义函数demo2  调用函数demo1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span>  demo1()</span><br><span class="line"></span><br><span class="line"><span class="comment">#利用异常的传递性，在主程序中捕获异常</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(demo1())</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span>  result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br></pre></td></tr></table></figure>
+<p>运行结果(正常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：1
+1
+
+进程已结束，退出代码 0</code></pre><p>运行结果(异常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：a
+未知错误 invalid literal for int() with base 10: &apos;a&apos;
+
+进程已结束，退出代码 0</code></pre><h2 id="主动抛出异常并且捕获"><a href="#主动抛出异常并且捕获" class="headerlink" title="主动抛出异常并且捕获"></a>主动抛出异常并且捕获</h2><p>抛出raise异常：在开发中,除了代码执行错误python解释器会抛出异常之外,还可以根据应用程序特有的业务需求主动抛出异常</p>
+<pre><code>如果函数中没有定义任何返回  如果使用print输出 就会输出一个None  （*args  是一个多值的元组参数）</code></pre><p>主动抛出异常并且捕获,python中提供了一个Exception异常类,在开发时,如果满足特定业务需求时,希望抛出异常可以：</p>
+<pre><code>1、创建一个Exception的对象
+2、使用raise 关键字抛出异常对象</code></pre><p>需求：</p>
+<pre><code>1、定义input_password函数，提示用户输入密码
+2、如果用户输入长度&lt;8 抛出异常
+3、如果用户输入长度&gt;=8 返回输入的密码</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    <span class="comment"># 1、定义input_password函数，提示用户输入密码</span></span><br><span class="line">    pwd = input(<span class="string">"请输入密码："</span>)</span><br><span class="line">    <span class="comment"># 2、如果用户输入长度 &lt; 8  抛出异常</span></span><br><span class="line">    <span class="keyword">if</span> len(pwd) &gt;= <span class="number">8</span>:</span><br><span class="line">        <span class="keyword">return</span> pwd</span><br><span class="line">    print(<span class="string">"主动抛出异常"</span>)</span><br><span class="line">    ex = Exception(<span class="string">"密码长度不够"</span>)</span><br><span class="line">    <span class="keyword">raise</span> ex</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(input_password()) <span class="comment"># 执行函数并打印</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span>  result:  <span class="comment"># 捕获所有异常 并 传递到result 变量</span></span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">finally</span>:   <span class="comment"># 所有情况下都会执行的代码</span></span><br><span class="line">    print(<span class="string">"代码结束"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果(正常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入密码：12345678
+12345678
+代码结束
+
+进程已结束，退出代码 0</code></pre><p>运行结果(异常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入密码：123456
+主动抛出异常
+密码长度不够
+代码结束
+
+进程已结束，退出代码 0</code></pre>
       
       <!-- reward -->
       
@@ -197,6 +289,15 @@ var _hmt = _hmt || [];
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/06/22/shell-commond/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            shell命令行工具
+          
+        </div>
+      </a>
     
     
       <a href="/2020/06/18/python-13/" class="article-nav-link">

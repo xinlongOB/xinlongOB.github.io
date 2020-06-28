@@ -1,15 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>python基础之抛出异常</title>
-    <url>/2020/06/20/python-14/</url>
-    <content><![CDATA[]]></content>
+    <title>python基础之文件操作</title>
+    <url>/2020/06/28/python-16/</url>
+    <content><![CDATA[<h2 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h2><p>在python3中,打开文件的函数是：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">open(file, mode=<span class="string">'r'</span>, buffering=<span class="literal">None</span>, encoding=<span class="literal">None</span>, errors=<span class="literal">None</span>, newline=<span class="literal">None</span>, closefd=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<pre><code>file：文件名
+mode：打开模式,默认只读模式
+encoding：打开文件的编码方式</code></pre><p>模式介绍：</p>
+<pre><code>r：只读模式(默认)
+w：只写模式,如果文件不存在就创建,如果存在,写入的数据就会覆盖原来的数据
+b：二进制模式
+t：文本模式
++：可读可写模式
+a：追加模式,如果文件存在则文件指针指向文件末尾(追加数据),如果不存在就创建
+r+：读追加模式,先读,在追加
+w+：读写模式,先写,意味着原本内容丢失,再读</code></pre><p>文件使用完毕后必须关闭： 文件指针.close() </p>
+<h2 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h2><p>file.txt文件内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">my</span><br><span class="line">sas</span><br><span class="line">aaa</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">中文</span><br><span class="line">中文</span><br><span class="line">葫芦娃</span><br></pre></td></tr></table></figure>
+<p>reads()是读出全部内容</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">"r"</span>.center(<span class="number">50</span>,<span class="string">'-'</span>))</span><br><span class="line">f=open(<span class="string">"file.txt"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">print(f.read())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+------------------------r-------------------------
+my
+sas
+aaa
+test
+中文
+中文
+葫芦娃
+
+进程已结束，退出代码 0</code></pre><p>readline()是读出一行</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">"r"</span>.center(<span class="number">50</span>,<span class="string">'-'</span>))</span><br><span class="line">f=open(<span class="string">"file.txt"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">print(f.readline())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+------------------------r-------------------------
+my
+
+
+进程已结束，退出代码 0</code></pre><p>readlines()是读出全部内容,并整理成一个列表</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">"r"</span>.center(<span class="number">50</span>,<span class="string">'-'</span>))</span><br><span class="line">f=open(<span class="string">"file.txt"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">print(f.readlines())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+------------------------r-------------------------
+[&apos;my\n&apos;, &apos;sas\n&apos;, &apos;aaa\n&apos;, &apos;test\n&apos;, &apos;中文\n&apos;, &apos;中文\n&apos;, &apos;葫芦娃&apos;]
+
+进程已结束，退出代码 0</code></pre><p>调用read()会一次性读取文件的全部内容，如果文件有20G，内存就爆了，所以，要保险起见，可以反复调用read(size)方法，每次最多读取size个字节的内容。另外，调用readline()可以每次读取一行内容，调用readlines()一次读取所有内容并按行返回list。因此，要根据需要决定怎么调用。</p>
+<p>如果文件很小，read()一次性读取最方便；如果不能确定文件大小，反复调用read(size)比较保险；如果是配置文件，调用readlines()最方便：</p>
+<h2 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h2><p>写文件和读文件是一样的，唯一区别是调用open()函数时，传入标识符’w’或者’wb’表示写文本文件或写二进制文件：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = open(<span class="string">'E:\python\python\test.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.write(<span class="string">'Hello, python!'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.close()</span><br></pre></td></tr></table></figure>
+<h2 id="with"><a href="#with" class="headerlink" title="with"></a>with</h2><p>为了便捷的关闭文件，python增加了with功能，当with体执行完将自动关闭打开的文件：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">"file.txt"</span>,<span class="string">"r+"</span>,encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f: <span class="comment">##将自动执行f.close()</span></span><br><span class="line"> f.write(<span class="string">"金刚"</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>多个文件的读写</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'C:\Desktop\text.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'C:\Desktop\text1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f1:</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'C:\Desktop\text2.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f2　　　　　　</span><br><span class="line">        ........　　　　　　　</span><br><span class="line">        ........　　　　　　　</span><br><span class="line">        ........</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">''</span>C:\Desktop\text.txt<span class="string">','</span><span class="string">r') as f:</span></span><br><span class="line"><span class="string">........</span></span><br><span class="line"><span class="string">with open('</span><span class="string">'C:\Desktop\text1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f1:</span><br><span class="line">........</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'C:\Desktop\text2.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f2:</span><br><span class="line">........</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
         <tag>python</tag>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>shell命令行工具</title>
+    <url>/2020/06/22/shell-commond/</url>
+    <content><![CDATA[<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在第一个匹配行到第二个匹配行后各加 <span class="built_in">test</span>     然后删除匹配到的第一个<span class="built_in">test</span></span></span><br><span class="line">cat  aa  | sed   "/path/,/--&gt;/a test"  |sed '0,/test/&#123;/test/d&#125;'</span><br></pre></td></tr></table></figure>
+
+<p>docker build 失败(如果可以导入镜像但是除去FROM第一个指令就报错 那就是linux与docker版本的兼容性问题)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum remove docker  docker-common docker-selinux dockesr-engine</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum install docker-ce</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python基础之抛出异常</title>
+    <url>/2020/06/20/python-14/</url>
+    <content><![CDATA[<h2 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h2><p>在程序开发中,如果对默认代码不能确定是否正确,可以增加try(尝试)来捕获异常,语法格式：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 不能确定正确执行的代码</span></span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数："</span>))</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="comment"># 错误的处理代码</span></span><br><span class="line">    print(<span class="string">"请输入一个整数"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：66
+
+进程已结束，退出代码 0</code></pre><p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：aa
+请输入一个整数
+
+进程已结束，退出代码 0</code></pre><h2 id="错误类偶像捕获异常"><a href="#错误类偶像捕获异常" class="headerlink" title="错误类偶像捕获异常"></a>错误类偶像捕获异常</h2><p>在程序执行时,可能遇到不同类型的异常,并且需要针对不同的类型的异常,做出不同的响应<br><br>当python解释器抛出异常时,最后一行错误信息的第一个单词就是错误类型,如：ValueError，ZeroDivisionError<br><br>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数："</span>))</span><br><span class="line">    <span class="comment"># 使用 8 除以用户输入的整数并且输出</span></span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"请输入正确的整数"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果(输入 0 )：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：0
+除 0 错误
+
+进程已结束，退出代码 0</code></pre><p>运行结果(输入非整数)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：aa
+请输入正确的整数
+
+进程已结束，退出代码 0</code></pre><p>运行结果(正常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：10
+0.8
+
+进程已结束，退出代码 </code></pre><p>可以填写不同类型的异常   例如ValueError，ZeroDivisionError   以此类推</p>
+<h2 id="捕获未知错误"><a href="#捕获未知错误" class="headerlink" title="捕获未知错误"></a>捕获未知错误</h2><p>在开发时,要预判到所有可能出现的错误,还是有一定难度的,如果需要无论出现任何错误,都不会因为python解释器抛出异常而被终止,可以在增加一个except,语法如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span>  Exception  <span class="keyword">as</span>   变量名：</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % 变量名)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment">#不能确定正确执行的代码</span></span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数 ："</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#使用 8 除以用户输入的整数并且输出</span></span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br><span class="line">    <span class="comment">#以上代码之后错误类型是0时  会抛出错误  其他的都是导致异常退出</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br><span class="line">    <span class="comment">#这样其他的错误也可以被捕获到</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数 ：aa
+未知错误 invalid literal for int() with base 10: &apos;aa&apos;
+
+进程已结束，退出代码 0</code></pre><h2 id="异常捕获完整语法"><a href="#异常捕获完整语法" class="headerlink" title="异常捕获完整语法"></a>异常捕获完整语法</h2><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> <span class="number">2</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> result:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment">#没有异常才会执行的代码</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="comment">#无论是否有异常，都会执行的代码</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>else：只有在没有异常的情况下才会执行的代码<br><br>finally：无论是否有异常都会被执行的代码<br><br>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment">#不能确定正确执行的代码</span></span><br><span class="line">    num = int(input(<span class="string">"请输入一个整数 ："</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#使用 8 除以用户输入的整数并且输出</span></span><br><span class="line">    result = <span class="number">8</span> / num</span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    print(<span class="string">"除 0 错误"</span>)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">"请输入正确的整数"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">"没有错误执行"</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">"全部执行"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果(除 0 错误)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数 ：0
+除 0 错误
+全部执行
+
+进程已结束，退出代码 0</code></pre><p>运行结果(没有错误):</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数 ：8
+1.0
+没有错误执行
+全部执行
+
+进程已结束，退出代码 0</code></pre><h2 id="异常的传递"><a href="#异常的传递" class="headerlink" title="异常的传递"></a>异常的传递</h2><p>异常的传递–当函数/方法执行出现异常,会将异常传递给函数/方法的调用一方,如果传递到主程序,仍然没有异常处理,程序才会被终止<br><br>提示：<br><br>在开发中,可以在主程序中增加异常捕获,而在主函数中调用其他的函数,只要出现异常,都会传递到主函数的异常捕获中,这样就不需要在代码中增加大量的异常捕获,能够保证代码的整洁</p>
+<p>需求：</p>
+<pre><code>1、定义函数demo1()提示用户输入一个整数并且返还
+2、定义函数demo2()调用demo1()
+3、在主程序中调用demo2()</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#定义函数demo1 返回用户输入的整数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span>  int(input(<span class="string">"请输入一个整数："</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义函数demo2  调用函数demo1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span>  demo1()</span><br><span class="line"></span><br><span class="line"><span class="comment">#利用异常的传递性，在主程序中捕获异常</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(demo1())</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span>  result:</span><br><span class="line">    print(<span class="string">"未知错误 %s"</span> % result)</span><br></pre></td></tr></table></figure>
+<p>运行结果(正常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：1
+1
+
+进程已结束，退出代码 0</code></pre><p>运行结果(异常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入一个整数：a
+未知错误 invalid literal for int() with base 10: &apos;a&apos;
+
+进程已结束，退出代码 0</code></pre><h2 id="主动抛出异常并且捕获"><a href="#主动抛出异常并且捕获" class="headerlink" title="主动抛出异常并且捕获"></a>主动抛出异常并且捕获</h2><p>抛出raise异常：在开发中,除了代码执行错误python解释器会抛出异常之外,还可以根据应用程序特有的业务需求主动抛出异常</p>
+<pre><code>如果函数中没有定义任何返回  如果使用print输出 就会输出一个None  （*args  是一个多值的元组参数）</code></pre><p>主动抛出异常并且捕获,python中提供了一个Exception异常类,在开发时,如果满足特定业务需求时,希望抛出异常可以：</p>
+<pre><code>1、创建一个Exception的对象
+2、使用raise 关键字抛出异常对象</code></pre><p>需求：</p>
+<pre><code>1、定义input_password函数，提示用户输入密码
+2、如果用户输入长度&lt;8 抛出异常
+3、如果用户输入长度&gt;=8 返回输入的密码</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">    <span class="comment"># 1、定义input_password函数，提示用户输入密码</span></span><br><span class="line">    pwd = input(<span class="string">"请输入密码："</span>)</span><br><span class="line">    <span class="comment"># 2、如果用户输入长度 &lt; 8  抛出异常</span></span><br><span class="line">    <span class="keyword">if</span> len(pwd) &gt;= <span class="number">8</span>:</span><br><span class="line">        <span class="keyword">return</span> pwd</span><br><span class="line">    print(<span class="string">"主动抛出异常"</span>)</span><br><span class="line">    ex = Exception(<span class="string">"密码长度不够"</span>)</span><br><span class="line">    <span class="keyword">raise</span> ex</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(input_password()) <span class="comment"># 执行函数并打印</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span>  result:  <span class="comment"># 捕获所有异常 并 传递到result 变量</span></span><br><span class="line">    print(result)</span><br><span class="line"><span class="keyword">finally</span>:   <span class="comment"># 所有情况下都会执行的代码</span></span><br><span class="line">    print(<span class="string">"代码结束"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果(正常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入密码：12345678
+12345678
+代码结束
+
+进程已结束，退出代码 0</code></pre><p>运行结果(异常)：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/hexo/test.py
+请输入密码：123456
+主动抛出异常
+密码长度不够
+代码结束
+
+进程已结束，退出代码 0</code></pre>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>liunx</tag>
       </tags>
   </entry>
   <entry>
@@ -396,7 +567,7 @@ test2
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -437,7 +608,7 @@ E:\资料\python\hexo
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -515,7 +686,7 @@ Good bye
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -563,7 +734,7 @@ Good bye !
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -675,7 +846,7 @@ a 和 b 没有相同的标识
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -727,7 +898,7 @@ Login incorrect
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -764,7 +935,7 @@ Dictionary(字典)</code></pre>]]></content>
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -931,7 +1102,7 @@ python默认的层次是1000(传递的数大于1000就会报错)    centos系统
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -966,7 +1137,7 @@ demo2 ==&gt; 20
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -1034,7 +1205,7 @@ start - num
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -1096,7 +1267,7 @@ bad 的年龄是 21 身高是1.85
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -1250,7 +1421,7 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>docker</tag>
       </tags>
   </entry>
@@ -1272,7 +1443,7 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>ssh</tag>
       </tags>
   </entry>
@@ -1407,7 +1578,7 @@ fatal: unable to auto-detect email address (got &apos;root@suyuerunCentos.(none)
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>git</tag>
       </tags>
   </entry>
@@ -1431,7 +1602,7 @@ fatal: unable to auto-detect email address (got &apos;root@suyuerunCentos.(none)
       </categories>
       <tags>
         <tag>subversion</tag>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1509,7 +1680,7 @@ echo  &apos;set aaa aaaa&apos; |redis-cli -h   127.0.0.1  -a mima</code></pre><p
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>redis</tag>
       </tags>
   </entry>
@@ -1568,7 +1739,7 @@ Openshift(redhat公司k8s发行版)</code></pre><h2 id="安装文档"><a href="#
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>kubernetes</tag>
       </tags>
   </entry>
@@ -1680,7 +1851,7 @@ fs.close(fd,function(err,fd){
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>nodejs</tag>
       </tags>
   </entry>
@@ -1782,7 +1953,7 @@ server.listen(8080, function () {
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>nodejs</tag>
       </tags>
   </entry>
@@ -1812,7 +1983,7 @@ Finished: FAILURE</code></pre><p>解决办法：</p>
 <p>重新执行构建就ok了</p>
 ]]></content>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>jenkins</tag>
       </tags>
   </entry>
@@ -2083,7 +2254,7 @@ silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs</code></pre>]]></conten
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>nodejs</tag>
       </tags>
   </entry>
@@ -2125,7 +2296,7 @@ word</code></pre>]]></content>
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>nodejs</tag>
       </tags>
   </entry>
@@ -2273,7 +2444,7 @@ silly dog@LAPTOP-OEVDT7RG MINGW64 /e/程序代码/nodejs</code></pre><p>也就�
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>nodejs</tag>
       </tags>
   </entry>
@@ -2305,7 +2476,7 @@ Hello World     </code></pre>]]></content>
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>nodejs</tag>
       </tags>
   </entry>
@@ -2408,7 +2579,7 @@ Hello, syl!</code></pre><p>  console.log() 是个全局函数用于进行标准�
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>nodejs</tag>
       </tags>
   </entry>
@@ -2463,7 +2634,7 @@ pip 10.0.1 from /usr/local/sbin/python-3.7/lib/python3.7/site-packages/pip (pyth
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -2481,7 +2652,7 @@ svn: E210005: No repository found in &apos;svn://xxx&apos;</code></pre><p>是因
       </categories>
       <tags>
         <tag>subversion</tag>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2744,7 +2915,7 @@ all the servers is Ok and set ableConnect</code></pre><p>进程已结束，退�
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -3437,7 +3608,7 @@ master02   Ready    &lt;none&gt;   14m     v1.18.3</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>kubernetes</tag>
       </tags>
   </entry>
@@ -3663,7 +3834,7 @@ myapp NodePort 10.102.254.75 &lt;none&gt; 80:31257/TCP 2m32s</code></pre><p>myap
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>kubernetes</tag>
       </tags>
   </entry>
@@ -3737,7 +3908,7 @@ b) 针对目标服务器做 ssh 免密登录，依次执行：
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>kubernetes</tag>
       </tags>
   </entry>
@@ -3751,7 +3922,7 @@ b) 针对目标服务器做 ssh 免密登录，依次执行：
         <category>阿里云</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>阿里云</tag>
       </tags>
   </entry>
@@ -3896,7 +4067,7 @@ npm uninstall express #删除指定的模块</code></pre>]]></content>
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>pm2</tag>
       </tags>
   </entry>
@@ -3914,7 +4085,7 @@ npm uninstall express #删除指定的模块</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3942,7 +4113,7 @@ OS name: &quot;linux&quot;, version: &quot;3.10.0-514.21.2.el7.x86_64&quot;, arc
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>mvn</tag>
       </tags>
   </entry>
@@ -3959,7 +4130,7 @@ git push origin master</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>git</tag>
       </tags>
   </entry>
@@ -3983,7 +4154,7 @@ GNU Parted 1.8.1 Using /dev/sdb Welcome to GNU Parted! Type ‘help’ to view a
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>parted</tag>
       </tags>
   </entry>
@@ -4103,7 +4274,7 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>samba</tag>
       </tags>
   </entry>
@@ -4128,7 +4299,7 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>mongo</tag>
       </tags>
   </entry>
@@ -4229,7 +4400,7 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -4264,7 +4435,7 @@ echo &quot;ceshi&quot;</code></pre><p> cehshi</p>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>docker</tag>
       </tags>
   </entry>
@@ -4338,7 +4509,7 @@ False
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
@@ -4363,7 +4534,7 @@ print(len(str))</code></pre><p>统计一个字符在字符串中出现的次数<
         <category>开发</category>
       </categories>
       <tags>
-        <tag>liunx</tag>
+        <tag>Linux</tag>
         <tag>python</tag>
       </tags>
   </entry>
