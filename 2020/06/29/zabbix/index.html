@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    zabbix监控搭建及配置邮件报警 |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-zabbix" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  zabbix监控搭建及配置邮件报警
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/29/zabbix/" class="article-date">
+  <time datetime="2020-06-29T00:55:27.000Z" itemprop="datePublished">2020-06-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.6k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">7 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="环境配置-server端和agent端"><a href="#环境配置-server端和agent端" class="headerlink" title="环境配置(server端和agent端)"></a>环境配置(server端和agent端)</h2><p>升级系统组件到最新的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo  yum -y update</span><br></pre></td></tr></table></figure>
+<p>关闭selinux</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0       <span class="comment">#临时关闭命令</span></span><br><span class="line">vi /etc/selinux/config    <span class="comment">#将SELINUX=enforcing改为SELINUX=disabled 设置后需要重启才能生效</span></span><br><span class="line">getenforce         <span class="comment">#检测selinux是否关闭，Disabled 为关闭</span></span><br></pre></td></tr></table></figure>
+<p>关闭防火墙</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state    <span class="comment">#查看默认防火墙状态，关闭后显示not running，开启后显示running</span></span><br><span class="line">systemctl stop firewalld.service    <span class="comment">#临时关闭firewal</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld.service <span class="comment">#禁止firewall开机启动</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="zabbix服务端配置-server端"><a href="#zabbix服务端配置-server端" class="headerlink" title="zabbix服务端配置(server端)"></a>zabbix服务端配置(server端)</h2><p>zabbix需要借助LAMP或者LNMP环境,LAMP比较方便配置所以先搭建LAMP环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装软件包和其他工具包</span></span><br><span class="line"> yum install -y httpd mariadb-server mariadb php php-mysql php-gd libjpeg* php-ldap php-odbc php-pear php-xml php-xmlrpc php-mhash</span><br><span class="line"> rpm -qa httpd php   mariadb   </span><br><span class="line"> <span class="comment"># 或者  </span></span><br><span class="line"> rpm -qa httpd php mysql-community-server</span><br></pre></td></tr></table></figure>
+<p>添加首页支持格式　</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/httpd/conf/httpd.conf</span><br><span class="line">     DirectoryIndex index.html index.php</span><br></pre></td></tr></table></figure>
+<p>配置时区  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/php.ini</span><br><span class="line">      date.timezone = PRC</span><br></pre></td></tr></table></figure>
+<p>启动并加入开启自启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">systemctl start httpd   <span class="comment">#启动并加入开机自启动httpd</span></span><br><span class="line">systemctl <span class="built_in">enable</span> httpd</span><br><span class="line">systemctl start mysqld  <span class="comment">#启动并加入开机自启动mysqld</span></span><br><span class="line">systemctl <span class="built_in">enable</span> mysqld</span><br><span class="line"></span><br><span class="line">ss -anplt | grep httpd   <span class="comment">#查看httpd启动情况，80端口监控表示httpd已启动</span></span><br><span class="line">ss -naplt | grep mysqld  <span class="comment">#查看mysqld启动情况，3306端口监控表示mysqld已启动</span></span><br></pre></td></tr></table></figure>
+<p>创建一个测试页测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo  sh -c <span class="string">'echo "&lt;?php echo phpinfo();?&gt;"  &gt; index.php '</span>  </span><br><span class="line"><span class="comment"># 直接使用sudo echo 会提示权限不足   例如：sudo echo "&lt;?php echo phpinfo();?&gt;"  &gt; index.php</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/06/29/zabbix/1.png" alt></p>
+<h2 id="数据库配置-server端"><a href="#数据库配置-server端" class="headerlink" title="数据库配置(server端)"></a>数据库配置(server端)</h2><p>初始化数据库设置数据库root密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo mysqladmin -u root password 123456  </span><br><span class="line"></span><br><span class="line"><span class="comment">#root用户登陆数据库</span></span><br><span class="line">mysql -u root -p123456       </span><br><span class="line"><span class="comment">#创建zabbix数据库（中文编码格式）</span></span><br><span class="line">CREATE DATABASE zabbix character <span class="built_in">set</span> utf8 collate utf8_bin;   </span><br><span class="line"><span class="comment">#授予zabbix用户zabbix数据库的所有权限，密码admin123</span></span><br><span class="line">GRANT all ON zabbix.* TO <span class="string">'zabbix'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'admin123'</span>;  </span><br><span class="line"><span class="comment">#刷新权限</span></span><br><span class="line">flush privileges;   </span><br><span class="line"><span class="comment">#退出数据库 </span></span><br><span class="line">quit</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/06/29/zabbix/2.png" alt></p>
+<p>数据库连接测试页</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /var/www/html/index.php </span><br><span class="line">    &lt;?php</span><br><span class="line">    <span class="variable">$link</span>=mysql_connect(<span class="string">'172.18.20.224'</span>,<span class="string">'zabbix'</span>,<span class="string">'admin123'</span>); </span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$link</span>) <span class="built_in">echo</span> <span class="string">"&lt;h1&gt;Success!!&lt;/h1&gt;"</span>;   <span class="comment">#显示Success表示连接数据库成功</span></span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">echo</span> <span class="string">"Fail!!"</span>;</span><br><span class="line">    mysql_close();</span><br><span class="line">    ?&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/06/29/zabbix/3.png" alt></p>
+<h2 id="安装zabbix-server端"><a href="#安装zabbix-server端" class="headerlink" title="安装zabbix(server端)"></a>安装zabbix(server端)</h2><p>安装依赖包和组件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo  yum -y install net-snmp net-snmp-devel curl curl-devel libxml2 libxml2-devel libevent-devel.x86_64 javacc.noarch  javacc-javadoc.noarch javacc-maven-plugin.noarch javacc*</span><br><span class="line"><span class="comment"># 安装php支持zabbix组件</span></span><br><span class="line">sudo  yum install php-bcmath php-mbstring -y </span><br><span class="line"><span class="comment"># 会自动生成yum源文件，保证系统可以上网</span></span><br><span class="line">sudo  rpm -ivh http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm  </span><br><span class="line"><span class="comment"># 清理yum缓存</span></span><br><span class="line">sudo yum clean all </span><br><span class="line"><span class="comment"># 安装zabbix组件</span></span><br><span class="line">sudo  yum install zabbix-server-mysql zabbix-web-mysql -y</span><br></pre></td></tr></table></figure>
+<p>安装zabbix后会有一个数据库文件,需要把这个文件恢复到数据库中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>   /usr/share/doc/zabbix-server-mysql-4.0.21/</span><br><span class="line"><span class="comment">#导入数据到数据库zabbix中(最后一个zabbix是数据库zabbix)，且因为用户zabbix是%(任意主机)，所以登录时需要加上当前主机ip(-h 192.168.1.122),密码是用户zabbix登陆密码admin123</span></span><br><span class="line">sudo  zcat  create.sql.gz | mysql -uzabbix -p -h 192.168.1.122 zabbix</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件中配置数据库用户及密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo vim  /etc/zabbix/zabbix_server.conf </span><br><span class="line"></span><br><span class="line">    DBHost=192.168.1.122</span><br><span class="line">    DBName=zabbix</span><br><span class="line">    DBUser=zabbix</span><br><span class="line">    DBPassword=admin123</span><br></pre></td></tr></table></figure>
+<p>确定数据库用户及密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -n <span class="string">'^'</span>[a-Z] /etc/zabbix/zabbix_server.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改时区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo  vim /etc/httpd/conf.d/zabbix.conf  </span><br><span class="line"><span class="comment"># 将# php_value date.timezone Europe/Riga 变更成php_value date.timezone Asia/Shanghai</span></span><br><span class="line"></span><br><span class="line">    php_value date.timezone Asia/Shanghai</span><br></pre></td></tr></table></figure>
+<p>启动并加入开机自启动zabbix-server</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> zabbix-server </span><br><span class="line">systemctl start zabbix-server</span><br><span class="line"><span class="comment">#   监听在10051端口上,如果没监听成功，可重启zabbix-server服务试试</span></span><br><span class="line">netstat -anpt | grep zabbix</span><br></pre></td></tr></table></figure>
+<p>默认用户和密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">默认账号Admin</span><br><span class="line">默认密码为zabbix  密码经过MD5加密后为5fce1b3e34b520afeffb37ce08c7cd66</span><br></pre></td></tr></table></figure>
+<h2 id="welcom-zabbix-后台"><a href="#welcom-zabbix-后台" class="headerlink" title="welcom zabbix(后台)"></a>welcom zabbix(后台)</h2><p>如果以上步骤无误，现在可以使用web打开   </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.122/zabbix　  <span class="comment"># 注意这里IE浏览器打不开,使用其他浏览器</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/29/zabbix/5.png" alt><br><br>这里必须全部都是OK<br><br><img src="/2020/06/29/zabbix/6.png" alt><br><br><img src="/2020/06/29/zabbix/7.png" alt><br><br><img src="/2020/06/29/zabbix/8.png" alt><br><br><img src="/2020/06/29/zabbix/9.png" alt><br><br>安装成功<br><br><img src="/2020/06/29/zabbix/10.png" alt><br><br>进入界面后设置语言<br><br><img src="/2020/06/29/zabbix/11.png" alt><br><br>选择Chinese<br><br><img src="/2020/06/29/zabbix/12.png" alt><br></p>
+<h2 id="Agent端配置-agent端"><a href="#Agent端配置-agent端" class="headerlink" title="Agent端配置(agent端)"></a>Agent端配置(agent端)</h2><p>安装依赖包和组件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo  yum -y install net-snmp net-snmp-devel curl curl-devel libxml2 libxml2-devel libevent-devel.x86_64 javacc.noarch  javacc-javadoc.noarch javacc-maven-plugin.noarch javacc*</span><br><span class="line"><span class="comment"># 安装php支持zabbix组件</span></span><br><span class="line">sudo  yum install php-bcmath php-mbstring -y </span><br><span class="line"><span class="comment"># 会自动生成yum源文件，保证系统可以上网</span></span><br><span class="line">sudo  rpm -ivh http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm  </span><br><span class="line"><span class="comment"># 清理yum缓存</span></span><br><span class="line">sudo yum clean all </span><br><span class="line"><span class="comment"># 安装zabbix-agent </span></span><br><span class="line">sudo   yum install zabbix-agent  -y</span><br></pre></td></tr></table></figure>
+<p>修改zabbix-agent的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">vim   /etc/zabbix/zabbix_agentd.conf</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 指定zabbix服务器的IP</span></span><br><span class="line">    Server=192.168.1.122    </span><br><span class="line">    <span class="comment"># 指定zabbix服务器的IP</span></span><br><span class="line">    ServerActive=192.168.1.122  </span><br><span class="line">    <span class="comment"># 指定后台显示名称</span></span><br><span class="line">    Hostname=<span class="built_in">test</span>     </span><br><span class="line">    <span class="comment"># 是否支持自定义key  默认为 0  不支持</span></span><br><span class="line">    UnsafeUserParameters=1   </span><br><span class="line">			</span><br><span class="line">    <span class="comment"># 自定义key  监控项</span></span><br><span class="line">    UserParameter=prod.redis,ps -ef|grep <span class="string">'redis'</span> |grep -v <span class="string">'grep'</span>|wc -l     </span><br><span class="line">    <span class="comment"># 自定义key  监控项</span></span><br><span class="line">    UserParameter=prod.mongo,ps -ef|grep <span class="string">'mongo'</span> |grep -v <span class="string">'grep'</span>|wc -l   </span><br><span class="line">    <span class="comment"># 自定义key  监控项  </span></span><br><span class="line">    UserParameter=prod.node,ps -ef|grep <span class="string">'node'</span> |grep -v <span class="string">'grep'</span>|wc -l</span><br></pre></td></tr></table></figure>
+<p>启动agent端</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/zabbix_agentd  -c /etc/zabbix/zabbix_agentd.conf     <span class="comment"># 启动agent端</span></span><br><span class="line">systemctl  restart   zabbix-agent   <span class="comment"># 重启</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="zabbix服务器上测试-server端"><a href="#zabbix服务器上测试-server端" class="headerlink" title="zabbix服务器上测试(server端)"></a>zabbix服务器上测试(server端)</h2><p>需要下载 zabbix-get</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install  zabbix-get   -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost zabbix-server-mysql-4.0.21]$ zabbix_get -s 192.168.1.220 -p 10050 -k prod.redis     <span class="comment"># 显示数值 代表成功</span></span><br><span class="line">1  </span><br><span class="line">[sgsm@localhost zabbix-server-mysql-4.0.21]$</span><br></pre></td></tr></table></figure>
+
+<h2 id="zabbix后台配置监控项-后台"><a href="#zabbix后台配置监控项-后台" class="headerlink" title="zabbix后台配置监控项(后台)"></a>zabbix后台配置监控项(后台)</h2><p>创建群组<br><br><img src="/2020/06/29/zabbix/13.png" alt><br><br>设置组名<br><br><img src="/2020/06/29/zabbix/14.png" alt><br><br><img src="/2020/06/29/zabbix/15.png" alt><br><br>创建主机<br><br><img src="/2020/06/29/zabbix/16.png" alt><br><br><img src="/2020/06/29/zabbix/18.png" alt><br><br><img src="/2020/06/29/zabbix/19.png" alt><br><br><img src="/2020/06/29/zabbix/20.png" alt><br><br><img src="/2020/06/29/zabbix/21.png" alt><br><br>创建监控项<br><br><img src="/2020/06/29/zabbix/22.png" alt><br><br><img src="/2020/06/29/zabbix/23.png" alt><br><br><img src="/2020/06/29/zabbix/24.png" alt><br><br>创建触发器<br><br><img src="/2020/06/29/zabbix/25.png" alt><br><br><img src="/2020/06/29/zabbix/26.png" alt><br><br><img src="/2020/06/29/zabbix/27.png" alt><br><br><img src="/2020/06/29/zabbix/28.png" alt><br><br>可以在最新数据查看当前值<br><br><img src="/2020/06/29/zabbix/29.png" alt><br><br><img src="/2020/06/29/zabbix/30.png" alt></p>
+<p>修改状态测试<br><br><img src="/2020/06/29/zabbix/31.png" alt><br><br><img src="/2020/06/29/zabbix/32.png" alt><br><br><img src="/2020/06/29/zabbix/33.png" alt><br><br><img src="/2020/06/29/zabbix/34.png" alt><br>至此监控配置完成,下面需要配置邮件服务,当有服务宕机发邮件告警</p>
+<h2 id="配置媒介邮件-server端"><a href="#配置媒介邮件-server端" class="headerlink" title="配置媒介邮件(server端)"></a>配置媒介邮件(server端)</h2><p>首先需要在邮件获取授权码<br><br><img src="/2020/06/29/zabbix/40.png" alt><br><br><img src="/2020/06/29/zabbix/41.png" alt><br><br><img src="/2020/06/29/zabbix/42.png" alt><br></p>
+<p>本次测试使用mailx服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关闭当前postfix邮件</span></span><br><span class="line">sudo  systemctl stop postfix</span><br><span class="line">chkconfig  postfix  off</span><br><span class="line"><span class="comment"># 安装mailx</span></span><br><span class="line">sudo yum install mailx  -y</span><br></pre></td></tr></table></figure>
+<p>配置邮件服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo  vim /etc/mail.rc</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发件人地址</span></span><br><span class="line">    <span class="built_in">set</span> from=xxxxxx@qq.com smtp=smtp.qq.com    </span><br><span class="line">    <span class="comment"># 收件人地址                       授权码(邮箱IMAP/SMTP服务的授权码)</span></span><br><span class="line">    <span class="built_in">set</span> smtp-auth-user=xxxxxx@qq.com smtp-auth-password=xxxxxx      </span><br><span class="line">    <span class="built_in">set</span> smtp-auth=login</span><br></pre></td></tr></table></figure>
+<p>测试发送邮件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"zabbix test mail"</span> |mail -s <span class="string">"zabbix"</span> xxxxxx@qq.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置发送邮件-后台"><a href="#配置发送邮件-后台" class="headerlink" title="配置发送邮件(后台)"></a>配置发送邮件(后台)</h2><p>管理—示警介类型—创建媒体类型<br><br>创建报警媒介类型 (脚本参数分别对应：收件人地址、主题、详细内容)<br><br><img src="/2020/06/29/zabbix/50.png" alt><br><br>配置用户 选择admin用户<br><br><img src="/2020/06/29/zabbix/51.png" alt><br><br>添加报警媒介<br><br><img src="/2020/06/29/zabbix/52.png" alt><br><br>创建报警动作 配置-动作-创建动作,新建动作<br><br><img src="/2020/06/29/zabbix/53.png" alt><br><br>新建操作<br><br><img src="/2020/06/29/zabbix/54.png" alt><br><br><img src="/2020/06/29/zabbix/55.png" alt><br><br>添加恢复操作<br><br><img src="/2020/06/29/zabbix/56.png" alt><br></p>
+<p>配置完成后测试(修改触发器或者关闭进程)<br><br><img src="/2020/06/29/zabbix/57.png" alt><br><br><img src="/2020/06/29/zabbix/58.png" alt><br><br><img src="/2020/06/29/zabbix/59.png" alt><br><br><img src="/2020/06/29/zabbix/60.png" alt><br><br><img src="/2020/06/29/zabbix/61.png" alt><br><br><img src="/2020/06/29/zabbix/62.png" alt><br><br>邮件内容以及在动作日志中查看发送记录<br><br><img src="/2020/06/29/zabbix/63.png" alt></p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/06/29/zabbix/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/liunx/" rel="tag">liunx</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/06/28/python-16/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">python基础之文件操作</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
