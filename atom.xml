@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-29T15:18:35.124Z</updated>
+  <updated>2020-06-30T12:13:41.847Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>zabbix配置微信告警</title>
+    <link href="http://yoursite.com/2020/06/30/zabbix-wechat/"/>
+    <id>http://yoursite.com/2020/06/30/zabbix-wechat/</id>
+    <published>2020-06-30T10:54:52.000Z</published>
+    <updated>2020-06-30T12:13:41.847Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;首先需要申请一个企业号&quot;&gt;&lt;a href=&quot;#首先需要申请一个企业号&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+  </entry>
   
   <entry>
     <title>zabbix监控搭建及配置邮件报警</title>
@@ -58,6 +85,36 @@
         
           &lt;h2 id=&quot;打开文件&quot;&gt;&lt;a href=&quot;#打开文件&quot; class=&quot;headerlink&quot; title=&quot;打开文件&quot;&gt;&lt;/a&gt;打开文件&lt;/h2&gt;&lt;p&gt;在python3中,打开文件的函数是：&lt;/p&gt;
 &lt;figure class=&quot;highlight
+        
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python基础之正则表达式</title>
+    <link href="http://yoursite.com/2020/06/26/python-15/"/>
+    <id>http://yoursite.com/2020/06/26/python-15/</id>
+    <published>2020-06-26T03:04:41.000Z</published>
+    <updated>2020-06-29T15:26:48.734Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;re模块&quot;&gt;&lt;a href=&quot;#re模块&quot; class=&quot;headerlink&quot; title=&quot;re模块&quot;&gt;&lt;/a&gt;re模块&lt;/h2&gt;&lt;p&gt;常用语法&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
         
       
     
@@ -536,64 +593,6 @@
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
       <category term="git" scheme="http://yoursite.com/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TortoiseSVN使用</title>
-    <link href="http://yoursite.com/2020/06/08/TortoiseSVN/"/>
-    <id>http://yoursite.com/2020/06/08/TortoiseSVN/</id>
-    <published>2020-06-08T06:07:17.000Z</published>
-    <updated>2020-06-24T10:15:44.441Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;部署subversion服务器&quot;&gt;&lt;a href=&quot;#部署subversion服务器&quot; class=&quot;headerlink&quot; title=&quot;部署subversion服务器&quot;&gt;&lt;/a&gt;部署subversion服务器&lt;/h2&gt;&lt;p&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="subversion" scheme="http://yoursite.com/tags/subversion/"/>
-    
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis基础配置-运维篇</title>
-    <link href="http://yoursite.com/2020/06/06/redis/"/>
-    <id>http://yoursite.com/2020/06/06/redis/</id>
-    <published>2020-06-06T07:16:56.000Z</published>
-    <updated>2020-06-24T10:15:44.481Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;Redis-必知&quot;&gt;&lt;a href=&quot;#Redis-必知&quot; class=&quot;headerlink&quot; title=&quot;Redis 必知&quot;&gt;&lt;/a&gt;Redis
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
-      <category term="redis" scheme="http://yoursite.com/tags/redis/"/>
     
   </entry>
   

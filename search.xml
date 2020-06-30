@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>zabbix配置微信告警</title>
+    <url>/2020/06/30/zabbix-wechat/</url>
+    <content><![CDATA[<h2 id="首先需要申请一个企业号"><a href="#首先需要申请一个企业号" class="headerlink" title="首先需要申请一个企业号"></a>首先需要申请一个企业号</h2><p>申请企业号，需要一个绑定你本人开户银行卡的微信号。<br><br>申请网址 <a href="https://qy.weixin.qq.com/" target="_blank" rel="noopener">https://qy.weixin.qq.com/</a><br><br>点击“立即注册”。<br><br>根据提示注册企业号，到“选择类型”时，选择最右边的企业号。<br><br>注意：企业描述中：“报警”是敏感词不能使用。<br><br>登录之后，可以看到如下页面<br><br><img src="/2020/06/30/zabbix-wechat/1.png" alt><br><br>按照下图依次点击。<br><br><img src="/2020/06/30/zabbix-wechat/2.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/3.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/4.png" alt></p>
+<h2 id="关注企业号的方法"><a href="#关注企业号的方法" class="headerlink" title="关注企业号的方法"></a>关注企业号的方法</h2><p>点击左侧的“设置”-二维码，使用微信扫一扫扫描二维码<br><br><img src="/2020/06/30/zabbix-wechat/5.png" alt><br><br>点击左侧列的“应用中心”，点击“我的应用”下面的加号<br><br><img src="/2020/06/30/zabbix-wechat/6.png" alt><br><br>填写应用名称，描述。一切正常的话，点击进入刚才创建的应用<br><br><img src="/2020/06/30/zabbix-wechat/7.png" alt><br><br>这里的应用 id 号需要记住。后面需要填写</p>
+<h2 id="设置管理员"><a href="#设置管理员" class="headerlink" title="设置管理员"></a>设置管理员</h2><p>设置-功能设置-权限管理-新建管理组<br><br><img src="/2020/06/30/zabbix-wechat/8.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/9.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/10.png" alt><br><br>注意：这里要记录下来下面的 CorpID 和 Secret。</p>
+<h2 id="编写脚本"><a href="#编写脚本" class="headerlink" title="编写脚本"></a>编写脚本</h2><p>在/usr/lib/zabbix/alertscripts目录(配置文件定义)下新建一个名为 wechat.sh 的脚本文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">CropID=<span class="string">'ww13d3c1c55e5d3414'</span>   <span class="comment"># 企业id-在网页应用管理可以查到</span></span><br><span class="line">Secret=<span class="string">'-qo7YckISjsL11u8kI5PF0gGJrjYKlk0ISF2ftAPuzQ'</span>   <span class="comment"># SecretID-在网页应用管理可以查到</span></span><br><span class="line">GURL=<span class="string">"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=<span class="variable">$CropID</span>&amp;corpsecret=<span class="variable">$Secret</span>"</span></span><br><span class="line">Gtoken=`/usr/bin/curl -s -G <span class="variable">$GURL</span> | awk -F<span class="string">'access_token":"'</span> <span class="string">'&#123;print $2&#125;'</span>|awk -F<span class="string">'"'</span> <span class="string">'&#123;print $1&#125;'</span> `</span><br><span class="line">PURL=<span class="string">"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=<span class="variable">$Gtoken</span>"</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">body</span></span>() &#123;</span><br><span class="line"><span class="built_in">local</span> int AppID=1000002  <span class="comment"># 应用id-在网页应用管理可以查到</span></span><br><span class="line"><span class="built_in">local</span> UserID=<span class="variable">$1</span></span><br><span class="line"><span class="built_in">local</span> PartyID=1</span><br><span class="line"><span class="built_in">local</span> Msg=$(<span class="built_in">echo</span> <span class="string">"<span class="variable">$@</span>"</span> | cut -d<span class="string">" "</span> -f3-)</span><br><span class="line"><span class="built_in">printf</span> <span class="string">'&#123;\n'</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t"touser": "'</span><span class="string">"<span class="variable">$User</span>"</span>\"<span class="string">",\n"</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t"toparty": "'</span><span class="string">"<span class="variable">$PartyID</span>"</span>\"<span class="string">",\n"</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t"msgtype": "text",\n'</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t"agentid": "'</span><span class="string">" <span class="variable">$AppID</span> "</span>\"<span class="string">",\n"</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t"text": &#123;\n'</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t\t"content": "'</span><span class="string">"<span class="variable">$Msg</span>"</span>\"<span class="string">"\n"</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t&#125;,\n'</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'\t"safe":"0"\n'</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">'&#125;\n'</span></span><br><span class="line">&#125;</span><br><span class="line">/usr/bin/curl --data-ascii <span class="string">"<span class="variable">$(body $1 $2 $3)</span>"</span> <span class="variable">$PURL</span></span><br></pre></td></tr></table></figure>
+<p>需要设置权限不然调用的时候会报错没有权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo  chown zabbix:zabbix   wechat.sh  -R </span><br><span class="line">sudo  chmod +x     wechat.sh</span><br></pre></td></tr></table></figure>
+<p>执行./wechat.sh 1 1 test 看自己微信是否能收到信息，如果能的话，继续下一步。反之检查上面有什么问题。</p>
+<h2 id="zabbix后台配置"><a href="#zabbix后台配置" class="headerlink" title="zabbix后台配置"></a>zabbix后台配置</h2><p>管理—示警介类型—创建媒体类型<br><br>创建报警媒介类型 (脚本参数分别对应：收件人地址、主题、详细内容)<br><br><img src="/2020/06/30/zabbix-wechat/21.png" alt><br><br>配置用户 选择admin用户<br><br><img src="/2020/06/30/zabbix-wechat/22.png" alt><br><br>添加报警媒介<br><br><img src="/2020/06/30/zabbix-wechat/23.png" alt><br><br>创建报警动作 配置-动作-创建动作,新建动作<br><br><img src="/2020/06/30/zabbix-wechat/24.png" alt><br><br>新建操作<br><br><img src="/2020/06/30/zabbix-wechat/25.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/26.png" alt><br></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">操作</span><br><span class="line"></span><br><span class="line">	故障&#123;TRIGGER.STATUS&#125;,服务器:&#123;HOSTNAME1&#125;发生: &#123;TRIGGER.NAME&#125;故障!</span><br><span class="line">	</span><br><span class="line">	告警主机:&#123;HOSTNAME1&#125;</span><br><span class="line">	告警时间:&#123;EVENT.DATE&#125; &#123;EVENT.TIME&#125;</span><br><span class="line">	告警等级:&#123;TRIGGER.SEVERITY&#125;</span><br><span class="line">	告警信息: &#123;TRIGGER.NAME&#125;</span><br><span class="line">	告警项目:&#123;TRIGGER.KEY1&#125;</span><br><span class="line">	问题详情:&#123;ITEM.NAME&#125;:&#123;ITEM.VALUE&#125;</span><br><span class="line">	当前状态:&#123;TRIGGER.STATUS&#125;:&#123;ITEM.VALUE1&#125;</span><br><span class="line">	事件 ID:&#123;EVENT.ID&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加恢复操作<br><br><img src="/2020/06/30/zabbix-wechat/27.png" alt><br></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">恢复操作</span><br><span class="line"></span><br><span class="line">	恢复&#123;TRIGGER.STATUS&#125;, 服务器:&#123;HOSTNAME1&#125;: &#123;TRIGGER.NAME&#125;已恢复!</span><br><span class="line">	</span><br><span class="line">	告警主机:&#123;HOSTNAME1&#125;</span><br><span class="line">	告警时间:&#123;EVENT.DATE&#125; &#123;EVENT.TIME&#125;</span><br><span class="line">	告警等级:&#123;TRIGGER.SEVERITY&#125;</span><br><span class="line">	告警信息: &#123;TRIGGER.NAME&#125;</span><br><span class="line">	告警项目:&#123;TRIGGER.KEY1&#125;</span><br><span class="line">	问题详情:&#123;ITEM.NAME&#125;:&#123;ITEM.VALUE&#125;</span><br><span class="line">	当前状态:&#123;TRIGGER.STATUS&#125;:&#123;ITEM.VALUE1&#125;</span><br><span class="line">	事件 ID:&#123;EVENT.ID&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置完成后测试(修改触发器或者关闭进程)<br><br><img src="/2020/06/30/zabbix-wechat/28.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/29.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/30.png" alt><br></p>
+<h2 id="邮件内容以及在动作日志中查看发送记录"><a href="#邮件内容以及在动作日志中查看发送记录" class="headerlink" title="邮件内容以及在动作日志中查看发送记录"></a>邮件内容以及在动作日志中查看发送记录</h2><p><img src="/2020/06/30/zabbix-wechat/35.png" alt></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>zabbix监控搭建及配置邮件报警</title>
     <url>/2020/06/29/zabbix/</url>
     <content><![CDATA[<h2 id="环境配置-server端和agent端"><a href="#环境配置-server端和agent端" class="headerlink" title="环境配置(server端和agent端)"></a>环境配置(server端和agent端)</h2><p>升级系统组件到最新的版本</p>
@@ -137,6 +164,210 @@ my
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'C:\Desktop\text.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'C:\Desktop\text1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f1:</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'C:\Desktop\text2.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f2　　　　　　</span><br><span class="line">        ........　　　　　　　</span><br><span class="line">        ........　　　　　　　</span><br><span class="line">        ........</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">''</span>C:\Desktop\text.txt<span class="string">','</span><span class="string">r') as f:</span></span><br><span class="line"><span class="string">........</span></span><br><span class="line"><span class="string">with open('</span><span class="string">'C:\Desktop\text1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f1:</span><br><span class="line">........</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'C:\Desktop\text2.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f2:</span><br><span class="line">........</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python基础之正则表达式</title>
+    <url>/2020/06/26/python-15/</url>
+    <content><![CDATA[<h2 id="re模块"><a href="#re模块" class="headerlink" title="re模块"></a>re模块</h2><p>常用语法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">re.match(<span class="string">r""</span>,<span class="string">""</span>)</span><br><span class="line"><span class="comment"># 调用模块re的match函数,第一个是正则表达式,第二个是需要处理的字符串</span></span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re </span><br><span class="line">a = re.match(<span class="string">r"hello"</span>,<span class="string">"hello world"</span>)  </span><br><span class="line">print(a.group())  <span class="comment"># 如果打印出来有内容,表示已匹配到</span></span><br></pre></td></tr></table></figure>
+<p>re.match的返回值是一个对象,如果只显示匹配到的内容,可以使用对象.group()  如：print(a.group()) </p>
+<h2 id="匹配单个字符"><a href="#匹配单个字符" class="headerlink" title="匹配单个字符"></a>匹配单个字符</h2><p>如果匹配正常会打印对象</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"hello"</span>,<span class="string">"hello world"</span>)</span><br><span class="line">print(a)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+&lt;re.Match object; span=(0, 5), match=&apos;hello&apos;&gt;
+
+进程已结束，退出代码 0</code></pre><p>如果匹配失败会打印None</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">b =  re.match(<span class="string">r"test"</span>,<span class="string">"hello world"</span>)</span><br><span class="line">print(b)  <span class="comment"># 打印变量b  会显示none</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+None
+
+进程已结束，退出代码 0</code></pre><p>. 匹配任意一个字符(除了\n)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情."</span>,<span class="string">"速度与激情8"</span>)  </span><br><span class="line">print(a.group())</span><br><span class="line">b = re.match(<span class="string">r"速度与激情."</span>,<span class="string">"速度与激情a"</span>)</span><br><span class="line">print(b.group())</span><br><span class="line">c = re.match(<span class="string">r"速度与激情."</span>,<span class="string">"速度与激情aa"</span>)</span><br><span class="line">print(c.group())   <span class="comment">#只会匹配到速度与激情a  最后一个a 不会被匹配</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情8
+速度与激情a
+速度与激情a
+
+进程已结束，退出代码 0</code></pre><p>[] 匹配[]中列举的字符</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情[1-8]"</span>,<span class="string">"速度与激情8"</span>) </span><br><span class="line">print(a.group())  <span class="comment"># 如果想排除4、5  可以写成[1-36-8] 这个意思是1-3  6-8</span></span><br><span class="line">b = re.match(<span class="string">r"速度与激情[1-8]"</span>,<span class="string">"速度与激情9"</span>)</span><br><span class="line">print(b.group())  <span class="comment"># 因为[]只有1-8 所以这里会报错</span></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+Traceback (most recent call last):
+速度与激情8
+  File &quot;E:/程序代码/hexo/test.py&quot;, line 5, in &lt;module&gt;
+    print(b.group())
+AttributeError: &apos;NoneType&apos; object has no attribute &apos;group&apos;
+
+进程已结束，退出代码 1</code></pre><p>\d 匹配数字 0-9</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情\d"</span>,<span class="string">"速度与激情8"</span>)</span><br><span class="line">print(a.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情8
+
+进程已结束，退出代码 0</code></pre><p>\D 匹配非数字</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情\D"</span>,<span class="string">"速度与激情八"</span>)</span><br><span class="line">print(a.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情八
+
+进程已结束，退出代码 0</code></pre><p>\s 匹配空白 即 空格 tab键</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情\s\D"</span>,<span class="string">"速度与激情 八"</span>)</span><br><span class="line">print(a.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情 八
+
+进程已结束，退出代码 0</code></pre><p>\S 匹配非空白</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情\S"</span>,<span class="string">"速度与激情八"</span>)</span><br><span class="line">print(a.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情八
+
+进程已结束，退出代码 0</code></pre><p>\w 匹配单个字符 即a-z、A-Z、0-9 包括中文字符</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情\w\w"</span>,<span class="string">"速度与激情八a"</span>)</span><br><span class="line">print(a.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情八a
+
+进程已结束，退出代码 0</code></pre><p>\W 匹配非单词字符</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情\W"</span>,<span class="string">"速度与激情#"</span>)</span><br><span class="line">print(a.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情#
+
+进程已结束，退出代码 0</code></pre><h2 id="匹配多个字符"><a href="#匹配多个字符" class="headerlink" title="匹配多个字符"></a>匹配多个字符</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">aa = re.match(<span class="string">r"速度与激情\d&#123;1,3&#125;"</span>,<span class="string">"速度与激情1"</span>)</span><br><span class="line">print(aa.group())</span><br><span class="line"></span><br><span class="line">bb = re.match(<span class="string">r"速度与激情\d&#123;1,3&#125;"</span>,<span class="string">"速度与激情12"</span>)</span><br><span class="line">print(bb.group())</span><br><span class="line"></span><br><span class="line">cc = re.match(<span class="string">r"速度与激情\d&#123;1,3&#125;"</span>,<span class="string">"速度与激情125"</span>)</span><br><span class="line">print(cc.group())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以此证明 \d 后面大括号里面是匹配的位数 最少1位  最多3位</span></span><br><span class="line"></span><br><span class="line">dd = re.match(<span class="string">r"\d&#123;11&#125;"</span>,<span class="string">"12345678901"</span>)</span><br><span class="line">print(dd.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情1
+速度与激情12
+速度与激情125
+12345678901
+
+进程已结束，退出代码 0</code></pre><ul>
+<li><p>匹配前一个字符出现0次或者无限次</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">aa = re.match(<span class="string">r"速度与激情\d*"</span>,<span class="string">"速度与激情111111"</span>)</span><br><span class="line">print(aa.group())</span><br><span class="line">bb = re.match(<span class="string">r"速度与激情\d*"</span>,<span class="string">"速度与激情"</span>)</span><br><span class="line">print(bb.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py<br>速度与激情111111<br>速度与激情</p>
+<p>进程已结束，退出代码 0</p>
+</li>
+</ul>
+<ul>
+<li><p>匹配前一个字符出现1次或者无限次(至少出现1次否则报错)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">aa = re.match(<span class="string">r"速度与激情\d+"</span>,<span class="string">"速度与激情111111"</span>)</span><br><span class="line">print(aa.group())</span><br><span class="line">bb = re.match(<span class="string">r"速度与激情\d+"</span>,<span class="string">"速度与激情"</span>)</span><br><span class="line">print(bb.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py<br>速度与激情111111<br>Traceback (most recent call last):<br>  File “E:/程序代码/hexo/test.py”, line 5, in <module></module></p>
+<pre><code>print(bb.group())</code></pre><p>AttributeError: ‘NoneType’ object has no attribute ‘group’</p>
+<p>进程已结束，退出代码 1</p>
+</li>
+</ul>
+<p>？  匹配前一个字符出现1次或者0次</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">ee = re.match(<span class="string">r"010-\d&#123;8&#125;"</span>,<span class="string">"010-12345678"</span>)</span><br><span class="line">print(ee.group())</span><br><span class="line"></span><br><span class="line">ff = re.match(<span class="string">r"010-?\d&#123;8&#125;"</span>,<span class="string">"010-12345678"</span>)  <span class="comment"># 这样-就可以不输入了</span></span><br><span class="line">print(ff.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+010-12345678
+010-12345678
+
+进程已结束，退出代码 0</code></pre><p>{m} 匹配前一个字符出现m次</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">ee = re.match(<span class="string">r"010-\d&#123;8&#125;"</span>,<span class="string">"010-12345678"</span>)</span><br><span class="line">print(ee.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+010-12345678
+
+进程已结束，退出代码 0</code></pre><p>{m，n} 匹配前一个字符出现从m次到n次</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">gg = re.match(<span class="string">r"\d&#123;3,4&#125;-?\d&#123;8&#125;"</span>,<span class="string">"0530-12345678"</span>)</span><br><span class="line">print(gg.group())</span><br><span class="line">dd = re.match(<span class="string">r"\d&#123;3,4&#125;-?\d&#123;8&#125;"</span>,<span class="string">"010-12345678"</span>)</span><br><span class="line">print(dd.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+0530-12345678
+010-12345678
+
+进程已结束，退出代码 0</code></pre><h2 id="匹配结尾开头"><a href="#匹配结尾开头" class="headerlink" title="匹配结尾开头"></a>匹配结尾开头</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    names = [<span class="string">"age"</span>,<span class="string">"_age"</span>,<span class="string">"1age"</span>,<span class="string">"age1"</span>,<span class="string">"a_age"</span>,<span class="string">"age_1_"</span>,<span class="string">"age!"</span>,<span class="string">"a#123"</span>,<span class="string">"_____"</span>]</span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> names:</span><br><span class="line">        ret = re.match(<span class="string">r"[a-zA-Z][a-zA-Z_]*"</span>,name)</span><br><span class="line">        <span class="keyword">if</span> ret:   <span class="comment"># 判断是否有值   有值就打印出来</span></span><br><span class="line">                print(<span class="string">"变量名：%s 符合要求....通过正则匹配出来的数据是%s"</span> % (name,ret.group()))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">                print(<span class="string">"变量名：%s 不符合要求"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+变量名：age 符合要求....通过正则匹配出来的数据是age
+变量名：%s 不符合要求
+变量名：%s 不符合要求
+变量名：age1 符合要求....通过正则匹配出来的数据是age
+变量名：a_age 符合要求....通过正则匹配出来的数据是a_age
+变量名：age_1_ 符合要求....通过正则匹配出来的数据是age_
+变量名：age! 符合要求....通过正则匹配出来的数据是age
+变量名：a#123 符合要求....通过正则匹配出来的数据是a
+变量名：%s 不符合要求
+
+进程已结束，退出代码 0</code></pre><p>匹配结尾</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    names = [<span class="string">"age"</span>,<span class="string">"_age"</span>,<span class="string">"1age"</span>,<span class="string">"age1"</span>,<span class="string">"a_age"</span>,<span class="string">"age_1_"</span>,<span class="string">"age!"</span>,<span class="string">"a#123"</span>,<span class="string">"_____"</span>]</span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> names:</span><br><span class="line">        ret = re.match(<span class="string">r"[a-zA-Z][a-zA-Z0-9_]*$"</span>,name)  <span class="comment"># 匹配a-zA-Z开头一直到a-zA-Z0-9_结尾</span></span><br><span class="line">        <span class="keyword">if</span> ret:</span><br><span class="line">                print(<span class="string">"变量名：%s 符合要求....通过正则匹配出来的数据是%s"</span> % (name,ret.group()))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">                print(<span class="string">"变量名：%s 不符合要求"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+变量名：age 符合要求....通过正则匹配出来的数据是age
+变量名：%s 不符合要求
+变量名：%s 不符合要求
+变量名：age1 符合要求....通过正则匹配出来的数据是age1
+变量名：a_age 符合要求....通过正则匹配出来的数据是a_age
+变量名：age_1_ 符合要求....通过正则匹配出来的数据是age_1_
+变量名：%s 不符合要求
+变量名：%s 不符合要求
+变量名：%s 不符合要求
+
+进程已结束，退出代码 0</code></pre><p>转义匹配</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    email = input(<span class="string">"请输入一个邮箱地址: "</span>)</span><br><span class="line"></span><br><span class="line">    ret = re.match(<span class="string">r"[a-zA-Z0-9_]&#123;4,20&#125;@163\.com$"</span>,email)</span><br><span class="line">    <span class="keyword">if</span> ret:</span><br><span class="line">        print(<span class="string">"%s 符合要求"</span> % email)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"%s 不符合要求"</span>  % email)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+请输入一个邮箱地址: laowang@163acom
+laowang@163acom 不符合要求
+
+进程已结束，退出代码 0
+
+D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+请输入一个邮箱地址: laowang@163.com
+laowang@163.com 符合要求
+
+进程已结束，退出代码 0</code></pre><p>| 匹配左右任意一个表达式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  re</span><br><span class="line"><span class="comment"># 判断多个类型邮箱</span></span><br><span class="line">a = re.match(<span class="string">r"[a-zA-Z0-9_]&#123;4,20&#125;@(163|126)\.com$"</span>,<span class="string">"laowang@126.com"</span>)</span><br><span class="line">print(a.group())</span><br><span class="line">b = re.match(<span class="string">r"[a-zA-Z0-9_]&#123;4,20&#125;@(163|126)\.com$"</span>,<span class="string">"laowang@163.com"</span>)</span><br><span class="line">print(b.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+laowang@126.com
+laowang@163.com
+
+进程已结束，退出代码 0</code></pre><p>(ab) 分组-将括号中字符作为一个分组 可以使用group(1)或者group(2)取出</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  re</span><br><span class="line"><span class="comment"># 判断多个类型邮箱  使用分组()保存数据</span></span><br><span class="line">a = re.match(<span class="string">r"[a-zA-Z0-9_]&#123;4,20&#125;@(163|126)\.com$"</span>,<span class="string">"laowang@126.com"</span>)</span><br><span class="line">print(a.group(<span class="number">1</span>))</span><br><span class="line">b = re.match(<span class="string">r"([a-zA-Z0-9_]&#123;4,20&#125;)@(163|126)\.com$"</span>,<span class="string">"laowang@163.com"</span>)</span><br><span class="line">print(b.group(<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<p>运行结果:</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+126
+laowang
+
+进程已结束，退出代码 0</code></pre><p>\num 引用分组num匹配到的字符</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  re</span><br><span class="line"><span class="comment"># \num 引用分组num匹配到的字符</span></span><br><span class="line">html_str = <span class="string">"&lt;h1&gt;hello test&lt;/h1&gt;"</span></span><br><span class="line"><span class="comment"># 可以使用 \num  判断&lt;h1&gt; 是否是一对</span></span><br><span class="line">a = re.match(<span class="string">r"&lt;(\w*)&gt;.*&lt;/\1&gt;"</span>,html_str)</span><br><span class="line">print(a.group())</span><br><span class="line"></span><br><span class="line">html_str1 = <span class="string">"&lt;body&gt;&lt;h1&gt;hello test&lt;/h1&gt;&lt;/body&gt;"</span></span><br><span class="line"><span class="comment"># body 是第一个分组   h1 是第二个 所以 写为&lt;/\2&gt;&lt;/\1&gt;</span></span><br><span class="line">b = re.match(<span class="string">r"&lt;(\w*)&gt;&lt;(\w*)&gt;.*&lt;/\2&gt;&lt;/\1&gt;"</span>,html_str1)</span><br><span class="line">print(b.group())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩展 为分组命名</span></span><br><span class="line"><span class="comment"># (?P&lt;name&gt;)  分组起名</span></span><br><span class="line"><span class="comment">#（?P=name）引用别名为name分组匹配到的字符串</span></span><br><span class="line">html_str3 = <span class="string">"&lt;body&gt;&lt;h1&gt;hello test&lt;/h1&gt;&lt;/body&gt;"</span></span><br><span class="line">c = re.match(<span class="string">r"&lt;(?P&lt;NAME1&gt;\w*)&gt;&lt;(?P&lt;NAME2&gt;\w*)&gt;.*&lt;/(?P=NAME2)&gt;&lt;/(?P=NAME1)&gt;"</span>,html_str1)</span><br><span class="line">print(c.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+&lt;h1&gt;hello test&lt;/h1&gt;
+&lt;body&gt;&lt;h1&gt;hello test&lt;/h1&gt;&lt;/body&gt;
+&lt;body&gt;&lt;h1&gt;hello test&lt;/h1&gt;&lt;/body&gt;
+
+进程已结束，退出代码 0</code></pre><h2 id="re模块高级用法"><a href="#re模块高级用法" class="headerlink" title="re模块高级用法"></a>re模块高级用法</h2><p>re.match(pattern, string, flags=0) 从字符串的起始位置匹配，如果起始位置匹配不成功的话，match()就返回none</p>
+<p>re.search(pattern, string, flags=0) 扫描整个字符串并返回第一个成功的匹配</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">ret = re.search(<span class="string">r"\d+"</span>,<span class="string">"阅读次数为 9999"</span>)  <span class="comment"># 返回第一个成功的匹配</span></span><br><span class="line">print(ret.group())</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test2.py
+9999
+
+进程已结束，退出代码 0</code></pre><p>re.findall(pattern, string, flags=0) 找到RE匹配的所有字符串，并把他们作为一个列表返回</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">ret = re.findall(<span class="string">r"\d+"</span>,<span class="string">"python = 9999, c = 7890, c++ = 12345"</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test2.py
+[&apos;9999&apos;, &apos;7890&apos;, &apos;12345&apos;]
+
+进程已结束，退出代码 0</code></pre><p>re.finditer(pattern, string, flags=0) 找到RE匹配的所有字符串，并把他们作为一个迭代器返回</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">re.sub(pattern, repl, string, count=<span class="number">0</span>, flags=<span class="number">0</span>) 替换匹配到的字符串</span><br><span class="line">```python</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>开发</category>
       </categories>
@@ -1679,8 +1910,8 @@ fatal: unable to auto-detect email address (got &apos;root@suyuerunCentos.(none)
         <category>运维</category>
       </categories>
       <tags>
-        <tag>subversion</tag>
         <tag>Linux</tag>
+        <tag>subversion</tag>
       </tags>
   </entry>
   <entry>
@@ -2729,8 +2960,8 @@ svn: E210005: No repository found in &apos;svn://xxx&apos;</code></pre><p>是因
         <category>运维</category>
       </categories>
       <tags>
-        <tag>subversion</tag>
         <tag>Linux</tag>
+        <tag>subversion</tag>
       </tags>
   </entry>
   <entry>
@@ -4377,8 +4608,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>mongo</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
