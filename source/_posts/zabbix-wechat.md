@@ -81,8 +81,39 @@ sudo  chmod +x     wechat.sh
 <br/>新建操作<br/>
 ![](../25.png)
 <br/>![](../26.png)<br/>
+
+```bash
+操作
+
+	故障{TRIGGER.STATUS},服务器:{HOSTNAME1}发生: {TRIGGER.NAME}故障!
+	
+	告警主机:{HOSTNAME1}
+	告警时间:{EVENT.DATE} {EVENT.TIME}
+	告警等级:{TRIGGER.SEVERITY}
+	告警信息: {TRIGGER.NAME}
+	告警项目:{TRIGGER.KEY1}
+	问题详情:{ITEM.NAME}:{ITEM.VALUE}
+	当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}
+	事件 ID:{EVENT.ID}
+```
+
 添加恢复操作
 <br/>![](../27.png)<br/>
+
+```bash
+恢复操作
+
+	恢复{TRIGGER.STATUS}, 服务器:{HOSTNAME1}: {TRIGGER.NAME}已恢复!
+	
+	告警主机:{HOSTNAME1}
+	告警时间:{EVENT.DATE} {EVENT.TIME}
+	告警等级:{TRIGGER.SEVERITY}
+	告警信息: {TRIGGER.NAME}
+	告警项目:{TRIGGER.KEY1}
+	问题详情:{ITEM.NAME}:{ITEM.VALUE}
+	当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}
+	事件 ID:{EVENT.ID}
+```
 
 配置完成后测试(修改触发器或者关闭进程)
 <br/>![](../28.png)<br/>
