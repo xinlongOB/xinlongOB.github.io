@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">123</span>
+            <span class="post-count">251</span>
         </span>
     </span>
 
@@ -122,6 +122,9 @@ var _hmt = _hmt || [];
 
 <p>docker build 失败(如果可以导入镜像但是除去FROM第一个指令就报错 那就是linux与docker版本的兼容性问题)</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo yum remove docker  docker-common docker-selinux dockesr-engine</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum install docker-ce</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<h2 id="ssh登录失败"><a href="#ssh登录失败" class="headerlink" title="ssh登录失败"></a>ssh登录失败</h2><p>购买云服务器vpc网络的时候,第一次购买后配置使用,使用后退租,再次购买可能会购买到相同的内网ip服务器,然后ssh 连接的时候就会报错,如下：<br><br><img src="/2020/06/22/shell-commond/1.png" alt><br><br>报错问题:这个ip已存在 .ssh/known_hosts 文件中,但是上次连接的秘钥,和这次不同,所以无法登陆<br><br>解决办法：<br><br>编辑 .ssh/known_hosts 文件 找到 有问题的ip,删除哪一行登陆信息就ok了</p>
+
       
       <!-- reward -->
       

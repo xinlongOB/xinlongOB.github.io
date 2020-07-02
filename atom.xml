@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-30T12:13:41.847Z</updated>
+  <updated>2020-07-02T10:29:53.572Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>zabbix报错解决</title>
+    <link href="http://yoursite.com/2020/07/02/zabbix-error/"/>
+    <id>http://yoursite.com/2020/07/02/zabbix-error/</id>
+    <published>2020-07-02T07:55:35.000Z</published>
+    <updated>2020-07-02T10:29:53.572Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;下载yum源报错&quot;&gt;&lt;a href=&quot;#下载yum源报错&quot; class=&quot;headerlink&quot; title=&quot;下载yum源报错&quot;&gt;&lt;/a&gt;下载yum源报错&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="liunx" scheme="http://yoursite.com/tags/liunx/"/>
+    
+  </entry>
   
   <entry>
     <title>zabbix配置微信告警</title>
@@ -135,7 +162,7 @@
     <link href="http://yoursite.com/2020/06/22/shell-commond/"/>
     <id>http://yoursite.com/2020/06/22/shell-commond/</id>
     <published>2020-06-22T10:16:00.000Z</published>
-    <updated>2020-06-24T10:12:43.549Z</updated>
+    <updated>2020-07-01T01:54:52.912Z</updated>
     
     <summary type="html">
     
@@ -563,36 +590,6 @@
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
       <category term="ssh" scheme="http://yoursite.com/tags/ssh/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>git基础操作</title>
-    <link href="http://yoursite.com/2020/06/09/git/"/>
-    <id>http://yoursite.com/2020/06/09/git/</id>
-    <published>2020-06-09T02:29:00.000Z</published>
-    <updated>2020-06-24T10:15:44.450Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;Git安装&quot;&gt;&lt;a href=&quot;#Git安装&quot; class=&quot;headerlink&quot; title=&quot;Git安装&quot;&gt;&lt;/a&gt;Git安装&lt;/h2&gt;&lt;p&gt;yum安装&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
-      <category term="git" scheme="http://yoursite.com/tags/git/"/>
     
   </entry>
   

@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>zabbix报错解决</title>
+    <url>/2020/07/02/zabbix-error/</url>
+    <content><![CDATA[<h2 id="下载yum源报错"><a href="#下载yum源报错" class="headerlink" title="下载yum源报错"></a>下载yum源报错</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[sgsm@localhost yum.repos.d]$ sudo  rpm -ivh http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm </span><br><span class="line">	获取http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</span><br><span class="line">	准备中...                          <span class="comment">################################# [100%]</span></span><br><span class="line">        file /etc/yum.repos.d/zabbix.repo from install of zabbix-release-4.0-1.el7.noarch conflicts with file from package zabbix-release-3.2-1.el7.noarch</span><br></pre></td></tr></table></figure>
+<p>这是因为服务器上已经部署了zabbix,卸载原来的zabbix就可以了 </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum  remove   zabbix-release-3.2-1.el7.noarch   -y</span><br></pre></td></tr></table></figure>
+
+<h2 id="后台登录密码忘记"><a href="#后台登录密码忘记" class="headerlink" title="后台登录密码忘记"></a>后台登录密码忘记</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql&gt; use zabbix</span><br><span class="line">	Reading table information <span class="keyword">for</span> completion of table and column names</span><br><span class="line">	You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">	Database changed</span><br><span class="line">mysql&gt; update users <span class="built_in">set</span> passwd=<span class="string">'5fce1b3e34b520afeffb37ce08c7cd66'</span> <span class="built_in">where</span> userid=<span class="string">'1'</span>;</span><br><span class="line">	Query OK, 1 row affected (0.01 sec)</span><br><span class="line">	Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line">		</span><br><span class="line"><span class="comment"># 由于密码是md5加密的，我们可以查看默认的zabbix密码的md5</span></span><br><span class="line">mysql&gt; use zabbix;</span><br><span class="line"></span><br><span class="line">mysql&gt; update users <span class="built_in">set</span> passwd=<span class="string">'5fce1b3e34b520afeffb37ce08c7cd66'</span> <span class="built_in">where</span> userid=<span class="string">'1'</span>;</span><br></pre></td></tr></table></figure>
+<p>重新设置密码为zabbix,然后重新登陆 用户：Admin   密码：zabbix</p>
+<h2 id="zabbix设置中文出现乱码"><a href="#zabbix设置中文出现乱码" class="headerlink" title="zabbix设置中文出现乱码"></a>zabbix设置中文出现乱码</h2><p>zabbix语言设置为中文后,有乱码如下：<br><br><img src="/2020/07/02/zabbix-error/1.png" alt><br></p>
+<p>1.从 windows 下控制面板-&gt;字体-&gt;选择一种中文字库例如“楷体”<br><br><img src="/2020/07/02/zabbix-error/2.png" alt><br><br><img src="/2020/07/02/zabbix-error/3.png" alt><br><br><br><br>2.将字体上传至/usr/share/zabbix/assets/fonts (根据zabbix的安装位置 可以使用find查找一下路径) 目录下<br><br><img src="/2020/07/02/zabbix-error/99.png" alt><br><br>注意：查找到zabbix有两个fonts目录 就去配置文件看下使用的那个目录(版本不同 路径就不同)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[sgsm@localhost fonts]$ cat ../include/defines.inc.php   |grep  path</span><br><span class="line">define(<span class="string">'ZBX_FONTPATH'</span>,                          realpath(<span class="string">'assets/fonts'</span>)); // <span class="built_in">where</span> to search <span class="keyword">for</span> font (GD &gt; 2.0.18)</span><br><span class="line">[sgsm@localhost fonts]$</span><br></pre></td></tr></table></figure>
+
+<p><br>使用rz 拉取到服务器<br><br><img src="/2020/07/02/zabbix-error/7.png" alt></p>
+<p>3.修改 zabbix 页面管理的中文字体设置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zabbix-server zabbix-2.4.5]<span class="comment"># vim /usr/share/zabbix/include/defines.inc.php</span></span><br><span class="line"><span class="comment">#修改如下 2 行</span></span><br><span class="line">define(<span class="string">'ZBX_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">define(<span class="string">'ZBX_GRAPH_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">修改后的 zabbix 界面。</span><br></pre></td></tr></table></figure>
+<p>修改后的 zabbix 界面<br><br><img src="/2020/07/02/zabbix-error/5.png" alt><br></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>liunx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>zabbix配置微信告警</title>
     <url>/2020/06/30/zabbix-wechat/</url>
     <content><![CDATA[<h2 id="首先需要申请一个企业号"><a href="#首先需要申请一个企业号" class="headerlink" title="首先需要申请一个企业号"></a>首先需要申请一个企业号</h2><p>申请企业号，需要一个绑定你本人开户银行卡的微信号。<br><br>申请网址 <a href="https://qy.weixin.qq.com/" target="_blank" rel="noopener">https://qy.weixin.qq.com/</a><br><br>点击“立即注册”。<br><br>根据提示注册企业号，到“选择类型”时，选择最右边的企业号。<br><br>注意：企业描述中：“报警”是敏感词不能使用。<br><br>登录之后，可以看到如下页面<br><br><img src="/2020/06/30/zabbix-wechat/1.png" alt><br><br>按照下图依次点击。<br><br><img src="/2020/06/30/zabbix-wechat/2.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/3.png" alt><br><br><img src="/2020/06/30/zabbix-wechat/4.png" alt></p>
@@ -382,7 +407,10 @@ laowang
     <content><![CDATA[<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在第一个匹配行到第二个匹配行后各加 <span class="built_in">test</span>     然后删除匹配到的第一个<span class="built_in">test</span></span></span><br><span class="line">cat  aa  | sed   "/path/,/--&gt;/a test"  |sed '0,/test/&#123;/test/d&#125;'</span><br></pre></td></tr></table></figure>
 
 <p>docker build 失败(如果可以导入镜像但是除去FROM第一个指令就报错 那就是linux与docker版本的兼容性问题)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum remove docker  docker-common docker-selinux dockesr-engine</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum install docker-ce</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum remove docker  docker-common docker-selinux dockesr-engine</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum install docker-ce</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<h2 id="ssh登录失败"><a href="#ssh登录失败" class="headerlink" title="ssh登录失败"></a>ssh登录失败</h2><p>购买云服务器vpc网络的时候,第一次购买后配置使用,使用后退租,再次购买可能会购买到相同的内网ip服务器,然后ssh 连接的时候就会报错,如下：<br><br><img src="/2020/06/22/shell-commond/1.png" alt><br><br>报错问题:这个ip已存在 .ssh/known_hosts 文件中,但是上次连接的秘钥,和这次不同,所以无法登陆<br><br>解决办法：<br><br>编辑 .ssh/known_hosts 文件 找到 有问题的ip,删除哪一行登陆信息就ok了</p>
+]]></content>
       <categories>
         <category>运维</category>
       </categories>
