@@ -84,7 +84,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">445</span>
+            <span class="post-count">454</span>
         </span>
     </span>
 
@@ -130,9 +130,10 @@ var _hmt = _hmt || [];
 
 <p><br>使用rz 拉取到服务器<br><br><img src="/2020/07/02/zabbix-error/7.png" alt></p>
 <p>3.修改 zabbix 页面管理的中文字体设置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@zabbix-server zabbix-2.4.5]<span class="comment"># vim /usr/share/zabbix/include/defines.inc.php</span></span><br><span class="line"><span class="comment">#修改如下 2 行</span></span><br><span class="line">define(<span class="string">'ZBX_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">define(<span class="string">'ZBX_GRAPH_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">修改后的 zabbix 界面。</span><br></pre></td></tr></table></figure>
-<p>修改后的 zabbix 界面<br><br><img src="/2020/07/02/zabbix-error/5.png" alt><br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@zabbix-server zabbix-2.4.5]<span class="comment"># vim /usr/share/zabbix/include/defines.inc.php</span></span><br><span class="line"><span class="comment">#修改如下 2 行</span></span><br><span class="line">define(<span class="string">'ZBX_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">define(<span class="string">'ZBX_GRAPH_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br></pre></td></tr></table></figure>
 
+<p>修改后的 zabbix 界面<br><br><img src="/2020/07/02/zabbix-error/5.png" alt><br><br>如果还不行就给字体权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo  chmod   777    simkai.ttf</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       

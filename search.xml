@@ -15,9 +15,10 @@
 
 <p><br>使用rz 拉取到服务器<br><br><img src="/2020/07/02/zabbix-error/7.png" alt></p>
 <p>3.修改 zabbix 页面管理的中文字体设置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zabbix-server zabbix-2.4.5]<span class="comment"># vim /usr/share/zabbix/include/defines.inc.php</span></span><br><span class="line"><span class="comment">#修改如下 2 行</span></span><br><span class="line">define(<span class="string">'ZBX_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">define(<span class="string">'ZBX_GRAPH_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">修改后的 zabbix 界面。</span><br></pre></td></tr></table></figure>
-<p>修改后的 zabbix 界面<br><br><img src="/2020/07/02/zabbix-error/5.png" alt><br></p>
-]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@zabbix-server zabbix-2.4.5]<span class="comment"># vim /usr/share/zabbix/include/defines.inc.php</span></span><br><span class="line"><span class="comment">#修改如下 2 行</span></span><br><span class="line">define(<span class="string">'ZBX_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br><span class="line">define(<span class="string">'ZBX_GRAPH_FONT_NAME'</span>, <span class="string">'simkai'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>修改后的 zabbix 界面<br><br><img src="/2020/07/02/zabbix-error/5.png" alt><br><br>如果还不行就给字体权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo  chmod   777    simkai.ttf</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>运维</category>
       </categories>
