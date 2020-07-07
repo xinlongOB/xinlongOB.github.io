@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    自动化运维工具——ansible |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-ansible" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  自动化运维工具——ansible
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/03/ansible/" class="article-date">
+  <time datetime="2020-07-03T01:52:26.000Z" itemprop="datePublished">2020-07-03</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.5k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">15 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="ansible简介"><a href="#ansible简介" class="headerlink" title="ansible简介"></a>ansible简介</h2><p>ansible是最常用的自动化工具,基于python开发,集合了众多运维工具(puppet,chef,func,fabric)的优点,实现了批量系统配置、批量程序部署、批量运行命令等功能<br><br>ansible是基于paramiko开发的,并且基于模块化工作,本身没有批量部署的能力,真正具有部署的ansible所运行的模块,ansible只是提供一种框架,ansible不需要在远程主机上安装client/agents,因为他们是基于ssh来和远程主机通讯<br></p>
+<h2 id="ansible特点"><a href="#ansible特点" class="headerlink" title="ansible特点"></a>ansible特点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、部署简单,只需要在主控制端部署ansible环境,被控制端无需任何操作</span><br><span class="line">2、默认使用SSH协议对设备进行管理</span><br><span class="line">3、有大量常规运维操作模块,可实现日常绝大部分操作</span><br><span class="line">4、配置简单、功能强大、扩展性强</span><br><span class="line">5、支持API及自定义模块,可通过python扩展</span><br><span class="line">6、通过playbooks来定制强大的配置、状态管理</span><br><span class="line">7、轻量级、无需在客户端安装agent,更新时,只需在操作机上进行一次更新即可</span><br><span class="line">8、提供一个功能强大、操作性强的web管理界面和REST API接口--aws平台</span><br></pre></td></tr></table></figure>
+<h2 id="ansible架构图"><a href="#ansible架构图" class="headerlink" title="ansible架构图"></a>ansible架构图</h2><p><img src="/2020/07/03/ansible/1.png" alt><br>上图我们看到主要的模块如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Ansible: Ansible核心程序</span><br><span class="line">HostInventory：记录由Ansible管理的主机信息,包括端口、密码、ip等</span><br><span class="line">Playbooks：<span class="string">"剧本"</span>YAML格式文件,多个任务定义在一个文件中,定义主机需要调用那些模块来完成的功能</span><br><span class="line">CoreModules：核心模块,主要操作是通过调用核心模块来管理任务</span><br><span class="line">CustomModules：自定义模块,完成核心模块无法完成的功能,支持多种语言</span><br><span class="line">ConnectionPlugins：连接插件,ansible和host通信使用</span><br></pre></td></tr></table></figure>
+<h2 id="ansible任务执行模式"><a href="#ansible任务执行模式" class="headerlink" title="ansible任务执行模式"></a>ansible任务执行模式</h2><p>ansible系统由控制主机对被管理节点的操作方式可分为两类,即adhoc和playbook：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ad-hoc模式(点对点模式)</span><br><span class="line">    使用单个模块,支持批量执行单条命令,ad-hoc命令是一种可以快速输入的命令,而且不需要保存起来的命令,相当于bash中的一句话shell</span><br><span class="line">playbook模式(剧本模式)</span><br><span class="line">    是ansible主要管理方式,也是ansible功能强大的关键所在,playbook通过多个task集合完成一类功能,如web服务的安装部署、数据库服务器的批量备份等,可以简单的把playbook理解为通过组合多条ad-hoc操作的配置文件</span><br></pre></td></tr></table></figure>
+<h2 id="ansible执行流程"><a href="#ansible执行流程" class="headerlink" title="ansible执行流程"></a>ansible执行流程</h2><p>简单的理解说就是ansible在运行时,首先读取ansible.cfg中的配置,根据规则获取Inventory中的管理主机列表,并行的在这些主机中执行配置的任务,最后等待执行返回的结果</p>
+<h2 id="ansible命令执行过程"><a href="#ansible命令执行过程" class="headerlink" title="ansible命令执行过程"></a>ansible命令执行过程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、加载自己的配置文件,默认/etc/ansible/ansible.cfg</span><br><span class="line">2、查找对应的主机配置文件,找到要执行的主机或组</span><br><span class="line">3、加载自己对应的模块,如<span class="built_in">command</span></span><br><span class="line">4、通过ansible将模块或命令生成对应的临时py文件(python脚本),并将该文件传输至远程服务器</span><br><span class="line">5、对应执行用户家目录的.ansible/tmp/xxx/xxx.py文件</span><br><span class="line">6、给文件 +x 执行权限</span><br><span class="line">7、执行并返回结果</span><br><span class="line">8、删除临时py文件,sleep 0 退出</span><br></pre></td></tr></table></figure>
+<h2 id="ansible安装"><a href="#ansible安装" class="headerlink" title="ansible安装"></a>ansible安装</h2><p>yum 安装是我们很熟悉的安装方式了。我们需要先安装一个epel-release包，然后再安装我们的 ansible 即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">yum install ansible –y</span><br></pre></td></tr></table></figure>
+<h2 id="ansible-程序结构"><a href="#ansible-程序结构" class="headerlink" title="ansible 程序结构"></a>ansible 程序结构</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">安装目录如下(yum安装)：</span><br><span class="line">　　配置文件目录：/etc/ansible/</span><br><span class="line">　　执行文件目录：/usr/bin/</span><br><span class="line">　　Lib库依赖目录：/usr/lib/pythonX.X/site-packages/ansible/</span><br><span class="line">　　Help文档目录：/usr/share/doc/ansible-X.X.X/</span><br><span class="line">　　Man文档目录：/usr/share/man/man1/</span><br></pre></td></tr></table></figure>
+<h2 id="ansible配置文件"><a href="#ansible配置文件" class="headerlink" title="ansible配置文件"></a>ansible配置文件</h2><p>ansible的配置文件为 /etc/ansible/ansibel.cfg</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">默认配置</span><br><span class="line">这里的配置项有很多，这里主要介绍一些常用的</span><br><span class="line">[defaults]</span><br><span class="line"><span class="comment">#inventory      = /etc/ansible/hosts                        #被控端的主机列表文件</span></span><br><span class="line"><span class="comment">#library        = /usr/share/my_modules/                    #库文件存放目录</span></span><br><span class="line"><span class="comment">#remote_tmp     = ~/.ansible/tmp                            #临时文件远程主机存放目录</span></span><br><span class="line"><span class="comment">#local_tmp      = ~/.ansible/tmp                            #临时文件本地存放目录</span></span><br><span class="line"><span class="comment">#forks          = 5                                         #默认开启的并发数</span></span><br><span class="line"><span class="comment">#poll_interval  = 15                                        #默认轮询时间间隔(单位秒)</span></span><br><span class="line"><span class="comment">#sudo_user      = root                                      #默认sudo用户</span></span><br><span class="line"><span class="comment">#ask_sudo_pass = True                                       #是否需要sudo密码</span></span><br><span class="line"><span class="comment">#ask_pass      = True                                       #是否需要密码</span></span><br><span class="line"><span class="comment">#transport      = smart                                     #传输方式</span></span><br><span class="line"><span class="comment">#remote_port    = 22                                        #默认远程主机的端口号</span></span><br><span class="line">建议开启修改以下两个配置参数(取消掉注释即可)</span><br><span class="line"><span class="comment">#host_key_checking = False                                  #检查对应服务器的host_key</span></span><br><span class="line"><span class="comment">#log_path=/var/log/ansible.log                              #开启ansible日志</span></span><br></pre></td></tr></table></figure>
+<h2 id="ansible-doc-命令"><a href="#ansible-doc-命令" class="headerlink" title="ansible-doc 命令"></a>ansible-doc 命令</h2><p>ansible-doc 命令常用于获取模块信息及其使用帮助，一般用法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible-doc  -l  <span class="comment"># 获取全部模块的信息</span></span><br><span class="line">ansible-doc  -s  MOD_NAME  <span class="comment"># 获取指定模块的使用帮助</span></span><br></pre></td></tr></table></figure>
+<h2 id="ansible-命令详解"><a href="#ansible-命令详解" class="headerlink" title="ansible 命令详解"></a>ansible 命令详解</h2><p>命令的具体格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible &lt;host-pattern&gt; [-f forks] [-m module_name] [-a args]</span><br></pre></td></tr></table></figure>
+<p>常用选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 常用</span></span><br><span class="line">-a MODULE_ARGS　　：模块的参数，如果执行默认COMMAND的模块，即是命令参数，如： “date”，“<span class="built_in">pwd</span>”等等</span><br><span class="line">-m MODULE_NAME ：指定模块  例如  ansible -m  shell    默认使用 <span class="built_in">command</span> 模块</span><br><span class="line">-i INVENTORY ：指定主机清单的路径，默认为/etc/ansible/hosts</span><br><span class="line">-u REMOTE_USER ：远程用户，默认为 root 用户</span><br><span class="line">-C ：模拟运行环境并进行预运行，可以进行查错测试</span><br><span class="line">-S ：用 su 命令</span><br><span class="line">-R SU_USER ：指定 su 的用户，默认为 root 用户</span><br><span class="line">-U SUDO_USER ：指定 sudo 到哪个用户，默认为 root 用户</span><br><span class="line">-T TIMEOUT ：指定 ssh 默认超时时间，默认为10s，也可在配置文件中修改</span><br><span class="line">-u REMOTE_USER ：远程用户，默认为 root 用户</span><br><span class="line">-v ：查看详细信息，同时支持-vvv，-vvvv可查看更详细信息</span><br><span class="line"><span class="comment"># 了解</span></span><br><span class="line">-k，--ask-pass ：ask <span class="keyword">for</span> SSH password。登录密码，提示输入SSH密码而不是假设基于密钥的验证</span><br><span class="line">-K，--ask-sudo-pass ：ask <span class="keyword">for</span> sudo password。提示密码使用sudo，sudo表示提权操作</span><br><span class="line">-B SECONDS ：后台运行超时时间</span><br><span class="line">-c CONNECTION ：连接类型使用</span><br><span class="line">-f FORKS ：并行任务数，默认为5</span><br><span class="line">-o ：压缩输出，尝试将所有结果在一行输出，一般针对收集工具使用</span><br></pre></td></tr></table></figure>
+<h2 id="ansible-配置公私钥"><a href="#ansible-配置公私钥" class="headerlink" title="ansible 配置公私钥"></a>ansible 配置公私钥</h2><p>ansible 是基于 ssh 协议实现的，所以其配置公私钥的方式与 ssh 协议的方式相同，具体操作步骤如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成私钥</span></span><br><span class="line">ssh-keygen </span><br><span class="line"><span class="comment"># 向主机分发私钥</span></span><br><span class="line">ssh-copy-id root@192.168.37.122</span><br><span class="line">ssh-copy-id root@192.168.37.133</span><br></pre></td></tr></table></figure>
+<p>(非交互式批量建立免密登录)[]</p>
+<h1 id="ansible常用模块"><a href="#ansible常用模块" class="headerlink" title="ansible常用模块"></a>ansible常用模块</h1><p>主机连通性测试  -m  ping </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m  ping   </span><br><span class="line">game-5 | SUCCESS =&gt; &#123;</span><br><span class="line">    <span class="string">"ansible_facts"</span>: &#123;</span><br><span class="line">        <span class="string">"discovered_interpreter_python"</span>: <span class="string">"/usr/bin/python"</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="string">"changed"</span>: <span class="literal">false</span>, </span><br><span class="line">    <span class="string">"ping"</span>: <span class="string">"pong"</span></span><br><span class="line"><span class="comment"># -i 指定主机清单</span></span><br><span class="line"><span class="comment"># game   主机清单中的分组</span></span><br></pre></td></tr></table></figure>
+<h2 id="command模块"><a href="#command模块" class="headerlink" title="command模块"></a>command模块</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m  <span class="built_in">command</span>  -a <span class="string">"df -h"</span>               </span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/vda1        40G   27G   11G  72% /</span><br><span class="line">devtmpfs        3.9G     0  3.9G   0% /dev</span><br><span class="line">tmpfs           3.9G     0  3.9G   0% /dev/shm</span><br><span class="line">tmpfs           3.9G   49M  3.8G   2% /run</span><br><span class="line">tmpfs           3.9G     0  3.9G   0% /sys/fs/cgroup</span><br><span class="line">tmpfs           783M     0  783M   0% /run/user/1000</span><br></pre></td></tr></table></figure>
+<p>该模块常用命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chdir</span>　　　　　　 <span class="comment"># 在执行命令之前，先切换到该目录</span></span><br><span class="line">executable <span class="comment"># 切换shell来执行命令，需要使用命令的绝对路径</span></span><br><span class="line">free_form 　 <span class="comment"># 要执行的Linux指令，一般使用Ansible的-a参数代替。</span></span><br><span class="line">creates 　<span class="comment"># 一个文件名，当这个文件存在，则该命令不执行,可以</span></span><br><span class="line">用来做判断</span><br><span class="line">removes <span class="comment"># 一个文件名，这个文件不存在，则该命令不执行</span></span><br><span class="line"><span class="comment"># 注意：该命令不支持 | 管道命令</span></span><br></pre></td></tr></table></figure>
+
+<p>chdir : 先切换到/data/ 目录，再执行“ls -l”命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m  <span class="built_in">command</span>  -a <span class="string">"chdir=/data/  ls -l"</span></span><br><span class="line"></span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">total 32</span><br><span class="line">drwxr-xr-x 6 sgsm sgsm 4096 Oct  2  2019 backups</span><br><span class="line">drwxr-xr-x 3 sgsm sgsm 4096 Sep  3  2019 copy</span><br><span class="line">drwxr-xr-x 3 sgsm sgsm 4096 Sep  3  2019 install</span><br><span class="line">drwxr-xr-x 4 root root 4096 Sep  3  2019 lib</span><br><span class="line">drwxr-xr-x 4 root root 4096 Sep  3  2019 <span class="built_in">log</span></span><br><span class="line">drwxr-xr-x 2 sgsm sgsm 4096 Sep  3  2019 package</span><br><span class="line">drwxr-xr-x 3 sgsm sgsm 4096 Jul  7 04:30 script</span><br><span class="line">drwxr-xr-x 5 sgsm sgsm 4096 Sep  3  2019 sgsm</span><br></pre></td></tr></table></figure>
+<p>creates : 如果/data/script/findDatas2.js存在，则不执行“ls -l”命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m  <span class="built_in">command</span>  -a <span class="string">"creates=/data/script/findDatas2.js  ls -1"</span></span><br><span class="line"></span><br><span class="line">game-5 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">skipped, since /data/script/findDatas2.js exists</span><br></pre></td></tr></table></figure>
+<p>removes ： 如果/data/script/findDatas2.js存在，则执行“cat /data/script/test.sh”命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m  <span class="built_in">command</span>  -a <span class="string">"removes=/data/script/findDatas2.js  cat /data/script/findDatas2.js"</span></span><br><span class="line"></span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"test"</span></span><br></pre></td></tr></table></figure>
+<h2 id="shell-模块"><a href="#shell-模块" class="headerlink" title="shell 模块"></a>shell 模块</h2><p>shell模块可以在远程主机上调用shell解释器运行命令，支持shell的各种功能，例如管道等。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts   game  -m shell -a  <span class="string">"ps -aux  |grep mongo"</span></span><br><span class="line"></span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">root      1834  0.3 12.4 1512160 995052 ?      Sl   Jun08 136:05 mongod -f /etc/mongod.conf</span><br><span class="line">sgsm     24901  0.0  0.0 113176  1212 pts/0    S+   11:05   0:00 /bin/sh -c ps -aux  |grep mongo</span><br><span class="line">sgsm     24903  0.0  0.0 112712   960 pts/0    S+   11:05   0:00 grep mongo</span><br></pre></td></tr></table></figure>
+<p>只要是我们的shell命令，都可以通过这个模块在远程主机上运行</p>
+<h2 id="copy模块"><a href="#copy模块" class="headerlink" title="copy模块"></a>copy模块</h2><p>这个模块用于将文件复制到远程主机,同时支持给定内容生成文件和修改权限等,其相关选项如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">src　　　　           <span class="comment">#被复制到远程主机的本地文件。可以是绝对路径，也可以是相对路径。如果路径是一个目录，则会递归复制，用法类似于"rsync"</span></span><br><span class="line">content　　　         <span class="comment">#用于替换"src"，可以直接指定文件的值</span></span><br><span class="line">dest　　　　          <span class="comment">#必选项，将源文件复制到的远程主机的绝对路径</span></span><br><span class="line">backup　　　          <span class="comment">#当文件内容发生改变后，在覆盖之前把源文件备份，备份文件包含时间信息</span></span><br><span class="line">directory_mode　　　　<span class="comment">#递归设定目录的权限，默认为系统默认权限</span></span><br><span class="line">force　　　　         <span class="comment">#当目标主机包含该文件，但内容不同时，设为"yes"，表示强制覆盖；设为"no"，表示目标主机的目标位置不存在该文件才复制。默认为"yes"</span></span><br><span class="line">others　　　　        <span class="comment">#所有的 file 模块中的选项可以在这里使用</span></span><br><span class="line">owner                <span class="comment">#置文件/目录的所属用户，将被馈送到chown</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">                                                                <span class="comment"># 文件路径                     远程主机文件路径               用户        是否备份</span></span><br><span class="line">[sgsm@ecs-d37b ~]$ ansible -i ~/hosts/hosts game -m copy -a <span class="string">"src=/data/script/findDatas2.js dest=/data/script/findDatas2.js owner=sgsm backup=yes"</span></span><br><span class="line"></span><br><span class="line">game-5 | SUCCESS =&gt; &#123;</span><br><span class="line">    <span class="string">"ansible_facts"</span>: &#123;</span><br><span class="line">        <span class="string">"discovered_interpreter_python"</span>: <span class="string">"/usr/bin/python"</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="string">"changed"</span>: <span class="literal">false</span>, </span><br><span class="line">    <span class="string">"checksum"</span>: <span class="string">"c1a80b1a9a0261aaf02bc44f37f2d332a671b613"</span>, </span><br><span class="line">    <span class="string">"dest"</span>: <span class="string">"/data/script/findDatas2.js"</span>, </span><br><span class="line">    <span class="string">"gid"</span>: 100, </span><br><span class="line">    <span class="string">"group"</span>: <span class="string">"users"</span>, </span><br><span class="line">    <span class="string">"mode"</span>: <span class="string">"0644"</span>, </span><br><span class="line">    <span class="string">"owner"</span>: <span class="string">"sgsm"</span>, </span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"/data/script/findDatas2.js"</span>, </span><br><span class="line">    <span class="string">"size"</span>: 1009, </span><br><span class="line">    <span class="string">"state"</span>: <span class="string">"file"</span>, </span><br><span class="line">    <span class="string">"uid"</span>: 1000</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>给定内容生成文件，并制定权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">                                                                <span class="comment"># 设置内容            目标必须是个文件名      权限</span></span><br><span class="line">[sgsm@ecs-d37b ~]$ ansible -i ~/hosts/hosts game -m copy -a <span class="string">"content='I am keer\n' dest=/data/script/name mode=666"</span></span><br><span class="line">game-5 | CHANGED =&gt; &#123;</span><br><span class="line">    <span class="string">"ansible_facts"</span>: &#123;</span><br><span class="line">        <span class="string">"discovered_interpreter_python"</span>: <span class="string">"/usr/bin/python"</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="string">"changed"</span>: <span class="literal">true</span>, </span><br><span class="line">    <span class="string">"checksum"</span>: <span class="string">"0421570938940ea784f9d8598dab87f07685b968"</span>, </span><br><span class="line">    <span class="string">"dest"</span>: <span class="string">"/data/script/name"</span>, </span><br><span class="line">    <span class="string">"gid"</span>: 100, </span><br><span class="line">    <span class="string">"group"</span>: <span class="string">"users"</span>, </span><br><span class="line">    <span class="string">"md5sum"</span>: <span class="string">"497fa8386590a5fc89090725b07f175c"</span>, </span><br><span class="line">    <span class="string">"mode"</span>: <span class="string">"0666"</span>, </span><br><span class="line">    <span class="string">"owner"</span>: <span class="string">"sgsm"</span>, </span><br><span class="line">    <span class="string">"size"</span>: 10, </span><br><span class="line">    <span class="string">"src"</span>: <span class="string">"/home/sgsm/.ansible/tmp/ansible-tmp-1594091785.39-273500225924687/source"</span>, </span><br><span class="line">    <span class="string">"state"</span>: <span class="string">"file"</span>, </span><br><span class="line">    <span class="string">"uid"</span>: 1000</span><br><span class="line">&#125;                           </span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts  game -m  shell -a <span class="string">"cat  /data/script/name  ; ls -l  /data/script/name"</span></span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">I am keer</span><br><span class="line">-rw-rw-rw- 1 sgsm users 10 Jul  7 11:16 /data/script/name</span><br></pre></td></tr></table></figure>
+<h2 id="file-模块"><a href="#file-模块" class="headerlink" title="file 模块"></a>file 模块</h2><p>该模块主要用于设置文件的属性,比如创建文件、创建链接文件、删除文件等,下面是一些常见的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">orce        <span class="comment">#需要在两种情况下强制创建软链接，一种是源文件不存在，但之后会建立的情况下；另一种是目标软链接已存在，需要先取消之前的软链，然后创建新的软链，有两个选项：yes|no</span></span><br><span class="line">group       <span class="comment">#定义文件/目录的属组。后面可以加上mode：定义文件/目录的权限</span></span><br><span class="line">owner       <span class="comment">#定义文件/目录的属主。后面必须跟上path：定义文件/目录的路径</span></span><br><span class="line">recurse     <span class="comment">#递归设置文件的属性，只对目录有效，后面跟上src：被链接的源文件路径，只应用于state=link的情况</span></span><br><span class="line">dest        <span class="comment">#被链接到的路径，只应用于state=link的情况</span></span><br><span class="line"></span><br><span class="line">state       <span class="comment">#状态，有以下选项：</span></span><br><span class="line"></span><br><span class="line">    directory：如果目录不存在，就创建目录</span><br><span class="line">    file：即使文件不存在，也不会被创建</span><br><span class="line">    link：创建软链接</span><br><span class="line">    hard：创建硬链接</span><br><span class="line">    touch：如果文件不存在，则会创建一个新的文件，如果文件或目录已存在，则更新其最后修改时间</span><br><span class="line">    absent：删除目录、文件或者取消链接文件</span><br></pre></td></tr></table></figure>
+<p>创建目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts  game  -m  file  -a  <span class="string">"path=/home/sgsm/test state=directory"</span></span><br><span class="line">game-5 | CHANGED =&gt; &#123;</span><br><span class="line">    <span class="string">"ansible_facts"</span>: &#123;</span><br><span class="line">        <span class="string">"discovered_interpreter_python"</span>: <span class="string">"/usr/bin/python"</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="string">"changed"</span>: <span class="literal">true</span>, </span><br><span class="line">    <span class="string">"gid"</span>: 100, </span><br><span class="line">    <span class="string">"group"</span>: <span class="string">"users"</span>, </span><br><span class="line">    <span class="string">"mode"</span>: <span class="string">"0755"</span>, </span><br><span class="line">    <span class="string">"owner"</span>: <span class="string">"sgsm"</span>, </span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"/home/sgsm/test"</span>, </span><br><span class="line">    <span class="string">"size"</span>: 4096, </span><br><span class="line">    <span class="string">"state"</span>: <span class="string">"directory"</span>, </span><br><span class="line">    <span class="string">"uid"</span>: 1000</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts  game -m  shell -a <span class="string">"ls -l  /home/sgsm"</span></span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">total 19604</span><br><span class="line">drwxr-xr-x 2 sgsm users     4096 Jul  7 11:41 <span class="built_in">test</span></span><br><span class="line">-rw-r--r-- 1 sgsm users     5926 Aug 19  2019 twodata-huawei.sh</span><br></pre></td></tr></table></figure>
+<p>创建链接文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts  game  -m  file  -a  <span class="string">"path=/home/sgsm/qq2 src=/home/sgsm/qq state=link"</span>              </span><br><span class="line">game-5 | CHANGED =&gt; &#123;</span><br><span class="line">    <span class="string">"ansible_facts"</span>: &#123;</span><br><span class="line">        <span class="string">"discovered_interpreter_python"</span>: <span class="string">"/usr/bin/python"</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="string">"changed"</span>: <span class="literal">true</span>, </span><br><span class="line">    <span class="string">"dest"</span>: <span class="string">"/home/sgsm/qq2"</span>, </span><br><span class="line">    <span class="string">"gid"</span>: 100, </span><br><span class="line">    <span class="string">"group"</span>: <span class="string">"users"</span>, </span><br><span class="line">    <span class="string">"mode"</span>: <span class="string">"0777"</span>, </span><br><span class="line">    <span class="string">"owner"</span>: <span class="string">"sgsm"</span>, </span><br><span class="line">    <span class="string">"size"</span>: 13, </span><br><span class="line">    <span class="string">"src"</span>: <span class="string">"/home/sgsm/qq"</span>, </span><br><span class="line">    <span class="string">"state"</span>: <span class="string">"link"</span>, </span><br><span class="line">    <span class="string">"uid"</span>: 1000</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts  game -m  shell -a <span class="string">"ls -l  /home/sgsm"</span>                                 </span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">total 59604</span><br><span class="line">-rw-r--r-- 1 sgsm users       20 May 19 14:24 qq</span><br><span class="line">lrwxrwxrwx 1 sgsm users       13 Jul  7 11:46 qq2 -&gt; /home/sgsm/qq</span><br><span class="line">drwxr-xr-x 2 sgsm users     4096 Jul  7 11:41 <span class="built_in">test</span></span><br><span class="line">-rw-r--r-- 1 sgsm users     5926 Aug 19  2019 twodata-huawei.sh</span><br></pre></td></tr></table></figure>
+<p>删除文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts  game  -m  file  -a  <span class="string">"path=/home/sgsm/qq2  state=absent"</span>               </span><br><span class="line">game-5 | CHANGED =&gt; &#123;</span><br><span class="line">    <span class="string">"ansible_facts"</span>: &#123;</span><br><span class="line">        <span class="string">"discovered_interpreter_python"</span>: <span class="string">"/usr/bin/python"</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="string">"changed"</span>: <span class="literal">true</span>, </span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"/home/sgsm/qq2"</span>, </span><br><span class="line">    <span class="string">"state"</span>: <span class="string">"absent"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line">[sgsm@ecs-d37b ~]$ ansible -i  hosts/hosts  game -m  shell -a <span class="string">"ls -l  /home/sgsm"</span>        </span><br><span class="line">game-5 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">total 59604</span><br><span class="line">-rw-r--r-- 1 sgsm users       20 May 19 14:24 qq</span><br><span class="line">drwxr-xr-x 2 sgsm users     4096 Jul  7 11:41 <span class="built_in">test</span></span><br><span class="line">-rw-r--r-- 1 sgsm users     5926 Aug 19  2019 twodata-huawei.sh</span><br></pre></td></tr></table></figure>
+<h2 id="fetch-模块"><a href="#fetch-模块" class="headerlink" title="fetch 模块"></a>fetch 模块</h2><p>该模块用于从远程某主机获取（复制）文件到本地,有两个选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dest：用来存放文件的目录</span><br><span class="line">src：在远程拉取的文件，并且必须是一个file，不能是目录</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/07/03/ansible/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible/" rel="tag">ansible</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/07/03/efk/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            EFK-日志收集系统(源码低版本)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/02/zabbix-error/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">zabbix报错解决</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
