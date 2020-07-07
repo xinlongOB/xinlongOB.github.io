@@ -1,7 +1,8 @@
 ---
 title: zabbix配置微信告警
 tags:
-  - liunx
+  - linux
+  - zabbix
 categories: 运维
 date: 2020-06-30 18:54:52
 ---

@@ -2,7 +2,7 @@
 title: centos下生成多份密钥对
 tags:
   - ssh
-  - Linux
+  linux
 categories: 运维
 date: 2020-06-11 14:25:31
 ---

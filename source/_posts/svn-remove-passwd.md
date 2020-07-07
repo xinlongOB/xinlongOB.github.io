@@ -2,7 +2,7 @@
 title: centos下清除记录的svn用户名和密码
 tags:
   - subversion
-  - Linux
+  linux
 categories: 运维
 date: 2020-05-26 17:05:01
 ---

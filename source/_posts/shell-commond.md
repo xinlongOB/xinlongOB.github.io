@@ -1,7 +1,7 @@
 ---
 title: shell命令行工具
 tags:
-  - liunx
+  - linux
 categories: 运维
 date: 2020-06-22 18:16:00
 ---

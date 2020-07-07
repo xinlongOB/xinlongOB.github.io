@@ -1,7 +1,8 @@
 ---
 title: zabbix报错解决
 tags:
-  - liunx
+  - linux
+  - zabbix
 categories: 运维
 date: 2020-07-02 15:55:35
 ---

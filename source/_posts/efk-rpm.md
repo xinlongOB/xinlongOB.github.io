@@ -1,10 +1,41 @@
 ---
 title: EFK-日志收集系统
 tags:
-  - liunx
+  - efk
+  - linux
 categories: 运维
 date: 2020-07-04 18:44:11
 ---
+## 前言
+在没有分布式日志的时候，每次出问题了需要查询日志的时候，需要登录到Linux服务器，使用命令cat -n xxxx|grep xxxx 搜索出日志在哪一行，然后cat -n xxx|tail -n +n行|head -n 显示多少行，这样不仅效率低下，而且对于程序异常也不方便查询，日志少还好，一旦整合出来的日志达到几个G或者几十G的时候，仅仅是搜索都会搜索很长时间了，当然如果知道是哪天什么时候发生的问题当然也方便查询，但是实际上很多时候有问题的时候，是不知道到底什么时候出的问题，所以就必须要在聚合日志中去搜索（一般日志是按照天来分文件的，聚合日志就是把很多天的日志合并在一起，这样方便查询），而搭建EFK日志分析系统的目的就是将日志聚合起来，达到快速查看快速分析的目的，使用EFK不仅可以快速的聚合出每天的日志，还能将不同项目的日志聚合起来，对于微服务和分布式架构来说，查询日志尤为方便，而且因为日志保存在Elasticsearch中，所以查询速度非常之快
+
+## 认识EFK
+EFK不是一个软件，而是一套解决方案，并且都是开源软件，之间互相配合使用，完美衔接，高效的满足了很多场合的应用，是目前主流的一种日志系统。EFK是三个开源软件的缩写，分别表示：Elasticsearch , FileBeat, Kibana , 其中ELasticsearch负责日志保存和搜索，FileBeat负责收集日志，Kibana 负责界面,当然EFK和大名鼎鼎的ELK只有一个区别，那就是EFK把ELK的Logstash替换成了FileBeat，因为Filebeat相对于Logstash来说有2个好处：
+1、侵入低，无需修改程序目前任何代码和配置
+2、相对于Logstash来说性能高，Logstash对于IO占用很大
+
+当然FileBeat也并不是完全好过Logstash，毕竟Logstash对于日志的格式化这些相对FileBeat好很多，FileBeat只是将日志从日志文件中读取出来，当然如果你日志本身是有一定格式的，FileBeat也可以格式化，但是相对于Logstash来说，还是差一点
+
+Elasticsearch
+```bash
+Elasticsearch是个开源分布式搜索引擎，提供搜集、分析、存储数据三大功能。它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。
+```
+FileBeat
+```bash
+Filebeat隶属于Beats。目前Beats包含六种工具：
+Packetbeat（搜集网络流量数据）
+Metricbeat（搜集系统、进程和文件系统级别的 CPU 和内存使用情况等数据）
+Filebeat（搜集文件数据）
+Winlogbeat（搜集 Windows 事件日志数据）
+Auditbeat（ 轻量型审计日志采集器）
+Heartbeat（轻量级服务器健康采集器）
+```
+Kibana
+```bash
+Kibana可以为 Logstash 、Beats和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助汇总、分析和搜索重要数据日志。
+```
+## EFK架构图
+![](../91.png)
 ## 安装准备
 软件下载地址：https://www.elastic.co/cn/downloads/
 <br/>![](../1.png)<br/>

@@ -2,7 +2,7 @@
 title: python基础之正则表达式
 tags:
   - python
-  - liunx
+  - linux
 categories: 开发
 date: 2020-06-26 11:04:41
 ---

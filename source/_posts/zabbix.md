@@ -1,7 +1,8 @@
 ---
 title: zabbix监控搭建及配置邮件报警
 tags:
-  - liunx
+  - linux
+  - zabbix
 categories: 运维
 date: 2020-06-29 08:55:27
 ---

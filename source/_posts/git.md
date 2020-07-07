@@ -2,7 +2,7 @@
 title: git基础操作
 tags:
   - git
-  - Linux
+  linux
 categories: 运维
 date: 2020-06-09 10:29:00
 ---

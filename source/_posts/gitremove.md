@@ -2,7 +2,7 @@
 title: Git无法添加主题文件夹
 tags:
   - git
-  - Linux
+  linux
 categories: 运维
 date: 2020-05-17 17:07:14
 ---

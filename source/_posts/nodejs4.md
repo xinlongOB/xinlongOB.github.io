@@ -2,7 +2,7 @@
 title: nodejs之基础函数
 tags:
   - nodejs
-  - Linux
+  linux
 categories: 开发
 date: 2020-05-30 09:44:42
 ---

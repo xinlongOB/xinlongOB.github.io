@@ -2,7 +2,7 @@
 title: mvn环境配置
 tags:
   - mvn
-  - Linux
+  linux
 categories: 运维
 date: 2020-05-18 17:08:00
 ---

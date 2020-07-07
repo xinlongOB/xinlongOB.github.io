@@ -2,7 +2,7 @@
 title: python基础之文件操作
 tags:
   - python
-  - liunx
+  - linux
 categories: 开发
 date: 2020-06-28 11:20:38
 ---

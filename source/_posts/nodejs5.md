@@ -2,7 +2,7 @@
 title: nodejs之事件监听
 tags:
   - nodejs
-  - Linux
+  linux
 categories: 开发
 date: 2020-05-30 14:14:59
 ---

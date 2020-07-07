@@ -2,7 +2,7 @@
 title: python基础之for循环
 tags:
   - python
-  - Linux
+  linux
 categories: 开发
 date: 2020-06-17 17:12:31
 ---

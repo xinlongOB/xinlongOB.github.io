@@ -2,7 +2,7 @@
 title: nodejs之fs模块
 tags:
   - nodejs
-  - Linux
+  linux
 categories: 开发
 date: 2020-06-03 22:40:41
 ---
