@@ -2,7 +2,7 @@
 title: 大于2T的硬盘需要parted磁盘分区
 tags:
   - parted
-  linux
+  - linux
 categories: 运维
 date: 2020-05-16 16:23:32
 ---

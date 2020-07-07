@@ -2,7 +2,7 @@
 title: python基础之基本运算
 tags:
   - python
-  linux
+  - linux
 categories: 开发
 date: 2020-06-16 16:08:51
 ---

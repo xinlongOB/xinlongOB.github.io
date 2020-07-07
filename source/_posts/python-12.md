@@ -2,7 +2,7 @@
 title: python基础之模块导入
 tags:
   - python
-  linux
+  - linux
 categories: 开发
 date: 2020-06-18 16:59:23
 ---

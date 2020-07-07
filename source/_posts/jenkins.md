@@ -2,6 +2,7 @@
 title: jenkins添加普通用户设置权限
 tags:
   - jenkins
+  - linux
 categories: 运维
 date: 2019-12-24 16:20:58
 ---

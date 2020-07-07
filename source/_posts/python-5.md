@@ -2,7 +2,7 @@
 title: python基础之字典
 tags:
   - python
-  linux
+  - linux
 categories: 开发
 date: 2020-06-14 11:10:59
 ---

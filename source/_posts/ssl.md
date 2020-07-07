@@ -2,7 +2,7 @@
 title: ssl证书申请
 tags:
   - 阿里云
-  linux
+  - linux
 categories: 阿里云
 date: 2020-05-21 15:32:26
 ---

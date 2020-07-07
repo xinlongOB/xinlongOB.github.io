@@ -2,7 +2,7 @@
 title: kubernetes服务原理
 tags:
   - kubernetes
-  linux
+  - linux
 categories: 运维
 date: 2020-06-06 14:22:05
 ---

@@ -2,7 +2,7 @@
 title: 使用kubeadm安装kubernetes
 tags:
   - kubernetes
-  linux
+  - linux
 categories: 运维
 date: 2020-05-22 14:39:17
 ---

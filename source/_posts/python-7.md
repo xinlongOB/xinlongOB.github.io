@@ -2,7 +2,7 @@
 title: python基础之函数
 tags:
   - python
-  linux
+  - linux
 categories: 开发
 date: 2020-06-14 12:21:21
 ---

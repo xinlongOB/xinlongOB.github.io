@@ -2,7 +2,7 @@
 title: python基础之变量类型
 tags:
   - python
-  linux
+  - linux
 categories: 开发
 date: 2020-06-16 14:20:24
 ---

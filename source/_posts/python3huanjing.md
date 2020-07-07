@@ -2,7 +2,7 @@
 title: centos7设置python3环境
 tags:
   - python
-  linux
+  - linux
 categories:
   - 运维
   - 开发

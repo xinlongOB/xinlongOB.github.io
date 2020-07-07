@@ -2,7 +2,7 @@
 title: nodejs模块
 tags:
   - nodejs
-  linux
+  - linux
 categories: 开发
 date: 2020-05-29 22:13:16
 ---

@@ -2,6 +2,7 @@
 title: jenkins项目迁移
 tags:
   - jenkins
+  - linux
 categories: 运维
 date: 2019-12-24 17:20:58
 ---
