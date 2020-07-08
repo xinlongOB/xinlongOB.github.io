@@ -146,7 +146,7 @@ game-5 | SUCCESS => {
 # -i 指定主机清单
 # game   主机清单中的分组
 ```
-## command模块
+## command 模块
 ```bash
 [sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m  command  -a "df -h"               
 game-5 | CHANGED | rc=0 >>
@@ -210,7 +210,7 @@ sgsm     24901  0.0  0.0 113176  1212 pts/0    S+   11:05   0:00 /bin/sh -c ps -
 sgsm     24903  0.0  0.0 112712   960 pts/0    S+   11:05   0:00 grep mongo
 ```
 只要是我们的shell命令，都可以通过这个模块在远程主机上运行
-## copy模块
+## copy 模块
 这个模块用于将文件复制到远程主机,同时支持给定内容生成文件和修改权限等,其相关选项如下：
 ```bash
 src　　　　           #被复制到远程主机的本地文件。可以是绝对路径，也可以是相对路径。如果路径是一个目录，则会递归复制，用法类似于"rsync"
@@ -363,4 +363,294 @@ drwxr-xr-x 2 sgsm users     4096 Jul  7 11:41 test
 ```bash
 dest：用来存放文件的目录
 src：在远程拉取的文件，并且必须是一个file，不能是目录
+```
+拉取文件
+```bash
+                                                                    # 远程文件的路径                      本地路径
+[sgsm@ecs-d37b ~]$ ansible -i ~/hosts/hosts  game    -m  fetch  -a "src=/data/script/autoStart5.sh   dest=/home/sgsm"     
+
+game-5 | CHANGED => {
+    "changed": true, 
+    "checksum": "408270467e7ce32d5e9dec89c727848590805b3b", 
+    "dest": "/home/sgsm/game-5/data/script/autoStart5.sh", 
+    "md5sum": "2b8f241ecf586915f3ec39c0032841a5", 
+    "remote_checksum": "408270467e7ce32d5e9dec89c727848590805b3b", 
+    "remote_md5sum": null
+}
+[sgsm@ecs-d37b ~]$ ll  /home/sgsm
+total 40
+drwxr-xr-x 3 sgsm users 4096 Jul  7 18:44 game-5      # 拉取后会在本地路径生成一个以远程服务器分组命名的目录
+
+[sgsm@ecs-d37b ~]$ tree  /home/sgsm/game-5/      # 目录下是远程服务器文件的全路径--(目录自动层层创建)
+/home/sgsm/game-5/
+└── data
+    └── script
+        └── autoStart5.sh
+
+2 directories, 1 file
+[sgsm@ecs-d37b ~]$ 
+```
+## cron 模块
+该模块适用于管理cron计划任务的,其使用的语法跟我们的crontab文件中的语法一致,同时,可以指定以下选项：
+```bash
+day=        #日应该运行的工作( 1-31, , /2, )
+hour=       # 小时 ( 0-23, , /2, )
+minute=     #分钟( 0-59, , /2, )
+month=      # 月( 1-12, *, /2, )
+weekday=    # 周 ( 0-6 for Sunday-Saturday,, )
+job=        #指明运行的命令是什么
+name=       #定时任务描述
+reboot      # 任务在重启时运行，不建议使用，建议使用special_time
+special_time #特殊的时间范围，参数：reboot（重启时），annually（每年），monthly（每月），weekly（每周），daily（每天），hourly（每小时）
+state       #指定状态，present表示添加定时任务，也是默认设置，absent表示删除定时任务
+user        # 以哪个用户的身份执行
+```
+添加计划任务
+```bash
+ #                                                                名称             每五分钟        命令
+[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m cron -a 'name="View time" minute=*/5   job="/usr/bin/date"'                                                                       
+game-5 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "envs": [], 
+    "jobs": [
+        "View time"
+    ]
+}
+# 验证
+[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts   game   -m shell -a  "crontab  -l"
+game-5 | CHANGED | rc=0 >>
+#Ansible: remove 5 server gamelog
+0 4 * * * /data/script/remove_5_game_log.sh > /dev/null
+#Ansible: View time
+*/5 * * * * /usr/bin/date 
+```
+删除计划任务
+```bash
+#                                                                   名称             每五分钟        命令          删除
+[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -m cron -a 'name="View time" minute=*/5   job="/usr/bin/date"  state=absent' 
+
+game-5 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "envs": [], 
+    "jobs": [
+        "remove 5 server gamelog", 
+    ]
+}
+# 验证
+[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts   game   -m shell -a  "crontab  -l"
+game-5 | CHANGED | rc=0 >>
+#Ansible: remove 5 server gamelog
+0 4 * * * /data/script/remove_5_game_log.sh > /dev/null
+```
+## yum 模块
+顾名思义,该模块主要用于软件的安装,其选项如下：
+```bash
+name=　　       # 所安装的包的名称
+state=　　      # present--->安装， latest--->安装最新的, absent---> 卸载软件。
+update_cache　　# 强制更新yum的缓存
+conf_file　　   # 指定远程yum安装时所依赖的配置文件（安装本地已有的包）。
+disable_pgp_check　　# 是否禁止GPG checking，只用于present or latest。
+disablerepo　　 # 临时禁止使用yum库。 只用于安装或更新时。
+enablerepo　　  # 临时使用的yum库。只用于安装或更新时。
+```
+安装lsof工具
+```bash
+[root@localhost ~]# ansible -i hosts/hosts   9999   -m yum  -a "name=lsof  state=present"
+
+game-9999 | CHANGED => {
+    "ansible_facts": {
+        "pkg_mgr": "yum"
+    }, 
+    "changed": true, 
+    "msg": "", 
+    "rc": 0, 
+    "results": [
+        "Loaded plugins: fastestmirror, product-id, search-disabled-repos, subscription-\n              : manager\n\nThis system is not registered with an entitlement server. You can use subscription-manager to register.\n\nLoading mirror speeds from cached hostfile\n * base: mirrors.bfsu.edu.cn\n * epel: hkg.mirror.rackspace.com\n * extras: mirrors.bfsu.edu.cn\n * updates: mirrors.bfsu.edu.cn\nResolving Dependencies\n--> Running transaction check\n---> Package lsof.x86_64 0:4.87-6.el7 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package         Arch              Version                Repository       Size\n================================================================================\nInstalling:\n lsof            x86_64            4.87-6.el7             base            331 k\n\nTransaction Summary\n================================================================================\nInstall  1 Package\n\nTotal download size: 331 k\nInstalled size: 927 k\nDownloading packages:\nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : lsof-4.87-6.el7.x86_64                                       1/1 \n  Verifying  : lsof-4.87-6.el7.x86_64                                       1/1 \n\nInstalled:\n  lsof.x86_64 0:4.87-6.el7                                                      \n\nComplete!\n"
+    ]
+}
+```
+指定用户安装软件
+```bash
+[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts  game   -u root  -m  yum  -a  "name=elinks state=present"
+ [WARNING]: Found both group and host with same name: web
+
+ [WARNING]: Found both group and host with same name: video
+
+ [WARNING]: Found both group and host with same name: pay
+
+ [WARNING]: Found both group and host with same name: pvp
+
+game-5 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "changes": {
+        "installed": [
+            "elinks"
+        ]
+    }, 
+    "msg": "", 
+    "rc": 0, 
+    "results": [
+        "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * base: mirror.bit.edu.cn\n * epel: mirrors.njupt.edu.cn\n * extras: mirror.bit.edu.cn\n * updates: mirror.bit.edu.cn\nResolving Dependencies\n--> Running transaction check\n---> Package elinks.x86_64 0:0.12-0.37.pre6.el7.0.1 will be installed\n--> Processing Dependency: libnss_compat_ossl.so.0()(64bit) for package: elinks-0.12-0.37.pre6.el7.0.1.x86_64\n--> Processing Dependency: libmozjs185.so.1.0()(64bit) for package: elinks-0.12-0.37.pre6.el7.0.1.x86_64\n--> Running transaction check\n---> Package js.x86_64 1:1.8.5-20.el7 will be installed\n---> Package nss_compat_ossl.x86_64 0:0.9.6-8.el7 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package              Arch        Version                       Repository\n                                                                           Size\n================================================================================\nInstalling:\n elinks               x86_64      0.12-0.37.pre6.el7.0.1        base      882 k\nInstalling for dependencies:\n js                   x86_64      1:1.8.5-20.el7                base      2.3 M\n nss_compat_ossl      x86_64      0.9.6-8.el7                   base       37 k\n\nTransaction Summary\n================================================================================\nInstall  1 Package (+2 Dependent packages)\n\nTotal download size: 3.2 M\nInstalled size: 9.6 M\nDownloading packages:\n--------------------------------------------------------------------------------\nTotal                                              3.3 MB/s | 3.2 MB  00:00     \nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : nss_compat_ossl-0.9.6-8.el7.x86_64                           1/3 \n  Installing : 1:js-1.8.5-20.el7.x86_64                                     2/3 \n  Installing : elinks-0.12-0.37.pre6.el7.0.1.x86_64                         3/3 \n  Verifying  : elinks-0.12-0.37.pre6.el7.0.1.x86_64                         1/3 \n  Verifying  : 1:js-1.8.5-20.el7.x86_64                                     2/3 \n  Verifying  : nss_compat_ossl-0.9.6-8.el7.x86_64                           3/3 \n\nInstalled:\n  elinks.x86_64 0:0.12-0.37.pre6.el7.0.1                                        \n\nDependency Installed:\n  js.x86_64 1:1.8.5-20.el7         nss_compat_ossl.x86_64 0:0.9.6-8.el7        \n\nComplete!\n"
+    ]
+}
+```
+## service 模块
+该模块用于服务程序的管理,其主要选项如下：
+```bash
+arguments       #命令行提供额外的参数
+enabled         #设置开机启动。
+name=           #服务名称
+runlevel        #开机启动的级别，一般不用指定。
+sleep           #在重启服务的过程中，是否等待。如在服务关闭以后等待2秒再启动。(定义在剧本中。)
+state           #有四种状态，分别为：started--->启动服务， stopped--->停止服务， restarted--->重启服务， reloaded--->重载配置
+```
+开启服务
+```bash
+[root@localhost ~]# ansible -i hosts/hosts   9999   -m service  -a "name=httpd state=started "
+game-9999 | SUCCESS => {
+    "changed": false, 
+    "name": "httpd", 
+    "state": "started", 
+    "status": {
+        ....
+    }
+}
+# 验证
+[root@localhost server]# lsof -i:80
+COMMAND   PID   USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+httpd   12297   root    4u  IPv6 65851262      0t0  TCP *:http (LISTEN)
+httpd   12315 apache    4u  IPv6 65851262      0t0  TCP *:http (LISTEN)
+httpd   12316 apache    4u  IPv6 65851262      0t0  TCP *:http (LISTEN)
+httpd   12317 apache    4u  IPv6 65851262      0t0  TCP *:http (LISTEN)
+httpd   12318 apache    4u  IPv6 65851262      0t0  TCP *:http (LISTEN)
+httpd   12319 apache    4u  IPv6 65851262      0t0  TCP *:http (LISTEN)
+```
+关闭服务
+```bash
+[root@localhost ~]# ansible -i hosts/hosts   9999   -m service  -a "name=httpd state=stopped "
+game-9999 | CHANGED => {
+    "changed": true, 
+    "name": "httpd", 
+    "state": "stopped", 
+    "status": {
+        ...
+    }
+}
+# 验证
+[root@localhost server]# lsof -i:80
+[root@localhost server]# 
+```
+## user 模块
+该模块主要是用来管理用户账号,其主要选项如下：
+```bash
+comment         # 用户的描述信息
+createhome　　  # 是否创建家目录
+force　　       # 在使用state=absent时, 行为与userdel –force一致.
+group　　       # 指定基本组
+groups　　      # 指定附加组，如果指定为(groups=)表示删除所有组
+home　　        # 指定用户家目录
+move_home　　   # 如果设置为home=时, 试图将用户主目录移动到指定的目录
+name　　        # 指定用户名
+non_unique　　  # 该选项允许改变非唯一的用户ID值
+password　　    # 指定用户密码
+remove　　      # 在使用state=absent时, 行为是与userdel –remove一致
+shell　　       # 指定默认shell
+state　　       # 设置帐号状态，不指定为创建，指定值为absent表示删除
+system　　      # 当创建一个用户，设置这个用户是系统用户。这个设置不能更改现有用户
+uid　　         # 指定用户的uid
+```
+添加一个用户并指定其 uid
+```bash
+[root@localhost ~]# ansible -i hosts/hosts   9999  -m user -a "name=hexo uid=11111"
+game-9999 | CHANGED => {
+    "changed": true, 
+    "comment": "", 
+    "create_home": true, 
+    "group": 11111, 
+    "home": "/home/hexo", 
+    "name": "hexo", 
+    "shell": "/bin/bash", 
+    "state": "present", 
+    "system": false, 
+    "uid": 11111
+}
+# 验证
+[root@localhost server]# cat /etc/passwd
+------------------------------------------
+hexo:x:11111:11111::/home/hexo:/bin/bash
+[root@localhost server]# 
+```
+删除用户
+```bash
+[root@localhost ~]# ansible -i hosts/hosts   9999  -m user -a "name=hexo state=absent"      
+game-9999 | CHANGED => {
+    "changed": true, 
+    "force": false, 
+    "name": "hexo", 
+    "remove": false, 
+    "state": "absent"
+}
+```
+## group 模块
+该模块主要用于添加或删除组,常用的选项如下：
+```bash
+gid=　　        #设置组的GID号
+name=　　       #指定组的名称
+state=　　      #指定组的状态，默认为创建，设置值为absent为删除
+system=　　     #设置值为yes，表示创建为系统组
+```
+## script 模块
+该模块用于将本机的脚本在被管理端的机器上运行,该模块直接指定脚本的路径即可,我们通过例子来看一看到底如何使用的：
+
+首先,我们随便写个测试脚本,并给其加上执行权限：
+```bash
+[sgsm@ecs-d37b ~]$ chmod a+x  shell.sh 
+[sgsm@ecs-d37b ~]$ cat  shell.sh 
+#!/bin/bash
+df -h >> /tmp/shell.log
+
+a=1
+b=2
+if [ $a -eq $b ];then
+echo "no no no "  >> /tmp/shell.log
+else
+echo "yes yes yes "  >> /tmp/shell.log
+fi
+[sgsm@ecs-d37b ~]$ 
+```
+然后,我们直接运行命令来实现在被管理端执行该脚本：
+```bash
+[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts   game  -m  script -a "shell.sh"
+
+game-5 | CHANGED => {
+    "changed": true, 
+    "rc": 0, 
+    "stderr": "Shared connection to 192.168.9.20 closed.\r\n", 
+    "stderr_lines": [
+        "Shared connection to 192.168.9.20 closed."
+    ], 
+    "stdout": "", 
+    "stdout_lines": []
+}
+# 验证
+[sgsm@ecs-d37b ~]$ ansible -i hosts/hosts   game  -m  shell  -a "cat  /tmp/shell.log"
+
+game-5 | CHANGED | rc=0 >>
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda1        40G   28G   11G  73% /
+devtmpfs        3.9G     0  3.9G   0% /dev
+tmpfs           3.9G     0  3.9G   0% /dev/shm
+tmpfs           3.9G   49M  3.8G   2% /run
+tmpfs           3.9G     0  3.9G   0% /sys/fs/cgroup
+tmpfs           783M     0  783M   0% /run/user/1000
+yes yes yes 
 ```
