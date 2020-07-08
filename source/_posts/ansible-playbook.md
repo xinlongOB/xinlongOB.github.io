@@ -299,7 +299,7 @@ tasks:
 # 这个剧本主要的作用是监控,ansible批量把脚本放到远程服务器上等待被调用 -- {{ sgsm_hosts }} 和 {{ sgsm_server_uid }}  在hosts文件中定义
 ```
 调用监控的脚本
-```
+```bash
 #/bin/bash
 export LANG=zh_CN.UTF-8
 a="$1"
