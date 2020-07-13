@@ -549,3 +549,25 @@ docker load -i xxx.tar
 docker commit -m 提交的描述 -a 提交作者 -p 更新时暂停此容器 新镜像名
 ```
 
+## 上传镜像和拉取镜像
+首先需要登录镜像仓库
+```bash
+sudo docker login --username=NAME   -p  密码 镜像仓库地址
+```
+把镜像打个标签
+```bash
+标签   52422b211692 为镜像id
+docker tag  52422b211692   镜像仓库地址和仓库名称:自定义名称
+```
+上传(指定公网地址)
+```bash
+docker push   镜像仓库地址和仓库名称:自定义名称
+```
+例如：
+```bash
+docker login   --username=qq.com   -p test  registry.cn-beijing.aliyuncs.com 
+# 标签   52422b211692 为镜像id     images是仓库名称
+docker tag  52422b211692 registry.cn-beijing.aliyuncs.com/images/game:alpine-1.2
+# 上传(指定公网地址)
+docker push  registry.cn-beijing.aliyuncs.com/images/game:alpine-1.2
+```

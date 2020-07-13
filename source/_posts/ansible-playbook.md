@@ -3,6 +3,7 @@ title: 自动化运维工具——ansible-playbook
 tags:
   - ansible
   - linux
+categories: 运维
 date: 2020-07-08 17:45:48
 ---
 ## playbook简介
@@ -316,4 +317,13 @@ done
 cat /home/sgsm/monitorlog/monitor$1.log  | mail -s "monitor mails"    xxx@163.com
 rm -rf  /home/sgsm/monitorlog/monitor"$1".log
 fi
+```
+
+playbook中shell/command的写法
+```bash
+- name: Generate server json config
+  command: node app -b ../../sgsm.tpl
+  args:
+    chdir: "{{ run_dir }}" 
+# chdir 先执行
 ```
