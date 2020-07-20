@@ -3,6 +3,7 @@ title: tar打包时排除或忽略某个子目录或文件
 tags:
   - tar
   - linux
+categories: 运维
 date: 2020-07-13 15:21:09
 ---
 比如你想打包/home这个目录，但是/home/test/目录和/home/www/index.php文件你都不想打包，方法是：
