@@ -6,6 +6,20 @@ tags:
 categories: 运维
 date: 2020-05-14 15:24:46
 ---
+## samba软件构成
+1、samba软件包的构成
+    在光盘的安装包中，可以找到与samba相关的几个软件包，主要包括服务端软件samba，客户端软件samba-client，用于提供服务端和客户端程序的公共组件samba-common
+
+2、samba服务的程序组件
+    samba服务器提供smbd、nmbd两个服务程序
+    smbd负责为客户机提供服务器中共享资源的访问（目录文件等）
+    nmbd负责提供基于NetBIOS协议的名字解析、浏览服务
+    NetBIOS协议：由IBM公司开发，使用户软件能使用局域网的资源，自从诞生，NetBIOS成为许多其他网络应用程序的基础，严格意义上，NetBIOS是接入网络服务的接口标准
+
+3、使用netstat查看状态(-atunp)(-a可以查看所有连线中的socket)
+    smbd：负责监听TCP协议的139（SMB协议）和445（CIFS协议）端口
+    nmbd：负责监听UDP协议的137和138（NetBIOS协议）端口
+    
 ## 配置环境--关闭防火墙和selinux
 <br/>centos6<br/>
    

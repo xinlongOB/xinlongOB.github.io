@@ -27,6 +27,32 @@ print(xinlong["weight"])
 
     进程已结束，退出代码 0
 
+## get()方法语法：
+```python
+dict.get(key, default=None)
+
+参数：
+    key -- 字典中要查找的键。
+    default -- 如果指定键的值不存在时，返回该默认值值。
+```
+```python
+info = {'name':'班长', 'id':100, 'sex':'f', 'address':'北京'}
+age = info.get('id')
+print(age)
+num = info.get("aaa")
+print(num)
+list = info.get("aaa","test")
+print(list)
+```
+运行结果：
+
+        D:\软件下载\python.exe E:/资料/python/LeetCode/1544.py
+        100
+        None
+        test
+
+        进程已结束，退出代码 0
+
 ## 字典的基本使用-增加
 ```python
 xinlong = {"name" : "xin"}

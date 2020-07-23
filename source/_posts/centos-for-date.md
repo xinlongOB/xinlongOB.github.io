@@ -25,5 +25,6 @@ logdate=`date "+%Y-%m-%d %H:%M:%S" -d @$i`
 echo $logdate
 logday=`echo $logdate |awk '{print $1}'`
 echo $logday
+cat  ../../logs/tlog-$logday.*   |grep  $logdate  |grep   $heroid   |grep   $keyword
 done
 ```
