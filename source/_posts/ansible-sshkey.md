@@ -3,6 +3,7 @@ title: Ansible免密登录
 tags:
   - ansible
   - linux
+categories: 运维
 date: 2020-07-21 17:34:22
 ---
 ## 首先关闭公钥认证

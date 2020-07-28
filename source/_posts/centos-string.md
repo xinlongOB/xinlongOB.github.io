@@ -3,6 +3,7 @@ title: centos删除乱码名文件
 tags:
   - shell
   - linux
+categories: 运维
 date: 2020-07-16 14:46:14
 ---
 文件上传到centos服务器上后,发现文件名出现乱码,使用下面命令删除乱码文件

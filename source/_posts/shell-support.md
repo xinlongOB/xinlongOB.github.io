@@ -137,13 +137,13 @@ sysfs                   /sys                    sysfs   defaults        0 0
 proc                    /proc                   proc    defaults        0 0
 [sgsm@localhost test2]$ 
 ```
--f：跟踪显示文件新追加的内容，常用日志监控
+-f：跟踪显示文件新追加的内容,常用日志监控
 ```bash
 # 常用组合 tail  -f  -n #  filename
 tail -f -n 30 *07-10*
 ```
 ## cut
--d 指名分隔符，默认tab    
+-d 指名分隔符,默认tab    
 -f #  ：第#个字段
 ```bash
 [sgsm@localhost test2]$ cut -d'/' -f3  /etc/passwd
@@ -639,3 +639,121 @@ P：显示替换成功的行
 W文件名：将替换成功的行保存至文件中
 ```
 ## awk
+基本用法： 
+```bash
+awk [options]  ’program’ var=value  file
+命令  选项          程序    变量      文件
+```
+选项：
+```bash 
+       -F 指名输入时用到的字符分隔符(不指定-F 按空格分隔)
+       -v  var=value：自定义变量
+```
+实例
+无论输入什么都打印hello,awk
+```bash
+[sgsm@centos ~]$   awk '{print  "hello,awk"}' 
+nishi
+hello,awk
+ok
+hello,awk
+^C
+[sgsm@centos ~]$ 
+```
+指定分隔符打印所有
+```bash
+[sgsm@centos ~]$ awk -F: '{print}' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+```
+指定分隔符打印指定列
+```bash
+[sgsm@centos ~]$ awk -F: '{print $1}'  /etc/passwd
+root
+bin
+daemon
+adm
+lp
+sync
+shutdown
+halt
+mail
+uucp
+operator
+games
+gopher
+ftp
+```
+指定分隔符打印第一列和第七列以table键分开
+```bash
+[sgsm@centos ~]$ awk -F: '{print $1 " \t " $7}'  /etc/passwd 
+root     /bin/bash
+bin      /sbin/nologin
+daemon   /sbin/nologin
+adm      /sbin/nologin
+lp       /sbin/nologin
+sync     /bin/sync
+shutdown         /sbin/shutdown
+```
+变量：内置和自定义变量
+FS：输入字符分隔符,默认为空白字符
+```bash
+[sgsm@centos ~]$ awk -v  FS=':' '{print $1,$3,$7}' /etc/passwd   
+root 0 /bin/bash
+bin 1 /sbin/nologin
+daemon 2 /sbin/nologin
+adm 3 /sbin/nologin
+lp 4 /sbin/nologin
+sync 5 /bin/sync
+shutdown 6 /sbin/shutdown
+
+[sgsm@centos ~]$ awk -F: '{print $1,$3,$7}' /etc/passwd          
+root 0 /bin/bash
+bin 1 /sbin/nologin
+daemon 2 /sbin/nologin
+adm 3 /sbin/nologin
+lp 4 /sbin/nologin
+sync 5 /bin/sync
+shutdown 6 /sbin/shutdown
+```
+OFS:输出字符分隔符,默认为空白字符
+```bash
+[sgsm@centos ~]$ awk -v FS=':' -v OFS='--' '{print$1,$3,$7}' /etc/passwd
+root--0--/bin/bash
+bin--1--/sbin/nologin
+daemon--2--/sbin/nologin
+adm--3--/sbin/nologin
+lp--4--/sbin/nologin
+sync--5--/bin/sync
+shutdown--6--/sbin/shutdown
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## find

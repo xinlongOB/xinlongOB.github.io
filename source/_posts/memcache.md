@@ -3,6 +3,7 @@ title: Memcache 数据库缓存服务器
 tags:
   - memcache
   - linux
+categories: 运维
 date: 2020-07-23 14:14:00
 ---
 ## Memcached 的特征

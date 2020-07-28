@@ -3,6 +3,7 @@ title: jenkins报错--秘钥认证失败
 tags:
   - jenkins
   - linux
+categories: 运维
 date: 2020-06-01 16:45:44
 ---
 测试服更换机器后，新服务器把旧服务器ip顶替，但是秘钥不同。构建的时候报错

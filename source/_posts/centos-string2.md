@@ -3,6 +3,7 @@ title: centos去掉^M的方法
 tags:
   - shell
   - linux
+categories: 运维
 date: 2020-07-20 11:37:54
 ---
 cat -A filename 就可以看到windows下的断元字符 ^M,要去除他,最简单用下面的命令

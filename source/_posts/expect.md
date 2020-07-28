@@ -3,6 +3,7 @@ title: linux expect介绍和用法
 tags:
   - expect
   - linux
+categories: 运维
 date: 2020-07-06 16:17:34
 ---
 ## 简介
