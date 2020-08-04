@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    centos7 安装配置MySQL数据库 |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-mysql" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  centos7 安装配置MySQL数据库
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/11/mysql/" class="article-date">
+  <time datetime="2020-07-11T08:32:43.000Z" itemprop="datePublished">2020-07-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.6k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">23 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h2><p>首先确保服务器可以连接网络,然后安装epel-release源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release   -y</span><br></pre></td></tr></table></figure>
+<p>安装mysql和mysql-server</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mysql  mysql-server   -y</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL数据库设置"><a href="#MySQL数据库设置" class="headerlink" title="MySQL数据库设置"></a>MySQL数据库设置</h2><p>首先启动MySQL</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysql</span><br></pre></td></tr></table></figure>
+<p>初始化数据库设置数据库root密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo mysqladmin -u root password 123456  </span><br><span class="line"></span><br><span class="line"><span class="comment">#root用户登陆数据库</span></span><br><span class="line">mysql -u root -p123456</span><br></pre></td></tr></table></figure>
+<h2 id="开启mysql的远程访问"><a href="#开启mysql的远程访问" class="headerlink" title="开启mysql的远程访问"></a>开启mysql的远程访问</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#授予zabbix用户zabbix数据库的所有权限,密码admin123    zabbix.* 代表zabbix库下的所有    写为.* 代表所有的库</span></span><br><span class="line">GRANT all ON zabbix.* TO <span class="string">'zabbix'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'admin123'</span>;  </span><br><span class="line"><span class="comment">#刷新权限</span></span><br><span class="line">flush privileges;   </span><br><span class="line"><span class="comment">#退出数据库 </span></span><br><span class="line">quit</span><br></pre></td></tr></table></figure>
+<h2 id="更改mysql的语言"><a href="#更改mysql的语言" class="headerlink" title="更改mysql的语言"></a>更改mysql的语言</h2><p>首先重新登录mysql,然后输入status：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; status</span><br><span class="line">--------------</span><br><span class="line">mysql  Ver 14.14 Distrib 5.6.48, <span class="keyword">for</span> Linux (x86_64) using  EditLine wrapper</span><br><span class="line"></span><br><span class="line">Connection id:          1066</span><br><span class="line">Current database:</span><br><span class="line">Current user:           root@192.168.1.122</span><br><span class="line">SSL:                    Not <span class="keyword">in</span> use</span><br><span class="line">Current pager:          stdout</span><br><span class="line">Using outfile:          <span class="string">''</span></span><br><span class="line">Using delimiter:        ;</span><br><span class="line">Server version:         5.6.48 MySQL Community Server (GPL)</span><br><span class="line">Protocol version:       10</span><br><span class="line">Connection:             192.168.1.122 via TCP/IP</span><br><span class="line">Server characterset:    latin1</span><br><span class="line">Db     characterset:    latin1</span><br><span class="line">Client characterset:    utf8</span><br><span class="line">Conn.  characterset:    utf8</span><br><span class="line">TCP port:               3306</span><br><span class="line">Uptime:                 3 days 22 hours 52 min 12 sec</span><br><span class="line"></span><br><span class="line">Threads: 33  Questions: 1915356  Slow queries: 0  Opens: 381  Flush tables: 1  Open tables: 276  Queries per second avg: 5.608</span><br><span class="line">--------------</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>Server characterset 现在是 latin1 需要改为utf8<br>更改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/my.cnf</span><br><span class="line">   </span><br><span class="line">   <span class="comment"># 新增配置</span></span><br><span class="line">   [mysqld]                  </span><br><span class="line">   character_set_server=utf8 </span><br><span class="line">   collation-server=utf8_general_ci</span><br><span class="line"></span><br><span class="line">   [client]   <span class="comment"># 没有这个字段需要添加</span></span><br><span class="line">   default-character-set=utf8</span><br></pre></td></tr></table></figure>
+<p>保存更改后的my.cnf文件后,重启下mysql,然后输入status再次查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl  restart mysqld   </span></span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># mysql -u root -p123456 -h 192.168.1.122</span></span><br><span class="line">Warning: Using a password on the <span class="built_in">command</span> line interface can be insecure.</span><br><span class="line">^[[A^[[AWelcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 4</span><br><span class="line">Server version: 5.6.48 MySQL Community Server (GPL)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">'help;'</span> or <span class="string">'\h'</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">'\c'</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt; status</span><br><span class="line">--------------</span><br><span class="line">mysql  Ver 14.14 Distrib 5.6.48, <span class="keyword">for</span> Linux (x86_64) using  EditLine wrapper</span><br><span class="line"></span><br><span class="line">Connection id:          4</span><br><span class="line">Current database:</span><br><span class="line">Current user:           root@192.168.1.122</span><br><span class="line">SSL:                    Not <span class="keyword">in</span> use</span><br><span class="line">Current pager:          stdout</span><br><span class="line">Using outfile:          <span class="string">''</span></span><br><span class="line">Using delimiter:        ;</span><br><span class="line">Server version:         5.6.48 MySQL Community Server (GPL)</span><br><span class="line">Protocol version:       10</span><br><span class="line">Connection:             192.168.1.122 via TCP/IP</span><br><span class="line">Server characterset:    utf8</span><br><span class="line">Db     characterset:    utf8</span><br><span class="line">Client characterset:    utf8</span><br><span class="line">Conn.  characterset:    utf8</span><br><span class="line">TCP port:               3306</span><br><span class="line">Uptime:                 14 sec</span><br><span class="line"></span><br><span class="line">Threads: 8  Questions: 79  Slow queries: 0  Opens: 108  Flush tables: 1  Open tables: 101  Queries per second avg: 5.642</span><br><span class="line">--------------</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="built_in">exit</span></span><br><span class="line">Bye</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">在这个配置段之内,将会看到与mysql守护进程相关的命令</span><br><span class="line"></span><br><span class="line">Datadir=/var/lib/mysql</span><br><span class="line">Mysql服务器把数据库存储在由datadir变量所定义的目录中</span><br><span class="line"></span><br><span class="line">Socket=/var/lib/mysql/mysql.sock</span><br><span class="line">Mysql套接字把数据库程序局部的或通过网络连接到mysql客户</span><br><span class="line"></span><br><span class="line">[safe_mysqld]</span><br><span class="line">这个配置段包含mysql启动脚本所引用的命令。如果使用mysql4.x或4.x以上版本,必须把这个配置段改成[mysqld_safe] </span><br><span class="line"></span><br><span class="line">err-log=/var/<span class="built_in">log</span>/mysqld.log</span><br><span class="line">这是MySQL所关联的错误被发送到的这个文件。如果使用MySQL4.X或4.X以上版本,必须使用<span class="built_in">log</span>-error指令替换这条命令。</span><br><span class="line"></span><br><span class="line">pid-file=/var/run/mysqld/mysqld.pid</span><br><span class="line">最后,pid-file指令定义MySQL服务器在运作期间的进程标识符(PID)。如果MySQL服务器当前没有运行,这个文件应该不存在。</span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">这个配置把指令传递给与mysql服务器相关的客户</span><br><span class="line"></span><br><span class="line">Port=3306</span><br><span class="line">Mysql所相关的标准TCP/IP端口是3306。如果需要修改这个端口号（可以增强安全）。必须确保用于mysql客户于服务器的所有相应配置文件中均修改这个号</span><br><span class="line"></span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line">正像默认的/etc/my.cnf文件中所定义的那样,这是控制MySQL客户与服务器间通信的标准套接字文件。</span><br></pre></td></tr></table></figure>
+<h2 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h2><p>顺序：库   ——表  ——列  ——记录  ——数据<br>创建数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create  database vfast;</span><br><span class="line">Query OK, 1 row affected (0.03 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| jeecmsv9           |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| vfast              |</span><br><span class="line">| zabbix             |</span><br><span class="line">+--------------------+</span><br><span class="line">6 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>删除数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; drop database vfast;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| jeecmsv9           |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| zabbix             |</span><br><span class="line">+--------------------+</span><br><span class="line">5 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>进入数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| jeecmsv9           |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| zabbix             |</span><br><span class="line">+--------------------+</span><br><span class="line">5 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; use zabbix;</span><br><span class="line">Reading table information <span class="keyword">for</span> completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>创建表(需要指定表结构)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create  table  rhce(id int);</span><br><span class="line">Query OK, 0 rows affected (0.12 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+-----------------+</span><br><span class="line">| Tables_in_vfast |</span><br><span class="line">+-----------------+</span><br><span class="line">| rhce            |</span><br><span class="line">+-----------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>插入数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert   into  rhce (id) values (10);     </span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; select  *  from rhce;</span><br><span class="line">+------+</span><br><span class="line">| id   |</span><br><span class="line">+------+</span><br><span class="line">|   10 |</span><br><span class="line">+------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>建表参数   aotu_increment   自动增长,例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table mei(ID int(3) auto_increment  primary key ,NAME char(30));</span><br><span class="line">Query OK, 0 rows affected (0.14 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert   into  mei (ID,NAME) values (1,<span class="string">"long"</span>);      </span><br><span class="line">Query OK, 1 row affected (0.03 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; insert   into  mei (NAME) values (<span class="string">"xin"</span>);     </span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; select * from  mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  1 | long |</span><br><span class="line">|  2 | xin  |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>修改表名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter  table  rhce  rename  cbd;</span><br><span class="line">Query OK, 0 rows affected (0.07 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+-----------------+</span><br><span class="line">| Tables_in_vfast |</span><br><span class="line">+-----------------+</span><br><span class="line">| cbd             |</span><br><span class="line">| mei             |</span><br><span class="line">+-----------------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>增加字段 sex</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter  table  cbd  add  sex enum (<span class="string">'Y'</span>,<span class="string">'N'</span>);   </span><br><span class="line">Query OK, 0 rows affected (0.29 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; desc vfast.cbd;   <span class="comment"># 查看字段</span></span><br><span class="line">+-------+---------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type          | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------------+------+-----+---------+-------+</span><br><span class="line">| id    | int(11)       | YES  |     | NULL    |       |</span><br><span class="line">| sex   | enum(<span class="string">'Y'</span>,<span class="string">'N'</span>) | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------------+------+-----+---------+-------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>删除字段 sex</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table  cbd drop  sex;</span><br><span class="line">Query OK, 0 rows affected (0.26 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; desc vfast.cbd;</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| Field | Type    | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| id    | int(11) | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>修改字段的类型</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc vfast.cbd;</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| Field | Type    | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| id    | int(11) | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; alter  table  cbd  modify   id   char (16);</span><br><span class="line">Query OK, 1 row affected (0.42 sec)</span><br><span class="line">Records: 1  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>改变列名(格式：change 原名称  新名称)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc vfast.cbd;</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">| Field | Type     | Null | Key | Default | Extra |</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">| id    | char(16) | YES  |     | NULL    |       |</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; alter  table  cbd   change  id   mingzi  char(26);     </span><br><span class="line">Query OK, 1 row affected (0.33 sec)</span><br><span class="line">Records: 1  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; desc vfast.cbd;</span><br><span class="line">+--------+----------+------+-----+---------+-------+</span><br><span class="line">| Field  | Type     | Null | Key | Default | Extra |</span><br><span class="line">+--------+----------+------+-----+---------+-------+</span><br><span class="line">| mingzi | char(26) | YES  |     | NULL    |       |</span><br><span class="line">+--------+----------+------+-----+---------+-------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>显示表cbd的创建过程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show  create  table   cbd;</span><br><span class="line">+-------+--------------------------------------------------------------------------------------------+</span><br><span class="line">| Table | Create Table                                                                               |</span><br><span class="line">+-------+--------------------------------------------------------------------------------------------+</span><br><span class="line">| cbd   | CREATE TABLE `cbd` (</span><br><span class="line">  `mingzi` char(26) DEFAULT NULL</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8 |</span><br><span class="line">+-------+--------------------------------------------------------------------------------------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>删除表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; drop  table  cbd;</span><br><span class="line">Query OK, 0 rows affected (0.07 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+-----------------+</span><br><span class="line">| Tables_in_vfast |</span><br><span class="line">+-----------------+</span><br><span class="line">| mei             |</span><br><span class="line">+-----------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+
+<p>查看数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use vfast</span><br><span class="line">Reading table information <span class="keyword">for</span> completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+-----------------+</span><br><span class="line">| Tables_in_vfast |</span><br><span class="line">+-----------------+</span><br><span class="line">| mei             |</span><br><span class="line">+-----------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  1 | long |</span><br><span class="line">|  2 | xin  |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>插入数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  1 | long |</span><br><span class="line">|  2 | xin  |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into mei (ID,NAME) values (<span class="string">"10"</span>,<span class="string">"long"</span>);  </span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  1 | long |</span><br><span class="line">|  2 | xin  |</span><br><span class="line">| 10 | long |</span><br><span class="line">+----+------+</span><br><span class="line">3 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>删除表中某一行数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  1 | long |</span><br><span class="line">|  2 | xin  |</span><br><span class="line">| 10 | long |</span><br><span class="line">+----+------+</span><br><span class="line">3 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; delete from  mei   <span class="built_in">where</span>  ID=1; </span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  2 | xin  |</span><br><span class="line">| 10 | long |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>更新数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  2 | xin  |</span><br><span class="line">| 10 | long |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; update mei <span class="built_in">set</span> ID=9  <span class="built_in">where</span>  NAME=<span class="string">"long"</span>;</span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  2 | xin  |</span><br><span class="line">|  9 | long |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>删除表中所有数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># truncate   删除所有数据（打碎表后重建新表） 删除速度快于dalete</span></span><br><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  2 | xin  |</span><br><span class="line">|  9 | long |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; truncate  table mei;</span><br><span class="line">Query OK, 0 rows affected (0.13 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from mei;  </span><br><span class="line">Empty <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line"><span class="comment"># delete    逐行删除数据</span></span><br><span class="line">mysql&gt; select * from mei;</span><br><span class="line">+----+------+</span><br><span class="line">| ID | NAME |</span><br><span class="line">+----+------+</span><br><span class="line">|  1 | xin  |</span><br><span class="line">| 10 | long |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; delete from mei;</span><br><span class="line">Query OK, 2 rows affected (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from mei;</span><br><span class="line">Empty <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Mysql函数"><a href="#Mysql函数" class="headerlink" title="Mysql函数"></a>Mysql函数</h2><p>  sum   求和<br>  max   取最大值<br>  min    取最小值<br>  avg    去平均值<br>  count   统计</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table  web_url  (id int(10)  auto_increment  primary key  ,NAME char(50),url char(90));</span><br><span class="line">Query OK, 0 rows affected (0.12 sec)</span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+-----------------+</span><br><span class="line">| Tables_in_vfast |</span><br><span class="line">+-----------------+</span><br><span class="line">| mei             |</span><br><span class="line">| url             |</span><br><span class="line">| web_url         |</span><br><span class="line">+-----------------+</span><br><span class="line">3 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; insert into  web_url (id,NAME,url) values (1,<span class="string">"baidu"</span>,<span class="string">"www.baidu.com"</span>);</span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; insert into  web_url (NAME,url) values (<span class="string">"zhihu"</span>,<span class="string">"www.zhihu.com"</span>);     </span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; insert into  web_url (NAME,url) values (<span class="string">"coding"</span>,<span class="string">"www.coding.com"</span>);              </span><br><span class="line">Query OK, 1 row affected (0.03 sec)</span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; insert into  web_url (NAME,url) values (<span class="string">"jingdong"</span>,<span class="string">"www.jingdong.com"</span>);               </span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line">mysql&gt; select * from web_url;</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">| id | NAME     | url              |</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">|  1 | baidu    | www.baidu.com    |</span><br><span class="line">|  2 | zhihu    | www.zhihu.com    |</span><br><span class="line">|  3 | coding   | www.coding.com   |</span><br><span class="line">|  4 | jingdong | www.jingdong.com |</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>sum   求和</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from web_url;</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">| id | NAME     | url              |</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">|  1 | baidu    | www.baidu.com    |</span><br><span class="line">|  2 | zhihu    | www.zhihu.com    |</span><br><span class="line">|  3 | coding   | www.coding.com   |</span><br><span class="line">|  4 | jingdong | www.jingdong.com |</span><br><span class="line">|  5 | jingdong | www.jingdong.com |</span><br><span class="line">|  6 | coding   | www.coding.com   |</span><br><span class="line">|  7 | coding   | www.coding.com   |</span><br><span class="line">|  8 | coding   | www.coding.com   |</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">8 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select sum(id) from  web_url;</span><br><span class="line">+---------+</span><br><span class="line">| sum(id) |</span><br><span class="line">+---------+</span><br><span class="line">|      36 |</span><br><span class="line">+---------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>max   取最大值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select max(id) from  web_url;        </span><br><span class="line">+---------+</span><br><span class="line">| max(id) |</span><br><span class="line">+---------+</span><br><span class="line">|       8 |</span><br><span class="line">+---------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>min    取最小值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select min(id) from  web_url;  </span><br><span class="line">+---------+</span><br><span class="line">| min(id) |</span><br><span class="line">+---------+</span><br><span class="line">|       1 |</span><br><span class="line">+---------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>avg    取平均值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select avg(id) from  web_url;    </span><br><span class="line">+---------+</span><br><span class="line">| avg(id) |</span><br><span class="line">+---------+</span><br><span class="line">|  4.5000 |</span><br><span class="line">+---------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>count   统计</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from  web_url;       </span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        8 |</span><br><span class="line">+----------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="查看某个字段出现的次数"><a href="#查看某个字段出现的次数" class="headerlink" title="查看某个字段出现的次数"></a>查看某个字段出现的次数</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from web_url;            </span><br><span class="line">+----+----------+------------------+</span><br><span class="line">| id | NAME     | url              |</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">|  1 | baidu    | www.baidu.com    |</span><br><span class="line">|  2 | zhihu    | www.zhihu.com    |</span><br><span class="line">|  3 | coding   | www.coding.com   |</span><br><span class="line">|  4 | jingdong | www.jingdong.com |</span><br><span class="line">|  5 | jingdong | www.jingdong.com |</span><br><span class="line">|  6 | coding   | www.coding.com   |</span><br><span class="line">|  7 | coding   | www.coding.com   |</span><br><span class="line">|  8 | coding   | www.coding.com   |</span><br><span class="line">+----+----------+------------------+</span><br><span class="line">8 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; select url,count(*) AS count  from  web_url   group by url order by count DESC <span class="built_in">limit</span> 5;       </span><br><span class="line">+------------------+-------+</span><br><span class="line">| url              | count |</span><br><span class="line">+------------------+-------+</span><br><span class="line">| www.coding.com   |     4 |</span><br><span class="line">| www.jingdong.com |     2 |</span><br><span class="line">| www.baidu.com    |     1 |</span><br><span class="line">| www.zhihu.com    |     1 |</span><br><span class="line">+------------------+-------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select NAME,count(*) AS count  from  web_url   group by url order by count DESC <span class="built_in">limit</span> 5;   </span><br><span class="line">+----------+-------+</span><br><span class="line">| NAME     | count |</span><br><span class="line">+----------+-------+</span><br><span class="line">| coding   |     4 |</span><br><span class="line">| jingdong |     2 |</span><br><span class="line">| zhihu    |     1 |</span><br><span class="line">| baidu    |     1 |</span><br><span class="line">+----------+-------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>分组排序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from  shop;</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| NAME   | MONEY | NUM  |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| apple  |    10 |  100 |</span><br><span class="line">| banana |    15 |   80 |</span><br><span class="line">| orange |     8 |   70 |</span><br><span class="line">| litchi |    20 |  150 |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以NUM 数值 从小到大排序</span></span><br><span class="line">mysql&gt; select * from  shop order by NUM;</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| NAME   | MONEY | NUM  |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| orange |     8 |   70 |</span><br><span class="line">| banana |    15 |   80 |</span><br><span class="line">| apple  |    10 |  100 |</span><br><span class="line">| litchi |    20 |  150 |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以NUM 数值 从大到小排序</span></span><br><span class="line">mysql&gt; select * from  shop order by NUM desc;</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| NAME   | MONEY | NUM  |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| litchi |    20 |  150 |</span><br><span class="line">| apple  |    10 |  100 |</span><br><span class="line">| banana |    15 |   80 |</span><br><span class="line">| orange |     8 |   70 |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以NUM 数值为例 找出最多的两个</span></span><br><span class="line">mysql&gt; select * from  shop order by NUM desc <span class="built_in">limit</span> 2;</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| NAME   | MONEY | NUM  |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| litchi |    20 |  150 |</span><br><span class="line">| apple  |    10 |  100 |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from  shop;</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| NAME   | MONEY | NUM  |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| apple  |    10 |  100 |</span><br><span class="line">| banana |    15 |   80 |</span><br><span class="line">| orange |     8 |   70 |</span><br><span class="line">| litchi |    20 |  150 |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>按组排序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from  shop group by MONEY;</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| NAME   | MONEY | NUM  |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">| orange |     8 |   70 |</span><br><span class="line">| apple  |    10 |  100 |</span><br><span class="line">| banana |    15 |   80 |</span><br><span class="line">| litchi |    20 |  150 |</span><br><span class="line">+--------+-------+------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; select count(*) from  shop group by MONEY;     </span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        1 |</span><br><span class="line">|        1 |</span><br><span class="line">|        1 |</span><br><span class="line">|        1 |</span><br><span class="line">+----------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看MONEY 相同的次数 并且大于 1的数据</span></span><br><span class="line">mysql&gt; select count(*) from  shop group by MONEY having count(*) &gt; 1;</span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        2 |</span><br><span class="line">+----------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>注意 group by 不能和条件where共同使用,需要用having</p>
+<h2 id="查看默认引擎"><a href="#查看默认引擎" class="headerlink" title="查看默认引擎"></a>查看默认引擎</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like  <span class="string">'%storage_engine%'</span>;</span><br><span class="line">+----------------------------+--------+</span><br><span class="line">| Variable_name              | Value  |</span><br><span class="line">+----------------------------+--------+</span><br><span class="line">| default_storage_engine     | InnoDB |</span><br><span class="line">| default_tmp_storage_engine | InnoDB |</span><br><span class="line">| storage_engine             | InnoDB |</span><br><span class="line">+----------------------------+--------+</span><br><span class="line">3 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>创建表时指定引擎</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create  table num (id int(10)) engine=myisam; </span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show create table num ;</span><br><span class="line">+-------+---------------------------------------------------------------------------------------+</span><br><span class="line">| Table | Create Table                                                                          |</span><br><span class="line">+-------+---------------------------------------------------------------------------------------+</span><br><span class="line">| num   | CREATE TABLE `num` (</span><br><span class="line">  `id` int(10) DEFAULT NULL</span><br><span class="line">) ENGINE=MyISAM DEFAULT CHARSET=utf8 |</span><br><span class="line">+-------+---------------------------------------------------------------------------------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="MySql引擎"><a href="#MySql引擎" class="headerlink" title="MySql引擎"></a>MySql引擎</h2><p>Mysql一共包含两种引擎：myisam  and  innodb</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rhe15之前系统自带的mysql  engine  is  myisam</span><br><span class="line">              之后engine   is   innodb</span><br></pre></td></tr></table></figure>
+<p>两者不同： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">     Innodb是事务型日志,它是先记录日志在操作的</span><br><span class="line">      保证了数据库的合理性,持久性,一致性。</span><br><span class="line"></span><br><span class="line">日志存在/var/lib/mysql目录下,（lib logfile0,ib_logfile1）这两个日志文件都很小,他们是采用循环结构存储日志的,只记录上一次的操作,下一个事务开始即覆盖上一个事务的日志</span><br></pre></td></tr></table></figure>
+<p>Myisam和innodb引擎的区别</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> MYISAM是mysql的默认存储引擎,MYISAM不支持事务、也不支持外键,但其访问速度快,对事务完整性没有要求。</span><br><span class="line">Innodb存储引擎提供了具有提交、回滚和崩溃回复能力的事务安全。但是比起MYISAM存储引擎,innodb写的处理效率差一些并且会占有更多的磁盘空间以保留数据和索引。</span><br></pre></td></tr></table></figure>
+<p>事务  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">事务都应该具备ACID特征,所谓ACID是Atomic（原子性）,consistent（一致性）,Iolated（隔离性）,Durable（持续性）四个词的首字母所写,下面以“银行转账”为例分别来说明一下他们的含义：</span><br><span class="line"></span><br><span class="line">原子性：组成事务处理的语句形成了一个逻辑单元,不能只执行其中的一部分,换句话说,事务是不可分割的最小单元,比如：银行转账过程中,必须同时从一个账户减去转账金额,并加到另一个账户中,只改变一个账户是不合理的</span><br><span class="line"></span><br><span class="line">一致性：在事务处理执行前后,数据库是一致的,也就是说,事务应该正确的转换系统状态,比如：银行转账过程中,要么转账金额从一个账户转入另一个账户,要么两个账户都不变,没有其他的情况</span><br><span class="line"></span><br><span class="line">隔离性：一个事务处理对另一个事务处理没有影响,就是说任何事务都不可能看到一个处在不完整状态下的事务。比如说,银行转账过程中,转账后账户的状态要能够保存下来。</span><br><span class="line"> </span><br><span class="line">持续性：事务处理的效果能够被永久保存下来。反过来说,事务应当能够承受所有的失败,包括服务器、进程、通信以及媒体失败等等,比如：银行转账过程中,转账后账户的状态要能被保存下来。</span><br><span class="line">假设你在ATM提款机上存钱,当你操作完毕后,机器在写入数据库数据（往你账户中写入你存的数额）的时候。机器宕机了。如果没事务是不是就悲剧了</span><br></pre></td></tr></table></figure>
+
+<h2 id="简单介绍事务回滚实例"><a href="#简单介绍事务回滚实例" class="headerlink" title="简单介绍事务回滚实例"></a>简单介绍事务回滚实例</h2><p>用begin、rollback、commit来实现</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">begin  开始一个事务</span><br><span class="line">rollback   事务回滚</span><br><span class="line">commit   事务确认</span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database vfast;      <span class="comment"># 创建数据库</span></span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; use vfast;                 <span class="comment"># 进入数据库</span></span><br><span class="line">Database changed</span><br><span class="line"></span><br><span class="line"><span class="comment"># centos6 可以写为 TYPE=INNODB</span></span><br><span class="line"><span class="comment">#mysql&gt; create table test (a int) TYPE=INNODB;</span></span><br><span class="line"><span class="comment">#ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TYPE=INNODB' at line 1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; create table <span class="built_in">test</span> (a int) engine=INNODB;     <span class="comment"># 创建表 指定引擎为innodb</span></span><br><span class="line">Query OK, 0 rows affected (0.13 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; begin;                                   <span class="comment"># 开始事务日志</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into <span class="built_in">test</span> values(3);              <span class="comment"># 插入数据</span></span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  insert into <span class="built_in">test</span> values(4);             <span class="comment"># 插入数据</span></span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  select * from <span class="built_in">test</span>;                     <span class="comment"># 查看</span></span><br><span class="line">+------+</span><br><span class="line">| a    |</span><br><span class="line">+------+</span><br><span class="line">|    3 |</span><br><span class="line">|    4 |</span><br><span class="line">+------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)                      </span><br><span class="line"></span><br><span class="line">mysql&gt; rollback;                              <span class="comment"># 回滚</span></span><br><span class="line">Query OK, 0 rows affected (0.03 sec)  </span><br><span class="line"></span><br><span class="line">mysql&gt;  select * from <span class="built_in">test</span>;                   <span class="comment"># 再次查看无数据</span></span><br><span class="line">Empty <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  insert into <span class="built_in">test</span> values(3);           <span class="comment"># 再次插入数据</span></span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; commit;                                <span class="comment"># 提交</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  rollback;                             <span class="comment"># 再次回滚</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from <span class="built_in">test</span>;                    <span class="comment"># 查看 还是有数据</span></span><br><span class="line">+------+</span><br><span class="line">| a    |</span><br><span class="line">+------+</span><br><span class="line">|    3 |</span><br><span class="line">+------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="关于数据锁"><a href="#关于数据锁" class="headerlink" title="关于数据锁"></a>关于数据锁</h2><p>mysql在执行每一个操作的时候都会先申请锁,申请到锁后才会执行操作,如果手动备份某个表的时候一定要对该表手动加读锁,为了保持数据一致性,防止在备份的时候又在写东西,备份后在执行unlock命令解锁就行了<br>如你在对一个表插入1000条数据的时候,用另一个终端更新其中一条,结果是发现更新会一直等待到第一个操作结束后再更新</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span>   只读</span><br><span class="line">write  谁加的写锁,谁能读写,其他的不能读写</span><br><span class="line">刷新立即生效</span><br><span class="line">flush  privilege</span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;  select * from <span class="built_in">test</span>;</span><br><span class="line">+------+------+</span><br><span class="line">| a    | sex  |</span><br><span class="line">+------+------+</span><br><span class="line">|    3 | NULL |</span><br><span class="line">+------+------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; alter  table <span class="built_in">test</span>  add  liu  char(10);    </span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.31 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt;  select * from <span class="built_in">test</span>;</span><br><span class="line">+------+------+------+</span><br><span class="line">| a    | sex  | liu  |</span><br><span class="line">+------+------+------+</span><br><span class="line">|    3 | NULL | NULL |</span><br><span class="line">+------+------+------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; show  OPEN  tables; </span><br><span class="line">+--------------------+----------------------------------------------------+--------+-------------+</span><br><span class="line">| Database           | Table                                              | In_use | Name_locked |</span><br><span class="line">+--------------------+----------------------------------------------------+--------+-------------+</span><br><span class="line">| zabbix             | proxy_dhistory                                     |      0 |           0 |</span><br><span class="line">| jeecmsv9           | jc_site_company                                    |      0 |           0 |</span><br><span class="line">| zabbix             | interface                                          |      0 |           0 |</span><br><span class="line">| performance_schema | events_waits_history_long                          |      0 |           0 |</span><br><span class="line">| zabbix             | sysmap_element_url                                 |      0 |           0 |</span><br><span class="line">| performance_schema | mutex_instances                                    |      0 |           0 |</span><br><span class="line">| zabbix             | maintenances_windows                               |      0 |           0 |</span><br><span class="line">| vfast              | <span class="built_in">test</span>                                               |      1 |           0 |</span><br><span class="line">+--------------------+----------------------------------------------------+--------+-------------+</span><br><span class="line"></span><br><span class="line">mysql&gt;  unlock   tables;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show  OPEN  tables;     </span><br><span class="line">+--------------------+----------------------------------------------------+--------+-------------+</span><br><span class="line">| Database           | Table                                              | In_use | Name_locked |</span><br><span class="line">+--------------------+----------------------------------------------------+--------+-------------+</span><br><span class="line">| zabbix             | proxy_dhistory                                     |      0 |           0 |</span><br><span class="line">| jeecmsv9           | jc_site_company                                    |      0 |           0 |</span><br><span class="line">| zabbix             | interface                                          |      0 |           0 |</span><br><span class="line">| performance_schema | events_waits_history_long                          |      0 |           0 |</span><br><span class="line">| zabbix             | sysmap_element_url                                 |      0 |           0 |</span><br><span class="line">| performance_schema | mutex_instances                                    |      0 |           0 |</span><br><span class="line">| zabbix             | maintenances_windows                               |      0 |           0 |</span><br><span class="line">| vfast              | <span class="built_in">test</span>                                               |      0 |           0 |</span><br><span class="line">+--------------------+----------------------------------------------------+--------+-------------+</span><br></pre></td></tr></table></figure>
+<h2 id="数据库备份及恢复"><a href="#数据库备份及恢复" class="headerlink" title="数据库备份及恢复"></a>数据库备份及恢复</h2><p>备份</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysqldump  -h   IP   -uroot -pxxxx  vfast &gt; /tmp/mydump.sql </span><br><span class="line"></span><br><span class="line">[sgsm@localhost test3]$ mysqldump -u root -p123456   vfast  &gt; vfast.sql</span><br><span class="line">Warning: Using a password on the <span class="built_in">command</span> line interface can be insecure.</span><br><span class="line">[sgsm@localhost test3]$ </span><br><span class="line">[sgsm@localhost test3]$ ll</span><br><span class="line">总用量 4</span><br><span class="line">-rw-r--r-- 1 sgsm users 1900 8月   2 21:59 vfast.sql</span><br><span class="line">[sgsm@localhost test3]$</span><br></pre></td></tr></table></figure>
+<p>还原–命令行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 恢复数据之前 库需要存在 并且无数据</span></span><br><span class="line">mysql  -uroot  -pxxx  tdlinux  &lt;/tmp/mydump.sql  </span><br><span class="line"></span><br><span class="line">mysql&gt; create database  vfast; </span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; use vfast;</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">Empty <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="built_in">exit</span></span><br><span class="line">Bye</span><br><span class="line">[sgsm@localhost test3]$ mysql -u root -p123456  vfast &lt; vfast.sql </span><br><span class="line">Warning: Using a password on the <span class="built_in">command</span> line interface can be insecure.</span><br><span class="line"></span><br><span class="line">[sgsm@localhost test3]$ mysql -u root -p123456  </span><br><span class="line"></span><br><span class="line">mysql&gt; use vfast;</span><br><span class="line">Reading table information <span class="keyword">for</span> completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+-----------------+</span><br><span class="line">| Tables_in_vfast |</span><br><span class="line">+-----------------+</span><br><span class="line">| <span class="built_in">test</span>            |</span><br><span class="line">+-----------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>还原–SQL语句</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span>  /tmp/mydump.sql </span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="built_in">source</span>  /home/sgsm/test3/vfast.sql</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.16 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/07/11/mysql/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/07/13/tar-exclued/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            tar打包时排除或忽略某个子目录或文件
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/11/daovoice/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">hexo的ayer主题之添加在线聊天功能daovoice</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

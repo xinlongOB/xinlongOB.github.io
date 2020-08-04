@@ -43,6 +43,13 @@ var _hmt = _hmt || [];
 </script>
 
 
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
 <link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
 </head>
 
@@ -84,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">689</span>
+            <span class="post-count">791</span>
         </span>
     </span>
 
@@ -124,6 +131,14 @@ var _hmt = _hmt || [];
 <pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
 {&apos;name&apos;: &apos;xinlong&apos;, &apos;age&apos;: 22, &apos;xingbie&apos;: &apos;True&apos;, &apos;height&apos;: &apos;180&apos;, &apos;weight&apos;: &apos;130&apos;}
 130
+
+进程已结束，退出代码 0</code></pre><h2 id="get-方法语法："><a href="#get-方法语法：" class="headerlink" title="get()方法语法："></a>get()方法语法：</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dict.get(key, default=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">    key -- 字典中要查找的键。</span><br><span class="line">    default -- 如果指定键的值不存在时，返回该默认值值。</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">info = &#123;<span class="string">'name'</span>:<span class="string">'班长'</span>, <span class="string">'id'</span>:<span class="number">100</span>, <span class="string">'sex'</span>:<span class="string">'f'</span>, <span class="string">'address'</span>:<span class="string">'北京'</span>&#125;</span><br><span class="line">age = info.get(<span class="string">'id'</span>)</span><br><span class="line">print(age)</span><br><span class="line">num = info.get(<span class="string">"aaa"</span>)</span><br><span class="line">print(num)</span><br><span class="line">list = info.get(<span class="string">"aaa"</span>,<span class="string">"test"</span>)</span><br><span class="line">print(list)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<pre><code>D:\软件下载\python.exe E:/资料/python/LeetCode/1544.py
+100
+None
+test
 
 进程已结束，退出代码 0</code></pre><h2 id="字典的基本使用-增加"><a href="#字典的基本使用-增加" class="headerlink" title="字典的基本使用-增加"></a>字典的基本使用-增加</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xinlong = &#123;<span class="string">"name"</span> : <span class="string">"xin"</span>&#125;</span><br><span class="line">print(xinlong)</span><br><span class="line">xinlong[<span class="string">"age"</span>]=<span class="string">"22"</span></span><br><span class="line">print(xinlong)</span><br></pre></td></tr></table></figure>
 <p>运行结果：</p>
@@ -349,12 +364,6 @@ start - num
     </ul>
     <ul>
       <li>
-        
-        
-        
-        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
-        <span class="division">|</span>
-        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
         
       </li>
     </ul>

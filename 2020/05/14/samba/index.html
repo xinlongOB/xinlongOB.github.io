@@ -43,6 +43,13 @@ var _hmt = _hmt || [];
 </script>
 
 
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
 <link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
 </head>
 
@@ -84,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">808</span>
+            <span class="post-count">1.1k</span>
         </span>
     </span>
 
@@ -93,7 +100,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">4 分钟</span>
         </span>
     </span>
 </div>
@@ -118,7 +125,10 @@ var _hmt = _hmt || [];
       
 
       
-      <h2 id="配置环境–关闭防火墙和selinux"><a href="#配置环境–关闭防火墙和selinux" class="headerlink" title="配置环境–关闭防火墙和selinux"></a>配置环境–关闭防火墙和selinux</h2><p><br>centos6<br></p>
+      <h2 id="samba软件构成"><a href="#samba软件构成" class="headerlink" title="samba软件构成"></a>samba软件构成</h2><p>1、samba软件包的构成<br>    在光盘的安装包中，可以找到与samba相关的几个软件包，主要包括服务端软件samba，客户端软件samba-client，用于提供服务端和客户端程序的公共组件samba-common</p>
+<p>2、samba服务的程序组件<br>    samba服务器提供smbd、nmbd两个服务程序<br>    smbd负责为客户机提供服务器中共享资源的访问（目录文件等）<br>    nmbd负责提供基于NetBIOS协议的名字解析、浏览服务<br>    NetBIOS协议：由IBM公司开发，使用户软件能使用局域网的资源，自从诞生，NetBIOS成为许多其他网络应用程序的基础，严格意义上，NetBIOS是接入网络服务的接口标准</p>
+<p>3、使用netstat查看状态(-atunp)(-a可以查看所有连线中的socket)<br>    smbd：负责监听TCP协议的139（SMB协议）和445（CIFS协议）端口<br>    nmbd：负责监听UDP协议的137和138（NetBIOS协议）端口</p>
+<h2 id="配置环境–关闭防火墙和selinux"><a href="#配置环境–关闭防火墙和selinux" class="headerlink" title="配置环境–关闭防火墙和selinux"></a>配置环境–关闭防火墙和selinux</h2><p><br>centos6<br></p>
 <pre><code>service  iptables  stop
 service  ip6tables  stop</code></pre><p>centos7</p>
 <pre><code>systemctl stop  firewalld</code></pre><p>永久关闭</p>
@@ -401,12 +411,6 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>
     </ul>
     <ul>
       <li>
-        
-        
-        
-        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
-        <span class="division">|</span>
-        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
         
       </li>
     </ul>

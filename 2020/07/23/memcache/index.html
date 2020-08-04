@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Memcache 数据库缓存服务器 |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-memcache" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Memcache 数据库缓存服务器
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/23/memcache/" class="article-date">
+  <time datetime="2020-07-23T06:14:00.000Z" itemprop="datePublished">2020-07-23</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">5.3k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">21 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="Memcached-的特征"><a href="#Memcached-的特征" class="headerlink" title="Memcached 的特征"></a>Memcached 的特征</h2><p>Memcached作为高速运行的分布式缓存服务器,具有以下特征</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">协议简单</span><br><span class="line">基于libevent的事件处理</span><br><span class="line">内置内存存储方式</span><br><span class="line">Memcached不互相通信的分布式</span><br></pre></td></tr></table></figure>
+<p>协议简单<br>    Memcached的服务器客户端通信并不适用复杂的XML等格式,而是使用简单的基于文本行的协议,因此,通过telnet也能在memcached上保存数据、取得数据。下面是例子</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ telnet localhost 11211</span><br><span class="line"> Trying 127.0.0.1...</span><br><span class="line"> Connected to localhost.localdomain (127.0.0.1).</span><br><span class="line"> Escape character is <span class="string">'^]'</span>.</span><br><span class="line"> <span class="built_in">set</span> <span class="built_in">test</span> 0 0 3        保存命令</span><br><span class="line"> bar                   数据</span><br><span class="line"> STORED                结果</span><br><span class="line"> get <span class="built_in">test</span>              取得命令</span><br><span class="line"> VALUE <span class="built_in">test</span> 0 3        数据</span><br><span class="line"> bar                   数据</span><br></pre></td></tr></table></figure>
+<p>基于libevent的事件处理</p>
+<pre><code>libevent是个程序库,他将linux的epoll、BSD类操作系统的kqueue等事件处理功能封装成统一的接口,
+即使对服务器的连接数增加,也能发挥0（1）的性能Memcache使用这个libevent库,因此能在linux、
+BSD、Solaris等操作系统上发挥其高性能</code></pre><p>内置内存存储方式</p>
+<pre><code>为了提高性能,memcached中保存的数据都存储在memcache内置的内存存储空间中,由于数据仅存在于内存中,
+因此重启memcached、重启操作系统会导致全部数据消失,另外,内容量达到指定值之后,就基于LRU
+（least Recently Used）算法自动删除不使用的缓存</code></pre><p>Memcached不互相通信的分布式</p>
+<pre><code>Memcached尽管是“分布式”缓存服务器,但服务器端并没有分布式功能,各个memcached不会互相通信以共享信息,
+那么,怎样进行分布式呢？完全取决于客户端的实现</code></pre><h2 id="Memcached-的安装"><a href="#Memcached-的安装" class="headerlink" title="Memcached 的安装"></a>Memcached 的安装</h2><p>安装依赖库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libevent  libevent-devel  -y</span><br></pre></td></tr></table></figure>
+<p>安装memcache</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install memcached   telnet -y</span><br></pre></td></tr></table></figure>
+<p>启动memcached服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">memcached -m 16m -p 11211 -d -u root -c 8192</span><br><span class="line"><span class="comment"># 查看端口是否被监听</span></span><br><span class="line">[root@localhost ~]<span class="comment"># lsof  -i :11211</span></span><br><span class="line">COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">memcached 1453 root   26u  IPv4  24874      0t0  TCP *:memcache (LISTEN)</span><br><span class="line">memcached 1453 root   27u  IPv6  24875      0t0  TCP *:memcache (LISTEN)</span><br><span class="line">memcached 1453 root   28u  IPv4  24878      0t0  UDP *:memcache </span><br><span class="line">memcached 1453 root   29u  IPv6  24879      0t0  UDP *:memcache </span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">启动选项：</span><br><span class="line"></span><br><span class="line">    -d    是启动一个守护进程；</span><br><span class="line">    -m    是分配给Memcache使用的内存数量,单位是MB；</span><br><span class="line">    -u    是运行Memcache的用户；</span><br><span class="line">    -l    是监听的服务器IP地址,可以有多个地址；</span><br><span class="line">    -p    是设置Memcache监听的端口,最好是1024以上的端口,（默认设置为：11211）；</span><br><span class="line">    -U    UDP监听端口（默认：11211,0 时关闭）</span><br><span class="line">    -c    max simultanous  connectios  最大并发  连接数（default：1024）</span><br><span class="line">    -P    是设置保存Memcache的pid文件,将PID写入文件&lt;file&gt;,这样可以使得后边进行快速进程终止,需要与-d一起使用</span><br></pre></td></tr></table></figure>
+<h2 id="Memcached-连接"><a href="#Memcached-连接" class="headerlink" title="Memcached 连接"></a>Memcached 连接</h2><p>我们可以通过 telnet 命令并指定主机ip和端口来连接 Memcached 服务, 语法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet  HOST PORT</span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">telnet 127.0.0.1 11211</span><br><span class="line"></span><br><span class="line">Trying 127.0.0.1...</span><br><span class="line"></span><br><span class="line">Connected to 127.0.0.1.</span><br><span class="line"></span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> foo 0 0 3                                                   保存命令</span><br><span class="line"></span><br><span class="line">bar                                                             数据</span><br><span class="line"></span><br><span class="line">STORED                                                          结果</span><br><span class="line"></span><br><span class="line">get foo                                                         取得命令</span><br><span class="line"></span><br><span class="line">VALUE foo 0 3                                                   数据</span><br><span class="line"></span><br><span class="line">bar                                                             数据</span><br><span class="line"></span><br><span class="line">END                                                             结束行</span><br><span class="line"></span><br><span class="line">quit                                                            退出</span><br></pre></td></tr></table></figure>
+<h2 id="Memcached-命令"><a href="#Memcached-命令" class="headerlink" title="Memcached 命令"></a>Memcached 命令</h2><h3 id="存储命令-set"><a href="#存储命令-set" class="headerlink" title="存储命令-set"></a>存储命令-set</h3><p>Memcached set 命令用于将 value(数据值)存储在指定的 key(键) 中,如果set的key已经存在,该命令可以更新该key所对应的原来的数据,也就是实现更新的作用<br>set 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> key flags exptime bytes [noreply] </span><br><span class="line">value</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值。</span><br><span class="line">flags：可以包括键值对的整型参数,客户机使用它存储关于键值对的额外信息 。</span><br><span class="line">exptime：在缓存中保存键值对的时间长度（以秒为单位,0 表示永远）</span><br><span class="line">bytes：在缓存中存储的字节数</span><br><span class="line">noreply（可选）： 该参数告知服务器不需要返回数据</span><br><span class="line">value：存储的值（始终位于第二行）（可直接理解为key-value结构中的value）</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 以下实例中我们设置：</span></span><br><span class="line">    key → runoob</span><br><span class="line">    flag → 0</span><br><span class="line">    exptime → 900 (以秒为单位)</span><br><span class="line">    bytes → 9 (数据存储的字节数)</span><br><span class="line">    value → memcached</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"><span class="built_in">set</span> runoob 0 900 9    <span class="comment"># 创建一个键 0是标示位     900 为生存周期    9位长度</span></span><br><span class="line">memcached     <span class="comment"># key的值</span></span><br><span class="line">STORED    <span class="comment"># 如果数据设置成功,则输出：STORED</span></span><br><span class="line"></span><br><span class="line">get runoob     <span class="comment"># 查看键值</span></span><br><span class="line">VALUE runoob 0 9</span><br><span class="line">memcached</span><br><span class="line">END</span><br><span class="line">quit</span><br><span class="line">Connection closed by foreign host.</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<h3 id="存储命令-add"><a href="#存储命令-add" class="headerlink" title="存储命令-add"></a>存储命令-add</h3><p>Memcached add 命令用于将 value(数据值) 存储在指定的 key(键) 中,如果 add 的 key 已经存在,则不会更新数据(过期的 key 会更新),之前的值将仍然保持相同,并且您将获得响应 NOT_STORED<br>add 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add key flags exptime bytes [noreply]</span><br><span class="line">value</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值。</span><br><span class="line">flags：可以包括键值对的整型参数,客户机使用它存储关于键值对的额外信息 。</span><br><span class="line">exptime：在缓存中保存键值对的时间长度（以秒为单位,0 表示永远）</span><br><span class="line">bytes：在缓存中存储的字节数</span><br><span class="line">noreply（可选）： 该参数告知服务器不需要返回数据</span><br><span class="line">value：存储的值（始终位于第二行）（可直接理解为key-value结构中的value）</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 以下实例中我们设置：</span></span><br><span class="line"></span><br><span class="line">    key → new_key</span><br><span class="line">    flag → 0</span><br><span class="line">    exptime → 900 (以秒为单位)</span><br><span class="line">    bytes → 10 (数据存储的字节数)</span><br><span class="line">    value → data_value</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">add new_key 0 900 10</span><br><span class="line">data_value</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get new_key</span><br><span class="line">VALUE new_key 0 10</span><br><span class="line">data_value</span><br><span class="line">END</span><br><span class="line">quit</span><br><span class="line">Connection closed by foreign host.</span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">add new_key 0 900 10</span><br><span class="line">data_value</span><br><span class="line">NOT_STORED   <span class="comment"># 再次添加报错  NOT_STORED</span></span><br></pre></td></tr></table></figure>
+<h3 id="存储命令-replace"><a href="#存储命令-replace" class="headerlink" title="存储命令-replace"></a>存储命令-replace</h3><p>Memcached replace 命令用于替换已存在的 key(键) 的 value(数据值),如果 key 不存在,则替换失败,并且您将获得响应 NOT_STORED<br>replace 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">replace key flags exptime bytes [noreply]</span><br><span class="line">value</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值</span><br><span class="line">flags：可以包括键值对的整型参数,客户机使用它存储关于键值对的额外信息</span><br><span class="line">exptime：在缓存中保存键值对的时间长度（以秒为单位,0 表示永远）</span><br><span class="line">bytes：在缓存中存储的字节数</span><br><span class="line">noreply（可选）： 该参数告知服务器不需要返回数据</span><br><span class="line">value：存储的值（始终位于第二行）（可直接理解为key-value结构中的value）</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 以下实例中我们设置：</span></span><br><span class="line"></span><br><span class="line">    key → mykey</span><br><span class="line">    flag → 0</span><br><span class="line">    exptime → 900 (以秒为单位)</span><br><span class="line">    bytes → 10 (数据存储的字节数)</span><br><span class="line">    value → data_value</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">add mykey 0 900 10     <span class="comment"># 添加</span></span><br><span class="line">data_value</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get mykey         <span class="comment"># 查看</span></span><br><span class="line">VALUE mykey 0 10</span><br><span class="line">data_value</span><br><span class="line">END</span><br><span class="line"></span><br><span class="line">replace mykey 0 900 16      <span class="comment"># 替换</span></span><br><span class="line">some_other_value</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get mykey       <span class="comment"># 查看</span></span><br><span class="line">VALUE mykey 0 16</span><br><span class="line">some_other_value</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="存储命令-append"><a href="#存储命令-append" class="headerlink" title="存储命令-append"></a>存储命令-append</h3><p>Memcached append 命令用于向已存在 key(键) 的 value(数据值) 后面追加数据<br>append 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">append key flags exptime bytes [noreply]</span><br><span class="line">value</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值。</span><br><span class="line">flags：可以包括键值对的整型参数,客户机使用它存储关于键值对的额外信息 。</span><br><span class="line">exptime：在缓存中保存键值对的时间长度（以秒为单位,0 表示永远）</span><br><span class="line">bytes：在缓存中存储的字节数</span><br><span class="line">noreply（可选）： 该参数告知服务器不需要返回数据</span><br><span class="line">value：存储的值（始终位于第二行）（可直接理解为key-value结构中的value）</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    首先我们在 Memcached 中存储一个键 runoob,其值为 memcached。</span><br><span class="line">    然后,我们使用 get 命令检索该值。</span><br><span class="line">    然后,我们使用 append 命令在键为 runoob 的值后面追加 <span class="string">"redis"</span>。</span><br><span class="line">    最后,我们再使用 get 命令检索该值。</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"><span class="built_in">set</span> runoob 0 900 9   <span class="comment"># 添加</span></span><br><span class="line">memcached</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get runoob      <span class="comment"># 查看</span></span><br><span class="line">VALUE runoob 0 9</span><br><span class="line">memcached</span><br><span class="line">END</span><br><span class="line"></span><br><span class="line">append runoob 0 900 5   <span class="comment"># 追加</span></span><br><span class="line">redis</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get runoob      <span class="comment"># 查看</span></span><br><span class="line">VALUE runoob 0 14</span><br><span class="line">memcachedredis</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="存储命令-prepend"><a href="#存储命令-prepend" class="headerlink" title="存储命令-prepend"></a>存储命令-prepend</h3><p>Memcached prepend 命令用于向已存在 key(键) 的 value(数据值) 前面追加数据<br>prepend 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">prepend key flags exptime bytes [noreply]</span><br><span class="line">value</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值。</span><br><span class="line">flags：可以包括键值对的整型参数,客户机使用它存储关于键值对的额外信息 。</span><br><span class="line">exptime：在缓存中保存键值对的时间长度（以秒为单位,0 表示永远）</span><br><span class="line">bytes：在缓存中存储的字节数</span><br><span class="line">noreply（可选）： 该参数告知服务器不需要返回数据</span><br><span class="line">value：存储的值（始终位于第二行）（可直接理解为key-value结构中的value）</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    首先我们在 Memcached 中存储一个键 runoob,其值为 memcached。</span><br><span class="line">    然后,我们使用 get 命令检索该值。</span><br><span class="line">    然后,我们使用 prepend 命令在键为 runoob 的值前面追加 <span class="string">"redis"</span>。</span><br><span class="line">    最后,我们再使用 get 命令检索该值。</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"><span class="built_in">set</span> runoob 0 900 9      <span class="comment"># 添加</span></span><br><span class="line">memcached</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get runoob          <span class="comment"># 查看</span></span><br><span class="line">VALUE runoob 0 9</span><br><span class="line">memcached</span><br><span class="line">END</span><br><span class="line"></span><br><span class="line">prepend runoob 0 900 5    <span class="comment"># 在前面追加</span></span><br><span class="line">redis</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get runoob          <span class="comment"># 查看</span></span><br><span class="line">VALUE runoob 0 14</span><br><span class="line">redismemcached</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p>输出信息说明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">STORED：保存成功后输出。</span><br><span class="line">NOT_STORED：该键在 Memcached 上不存在。</span><br><span class="line">CLIENT_ERROR：执行错误。</span><br></pre></td></tr></table></figure>
+<h3 id="存储命令-cas"><a href="#存储命令-cas" class="headerlink" title="存储命令-cas"></a>存储命令-cas</h3><p>Memcached CAS（Check-And-Set 或 Compare-And-Swap） 命令用于执行一个”检查并设置”的操作<br>它仅在当前客户端最后一次取值后,该key 对应的值没有被其他客户端修改的情况下, 才能够将值写入。<br>检查是通过cas_token参数进行的, 这个参数是Memcach指定给已经存在的元素的一个唯一的64位值。<br>CAS 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cas key flags exptime bytes unique_cas_token [noreply]</span><br><span class="line">value</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值。</span><br><span class="line">flags：可以包括键值对的整型参数,客户机使用它存储关于键值对的额外信息 。</span><br><span class="line">exptime：在缓存中保存键值对的时间长度（以秒为单位,0 表示永远）</span><br><span class="line">bytes：在缓存中存储的字节数</span><br><span class="line">unique_cas_token通过 gets 命令获取的一个唯一的64位值。</span><br><span class="line">noreply（可选）： 该参数告知服务器不需要返回数据</span><br><span class="line">value：存储的值（始终位于第二行）（可直接理解为key-value结构中的value）</span><br></pre></td></tr></table></figure>
+<p>实例:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">要在 Memcached 上使用 CAS 命令,你需要从 Memcached 服务商通过 gets 命令获取令牌（token）。</span><br><span class="line"></span><br><span class="line">gets 命令的功能类似于基本的 get 命令。两个命令之间的差异在于,gets 返回的信息稍微多一些：64 位的整型值非常像名称/值对的 <span class="string">"版本"</span> 标识符。</span><br><span class="line"></span><br><span class="line">实例步骤如下：</span><br><span class="line"></span><br><span class="line">    如果没有设置唯一令牌,则 CAS 命令执行错误。</span><br><span class="line">    如果键 key 不存在,执行失败。</span><br><span class="line">    添加键值对。</span><br><span class="line">    通过 gets 命令获取唯一令牌。</span><br><span class="line">    使用 cas 命令更新数据</span><br><span class="line">    使用 get 命令查看数据是否更新</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">cas tp 0 900 9</span><br><span class="line">ERROR             &lt;− 缺少 token</span><br><span class="line"></span><br><span class="line">cas tp 0 900 9 2</span><br><span class="line">memcached</span><br><span class="line">NOT_FOUND         &lt;− 键 tp 不存在</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> tp 0 900 9</span><br><span class="line">memcached</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">gets tp</span><br><span class="line">VALUE tp 0 9 1</span><br><span class="line">memcached</span><br><span class="line">END</span><br><span class="line"></span><br><span class="line">cas tp 0 900 5 1</span><br><span class="line">redis</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get tp</span><br><span class="line">VALUE tp 0 5</span><br><span class="line">redis</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="查找命令-get"><a href="#查找命令-get" class="headerlink" title="查找命令-get"></a>查找命令-get</h3><p>Memcached get 命令获取存储在 key(键) 中的 value(数据值) ,如果 key 不存在,则返回空。<br>get 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">get key</span><br><span class="line"><span class="comment"># </span></span><br><span class="line">多个 key 使用空格隔开,如下:</span><br><span class="line">get key1 key2 key3</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">在以下实例中,我们使用 runoob 作为 key,过期时间设置为 900 秒。</span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"><span class="built_in">set</span> runoob 0 900 9</span><br><span class="line">memcached</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get runoob</span><br><span class="line">VALUE runoob 0 9</span><br><span class="line">memcached</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="查找命令-gets"><a href="#查找命令-gets" class="headerlink" title="查找命令-gets"></a>查找命令-gets</h3><p>Memcached gets 命令获取带有 CAS 令牌存 的 value(数据值) ,如果 key 不存在,则返回空。<br>gets 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gets key</span><br><span class="line"><span class="comment">##</span></span><br><span class="line">多个 key 使用空格隔开,如下:</span><br><span class="line">gets key1 key2 key3</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">在以下实例中,我们使用 runoob 作为 key,过期时间设置为 900 秒。</span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"><span class="built_in">set</span> runoob 0 900 9</span><br><span class="line">memcached</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">gets runoob</span><br><span class="line">VALUE runoob 0 9 1</span><br><span class="line">memcached</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p>在 使用 gets 命令的输出结果中,在最后一列的数字 1 代表了 key 为 runoob 的 CAS 令牌。</p>
+<h3 id="删除命令-delete"><a href="#删除命令-delete" class="headerlink" title="删除命令-delete"></a>删除命令-delete</h3><p>Memcached delete 命令用于删除已存在的 key(键)<br>delete 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete key [noreply]</span><br></pre></td></tr></table></figure>
+<p>参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">key：键值 key-value 结构中的 key,用于查找缓存值。</span><br><span class="line">noreply（可选）： 该参数告知服务器不需要返回数据</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">在以下实例中,我们使用 runoob 作为 key,过期时间设置为 900 秒。之后我们使用 delete 命令删除该 key</span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"><span class="built_in">set</span> runoob 0 900 9    <span class="comment"># 添加</span></span><br><span class="line">memcached</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get runoob        <span class="comment"># 查看</span></span><br><span class="line">VALUE runoob 0 9</span><br><span class="line">memcached</span><br><span class="line">END</span><br><span class="line"></span><br><span class="line">delete runoob     <span class="comment"># 删除</span></span><br><span class="line">DELETED</span><br><span class="line"></span><br><span class="line">get runoob      <span class="comment"># 再次查看 返回空</span></span><br><span class="line">END</span><br><span class="line"></span><br><span class="line">delete runoob   <span class="comment"># 再次删除返回key 不存在</span></span><br><span class="line">NOT_FOUND</span><br></pre></td></tr></table></figure>
+<p>输出信息说明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DELETED：删除成功。</span><br><span class="line">ERROR：语法错误或删除失败。</span><br><span class="line">NOT_FOUND：key 不存在。</span><br></pre></td></tr></table></figure>
+<h3 id="统计命令-stats"><a href="#统计命令-stats" class="headerlink" title="统计命令-stats"></a>统计命令-stats</h3><p>Memcached stats 命令用于返回统计信息例如 PID(进程号)、版本号、连接数等<br>stats 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stats</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">在以下实例中,我们使用了 stats 命令来输出 Memcached 服务信息。</span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">stats</span><br><span class="line"></span><br><span class="line">STAT pid 1453</span><br><span class="line">STAT uptime 3561</span><br><span class="line">STAT time 1595492923</span><br><span class="line">STAT version 1.4.15</span><br><span class="line">STAT libevent 2.0.21-stable</span><br><span class="line">STAT pointer_size 64</span><br><span class="line">STAT rusage_user 0.073713</span><br><span class="line">STAT rusage_system 0.085999</span><br><span class="line">STAT curr_connections 10</span><br><span class="line">STAT total_connections 23</span><br><span class="line">STAT connection_structures 11</span><br><span class="line">STAT reserved_fds 20</span><br><span class="line">STAT cmd_get 14</span><br><span class="line">STAT cmd_set 16</span><br><span class="line">STAT cmd_flush 0</span><br><span class="line">STAT cmd_touch 0</span><br><span class="line">STAT get_hits 12</span><br><span class="line">STAT get_misses 2</span><br><span class="line">STAT delete_misses 1</span><br><span class="line">STAT delete_hits 1</span><br><span class="line">STAT incr_misses 0</span><br><span class="line">STAT incr_hits 0</span><br><span class="line">STAT decr_misses 0</span><br><span class="line">STAT decr_hits 0</span><br><span class="line">STAT cas_misses 1</span><br><span class="line">STAT cas_hits 0</span><br><span class="line">STAT cas_badval 2</span><br><span class="line">STAT touch_hits 0</span><br><span class="line">STAT touch_misses 0</span><br><span class="line">STAT auth_cmds 0</span><br><span class="line">STAT auth_errors 0</span><br><span class="line">STAT bytes_read 871</span><br><span class="line">STAT bytes_written 773</span><br><span class="line">STAT limit_maxbytes 16777216</span><br><span class="line">STAT accepting_conns 1</span><br><span class="line">STAT listen_disabled_num 0</span><br><span class="line">STAT threads 4</span><br><span class="line">STAT conn_yields 0</span><br><span class="line">STAT hash_power_level 16</span><br><span class="line">STAT hash_bytes 524288</span><br><span class="line">STAT hash_is_expanding 0</span><br><span class="line">STAT bytes 153</span><br><span class="line">STAT curr_items 2</span><br><span class="line">STAT total_items 11</span><br><span class="line">STAT expired_unfetched 0</span><br><span class="line">STAT evicted_unfetched 0</span><br><span class="line">STAT evictions 0</span><br><span class="line">STAT reclaimed 4</span><br><span class="line">END</span><br><span class="line">这里显示了很多状态信息,下边详细解释每个状态项：</span><br><span class="line"></span><br><span class="line">    pid： memcache服务器进程ID</span><br><span class="line">    uptime：服务器已运行秒数</span><br><span class="line">    time：服务器当前Unix时间戳</span><br><span class="line">    version：memcache版本</span><br><span class="line">    pointer_size：操作系统指针大小</span><br><span class="line">    rusage_user：进程累计用户时间</span><br><span class="line">    rusage_system：进程累计系统时间</span><br><span class="line">    curr_connections：当前连接数量</span><br><span class="line">    total_connections：Memcached运行以来连接总数</span><br><span class="line">    connection_structures：Memcached分配的连接结构数量</span><br><span class="line">    cmd_get：get命令请求次数</span><br><span class="line">    cmd_set：<span class="built_in">set</span>命令请求次数</span><br><span class="line">    cmd_flush：flush命令请求次数</span><br><span class="line">    get_hits：get命令命中次数</span><br><span class="line">    get_misses：get命令未命中次数</span><br><span class="line">    delete_misses：delete命令未命中次数</span><br><span class="line">    delete_hits：delete命令命中次数</span><br><span class="line">    incr_misses：incr命令未命中次数</span><br><span class="line">    incr_hits：incr命令命中次数</span><br><span class="line">    decr_misses：decr命令未命中次数</span><br><span class="line">    decr_hits：decr命令命中次数</span><br><span class="line">    cas_misses：cas命令未命中次数</span><br><span class="line">    cas_hits：cas命令命中次数</span><br><span class="line">    cas_badval：使用擦拭次数</span><br><span class="line">    auth_cmds：认证命令处理的次数</span><br><span class="line">    auth_errors：认证失败数目</span><br><span class="line">    bytes_read：读取总字节数</span><br><span class="line">    bytes_written：发送总字节数</span><br><span class="line">    limit_maxbytes：分配的内存总大小（字节）</span><br><span class="line">    accepting_conns：服务器是否达到过最大连接（0/1）</span><br><span class="line">    listen_disabled_num：失效的监听数</span><br><span class="line">    threads：当前线程数</span><br><span class="line">    conn_yields：连接操作主动放弃数目</span><br><span class="line">    bytes：当前存储占用的字节数</span><br><span class="line">    curr_items：当前存储的数据总数</span><br><span class="line">    total_items：启动以来存储的数据总数</span><br><span class="line">    evictions：LRU释放的对象数目</span><br><span class="line">    reclaimed：已过期的数据条目来存储新数据的数目</span><br></pre></td></tr></table></figure>
+<h3 id="统计命令-stats-items"><a href="#统计命令-stats-items" class="headerlink" title="统计命令-stats items"></a>统计命令-stats items</h3><p>Memcached stats items 命令用于显示各个 slab 中 item 的数目和存储时长(最后一次访问距离现在的秒数)<br>stats items 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stats items</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">stats items </span><br><span class="line"></span><br><span class="line">STAT items:1:number 2</span><br><span class="line">STAT items:1:age 1090</span><br><span class="line">STAT items:1:evicted 0</span><br><span class="line">STAT items:1:evicted_nonzero 0</span><br><span class="line">STAT items:1:evicted_time 0</span><br><span class="line">STAT items:1:outofmemory 0</span><br><span class="line">STAT items:1:tailrepairs 0</span><br><span class="line">STAT items:1:reclaimed 4</span><br><span class="line">STAT items:1:expired_unfetched 0</span><br><span class="line">STAT items:1:evicted_unfetched 0</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="统计命令-stats-slabs"><a href="#统计命令-stats-slabs" class="headerlink" title="统计命令-stats slabs"></a>统计命令-stats slabs</h3><p>Memcached stats slabs 命令用于显示各个slab的信息,包括chunk的大小、数目、使用情况等<br>stats slabs 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stats slabs</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">stats slabs</span><br><span class="line"></span><br><span class="line">STAT 1:chunk_size 96</span><br><span class="line">STAT 1:chunks_per_page 10922</span><br><span class="line">STAT 1:total_pages 1</span><br><span class="line">STAT 1:total_chunks 10922</span><br><span class="line">STAT 1:used_chunks 2</span><br><span class="line">STAT 1:free_chunks 10920</span><br><span class="line">STAT 1:free_chunks_end 0</span><br><span class="line">STAT 1:mem_requested 153</span><br><span class="line">STAT 1:get_hits 12</span><br><span class="line">STAT 1:cmd_set 16</span><br><span class="line">STAT 1:delete_hits 1</span><br><span class="line">STAT 1:incr_hits 0</span><br><span class="line">STAT 1:decr_hits 0</span><br><span class="line">STAT 1:cas_hits 0</span><br><span class="line">STAT 1:cas_badval 2</span><br><span class="line">STAT 1:touch_hits 0</span><br><span class="line">STAT active_slabs 1</span><br><span class="line">STAT total_malloced 1048512</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="统计命令-stats-sizes"><a href="#统计命令-stats-sizes" class="headerlink" title="统计命令-stats sizes"></a>统计命令-stats sizes</h3><p>Memcached stats sizes 命令用于显示所有item的大小和个数。<br>该信息返回两列,第一列是 item 的大小,第二列是 item 的个数。<br>stats sizes 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stats sizes</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">stats sizes</span><br><span class="line"></span><br><span class="line">STAT 96 2</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="清除所有-flush-all"><a href="#清除所有-flush-all" class="headerlink" title="清除所有-flush_all"></a>清除所有-flush_all</h3><p>Memcached flush_all 命令用于清理缓存中的所有 key=&gt;value(键=&gt;值) 对。<br>该命令提供了一个可选参数 time,用于在制定的时间后执行清理缓存操作<br>flush_all 命令的基本语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush_all [time] [noreply]</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清除所有缓存</span></span><br><span class="line">[root@localhost ~]<span class="comment"># telnet  localhost  11211</span></span><br><span class="line">Trying ::1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line"><span class="built_in">set</span> runoob 0 900 9</span><br><span class="line">memcached</span><br><span class="line">STORED</span><br><span class="line"></span><br><span class="line">get runoob</span><br><span class="line">VALUE runoob 0 9</span><br><span class="line">memcached</span><br><span class="line">END</span><br><span class="line"></span><br><span class="line">flush_all</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">get runoob</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<h2 id="Memcached-客户端安装"><a href="#Memcached-客户端安装" class="headerlink" title="Memcached 客户端安装"></a>Memcached 客户端安装</h2><p>安装软件包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">yum install php-devel  php-mysql  php  mysql  mysql-server   -y   </span><br><span class="line"><span class="comment"># 如果是centos7  执行下面的命令</span></span><br><span class="line">yum install gcc gcc-c++ zlib-devel -y</span><br><span class="line">yum install php-devel   php-mariadb   php  mariadb   mariadb-server   -y</span><br><span class="line">yum install   wget   lsof telnet  -y</span><br><span class="line"><span class="comment"># 安装memcache      地址：http://pecl.php.net/package/memcache</span></span><br><span class="line">wget   http://pecl.php.net/get/memcache-3.0.7.tgz</span><br><span class="line"></span><br><span class="line">tar zxf    memcache-3.0.7.tgz  -C  /usr/src/</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span>  /usr/src/memcache-3.0.7/</span><br><span class="line"><span class="comment"># 执行phpize生成configure文件</span></span><br><span class="line">phpize </span><br><span class="line"></span><br><span class="line"><span class="comment">#编译安装</span></span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装后查看模块是否安装成功</span></span><br><span class="line">ll /usr/lib64/php/modules/memcache.so</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 /etc/php.d/  新添加一个文件：</span></span><br><span class="line">cp mysql.ini memcache.ini</span><br><span class="line"><span class="comment"># 修改文件</span></span><br><span class="line">vi   memcache.ini</span><br><span class="line">    extension=memcache.so</span><br></pre></td></tr></table></figure>
+<p>验证memcahce是否安装成功,需要拷贝源码包的 example.php文件到apache的网页目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">安装 httpd</span><br><span class="line">yum install  http  -y</span><br><span class="line"><span class="comment"># 复制文件</span></span><br><span class="line">cp /usr/src/memcache-3.0.7/example.php   /var/www/html/</span><br><span class="line"><span class="comment"># 修改example.php的连接memcached服务器的地址和端口</span></span><br><span class="line">vi  /var/www/html/example.php</span><br><span class="line"></span><br><span class="line">    <span class="variable">$memcache</span> = memcache_connect(<span class="string">'192.168.1.89'</span>, 11211);</span><br></pre></td></tr></table></figure>
+<p>启动httpd然后通过浏览器访问,关闭防火墙或者放行端口(memcache服务器也需要关闭防火墙或者放行端口)<br><img src="/2020/07/23/memcache/11.png" alt><br>这个界面表示正常</p>
+<h2 id="管理-Memcached"><a href="#管理-Memcached" class="headerlink" title="管理 Memcached"></a>管理 Memcached</h2><p>拷贝源码包下memcache.php到apache网页目录下通过访问来管理memcache</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制文件</span></span><br><span class="line">cp  /usr/src/memcache-3.0.7/memcache.php       /var/www/html/</span><br><span class="line"><span class="comment"># 修改/var/www/html/memcache.php </span></span><br><span class="line">vi  /var/www/html/memcache.php</span><br><span class="line">    源：</span><br><span class="line">    define(<span class="string">'ADMIN_USERNAME'</span>,<span class="string">'memcache'</span>);    // Admin Username</span><br><span class="line">    define(<span class="string">'ADMIN_PASSWORD'</span>,<span class="string">'password'</span>);    // Admin Password</span><br><span class="line">    define(<span class="string">'DATE_FORMAT'</span>,<span class="string">'Y/m/d H:i:s'</span>);</span><br><span class="line">    define(<span class="string">'GRAPH_SIZE'</span>,200);</span><br><span class="line">    define(<span class="string">'MAX_ITEM_DUMP'</span>,50);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$MEMCACHE_SERVERS</span>[] = <span class="string">'mymemcache-server1:11211'</span>; // add more as an array</span><br><span class="line">    <span class="variable">$MEMCACHE_SERVERS</span>[] = <span class="string">'mymemcache-server2:11211'</span>; // add more as an array</span><br><span class="line"></span><br><span class="line">    改为：</span><br><span class="line"></span><br><span class="line">    define(<span class="string">'ADMIN_USERNAME'</span>,<span class="string">'memcache'</span>);    // Admin Username</span><br><span class="line">    define(<span class="string">'ADMIN_PASSWORD'</span>,<span class="string">'password'</span>);    // Admin Password</span><br><span class="line">    define(<span class="string">'DATE_FORMAT'</span>,<span class="string">'Y/m/d H:i:s'</span>);</span><br><span class="line">    define(<span class="string">'GRAPH_SIZE'</span>,200);</span><br><span class="line">    define(<span class="string">'MAX_ITEM_DUMP'</span>,50);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$MEMCACHE_SERVERS</span>[] = <span class="string">'192.168.1.89:11211'</span>; // add more as an array</span><br><span class="line">    // <span class="variable">$MEMCACHE_SERVERS</span>[] = <span class="string">'mymemcache-server2:11211'</span>; // add more as an array</span><br></pre></td></tr></table></figure>
+<p>通过网页访问<br><img src="/2020/07/23/memcache/2.png" alt><br><img src="/2020/07/23/memcache/3.png" alt></p>
+<p>缓存session</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修改 /etc/php.ini</span><br><span class="line">		session.save_handler = memcache</span><br><span class="line">		session.save_path = <span class="string">"tcp://192.168.1.89:11211"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Memcache总结"><a href="#Memcache总结" class="headerlink" title="Memcache总结"></a>Memcache总结</h2><p>memcached 问题</p>
+<pre><code>缓存雪崩
+缓存雪崩一般是由某个缓存节点失效,导致其他节点的缓存命中率下降, 缓存中缺失的数据
+去数据库查询.短时间内,造成数据库服务器崩溃.
+数据丢失
+memcached 数据丢失,设为永久有效,却莫名其妙的丢失了。
+1:如果 slab 里的很多 chunk,已经过期,但过期后没有被 get 过, 系统不知他们已经过期. 2:永久数据很久没 get 了,不活跃,如果新增 item,则永久数据被踢了. 3: 当然,如果那些非永久数据被 get,也会被标识为 expire,从而不会再踢掉永久数据
+方案：永久数据和非永久数据分开放。</code></pre><p>优点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> 一.部分容灾</span><br><span class="line">假设只用一台memcache,如果这台memcache服务器挂掉了,那么请求将不断的冲击数据库,这样有可能搞死数据库,从而引发”雪崩“。如果使用多台memcache服务器,由于memcache使用一致性哈希算法,万一其中一台挂掉了,部分请求还是可以在memcache中命中,为修复系统赢得一些时间。</span><br><span class="line"></span><br><span class="line"> 二.容量问题</span><br><span class="line">一台memcache服务器的容量毕竟有限,可以使用多台memcache服务器,增加缓存容量。</span><br><span class="line"></span><br><span class="line"> 三.均衡请求</span><br><span class="line">使用多台memcache服务器,可以均衡请求,避免所有请求都冲进一台memcache服务器,导致服务器挂掉。</span><br><span class="line"></span><br><span class="line">四.利用memcache分布式特性</span><br><span class="line">使用一台memcache服务器,并没有利用memcache的数据分布式特性。</span><br><span class="line"></span><br><span class="line">    稳定、配置简单</span><br><span class="line">    速度快 (因为Memcache是运行在内存中的,所以它的速度是非常快的)</span><br><span class="line">    可以保存的item数据量是没有限制的,只要内存足够</span><br></pre></td></tr></table></figure>
+<p>缺点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.不能持久化存储：最大30天的数据过期时间,即使设置成永久,也仅存储30天</span><br><span class="line">2.存储数据有限制:    最大键长为250字节,超过则无法存储</span><br><span class="line">                    单个item最大数据1M,超过则无法存储</span><br><span class="line">                    最大同时连接数是200</span><br><span class="line">                    最大软连接数是1024</span><br><span class="line">3.mm存储数据只能key-value</span><br><span class="line">4.集群数据没有复制和同步机制 【崩溃不会影响程序,会从数据库中取数据】</span><br><span class="line">5.内存回收不能及时  LRU(算法)：未使用内存》过期内存》最近最少使用内存   这是惰性删除</span><br></pre></td></tr></table></figure>
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/07/23/memcache/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/memcache/" rel="tag">memcache</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/07/24/port-all/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            常用端口总结
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/21/ansible-sshkey/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Ansible免密登录</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

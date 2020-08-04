@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-07-07T07:14:22.358Z</updated>
+  <updated>2020-07-30T07:55:25.690Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>linux expect介绍和用法</title>
-    <link href="http://yoursite.com/2020/07/06/expect/"/>
-    <id>http://yoursite.com/2020/07/06/expect/</id>
-    <published>2020-07-06T08:17:34.000Z</published>
-    <updated>2020-07-07T07:14:22.358Z</updated>
+    <title>makedown语法</title>
+    <link href="http://yoursite.com/2060/07/30/readme/"/>
+    <id>http://yoursite.com/2060/07/30/readme/</id>
+    <published>2060-07-30T02:52:44.000Z</published>
+    <updated>2020-07-30T07:55:25.690Z</updated>
     
     <summary type="html">
     
@@ -29,35 +29,7 @@
       
         
         
-          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;expect是一个自动化交互套件,主要用于执行命令和程序时,系统以交互形式要求输入指定字符串,实现交互通信&lt;/p&gt;
-&lt;h2
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="expect" scheme="http://yoursite.com/tags/expect/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>EFK-日志收集系统</title>
-    <link href="http://yoursite.com/2020/07/04/efk-rpm/"/>
-    <id>http://yoursite.com/2020/07/04/efk-rpm/</id>
-    <published>2020-07-04T10:44:11.000Z</published>
-    <updated>2020-07-07T07:08:05.693Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在没有分布式日志的时候，每次出问题了需要查询日志的时候，需要登录到Linux服务器，使用命令cat -n xxxx|grep xxxx
+          &lt;h1 id=&quot;readme-md&quot;&gt;&lt;a href=&quot;#readme-md&quot; class=&quot;headerlink&quot; title=&quot;readme.md&quot;&gt;&lt;/a&gt;readme.md&lt;/h1&gt;&lt;p&gt;如果想写文章, 又不希望被看到, 那么可以&lt;br&gt;&lt;code&gt;hexo new
         
       
     
@@ -69,16 +41,16 @@
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="efk" scheme="http://yoursite.com/tags/efk/"/>
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
     
   </entry>
   
   <entry>
-    <title>EFK-日志收集系统(源码低版本)</title>
-    <link href="http://yoursite.com/2020/07/03/efk/"/>
-    <id>http://yoursite.com/2020/07/03/efk/</id>
-    <published>2020-07-03T07:12:31.000Z</published>
-    <updated>2020-07-07T08:37:39.083Z</updated>
+    <title>CentOS7 搭建OpenVPN服务器</title>
+    <link href="http://yoursite.com/2020/07/31/openvpn/"/>
+    <id>http://yoursite.com/2020/07/31/openvpn/</id>
+    <published>2020-07-31T08:34:39.000Z</published>
+    <updated>2020-08-03T12:31:54.189Z</updated>
     
     <summary type="html">
     
@@ -86,7 +58,34 @@
       
         
         
-          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在没有分布式日志的时候，每次出问题了需要查询日志的时候，需要登录到Linux服务器，使用命令cat -n xxxx|grep xxxx
+          &lt;h2 id=&quot;简介和工作原理&quot;&gt;&lt;a href=&quot;#简介和工作原理&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="openvpn" scheme="http://yoursite.com/tags/openvpn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nodejs编译安装</title>
+    <link href="http://yoursite.com/2020/07/28/nodejs/"/>
+    <id>http://yoursite.com/2020/07/28/nodejs/</id>
+    <published>2020-07-28T09:21:09.000Z</published>
+    <updated>2020-07-28T09:35:35.515Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
         
       
     
@@ -98,16 +97,16 @@
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="efk" scheme="http://yoursite.com/tags/efk/"/>
+      <category term="nodejs" scheme="http://yoursite.com/tags/nodejs/"/>
     
   </entry>
   
   <entry>
-    <title>自动化运维工具——ansible</title>
-    <link href="http://yoursite.com/2020/07/03/ansible/"/>
-    <id>http://yoursite.com/2020/07/03/ansible/</id>
-    <published>2020-07-03T01:52:26.000Z</published>
-    <updated>2020-07-07T07:14:11.132Z</updated>
+    <title>Shell脚本case判断</title>
+    <link href="http://yoursite.com/2020/07/24/shell-case/"/>
+    <id>http://yoursite.com/2020/07/24/shell-case/</id>
+    <published>2020-07-24T09:05:56.000Z</published>
+    <updated>2020-07-28T09:35:31.330Z</updated>
     
     <summary type="html">
     
@@ -115,7 +114,123 @@
       
         
         
-          &lt;h2 id=&quot;ansible简介&quot;&gt;&lt;a href=&quot;#ansible简介&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;if-判断是否包含&quot;&gt;&lt;a href=&quot;#if-判断是否包含&quot; class=&quot;headerlink&quot; title=&quot;if =~ 判断是否包含&quot;&gt;&lt;/a&gt;if =~ 判断是否包含&lt;/h2&gt;&lt;figure class=&quot;highlight
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Lvs虚拟服务器</title>
+    <link href="http://yoursite.com/2020/07/24/lvs/"/>
+    <id>http://yoursite.com/2020/07/24/lvs/</id>
+    <published>2020-07-24T06:52:25.000Z</published>
+    <updated>2020-07-28T09:35:38.182Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;lvs简介&quot;&gt;&lt;a href=&quot;#lvs简介&quot; class=&quot;headerlink&quot; title=&quot;lvs简介&quot;&gt;&lt;/a&gt;lvs简介&lt;/h2&gt;&lt;p&gt;LVS是Linux Virtual Server
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="lvs" scheme="http://yoursite.com/tags/lvs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用端口总结</title>
+    <link href="http://yoursite.com/2020/07/24/port-all/"/>
+    <id>http://yoursite.com/2020/07/24/port-all/</id>
+    <published>2020-07-24T05:59:23.000Z</published>
+    <updated>2020-07-24T09:07:00.664Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;共享工具类&quot;&gt;&lt;a href=&quot;#共享工具类&quot; class=&quot;headerlink&quot; title=&quot;共享工具类&quot;&gt;&lt;/a&gt;共享工具类&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Memcache 数据库缓存服务器</title>
+    <link href="http://yoursite.com/2020/07/23/memcache/"/>
+    <id>http://yoursite.com/2020/07/23/memcache/</id>
+    <published>2020-07-23T06:14:00.000Z</published>
+    <updated>2020-07-24T09:07:11.582Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Memcached-的特征&quot;&gt;&lt;a href=&quot;#Memcached-的特征&quot; class=&quot;headerlink&quot; title=&quot;Memcached 的特征&quot;&gt;&lt;/a&gt;Memcached
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="memcache" scheme="http://yoursite.com/tags/memcache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Ansible免密登录</title>
+    <link href="http://yoursite.com/2020/07/21/ansible-sshkey/"/>
+    <id>http://yoursite.com/2020/07/21/ansible-sshkey/</id>
+    <published>2020-07-21T09:34:22.000Z</published>
+    <updated>2020-07-24T09:07:21.124Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;首先关闭公钥认证&quot;&gt;&lt;a href=&quot;#首先关闭公钥认证&quot; class=&quot;headerlink&quot; title=&quot;首先关闭公钥认证&quot;&gt;&lt;/a&gt;首先关闭公钥认证&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
         
       
     
@@ -132,11 +247,11 @@
   </entry>
   
   <entry>
-    <title>zabbix报错解决</title>
-    <link href="http://yoursite.com/2020/07/02/zabbix-error/"/>
-    <id>http://yoursite.com/2020/07/02/zabbix-error/</id>
-    <published>2020-07-02T07:55:35.000Z</published>
-    <updated>2020-07-07T07:08:05.695Z</updated>
+    <title>Shell 循环日期时间执行</title>
+    <link href="http://yoursite.com/2020/07/20/centos-for-date/"/>
+    <id>http://yoursite.com/2020/07/20/centos-for-date/</id>
+    <published>2020-07-20T12:09:22.000Z</published>
+    <updated>2020-07-24T09:07:39.444Z</updated>
     
     <summary type="html">
     
@@ -144,7 +259,8 @@
       
         
         
-          &lt;h2 id=&quot;下载yum源报错&quot;&gt;&lt;a href=&quot;#下载yum源报错&quot; class=&quot;headerlink&quot; title=&quot;下载yum源报错&quot;&gt;&lt;/a&gt;下载yum源报错&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+          &lt;p&gt;因为for无法直接循环20:00:00这种格式的时间,所以需要先转为时间戳,循环时间戳然后在循环中在把时间戳转为想要的时间格式&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
         
       
     
@@ -156,16 +272,16 @@
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="zabbix" scheme="http://yoursite.com/tags/zabbix/"/>
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
     
   </entry>
   
   <entry>
-    <title>zabbix配置微信告警</title>
-    <link href="http://yoursite.com/2020/06/30/zabbix-wechat/"/>
-    <id>http://yoursite.com/2020/06/30/zabbix-wechat/</id>
-    <published>2020-06-30T10:54:52.000Z</published>
-    <updated>2020-07-07T07:08:05.694Z</updated>
+    <title>centos去掉^M的方法</title>
+    <link href="http://yoursite.com/2020/07/20/centos-string2/"/>
+    <id>http://yoursite.com/2020/07/20/centos-string2/</id>
+    <published>2020-07-20T03:37:54.000Z</published>
+    <updated>2020-07-31T02:36:12.006Z</updated>
     
     <summary type="html">
     
@@ -173,7 +289,8 @@
       
         
         
-          &lt;h2 id=&quot;首先需要申请一个企业号&quot;&gt;&lt;a href=&quot;#首先需要申请一个企业号&quot; class=&quot;headerlink&quot;
+          &lt;p&gt;cat -A filename 就可以看到windows下的断元字符 ^M,要去除他,最简单用下面的命令&lt;br&gt;第一种方法：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
         
       
     
@@ -185,16 +302,16 @@
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="zabbix" scheme="http://yoursite.com/tags/zabbix/"/>
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
     
   </entry>
   
   <entry>
-    <title>zabbix监控搭建及配置邮件报警</title>
-    <link href="http://yoursite.com/2020/06/29/zabbix/"/>
-    <id>http://yoursite.com/2020/06/29/zabbix/</id>
-    <published>2020-06-29T00:55:27.000Z</published>
-    <updated>2020-07-07T07:08:05.695Z</updated>
+    <title>centos删除乱码名文件</title>
+    <link href="http://yoursite.com/2020/07/16/centos-string/"/>
+    <id>http://yoursite.com/2020/07/16/centos-string/</id>
+    <published>2020-07-16T06:46:14.000Z</published>
+    <updated>2020-07-31T02:36:09.681Z</updated>
     
     <summary type="html">
     
@@ -202,7 +319,8 @@
       
         
         
-          &lt;h2 id=&quot;环境配置-server端和agent端&quot;&gt;&lt;a href=&quot;#环境配置-server端和agent端&quot; class=&quot;headerlink&quot;
+          &lt;p&gt;文件上传到centos服务器上后,发现文件名出现乱码,使用下面命令删除乱码文件&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
         
       
     
@@ -214,16 +332,16 @@
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="zabbix" scheme="http://yoursite.com/tags/zabbix/"/>
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
     
   </entry>
   
   <entry>
-    <title>python基础之文件操作</title>
-    <link href="http://yoursite.com/2020/06/28/python-16/"/>
-    <id>http://yoursite.com/2020/06/28/python-16/</id>
-    <published>2020-06-28T03:20:38.000Z</published>
-    <updated>2020-07-07T07:08:05.694Z</updated>
+    <title>python之面向对象</title>
+    <link href="http://yoursite.com/2020/07/14/python-20/"/>
+    <id>http://yoursite.com/2020/07/14/python-20/</id>
+    <published>2020-07-14T10:29:35.000Z</published>
+    <updated>2020-07-14T11:08:20.664Z</updated>
     
     <summary type="html">
     
@@ -231,8 +349,8 @@
       
         
         
-          &lt;h2 id=&quot;打开文件&quot;&gt;&lt;a href=&quot;#打开文件&quot; class=&quot;headerlink&quot; title=&quot;打开文件&quot;&gt;&lt;/a&gt;打开文件&lt;/h2&gt;&lt;p&gt;在python3中,打开文件的函数是：&lt;/p&gt;
-&lt;figure class=&quot;highlight
+          &lt;p&gt;在类的封装中,第一个参数必须是self&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
         
       
     
@@ -249,11 +367,11 @@
   </entry>
   
   <entry>
-    <title>python基础之正则表达式</title>
-    <link href="http://yoursite.com/2020/06/26/python-15/"/>
-    <id>http://yoursite.com/2020/06/26/python-15/</id>
-    <published>2020-06-26T03:04:41.000Z</published>
-    <updated>2020-07-07T07:08:05.696Z</updated>
+    <title>linux三剑客以及其他工具详解</title>
+    <link href="http://yoursite.com/2020/07/14/shell-support/"/>
+    <id>http://yoursite.com/2020/07/14/shell-support/</id>
+    <published>2020-07-14T06:06:22.000Z</published>
+    <updated>2020-07-31T02:35:45.954Z</updated>
     
     <summary type="html">
     
@@ -261,37 +379,8 @@
       
         
         
-          &lt;h2 id=&quot;re模块&quot;&gt;&lt;a href=&quot;#re模块&quot; class=&quot;headerlink&quot; title=&quot;re模块&quot;&gt;&lt;/a&gt;re模块&lt;/h2&gt;&lt;p&gt;常用语法&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shell命令行工具</title>
-    <link href="http://yoursite.com/2020/06/22/shell-commond/"/>
-    <id>http://yoursite.com/2020/06/22/shell-commond/</id>
-    <published>2020-06-22T10:16:00.000Z</published>
-    <updated>2020-07-07T07:08:05.696Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;sed&quot;&gt;&lt;a href=&quot;#sed&quot; class=&quot;headerlink&quot; title=&quot;sed&quot;&gt;&lt;/a&gt;sed&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+          &lt;h2 id=&quot;cat&quot;&gt;&lt;a href=&quot;#cat&quot; class=&quot;headerlink&quot; title=&quot;cat&quot;&gt;&lt;/a&gt;cat&lt;/h2&gt;&lt;p&gt;-E 显示行结束符$&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
         
       
     
@@ -303,14 +392,16 @@
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
+    
   </entry>
   
   <entry>
-    <title>python基础之抛出异常</title>
-    <link href="http://yoursite.com/2020/06/20/python-14/"/>
-    <id>http://yoursite.com/2020/06/20/python-14/</id>
-    <published>2020-06-20T06:10:46.000Z</published>
-    <updated>2020-07-07T07:08:05.694Z</updated>
+    <title>tar打包时排除或忽略某个子目录或文件</title>
+    <link href="http://yoursite.com/2020/07/13/tar-exclued/"/>
+    <id>http://yoursite.com/2020/07/13/tar-exclued/</id>
+    <published>2020-07-13T07:21:09.000Z</published>
+    <updated>2020-07-14T06:06:57.157Z</updated>
     
     <summary type="html">
     
@@ -318,7 +409,37 @@
       
         
         
-          &lt;h2 id=&quot;捕获异常&quot;&gt;&lt;a href=&quot;#捕获异常&quot; class=&quot;headerlink&quot; title=&quot;捕获异常&quot;&gt;&lt;/a&gt;捕获异常&lt;/h2&gt;&lt;p&gt;在程序开发中,如果对默认代码不能确定是否正确,可以增加try(尝试)来捕获异常,语法格式：&lt;/p&gt;
+          &lt;p&gt;比如你想打包/home这个目录，但是/home/test/目录和/home/www/index.php文件你都不想打包，方法是：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="tar" scheme="http://yoursite.com/tags/tar/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos7 安装配置MySQL数据库</title>
+    <link href="http://yoursite.com/2020/07/11/mysql/"/>
+    <id>http://yoursite.com/2020/07/11/mysql/</id>
+    <published>2020-07-11T08:32:43.000Z</published>
+    <updated>2020-07-25T08:32:18.073Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;安装MySQL&quot;&gt;&lt;a href=&quot;#安装MySQL&quot; class=&quot;headerlink&quot; title=&quot;安装MySQL&quot;&gt;&lt;/a&gt;安装MySQL&lt;/h2&gt;&lt;p&gt;首先确保服务器可以连接网络,然后安装epel-release源&lt;/p&gt;
 &lt;figure
         
       
@@ -326,21 +447,21 @@
     </summary>
     
     
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
     
   </entry>
   
   <entry>
-    <title>python基础之常用模块</title>
-    <link href="http://yoursite.com/2020/06/18/python-13/"/>
-    <id>http://yoursite.com/2020/06/18/python-13/</id>
-    <published>2020-06-18T10:06:21.000Z</published>
-    <updated>2020-06-24T10:16:51.331Z</updated>
+    <title>hexo的ayer主题之添加在线聊天功能daovoice</title>
+    <link href="http://yoursite.com/2020/07/11/daovoice/"/>
+    <id>http://yoursite.com/2020/07/11/daovoice/</id>
+    <published>2020-07-11T07:16:13.000Z</published>
+    <updated>2020-07-11T08:00:55.894Z</updated>
     
     <summary type="html">
     
@@ -348,28 +469,26 @@
       
         
         
-          &lt;h2 id=&quot;列出指定目录下的所有文件&quot;&gt;&lt;a href=&quot;#列出指定目录下的所有文件&quot; class=&quot;headerlink&quot; title=&quot;列出指定目录下的所有文件&quot;&gt;&lt;/a&gt;列出指定目录下的所有文件&lt;/h2&gt;&lt;figure class=&quot;highlight
+          &lt;h2 id=&quot;daovoice官网配置&quot;&gt;&lt;a href=&quot;#daovoice官网配置&quot; class=&quot;headerlink&quot;
         
       
     
     </summary>
     
     
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
     
   </entry>
   
   <entry>
-    <title>python基础之模块导入</title>
-    <link href="http://yoursite.com/2020/06/18/python-12/"/>
-    <id>http://yoursite.com/2020/06/18/python-12/</id>
-    <published>2020-06-18T08:59:23.000Z</published>
-    <updated>2020-07-07T08:41:04.927Z</updated>
+    <title>Shell 基本运算符</title>
+    <link href="http://yoursite.com/2020/07/09/shellscript/"/>
+    <id>http://yoursite.com/2020/07/09/shellscript/</id>
+    <published>2020-07-09T07:13:43.000Z</published>
+    <updated>2020-07-24T09:49:59.917Z</updated>
     
     <summary type="html">
     
@@ -377,28 +496,29 @@
       
         
         
-          &lt;h2 id=&quot;模块的概念&quot;&gt;&lt;a href=&quot;#模块的概念&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;文件测试运算符&quot;&gt;&lt;a href=&quot;#文件测试运算符&quot; class=&quot;headerlink&quot; title=&quot;文件测试运算符&quot;&gt;&lt;/a&gt;文件测试运算符&lt;/h2&gt;&lt;p&gt;别问什么把这个放在最前面,问就是没记住&lt;/p&gt;
+&lt;figure class=&quot;highlight
         
       
     
     </summary>
     
     
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
     
   </entry>
   
   <entry>
-    <title>python基础之for循环</title>
-    <link href="http://yoursite.com/2020/06/17/python-11/"/>
-    <id>http://yoursite.com/2020/06/17/python-11/</id>
-    <published>2020-06-17T09:12:31.000Z</published>
-    <updated>2020-07-07T08:40:59.161Z</updated>
+    <title>Tomcat简介和安装部署</title>
+    <link href="http://yoursite.com/2020/07/09/tomcat/"/>
+    <id>http://yoursite.com/2020/07/09/tomcat/</id>
+    <published>2020-07-09T02:04:21.000Z</published>
+    <updated>2020-07-10T07:57:23.445Z</updated>
     
     <summary type="html">
     
@@ -406,28 +526,28 @@
       
         
         
-          &lt;h2 id=&quot;for循环语句&quot;&gt;&lt;a href=&quot;#for循环语句&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Tomcat是Apache 软件基金会（Apache Software Foundation）的Jakarta
         
       
     
     </summary>
     
     
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="tomcat" scheme="http://yoursite.com/tags/tomcat/"/>
     
   </entry>
   
   <entry>
-    <title>python基础之while循环</title>
-    <link href="http://yoursite.com/2020/06/17/python-10/"/>
-    <id>http://yoursite.com/2020/06/17/python-10/</id>
-    <published>2020-06-17T08:32:05.000Z</published>
-    <updated>2020-07-07T08:40:55.275Z</updated>
+    <title>自动化运维工具——ansible-playbook</title>
+    <link href="http://yoursite.com/2020/07/08/ansible-playbook/"/>
+    <id>http://yoursite.com/2020/07/08/ansible-playbook/</id>
+    <published>2020-07-08T09:45:48.000Z</published>
+    <updated>2020-07-09T06:01:45.468Z</updated>
     
     <summary type="html">
     
@@ -435,28 +555,28 @@
       
         
         
-          &lt;h2 id=&quot;while循环语句&quot;&gt;&lt;a href=&quot;#while循环语句&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;playbook简介&quot;&gt;&lt;a href=&quot;#playbook简介&quot; class=&quot;headerlink&quot;
         
       
     
     </summary>
     
     
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
     
   </entry>
   
   <entry>
-    <title>python基础之基本运算</title>
-    <link href="http://yoursite.com/2020/06/16/python-9/"/>
-    <id>http://yoursite.com/2020/06/16/python-9/</id>
-    <published>2020-06-16T08:08:51.000Z</published>
-    <updated>2020-07-07T08:40:52.310Z</updated>
+    <title>linux expect介绍和用法</title>
+    <link href="http://yoursite.com/2020/07/06/expect/"/>
+    <id>http://yoursite.com/2020/07/06/expect/</id>
+    <published>2020-07-06T08:17:34.000Z</published>
+    <updated>2020-07-24T09:08:11.360Z</updated>
     
     <summary type="html">
     
@@ -464,136 +584,20 @@
       
         
         
-          &lt;h2 id=&quot;Python语言支持以下类型的运算符&quot;&gt;&lt;a href=&quot;#Python语言支持以下类型的运算符&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;expect是一个自动化交互套件,主要用于执行命令和程序时,系统以交互形式要求输入指定字符串,实现交互通信&lt;/p&gt;
+&lt;h2
         
       
     
     </summary>
     
     
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python基础之条件语句</title>
-    <link href="http://yoursite.com/2020/06/16/python-8/"/>
-    <id>http://yoursite.com/2020/06/16/python-8/</id>
-    <published>2020-06-16T07:31:13.000Z</published>
-    <updated>2020-07-07T08:40:49.028Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;python条件语句&quot;&gt;&lt;a href=&quot;#python条件语句&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python基础之变量类型</title>
-    <link href="http://yoursite.com/2020/06/16/python-7-n/"/>
-    <id>http://yoursite.com/2020/06/16/python-7-n/</id>
-    <published>2020-06-16T06:20:24.000Z</published>
-    <updated>2020-07-07T08:40:42.214Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;python变量类型&quot;&gt;&lt;a href=&quot;#python变量类型&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python基础之函数</title>
-    <link href="http://yoursite.com/2020/06/14/python-7/"/>
-    <id>http://yoursite.com/2020/06/14/python-7/</id>
-    <published>2020-06-14T04:21:21.000Z</published>
-    <updated>2020-07-07T08:40:45.409Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;python函数&quot;&gt;&lt;a href=&quot;#python函数&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python基础之变量</title>
-    <link href="http://yoursite.com/2020/06/14/python-6/"/>
-    <id>http://yoursite.com/2020/06/14/python-6/</id>
-    <published>2020-06-14T03:45:15.000Z</published>
-    <updated>2020-07-07T08:40:38.793Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;在函数中定义的变量,不能在其他地方引用&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="expect" scheme="http://yoursite.com/tags/expect/"/>
     
   </entry>
   

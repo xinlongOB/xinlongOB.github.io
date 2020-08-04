@@ -43,6 +43,13 @@ var _hmt = _hmt || [];
 </script>
 
 
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
 <link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
 </head>
 
@@ -135,7 +142,7 @@ var _hmt = _hmt || [];
 <pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
 None
 
-进程已结束，退出代码 0</code></pre><p>. 匹配任意一个字符(除了\n)</p>
+进程已结束，退出代码 0</code></pre><p>“.” 匹配任意一个字符(除了\n)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = re.match(<span class="string">r"速度与激情."</span>,<span class="string">"速度与激情8"</span>)  </span><br><span class="line">print(a.group())</span><br><span class="line">b = re.match(<span class="string">r"速度与激情."</span>,<span class="string">"速度与激情a"</span>)</span><br><span class="line">print(b.group())</span><br><span class="line">c = re.match(<span class="string">r"速度与激情."</span>,<span class="string">"速度与激情aa"</span>)</span><br><span class="line">print(c.group())   <span class="comment">#只会匹配到速度与激情a  最后一个a 不会被匹配</span></span><br></pre></td></tr></table></figure>
 <p>运行结果：</p>
 <pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
@@ -197,24 +204,24 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;group&apos;
 速度与激情125
 12345678901
 
-进程已结束，退出代码 0</code></pre><ul>
-<li><p>匹配前一个字符出现0次或者无限次</p>
+进程已结束，退出代码 0</code></pre><p>“*”   匹配前一个字符出现0次或者无限次</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">aa = re.match(<span class="string">r"速度与激情\d*"</span>,<span class="string">"速度与激情111111"</span>)</span><br><span class="line">print(aa.group())</span><br><span class="line">bb = re.match(<span class="string">r"速度与激情\d*"</span>,<span class="string">"速度与激情"</span>)</span><br><span class="line">print(bb.group())</span><br></pre></td></tr></table></figure>
 <p>运行结果：</p>
-<p>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py<br>速度与激情111111<br>速度与激情</p>
-<p>进程已结束，退出代码 0</p>
-</li>
-</ul>
-<ul>
-<li><p>匹配前一个字符出现1次或者无限次(至少出现1次否则报错)</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情111111
+速度与激情
+
+进程已结束，退出代码 0</code></pre><p>“+”   匹配前一个字符出现1次或者无限次(至少出现1次否则报错)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">aa = re.match(<span class="string">r"速度与激情\d+"</span>,<span class="string">"速度与激情111111"</span>)</span><br><span class="line">print(aa.group())</span><br><span class="line">bb = re.match(<span class="string">r"速度与激情\d+"</span>,<span class="string">"速度与激情"</span>)</span><br><span class="line">print(bb.group())</span><br></pre></td></tr></table></figure>
 <p>运行结果：</p>
-<p>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py<br>速度与激情111111<br>Traceback (most recent call last):<br>  File “E:/程序代码/hexo/test.py”, line 5, in <module></module></p>
-<pre><code>print(bb.group())</code></pre><p>AttributeError: ‘NoneType’ object has no attribute ‘group’</p>
-<p>进程已结束，退出代码 1</p>
-</li>
-</ul>
-<p>？  匹配前一个字符出现1次或者0次</p>
+<pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
+速度与激情111111
+Traceback (most recent call last):
+  File &quot;E:/程序代码/hexo/test.py&quot;, line 5, in &lt;module&gt;
+    print(bb.group())
+AttributeError: &apos;NoneType&apos; object has no attribute &apos;group&apos;
+
+进程已结束，退出代码 1</code></pre><p>？  匹配前一个字符出现1次或者0次</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">ee = re.match(<span class="string">r"010-\d&#123;8&#125;"</span>,<span class="string">"010-12345678"</span>)</span><br><span class="line">print(ee.group())</span><br><span class="line"></span><br><span class="line">ff = re.match(<span class="string">r"010-?\d&#123;8&#125;"</span>,<span class="string">"010-12345678"</span>)  <span class="comment"># 这样-就可以不输入了</span></span><br><span class="line">print(ff.group())</span><br></pre></td></tr></table></figure>
 <p>运行结果：</p>
 <pre><code>D:\python练习\venv\Scripts\python.exe E:/程序代码/hexo/test.py
@@ -485,12 +492,6 @@ laowang
     </ul>
     <ul>
       <li>
-        
-        
-        
-        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
-        <span class="division">|</span>
-        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
         
       </li>
     </ul>

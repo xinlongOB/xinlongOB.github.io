@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    自动化运维工具——ansible-playbook |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-ansible-playbook" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  自动化运维工具——ansible-playbook
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/08/ansible-playbook/" class="article-date">
+  <time datetime="2020-07-08T09:45:48.000Z" itemprop="datePublished">2020-07-08</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">12 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="playbook简介"><a href="#playbook简介" class="headerlink" title="playbook简介"></a>playbook简介</h2><p>playbook配置文件使用YAML语法,具有简洁明了、结构清晰等特点,playbook配置文件类似于shell脚本,是一个YAML格式的文件,用于保存针对特定需求的任务列表,前面介绍的ansible命令虽然可以完成各种任务,但是当配置一些复杂任务时,逐条输入就显得效率非常低下了,更有效的方案是在playbook配置文件中放置所有的任务代码,利用ansible-playbook命令执行该文件,可以实现自动化运维,YAML文件的扩展名通常为.yaml或.yml</p>
+<h2 id="playbook的核心元素"><a href="#playbook的核心元素" class="headerlink" title="playbook的核心元素"></a>playbook的核心元素</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    Hosts 执行的远程主机列表</span><br><span class="line">    Tasks 任务集</span><br><span class="line">    Varniables 内置变量或自定义变量在playbook中调用</span><br><span class="line">    Templates 模板，即使用模板语法的文件，比如配置文件等</span><br><span class="line">    Handlers 和notity结合使用，由特定条件触发的操作，满足条件方才执行，否则不执行</span><br><span class="line">    tags 标签，指定某条任务执行，用于选择运行playbook中的部分代码。</span><br><span class="line"></span><br><span class="line">可以理解为</span><br><span class="line">    hosts ： 指明任务运行在哪些主机上</span><br><span class="line">    tasks ： 任务，由模块和定义的参数组成；</span><br><span class="line">    variables ：变量</span><br><span class="line">    templates ：模板文件，表示包含了模板语法的文本文件；</span><br><span class="line">    handlers ： 处理器，触发器，有特定条件触发的任务；</span><br><span class="line">    roles ：角色，由以上所组成的特定结构</span><br></pre></td></tr></table></figure>
+<h2 id="playbook的基础组件"><a href="#playbook的基础组件" class="headerlink" title="playbook的基础组件"></a>playbook的基础组件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hosts ：指明运行任务的目标主机，可以是单个也或是冒号隔开的多个主机组；</span><br><span class="line">remote_user ：在远程主机上执行任务的用户；可以定义成全局指定，也可以单任务指定；</span><br><span class="line">sudo_user ：指明以sudo方式运行的方式</span><br><span class="line">tasks ：任务列表；</span><br></pre></td></tr></table></figure>
+<p>任务的运行顺序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行任务是按照任务自上而下在每个主机中挨个运行每个任务 的方式运行的，就是把一个任务在第一台主机上运行完，再去在第二台主机上运行，以 此类推的方式</span><br></pre></td></tr></table></figure>
+<h2 id="playbook语法"><a href="#playbook语法" class="headerlink" title="playbook语法"></a>playbook语法</h2><p>playbook使用yaml语法格式,后缀可以是yaml,也可以是yml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在单一一个playbook文件中，可以连续三个连子号(---)区分多个play。还有选择性的连续三个点好(...)用来表示play的结尾，也可省略。</span><br><span class="line">次行开始正常写playbook的内容，一般都会写上描述该playbook的功能。</span><br><span class="line">使用<span class="comment">#号注释代码。</span></span><br><span class="line">缩进必须统一，不能空格和tab混用。</span><br><span class="line">缩进的级别也必须是一致的，同样的缩进代表同样的级别，程序判别配置的级别是通过缩进结合换行实现的。</span><br><span class="line">YAML文件内容和Linux系统大小写判断方式保持一致，是区分大小写的，k/v的值均需大小写敏感</span><br><span class="line">k/v的值可同行写也可以换行写。同行使用:分隔。</span><br><span class="line">v可以是个字符串，也可以是一个列表</span><br><span class="line">一个完整的代码块功能需要最少元素包括 name: task</span><br></pre></td></tr></table></figure>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>安装 httpd 修改端口并启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  httpd.yaml</span><br><span class="line">    - hosts：linux</span><br><span class="line">      remote_user：root</span><br><span class="line"></span><br><span class="line">    tasks：</span><br><span class="line">    - name：install httpd</span><br><span class="line">      yum：name=httpd state=present</span><br><span class="line">    - name：install configure file</span><br><span class="line">      copy：src=/etc/httpd/conf/httpd.conf dest=/etc/httpd/conf/httpd.conf</span><br><span class="line">    - name : httpd start</span><br><span class="line">      service: name=httpd state=started</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行</span></span><br><span class="line">ansible-playbook  -i hosts/hosts   game   httpd.yaml</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建playbook文件</span></span><br><span class="line">[root@ansible ~]<span class="comment"># cat playbook01.yml</span></span><br><span class="line">---                       <span class="comment">#固定格式</span></span><br><span class="line">- hosts: 192.168.1.31     <span class="comment">#定义需要执行主机</span></span><br><span class="line">  remote_user: root       <span class="comment">#远程用户</span></span><br><span class="line">  vars:                   <span class="comment">#定义变量</span></span><br><span class="line">    http_port: 8088       <span class="comment">#变量</span></span><br><span class="line"></span><br><span class="line">  tasks:                             <span class="comment">#定义一个任务的开始</span></span><br><span class="line">    - name: create new file          <span class="comment">#定义任务的名称</span></span><br><span class="line">      file: name=/tmp/playtest.txt state=touch   <span class="comment">#调用模块，具体要做的事情</span></span><br><span class="line">    - name: create new user</span><br><span class="line">      user: name=test02 system=yes shell=/sbin/nologin</span><br><span class="line">    - name: install package</span><br><span class="line">      yum: name=httpd</span><br><span class="line">    - name: config httpd</span><br><span class="line">      template: src=./httpd.conf dest=/etc/httpd/conf/httpd.conf</span><br><span class="line">      notify:                 <span class="comment">#定义执行一个动作(action)让handlers来引用执行，与handlers配合使用</span></span><br><span class="line">        - restart apache      <span class="comment">#notify要执行的动作，这里必须与handlers中的name定义内容一致</span></span><br><span class="line">    - name: copy index.html</span><br><span class="line">      copy: src=/var/www/html/index.html dest=/var/www/html/index.html</span><br><span class="line">    - name: start httpd</span><br><span class="line">      service: name=httpd state=started</span><br><span class="line">  handlers:                                    <span class="comment">#处理器：更加tasks中notify定义的action触发执行相应的处理动作</span></span><br><span class="line">    - name: restart apache                     <span class="comment">#要与notify定义的内容相同</span></span><br><span class="line">      service: name=httpd state=restarted      <span class="comment">#触发要执行的动作</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#测试页面准备</span></span><br><span class="line">[root@ansible ~]<span class="comment"># echo "&lt;h1&gt;playbook test file&lt;/h1&gt;" &gt;&gt;/var/www/html/index.html</span></span><br><span class="line"><span class="comment">#配置文件准备</span></span><br><span class="line">[root@ansible ~]<span class="comment"># cat httpd.conf |grep ^Listen</span></span><br><span class="line">Listen &#123;&#123; http_port &#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#执行playbook， 第一次执行可以加-C选项，检查写的playbook是否ok</span></span><br><span class="line">[root@ansible ~]<span class="comment"># ansible-playbook playbook01.yml</span></span><br><span class="line">PLAY [192.168.1.31] *********************************************************************************************</span><br><span class="line">TASK [Gathering Facts] ******************************************************************************************</span><br><span class="line">ok: [192.168.1.31]</span><br><span class="line">TASK [create new file] ******************************************************************************************</span><br><span class="line">changed: [192.168.1.31]</span><br><span class="line">TASK [create new user] ******************************************************************************************</span><br><span class="line">changed: [192.168.1.31]</span><br><span class="line">TASK [install package] ******************************************************************************************</span><br><span class="line">changed: [192.168.1.31]</span><br><span class="line">TASK [config httpd] *********************************************************************************************</span><br><span class="line">changed: [192.168.1.31]</span><br><span class="line">TASK [copy index.html] ******************************************************************************************</span><br><span class="line">changed: [192.168.1.31]</span><br><span class="line">TASK [start httpd] **********************************************************************************************</span><br><span class="line">changed: [192.168.1.31]</span><br><span class="line">PLAY RECAP ******************************************************************************************************</span><br><span class="line">192.168.1.31               : ok=7    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证上面playbook执行的结果</span></span><br><span class="line">[root@ansible ~]<span class="comment"># ansible 192.168.1.31 -m shell -a 'ls /tmp/playtest.txt &amp;&amp; id test02'</span></span><br><span class="line">192.168.1.31 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">/tmp/playtest.txt</span><br><span class="line">uid=990(test02) gid=985(test02) 组=985(test02)</span><br><span class="line"></span><br><span class="line">[root@ansible ~]<span class="comment"># curl 192.168.1.31:8088</span></span><br><span class="line">&lt;h1&gt;playbook <span class="built_in">test</span> file&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
+<p>可以分开写到多个目录文件中,如图：<br><br><img src="/2020/07/08/ansible-playbook/1.png" alt><br><br><img src="/2020/07/08/ansible-playbook/2.png" alt></p>
+<h2 id="playbook的运行方式"><a href="#playbook的运行方式" class="headerlink" title="playbook的运行方式"></a>playbook的运行方式</h2><p>通过ansible-playbook命令运行,格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible-playbook &lt;filename.yml&gt; ... [options]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@ansible PlayBook]<span class="comment"># ansible-playbook -h</span></span><br><span class="line"><span class="comment">#ansible-playbook常用选项：</span></span><br><span class="line">--check  or -C    <span class="comment">#只检测可能会发生的改变，但不真正执行操作</span></span><br><span class="line">--list-hosts      <span class="comment">#列出运行任务的主机</span></span><br><span class="line">--list-tags       <span class="comment">#列出playbook文件中定义所有的tags</span></span><br><span class="line">--list-tasks      <span class="comment">#列出playbook文件中定义的所以任务集</span></span><br><span class="line">--<span class="built_in">limit</span>           <span class="comment">#主机列表 只针对主机列表中的某个主机或者某个组执行</span></span><br><span class="line">-f                <span class="comment">#指定并发数，默认为5个</span></span><br><span class="line">-t                <span class="comment">#指定tags运行，运行某一个或者多个tags。（前提playbook中有定义tags）</span></span><br><span class="line">-v                <span class="comment">#显示过程  -vv  -vvv更详细</span></span><br></pre></td></tr></table></figure>
+<h2 id="其他技巧"><a href="#其他技巧" class="headerlink" title="其他技巧"></a>其他技巧</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--inventory=path，指定inventory文件，默认是在/etc/ansible/hosts下面。  可以简写为 -i  ~/hosts/hosts</span><br><span class="line">--verbose，显示详细的输出，使用-vvvv显示精确到每分钟的输出。</span><br><span class="line">--extra-vars=vars：定义在playbook使用的变量。</span><br><span class="line">--forks：指定并发的线程数，默认是5.</span><br><span class="line">--connection=<span class="built_in">type</span>:指定远程连接主机的方式，默认是ssh，设置为<span class="built_in">local</span>时，则只在本地执行playbook、</span><br></pre></td></tr></table></figure>
+
+<h2 id="tasks任务列表"><a href="#tasks任务列表" class="headerlink" title="tasks任务列表"></a>tasks任务列表</h2><p>每一个task必须有一个名称name,这样在运行playbook时,从其输出的任务执行信息中可以很清楚的辨别是属于哪一个task的,如果没有定义 name,action的值将会用作输出信息中标记特定的task,<br>每一个playbook中可以包含一个或者多个tasks任务列表,每一个tasks完成具体的一件事,（任务模块）比如创建一个用户或者安装一个软件等,在hosts中定义的主机或者主机组都将会执行这个被定义的tasks<br>例如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tasks:</span><br><span class="line">  - name: create new file</span><br><span class="line">    file: path=/tmp/test01.txt state=touch</span><br><span class="line">  - name: create new user</span><br><span class="line">    user: name=test001 state=present</span><br></pre></td></tr></table></figure>
+<h2 id="Handlers与Notify"><a href="#Handlers与Notify" class="headerlink" title="Handlers与Notify"></a>Handlers与Notify</h2><p>很多时候当我们某一个配置发生改变,我们需要重启服务,(比如httpd配置文件文件发生改变了)这时候就可以用到handlers和notify了；<br>(当发生改动时)notify actions会在playbook的每一个task结束时被触发,而且即使有多个不同task通知改动的发生,notify actions知会被触发一次；<br>比如多个resources指出因为一个配置文件被改动，所以apache需要重启，但是重新启动的操作知会被执行一次。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@ansible ~]<span class="comment"># cat httpd.yml </span></span><br><span class="line"><span class="comment">#用于安装httpd并配置启动</span></span><br><span class="line">---</span><br><span class="line">- hosts: 192.168.1.31</span><br><span class="line">  remote_user: root</span><br><span class="line"></span><br><span class="line">  tasks:</span><br><span class="line">  - name: install httpd</span><br><span class="line">    yum: name=httpd state=installed</span><br><span class="line">  - name: config httpd</span><br><span class="line">    template: src=/root/httpd.conf dest=/etc/httpd/conf/httpd.conf</span><br><span class="line">    notify:</span><br><span class="line">      - restart httpd   </span><br><span class="line">  - name: start httpd</span><br><span class="line">    service: name=httpd state=started</span><br><span class="line"></span><br><span class="line">  handlers:</span><br><span class="line">    - name: restart httpd   <span class="comment"># 这个命名要和 notify后面相同</span></span><br><span class="line">      service: name=httpd state=restarted</span><br><span class="line"></span><br><span class="line"><span class="comment">#这里只要对httpd.conf配置文件作出了修改，修改后需要重启生效，在tasks中定义了restart httpd这个action，然后在handlers中引用上面tasks中定义的notify</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="完整剧本案例"><a href="#完整剧本案例" class="headerlink" title="完整剧本案例"></a>完整剧本案例</h2><p><img src="/2020/07/08/ansible-playbook/2.png" alt></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 入口文件</span></span><br><span class="line">[sgsm@iZ2zebukn5j9itcxgqgn2rZ ansible]$ cat monitor-restart.yml </span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">- name: monitor-restart release game</span><br><span class="line">  hosts: <span class="string">"&#123;&#123; sgsm_hosts &#125;&#125;"</span></span><br><span class="line">  remote_user: sgsm</span><br><span class="line"></span><br><span class="line">  roles:</span><br><span class="line">      - &#123; role: monitor-restart &#125;</span><br><span class="line">[sgsm@iZ2zebukn5j9itcxgqgn2rZ ansible]$ </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">├── monitor-restart.yml     <span class="comment"># 入口文件</span></span><br><span class="line">├── roles					<span class="comment"># role  固定格式</span></span><br><span class="line">│   ├── monitor-restart			<span class="comment"># 入口文件制定的目录</span></span><br><span class="line">│   │   ├── defaults			</span><br><span class="line">│		│	    └── main.yml		<span class="comment"># 定义变量文件</span></span><br><span class="line">            <span class="comment"># sgsm 密码</span></span><br><span class="line">            sgsm_password: <span class="string">"xxxxxx"</span></span><br><span class="line">            <span class="comment"># 基础目录</span></span><br><span class="line">            common_dir: /data</span><br><span class="line">            <span class="comment"># sgsm 项目目录</span></span><br><span class="line">            <span class="comment">#sgsm_dir: "&#123;&#123; common_dir  &#125;&#125;/sgsm"</span></span><br><span class="line">            sgsm_dir: <span class="string">"&#123;&#123; common_dir  &#125;&#125;/sgsm/&#123;&#123; sgsm_server_uid &#125;&#125;"</span></span><br><span class="line">            <span class="comment">#install package dir </span></span><br><span class="line">            common_package_dir: <span class="string">"&#123;&#123; common_dir &#125;&#125;/package"</span></span><br><span class="line">            <span class="comment">#install package dir </span></span><br><span class="line">            common_install_dir: <span class="string">"&#123;&#123; common_dir &#125;&#125;/install"</span></span><br><span class="line">            <span class="comment"># common lib dir 数据目录</span></span><br><span class="line">            common_lib_dir: <span class="string">"&#123;&#123; common_dir  &#125;&#125;/lib"</span></span><br><span class="line">            <span class="comment"># common log_dir 日志目录</span></span><br><span class="line">            common_log_dir: <span class="string">"&#123;&#123; common_dir  &#125;&#125;/log"</span></span><br><span class="line">            <span class="comment"># sgms game server run dir </span></span><br><span class="line">            sgsm_game_dir: <span class="string">"&#123;&#123;sgsm_dir&#125;&#125;/server"</span></span><br><span class="line">            <span class="comment"># sgsm 发布版本号</span></span><br><span class="line">            sgsm_release_version: xxxx</span><br><span class="line">            <span class="comment">#sgsm script dir </span></span><br><span class="line">            sgsm_script_dir: <span class="string">"&#123;&#123; common_dir &#125;&#125;/script"</span></span><br><span class="line">            </span><br><span class="line">│   │   ├── files</span><br><span class="line">│		│	    └── <span class="built_in">test</span>			<span class="comment"># ansible中unarchive、copy等模块会自动来这里找文件,只需写文件名</span></span><br><span class="line">│   │   ├── handlers</span><br><span class="line">│		│	    └── main.yml			<span class="comment"># 监听 存放tasks中的notify指定的内容</span></span><br><span class="line">│   │   ├── meta</span><br><span class="line">│   │   ├── tasks					<span class="comment"># 任务元素</span></span><br><span class="line">│   │   │   ├── main.yml			<span class="comment"># 主程序文件</span></span><br><span class="line">                ---</span><br><span class="line">                - name: monitor-restart</span><br><span class="line">                  include: <span class="string">"sgsm_monitor.yml"</span></span><br><span class="line">                  when: sgsm_flag == <span class="string">"monitor"</span></span><br><span class="line">│   │   │     └── sgsm_monitor.yml	<span class="comment"># 主程序文件include的文件 (include之后就会消失,import_tasks取代)</span></span><br><span class="line">                  ---</span><br><span class="line"></span><br><span class="line">                  - name: generate monitor.sh</span><br><span class="line">                    template:</span><br><span class="line">                      src: monitor.sh</span><br><span class="line">                      dest: <span class="string">"&#123;&#123; sgsm_script_dir &#125;&#125;/monitor&#123;&#123; sgsm_server_uid &#125;&#125;.sh"</span></span><br><span class="line">                      mode: 0644</span><br><span class="line"></span><br><span class="line">│   │   ├── templates</span><br><span class="line">│   │   │     └── monitor.sh			<span class="comment"># 模板文件 需要复制到远程服务器的文件</span></span><br><span class="line">                <span class="comment">#!/bin/bash </span></span><br><span class="line">                mongod=`ps -aux |grep mongo |wc  -l`     <span class="comment">#定义变量</span></span><br><span class="line">                a=`ps -aux |grep node |grep mail |awk  <span class="string">'&#123;print $(NF-5)&#125;'</span>  |awk  -F<span class="string">"/"</span> <span class="string">'&#123;print $4&#125;'</span> |sort -n |sed -n <span class="string">'1p'</span>` <span class="comment">#定义第一个区服</span></span><br><span class="line">                b=`ps -aux |grep node |grep mail |awk  <span class="string">'&#123;print $(NF-5)&#125;'</span>  |awk  -F<span class="string">"/"</span> <span class="string">'&#123;print $4&#125;'</span> |sort -n |sed -n <span class="string">'2p'</span>` <span class="comment">#定义第二个区服</span></span><br><span class="line">                c=`ps -aux |grep node |grep mail |awk  <span class="string">'&#123;print $(NF-5)&#125;'</span>  |awk  -F<span class="string">"/"</span> <span class="string">'&#123;print $4&#125;'</span> |sort -n |sed -n <span class="string">'3p'</span>` <span class="comment">#定义第三个区服</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> [ <span class="variable">$mongod</span>  -lt 2 ] ;<span class="keyword">then</span>   <span class="comment">#if 判断  查看mongod的状态</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"数据库宕机，正在重启...."</span> &amp;&amp; <span class="built_in">echo</span> &#123;&#123;sgsm_password&#125;&#125; |sudo  -S  systemctl restart mongod  <span class="comment">#如果mongo宕机，就重启</span></span><br><span class="line">                sleep 5</span><br><span class="line">                <span class="built_in">cd</span> &#123;&#123; sgsm_game_dir &#125;&#125;/&#123;&#123; sgsm_release_version &#125;&#125;/server/</span><br><span class="line">                sh stop-server.sh</span><br><span class="line">                sh start-server.sh</span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"数据库和服务器重启完毕，已恢复正常"</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"====================================="</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">elif</span> [ <span class="variable">$mongod</span>  -ge 2 ] ;<span class="keyword">then</span>   <span class="comment">#if再次判断</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"数据库正常，服务器宕机，正在重启...."</span>    <span class="comment">#如果进程还在输出正在运行</span></span><br><span class="line">                <span class="built_in">cd</span> &#123;&#123; sgsm_game_dir &#125;&#125;/&#123;&#123; sgsm_release_version &#125;&#125;/server/</span><br><span class="line">                sh stop-server.sh</span><br><span class="line">                sh start-server.sh</span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"服务器重启完毕，已恢复正常"</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"======================================"</span></span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span>  <span class="string">"reading"</span></span><br><span class="line">                <span class="keyword">fi</span>  <span class="comment">#if判断结尾</span></span><br><span class="line">│   │   └── vars</span><br><span class="line">│   │       └── login.yml</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这个剧本主要的作用是监控,ansible批量把脚本放到远程服务器上等待被调用 -- &#123;&#123; sgsm_hosts &#125;&#125; 和 &#123;&#123; sgsm_server_uid &#125;&#125;  在hosts文件中定义</span></span><br></pre></td></tr></table></figure>
+<p>调用监控的脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/bin/bash</span></span><br><span class="line"><span class="built_in">export</span> LANG=zh_CN.UTF-8</span><br><span class="line">a=<span class="string">"<span class="variable">$1</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span>"</span>  &gt;&gt; /home/sgsm/monitorlog/aa.txt</span><br><span class="line"><span class="keyword">if</span> [ ! -n <span class="string">"<span class="variable">$1</span>"</span> ];<span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"参数不存在"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">array=(<span class="variable">$&#123;a//,/ &#125;</span>)    <span class="comment"># 传递多个以逗号分隔的参数  使用数组接收 逗号换成空格后的数据    格式：$&#123;value//pattern/string&#125;   进行变量内容的替换,把与pattern匹配的部分替换为string的内容</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$&#123;array[@]&#125;</span>    <span class="comment"># $&#123;nums[@]&#125;  或者 $&#123;nums[*]&#125; 可以获取所有元素 然后for循环</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">ansible -i /home/sgsm/hosts/hosts game-<span class="variable">$i</span> -m  <span class="built_in">command</span> -a <span class="string">"sh /data/script/monitor<span class="variable">$i</span>.sh"</span>  &gt;&gt; /home/sgsm/monitorlog/monitor<span class="string">"<span class="variable">$1</span>"</span>.<span class="built_in">log</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">###  cat /home/sgsm/monitorlog/monitor$1.log  | mail -s '米花互动服务器监控系统通知邮件---mixtureios2' -c  lichenglong@mihuahd.com  liangxinlong@mihuahd.com   wangzhicheng@mihuahd.com   caojichao@mihuahd.com    dingxue@mihuahd.com</span></span><br><span class="line">cat /home/sgsm/monitorlog/monitor<span class="variable">$1</span>.<span class="built_in">log</span>  | mail -s <span class="string">"monitor mails"</span>    xxx@163.com</span><br><span class="line">rm -rf  /home/sgsm/monitorlog/monitor<span class="string">"<span class="variable">$1</span>"</span>.<span class="built_in">log</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>playbook中shell/command的写法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- name: Generate server json config</span><br><span class="line">  <span class="built_in">command</span>: node app -b ../../sgsm.tpl</span><br><span class="line">  args:</span><br><span class="line">    <span class="built_in">chdir</span>: <span class="string">"&#123;&#123; run_dir &#125;&#125;"</span> </span><br><span class="line"><span class="comment"># chdir 先执行</span></span><br></pre></td></tr></table></figure>
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/07/08/ansible-playbook/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible/" rel="tag">ansible</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/07/09/tomcat/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Tomcat简介和安装部署
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/06/expect/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">linux expect介绍和用法</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

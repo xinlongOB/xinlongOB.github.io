@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    linux三剑客以及其他工具详解 |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-shell-support" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  linux三剑客以及其他工具详解
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/14/shell-support/" class="article-date">
+  <time datetime="2020-07-14T06:06:22.000Z" itemprop="datePublished">2020-07-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">5.1k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">26 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h2><p>-E 显示行结束符$</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cat  -E  <span class="built_in">test</span> </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai $</span><br><span class="line">wei he  dang chu xuan ze li kai $</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-n 对显示出的每一行进行编号(包含空行)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cat  -n  <span class="built_in">test</span> </span><br><span class="line">     1  zhi dao xian zai wo dou mei you ming bai </span><br><span class="line">     2  wei he  dang chu xuan ze li kai </span><br><span class="line">     3</span><br><span class="line">     4</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-A 显示所有控制符(^I 代表table键)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cat   -A <span class="built_in">test</span></span><br><span class="line">zhi dao xian zai wo dou mei you ming bai$</span><br><span class="line">wei he ^I dang chu xuan ze li kai$</span><br><span class="line">$</span><br><span class="line">$</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-b  非空行编号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cat  -n <span class="built_in">test</span> </span><br><span class="line">     1  zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">     2  wei he   dang chu xuan ze li kai</span><br><span class="line">     3</span><br><span class="line">     4</span><br><span class="line">[sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$ cat  -b <span class="built_in">test</span>  </span><br><span class="line">     1  zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">     2  wei he   dang chu xuan ze li kai</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-s 压缩连续的空行成一行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cat  -n <span class="built_in">test</span> </span><br><span class="line">     1  zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">     2  wei he   dang chu xuan ze li kai</span><br><span class="line">     3</span><br><span class="line">     4</span><br><span class="line">[sgsm@localhost test2]$ cat  -s <span class="built_in">test</span>  </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line"></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<h2 id="more"><a href="#more" class="headerlink" title="more"></a>more</h2><p>(空格一页一页的翻,回车一行一行的翻) q 退出<br>less ：一页一页地查看文件</p>
+<h2 id="head"><a href="#head" class="headerlink" title="head"></a>head</h2><p>-c #：指定获取前#字节</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ head  -c 10   <span class="built_in">test</span> </span><br><span class="line">zhi dao xi[sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$ head  -c 15   <span class="built_in">test</span>  </span><br><span class="line">zhi dao xian za[sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$ head  -c 20   <span class="built_in">test</span>   </span><br><span class="line">zhi dao xian zai wo [sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-n#：指定获取前#行  (n 可以省略    -#)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ head  -n  10  /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br><span class="line">sync:x:5:0:sync:/sbin:/bin/sync</span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br><span class="line">halt:x:7:0:halt:/sbin:/sbin/halt</span><br><span class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</span><br><span class="line">uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin</span><br><span class="line">[sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$ head  -10  /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br><span class="line">sync:x:5:0:sync:/sbin:/bin/sync</span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br><span class="line">halt:x:7:0:halt:/sbin:/sbin/halt</span><br><span class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</span><br><span class="line">uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin</span><br></pre></td></tr></table></figure>
+<h2 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h2><p>-c#：指定获取后#字节</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ tail  -c 10  <span class="built_in">test</span> </span><br><span class="line"> li kai</span><br><span class="line">[sgsm@localhost test2]$ cat <span class="built_in">test</span> </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-n#：指定获取后#行 (n 可以省略    -#)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ tail -n 10  /etc/fstab </span><br><span class="line"><span class="comment"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">/dev/mapper/VolGroup-lv_root /                       ext4    defaults        1 1</span><br><span class="line">UUID=f027c061-3a2c-463f-aadb-6019110bb2ae /boot                   ext4    defaults        1 2</span><br><span class="line">/dev/mapper/VolGroup-lv_home /home                   ext4    defaults        1 2</span><br><span class="line">/dev/mapper/VolGroup-lv_swap swap                    swap    defaults        0 0</span><br><span class="line">tmpfs                   /dev/shm                tmpfs   defaults        0 0</span><br><span class="line">devpts                  /dev/pts                devpts  gid=5,mode=620  0 0</span><br><span class="line">sysfs                   /sys                    sysfs   defaults        0 0</span><br><span class="line">proc                    /proc                   proc    defaults        0 0</span><br><span class="line">[sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$ tail -10  /etc/fstab   </span><br><span class="line"><span class="comment"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">/dev/mapper/VolGroup-lv_root /                       ext4    defaults        1 1</span><br><span class="line">UUID=f027c061-3a2c-463f-aadb-6019110bb2ae /boot                   ext4    defaults        1 2</span><br><span class="line">/dev/mapper/VolGroup-lv_home /home                   ext4    defaults        1 2</span><br><span class="line">/dev/mapper/VolGroup-lv_swap swap                    swap    defaults        0 0</span><br><span class="line">tmpfs                   /dev/shm                tmpfs   defaults        0 0</span><br><span class="line">devpts                  /dev/pts                devpts  gid=5,mode=620  0 0</span><br><span class="line">sysfs                   /sys                    sysfs   defaults        0 0</span><br><span class="line">proc                    /proc                   proc    defaults        0 0</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-f：跟踪显示文件新追加的内容,常用日志监控</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 常用组合 tail  -f  -n #  filename</span></span><br><span class="line">tail -f -n 30 *07-10*</span><br></pre></td></tr></table></figure>
+<h2 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h2><p>-d 指名分隔符,默认tab<br>-f #  ：第#个字段</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cut -d<span class="string">'/'</span> -f3  /etc/passwd</span><br><span class="line">bin</span><br><span class="line">sbin</span><br><span class="line">sbin</span><br><span class="line">adm:</span><br><span class="line">spool</span><br><span class="line">bin</span><br><span class="line">sbin</span><br><span class="line">sbin</span><br><span class="line">spool</span><br><span class="line">sbin</span><br><span class="line">games:</span><br><span class="line">ftp:</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>#,#,#：离散的多个字段,例如1,3,7</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cut -d<span class="string">' '</span> -f1,2,3 <span class="built_in">test</span> </span><br><span class="line">zhi dao xian</span><br><span class="line">wei he </span><br><span class="line">but i no</span><br><span class="line"></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>#-#：连续的多个字段,例如1-4(也可以和离散字段一起使用例如：1-4,7)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cut -d<span class="string">' '</span> -f1-4 <span class="built_in">test</span>      </span><br><span class="line">zhi dao xian zai</span><br><span class="line">wei he   dang</span><br><span class="line">but i no caer</span><br><span class="line"></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-c ：按字符切割</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cut -c 5-10 <span class="built_in">test</span>           </span><br><span class="line">dao xi</span><br><span class="line">he       d</span><br><span class="line">i no c</span><br><span class="line"></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<h2 id="wc"><a href="#wc" class="headerlink" title="wc"></a>wc</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示格式： 行数    总单次数   总字符数    文件</span></span><br><span class="line">[sgsm@localhost test2]$ wc  <span class="built_in">test</span>    </span><br><span class="line"> 4 22 90 <span class="built_in">test</span></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>选项：-l  只计数行数(包含空行)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ wc -l <span class="built_in">test</span> </span><br><span class="line">4 <span class="built_in">test</span></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-w 只计数单词总数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ wc -w  <span class="built_in">test</span> </span><br><span class="line">22 <span class="built_in">test</span></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-c 只计数字节总数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ wc -c <span class="built_in">test</span>  </span><br><span class="line">90 <span class="built_in">test</span></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-m 只计数字符总数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ wc -m <span class="built_in">test</span>  </span><br><span class="line">90 <span class="built_in">test</span></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><p>文本排序: 把整理过的文本显示在输出,不改变原始文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认按照首字母排序</span></span><br><span class="line">[sgsm@localhost test2]$ sort  <span class="built_in">test</span> </span><br><span class="line"></span><br><span class="line">but i no caer </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>常用选项 -r  执行反方向(由上至下)整理</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ sort -r <span class="built_in">test</span> </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-n  执行按数字大小整理</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ sort  -n  aa </span><br><span class="line">1234</span><br><span class="line">1253</span><br><span class="line">1255</span><br><span class="line">2353</span><br><span class="line">4321</span><br><span class="line">5678</span><br><span class="line">6456</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-f   选项忽略字符串中的字符大小写<br>-u   删除输出中的重复行(重复行全部不显示)<br>-t   c 使用c作为字段界定符<br>-k   X 按照使用c字符分隔的X列来整理能够使用多次。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以空格分割  排序第三段 </span></span><br><span class="line">[sgsm@localhost test2]$ sort  -t<span class="string">" "</span> -k3  aa   </span><br><span class="line">4 3 21</span><br><span class="line">1 2 34</span><br><span class="line">1 2 53</span><br><span class="line">2 3 53</span><br><span class="line">1 2 55</span><br><span class="line">6 4 56</span><br><span class="line">5 6 78</span><br><span class="line">[sgsm@localhost test2]$ sort  -t<span class="string">" "</span> -k3  -r  aa     <span class="comment"># 以相反方式显示第三段的排序</span></span><br><span class="line">5 6 78</span><br><span class="line">6 4 56</span><br><span class="line">1 2 55</span><br><span class="line">2 3 53</span><br><span class="line">1 2 53</span><br><span class="line">1 2 34</span><br><span class="line">4 3 21</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<h2 id="uniq"><a href="#uniq" class="headerlink" title="uniq"></a>uniq</h2><p>uniq -c 显示每行重复出现的次数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ uniq -c  <span class="built_in">test</span> </span><br><span class="line">      1 zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">      1 wei he   dang chu xuan ze li kai</span><br><span class="line">      1 but i no caer </span><br><span class="line">      2 san san</span><br><span class="line">      2 xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-d 仅显示重复过的行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ uniq -d <span class="built_in">test</span>   </span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$ cat <span class="built_in">test</span> </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-u 仅显示不曾重复的行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ cat <span class="built_in">test</span> </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$ uniq -u <span class="built_in">test</span>  </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer</span><br></pre></td></tr></table></figure>
+<p>常和sort命令一起配合使用,例： sort 文件名 |uniq -c</p>
+<h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><p>–color=auto: 对匹配到的文本着色显示</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  --color=auto  ming    test.txt </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-v: 显示不能够被pattern 匹配到的行(不包含匹配字的行)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  --color=auto  -v  ming    test.txt </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-i: 忽略字符大小写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  --color=auto  -i MING   test.txt          </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-n: 显示匹配的行号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  --color=auto  -n san   test.txt          </span><br><span class="line">4:san san</span><br><span class="line">5:san san</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-c: 统计匹配的行数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  --color=auto  -c san   test.txt  </span><br><span class="line">2</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-o: 仅显示匹配到的字符串</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  -o san  test.txt                      </span><br><span class="line">san</span><br><span class="line">san</span><br><span class="line">san</span><br><span class="line">san</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-A #:  匹配行的后#行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  -A 1 caer  test.txt     </span><br><span class="line">but i no caer</span><br><span class="line">san san</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-B #： 匹配行的前#行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  -B 1 caer  test.txt  </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-C #:  匹配行的前后各#行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  -C 1 caer  test.txt  </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer</span><br><span class="line">san san</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-e ：实现多个选项间的逻辑 or 关系</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep  -e san  -e  xiao  test.txt          </span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-w ：整行匹配整个单词</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep   an  test.txt </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">[sgsm@localhost test2]$ grep  -w  an  test.txt </span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-E ：使用扩展正则表达式<br><img src="/2020/07/14/shell-support/1.png" alt><br><img src="/2020/07/14/shell-support/2.png" alt></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ grep   --color=auto  b.[[:alnum:]]  test.txt    </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">but i no caer an</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p>用法：sed 选项 地址命令  文件<br>-n 不输出模式空间内容到屏幕,即不自动打印(默认会把源文件打印)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ sed  2p test.txt </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$ sed   -n  2p test.txt </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-e 多点编辑(同grep -e 用法一样)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@localhost test2]$ sed   -n  -e  2p -e 4p test.txt   </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">an an</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<p>-f 文件 ：从指定文件中读取编辑脚本<br>-r：支持使用扩展正则表达式<br>-i：原文编辑(会写入文件中)</p>
+<h3 id="Script：地址命令"><a href="#Script：地址命令" class="headerlink" title="Script：地址命令"></a>Script：地址命令</h3><p>地址定界：不指定地址,全文进行处理</p>
+<pre><code>单地址       </code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  #：指定的行</span></span><br><span class="line">[sgsm@localhost test2]$ sed   -n 2p  test.txt                 </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /pattern/：被此处模式所能够匹配到的行</span></span><br><span class="line">[sgsm@localhost test2]$ sed   -n /san/p test.txt </span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<pre><code>地址范围</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># #,#  从#--#行(可选范围)</span></span><br><span class="line">[sgsm@localhost test2]$ sed   -n 2,4p test.txt   </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  #,+# 从#到+#行</span></span><br><span class="line">[sgsm@localhost test2]$ sed   -n 2,+6p test.txt   </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /pat1/,/pat2/ (从第一个到第二个关键字)</span></span><br><span class="line">[sgsm@localhost test2]$ sed   -n /dang/,/xiao/p test.txt                </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   #,/pat1/ (从#行到第一个关键字)</span></span><br><span class="line">[sgsm@localhost test2]$ sed   -n 5,/xiao/p test.txt       </span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<pre><code>步进</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1~2 奇数行（1,3,5,7）</span></span><br><span class="line">[sgsm@localhost test2]$ cat -n  test.txt |sed   -n <span class="string">'1~2'</span>p </span><br><span class="line">     1  zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">     3  but i no caer an</span><br><span class="line">     5  san san</span><br><span class="line">     7  xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 2~2 偶数行（2,4,6,8）</span></span><br><span class="line">[sgsm@localhost test2]$ cat -n  test.txt |sed   -n <span class="string">'2~2'</span>p  </span><br><span class="line">     2  wei he   dang chu xuan ze li kai</span><br><span class="line">     4  an an</span><br><span class="line">     6  san san</span><br><span class="line">     8  xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<h3 id="编辑命令"><a href="#编辑命令" class="headerlink" title="编辑命令"></a>编辑命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># d：删除模式空间匹配到的行</span></span><br><span class="line">[sgsm@localhost test2]$ cat  test.txt </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$ sed    4,6d test.txt      <span class="comment"># 删除4-6行</span></span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># P：显示模式空间中的内容</span></span><br><span class="line">[sgsm@localhost test2]$ sed  -n  4,6p test.txt   <span class="comment"># 打印4-6-  如果不加-n 会打印所有内容   4-6行打印两次</span></span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a[\]：在指定行后面追加文本支持使用\n实现多行追加</span></span><br><span class="line">[sgsm@localhost test2]$ sed    1a\<span class="built_in">test</span> test.txt     <span class="comment"># 在第一行后增加内容</span></span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$ sed    /xiao/a\<span class="built_in">test</span> test.txt      <span class="comment"># 在匹配行后增加的内容</span></span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line">xiao xiao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">xiao xiao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># i[\]：在行前面插入文本</span></span><br><span class="line">[sgsm@localhost test2]$ sed    /xiao/i\<span class="built_in">test</span> test.txt  </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">xiao xiao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># c[\]：替换行位单行或多行文本</span></span><br><span class="line">[sgsm@localhost test2]$ sed    /xiao/c\<span class="built_in">test</span> test.txt  </span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">san san</span><br><span class="line">san san</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">w 文件名：保存模式匹配到的行至指定文件</span><br><span class="line">r文件名 ：读取指定文件的文本至模式空间中匹配到的行后</span><br><span class="line">=:为模式空间中的行打印行号</span><br><span class="line">！：模式空间中匹配到行去反处理</span><br></pre></td></tr></table></figure>
+<h3 id="查找替换"><a href="#查找替换" class="headerlink" title="查找替换"></a>查找替换</h3><pre><code>S///:查找替换,支持使用其它分隔符,s@@@,s###</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">g ：行内全局替换</span><br><span class="line">[sgsm@localhost test2]$ sed  s/san/six/   test.txt   <span class="comment"># 只替换第一个匹配到的关键字</span></span><br><span class="line">zhi dao xian zai wo dou mei you ming bai</span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">six san</span><br><span class="line">six san</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$ </span><br><span class="line">[sgsm@localhost test2]$ sed  s/san/six/g   test.txt   <span class="comment"># 全局替换</span></span><br><span class="line">zhi dao xian zai wo dou mei you ming bai  </span><br><span class="line">wei he   dang chu xuan ze li kai</span><br><span class="line">but i no caer an</span><br><span class="line">an an</span><br><span class="line">six six</span><br><span class="line">six six</span><br><span class="line">xiao xiao</span><br><span class="line">xiao xiao</span><br><span class="line">[sgsm@localhost test2]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">P：显示替换成功的行</span><br><span class="line">W文件名：将替换成功的行保存至文件中</span><br></pre></td></tr></table></figure>
+<h2 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h2><p>awk是一种处理文本的编程语言工具，报告生成器，格式化文本输出<br>基本用法： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">awk [options]  ’program’ var=value  file</span><br><span class="line">命令  选项          程序    变量      文件</span><br></pre></td></tr></table></figure>
+<p>选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-F 指名输入时用到的字符分隔符(不指定-F 按空格分隔)</span><br><span class="line">-v  var=value：自定义变量</span><br></pre></td></tr></table></figure>
+<p>awk工作原理<br>第一步：执行BEGIN{action;处理内容}语句块中的语句（可省）<br>第二步：从文件或标准输入（stdin）读取一行，然后执行pattern{action;处理内容}语句块，它逐行扫描文件，从第一行到最后一行重复这个过程，直到文件全部被读取完毕<br>第三步：当读至输入流末尾时，执行END{action;处理内容}语句块<br>BEGIN语句块在awk开始从输入流中读取之前被执行，这是一个可选的语句块，比如变量初始化、打印输出表格的表头等语句通常写在BEGIN语句块中<br>END语句块在awk从输入流中读取完所有的行之后即可被执行，比如打印所有行的分析结果这类信息汇总都是在END语句块中完成，它也是一个可选语句块<br>pattern语句块中的通用命令是最重要的部分，也是可选的，如果没有提供pattern语句块，则默认执行{print}，即打印每一个读取到的行，awk读取的每一行都会执行该语句块<br>print格式：print item1，item2…（item条目）  </p>
+<p>要点：  </p>
+<ol>
+<li>逗号分隔符  </li>
+<li>输出的各item可以是字符串，也可以是数值；当前记录的字段、变量或awk的表达式  </li>
+<li>如省略item，相当于print $0<br>实例<br>无论输入什么都打印hello,awk<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@centos ~]$   awk <span class="string">'&#123;print  "hello,awk"&#125;'</span> </span><br><span class="line">nishi</span><br><span class="line">hello,awk</span><br><span class="line">ok</span><br><span class="line">hello,awk</span><br><span class="line">^C</span><br><span class="line">[sgsm@centos ~]$</span><br></pre></td></tr></table></figure>
+指定分隔符打印所有<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@centos ~]$ awk -F: <span class="string">'&#123;print&#125;'</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br><span class="line">sync:x:5:0:sync:/sbin:/bin/sync</span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br><span class="line">halt:x:7:0:halt:/sbin:/sbin/halt</span><br></pre></td></tr></table></figure>
+指定分隔符打印指定列<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@centos ~]$ awk -F: <span class="string">'&#123;print $1&#125;'</span>  /etc/passwd</span><br><span class="line">root</span><br><span class="line">bin</span><br><span class="line">daemon</span><br><span class="line">adm</span><br><span class="line">lp</span><br><span class="line">sync</span><br><span class="line">shutdown</span><br><span class="line">halt</span><br><span class="line">mail</span><br><span class="line">uucp</span><br><span class="line">operator</span><br><span class="line">games</span><br><span class="line">gopher</span><br><span class="line">ftp</span><br></pre></td></tr></table></figure>
+指定分隔符打印第一列和第七列以table键分开<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@centos ~]$ awk -F: <span class="string">'&#123;print $1 " \t " $7&#125;'</span>  /etc/passwd </span><br><span class="line">root     /bin/bash</span><br><span class="line">bin      /sbin/nologin</span><br><span class="line">daemon   /sbin/nologin</span><br><span class="line">adm      /sbin/nologin</span><br><span class="line">lp       /sbin/nologin</span><br><span class="line">sync     /bin/sync</span><br><span class="line">shutdown         /sbin/shutdown</span><br></pre></td></tr></table></figure>
+变量：内置和自定义变量<br>FS：输入字符分隔符,默认为空白字符<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@centos ~]$ awk -v  FS=<span class="string">':'</span> <span class="string">'&#123;print $1,$3,$7&#125;'</span> /etc/passwd   </span><br><span class="line">root 0 /bin/bash</span><br><span class="line">bin 1 /sbin/nologin</span><br><span class="line">daemon 2 /sbin/nologin</span><br><span class="line">adm 3 /sbin/nologin</span><br><span class="line">lp 4 /sbin/nologin</span><br><span class="line">sync 5 /bin/sync</span><br><span class="line">shutdown 6 /sbin/shutdown</span><br><span class="line"></span><br><span class="line">[sgsm@centos ~]$ awk -F: <span class="string">'&#123;print $1,$3,$7&#125;'</span> /etc/passwd          </span><br><span class="line">root 0 /bin/bash</span><br><span class="line">bin 1 /sbin/nologin</span><br><span class="line">daemon 2 /sbin/nologin</span><br><span class="line">adm 3 /sbin/nologin</span><br><span class="line">lp 4 /sbin/nologin</span><br><span class="line">sync 5 /bin/sync</span><br><span class="line">shutdown 6 /sbin/shutdown</span><br></pre></td></tr></table></figure>
+OFS:输出字符分隔符,默认为空白字符<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@centos ~]$ awk -v FS=<span class="string">':'</span> -v OFS=<span class="string">'--'</span> <span class="string">'&#123;print$1,$3,$7&#125;'</span> /etc/passwd</span><br><span class="line">root--0--/bin/bash</span><br><span class="line">bin--1--/sbin/nologin</span><br><span class="line">daemon--2--/sbin/nologin</span><br><span class="line">adm--3--/sbin/nologin</span><br><span class="line">lp--4--/sbin/nologin</span><br><span class="line">sync--5--/bin/sync</span><br><span class="line">shutdown--6--/sbin/shutdown</span><br></pre></td></tr></table></figure>
+NF:字段数量<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打印列数</span></span><br><span class="line">[sgsm@centos ~]$ awk -F: <span class="string">'&#123;print NF&#125;'</span> /etc/passwd</span><br><span class="line">7</span><br><span class="line">7</span><br><span class="line">7</span><br><span class="line">7</span><br><span class="line">7</span><br><span class="line">7</span><br><span class="line"><span class="comment"># 打印最后一列内容</span></span><br><span class="line">[sgsm@centos ~]$ awk -F: <span class="string">'&#123;print $NF&#125;'</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">/bin/sync</span><br><span class="line">/sbin/shutdown</span><br><span class="line"><span class="comment"># 打印倒数第二列内容</span></span><br><span class="line">[sgsm@centos ~]$ awk -F: <span class="string">'&#123;print $(NF-1)&#125;'</span> /etc/passwd  </span><br><span class="line">/root</span><br><span class="line">/bin</span><br><span class="line">/sbin</span><br><span class="line">/var/adm</span><br><span class="line">/var/spool/lpd</span><br><span class="line">/sbin</span><br><span class="line">/sbin</span><br><span class="line">/sbin</span><br></pre></td></tr></table></figure>
+NR：行号<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打印第二行</span></span><br><span class="line">[sgsm@centos ~]$ awk  <span class="string">'NR==2&#123;print &#125;'</span> /etc/passwd    </span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br></pre></td></tr></table></figure>
+FILENAME：当前文件名  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk '&#123;print FILENAME&#125;' /etc/fstab  </span></span><br><span class="line">/etc/fstab</span><br><span class="line">/etc/fstab</span><br><span class="line">/etc/fstab</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+ARGC：命令行参数的个数  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk '&#123;print ARGC&#125;' /etc/fstab /etc/inittab  </span></span><br><span class="line">3</span><br><span class="line">3</span><br><span class="line">3</span><br><span class="line">...</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print ARGC&#125;' /etc/fstab /etc/inittab  </span></span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数，1为第二个参数，以此类推）  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print ARGV[0]&#125;' /etc/fstab /etc/inittab  </span></span><br><span class="line">awk</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print ARGV[1]&#125;' /etc/fstab /etc/inittab  </span></span><br><span class="line">/etc/fstab</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="自定义变量"><a href="#自定义变量" class="headerlink" title="自定义变量"></a>自定义变量</h2><ol>
+<li><code>-v var=value</code>变量名区分大小写  </li>
+<li>在program中直接定义  </li>
+</ol>
+<p>示例：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -v test='hello gawk' '&#123;print tast&#125;' /etc/fstab  </span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">[root@docker ~]<span class="comment"># awk -v test='hello gawk' 'BEGIN&#123;print test&#125;'  </span></span><br><span class="line">hello gawk</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;test="hello gawk";print test&#125;'  </span></span><br><span class="line">hello gawk</span><br></pre></td></tr></table></figure>
+
+<h1 id="awk格式化"><a href="#awk格式化" class="headerlink" title="awk格式化"></a>awk格式化</h1><p><code>printf</code>命令<br>格式输出：<code>printf &quot;FORMAT&quot;,item1,item2…</code><br>必须指定FORMAT（格式）<br>不会自动换行，需要显示给出换行控制符 <code>\n</code><br>FORMAT中需要分别为后面每个item指定格式符<br>格式符：与item一一对应<br><code>%d</code>,<code>%i</code>：显示十进制整数<br><code>%s</code>：显示字符串<br><code>%%</code>：显示%自身  </p>
+<p>修饰符<br><code>#</code>：打印#个字符宽度（可以为小数）<br><code>-</code>：左对齐%-15s（默认不带 - 右对齐）<br><code>+</code>：显示数值的正负符号%+d  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: '&#123;printf "%s",$1&#125;' /etc/passwd  </span></span><br><span class="line">rootbindaemonadmlpsyncshutdownhaltmailoperatorgamesftpnobodydbussystemd-coredumpsystemd-resolvetsspolkitdlibstoragemgmtcockpit-wscockpit-wsinstancesssdsshdchronyrngdunboundnginx[root@docker ~]<span class="comment">#   </span></span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '&#123;printf "USERNAME:%s\n",$1&#125;' /etc/passwd  </span></span><br><span class="line">USERNAME:root</span><br><span class="line">USERNAME:bin</span><br><span class="line">USERNAME:daemon</span><br><span class="line">...</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '&#123;printf "USERNAME:%s UID:%d\n",$1,$3&#125;' /etc/passwd  </span></span><br><span class="line">USERNAME:root UID:0</span><br><span class="line">USERNAME:bin UID:1</span><br><span class="line">USERNAME:daemon UID:2</span><br><span class="line">...</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '&#123;printf "USERNAME:%15s UID:%d\n",$1,$3&#125;' /etc/passwd  </span></span><br><span class="line">USERNAME:           root UID:0</span><br><span class="line">USERNAME:            bin UID:1</span><br><span class="line">USERNAME:         daemon UID:2</span><br><span class="line">...</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '&#123;printf "USERNAME:%-15s UID:%d\n",$1,$3&#125;' /etc/passwd  </span></span><br><span class="line">USERNAME:root            UID:0</span><br><span class="line">USERNAME:bin             UID:1</span><br><span class="line">USERNAME:daemon          UID:2</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h1 id="awk操作符"><a href="#awk操作符" class="headerlink" title="awk操作符"></a>awk操作符</h1><h2 id="算数操作符："><a href="#算数操作符：" class="headerlink" title="算数操作符："></a>算数操作符：</h2><p><code>x+y</code>,<code>x-y</code>,<code>x*y</code>,<code>x/y</code>,<code>x^y</code>,<code>x%y</code>（x%y，即x÷y取余数）  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 1+2&#125;'</span></span><br><span class="line">3</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 1-2&#125;'</span></span><br><span class="line">-1</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 1*2&#125;'</span></span><br><span class="line">2</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 1/2&#125;'</span></span><br><span class="line">0.5</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 1^2&#125;'</span></span><br><span class="line">1</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 1%2&#125;'</span></span><br><span class="line">1</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 3%2&#125;'</span></span><br><span class="line">1</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 3%1&#125;'</span></span><br><span class="line">0</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;print 5%3&#125;'</span></span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<p><code>-x</code>：转换为负数（-用双引号引起来，可以在0前面加上-号）  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: '&#123;print -$3&#125;' /etc/passwd</span></span><br><span class="line">0</span><br><span class="line">-1</span><br><span class="line">-2</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><code>+x</code>：转换为数值（同-，可以用双引号引起来）  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: '&#123;print +$3&#125;' /etc/passwd</span></span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="字符串操作符：没有符号的操作符，字符串连接"><a href="#字符串操作符：没有符号的操作符，字符串连接" class="headerlink" title="字符串操作符：没有符号的操作符，字符串连接"></a>字符串操作符：没有符号的操作符，字符串连接</h2><h2 id="赋值操作符："><a href="#赋值操作符：" class="headerlink" title="赋值操作符："></a>赋值操作符：</h2><p><code>=</code>，<code>+=</code>，<code>-=</code>，<code>*=</code>，<code>/=</code>，<code>%=</code>，<code>^=</code>，<code>++</code>，<code>--</code>（++每次加1，–每次减1）  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;a=1;print a++,a&#125;'</span></span><br><span class="line">1 2</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;a=1;print a--,a&#125;'</span></span><br><span class="line">1 0</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;a=1;print --a,a&#125;'</span></span><br><span class="line">0 0</span><br><span class="line">[root@docker ~]<span class="comment"># awk 'BEGIN&#123;a=1;print ++a,a&#125;'</span></span><br><span class="line">2 2</span><br></pre></td></tr></table></figure>
+
+<h2 id="比较操作符："><a href="#比较操作符：" class="headerlink" title="比较操作符："></a>比较操作符：</h2><p><code>&gt;</code>，<code>&gt;=</code>，<code>&lt;</code>，<code>&lt;=</code>，<code>!=</code>，<code>==</code>  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3 &gt; 999&#123;print $3&#125;' /etc/passwd</span></span><br><span class="line">65534</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3 &gt;= 999&#123;print $3&#125;' /etc/passwd</span></span><br><span class="line">65534</span><br><span class="line">999</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3 &lt; 3&#123;print $3&#125;' /etc/passwd</span></span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3 &lt;= 3&#123;print $3&#125;' /etc/passwd</span></span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3 != 2&#123;print $3&#125;' /etc/passwd</span></span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">3</span><br><span class="line">...</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3 == 2&#123;print $3&#125;' /etc/passwd</span></span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h2 id="模式匹配符："><a href="#模式匹配符：" class="headerlink" title="模式匹配符："></a>模式匹配符：</h2><p><code>~</code>：左边包含右边匹配到的内容<br><code>!~</code>：左边不包含右边匹配到的内容  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk '$0 ~ /root/&#123;print&#125;' /etc/passwd   # 支持正则表达式</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">[root@docker ~]<span class="comment"># cat /etc/passwd | awk '$0 !~ /^root/'</span></span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="逻辑操作符"><a href="#逻辑操作符" class="headerlink" title="逻辑操作符"></a>逻辑操作符</h2><p>或 <code>||</code>，与 <code>&amp;&amp;</code>，非<code>!</code>  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3&gt;=0 &amp;&amp; $3&lt;=3&#123;print $1,$3&#125;' /etc/passwd</span></span><br><span class="line">root 0</span><br><span class="line">bin 1</span><br><span class="line">daemon 2</span><br><span class="line">adm 3</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3==0 || $3&lt;=3&#123;print $1,$3&#125;' /etc/passwd</span></span><br><span class="line">root 0</span><br><span class="line">bin 1</span><br><span class="line">daemon 2</span><br><span class="line">adm 3</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '!($3&gt;=3)&#123;print $1,$3&#125;' /etc/passwd</span></span><br><span class="line">root 0</span><br><span class="line">bin 1</span><br><span class="line">daemon 2</span><br></pre></td></tr></table></figure>
+
+<p><code>PATTERN</code>：根据pattern条件，过滤匹配的行，再做处理<br>如果未指定：空模式，匹配每一行<br><code>/正则表达式/</code>：仅处理能够被模式匹配到的行，需要用 <code>/ /</code> 括起来  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk '/^UUID/&#123;print $1&#125;' /etc/fstab</span></span><br><span class="line">UUID=8b1f186e-ffcb-4b8e-a9e2-caba58a3a850</span><br><span class="line">[root@docker ~]<span class="comment"># awk '!/^UUID/&#123;print $1&#125;' /etc/fstab</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">/dev/mapper/cl-root</span><br><span class="line">/dev/mapper/cl-swap</span><br></pre></td></tr></table></figure>
+
+<p>关系表达式：结果有”真”有”假”；结果为”真”才会被处理；<br>真：结果为非0值，非空字符串<br>假：结果为空字符串<br>示例：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: '$3&gt;1000&#123;print $1,$3&#125;' /etc/passwd</span></span><br><span class="line">nobody 65534</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '$NF~/bash$/&#123;print $1,$NF&#125;' /etc/passwd</span></span><br><span class="line">root /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p><code>line ranges</code>：行范围<br><code>startline,endline</code>：<code>/pat1/,/pat2/</code>不支持直接给出数字格式  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: '/^root/,/^lp/&#123;print $1&#125;' /etc/passwd</span></span><br><span class="line">root</span><br><span class="line">bin</span><br><span class="line">daemon</span><br><span class="line">adm</span><br><span class="line">lp</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: '(NR&gt;=2&amp;&amp;NR&lt;=5)&#123;print $1&#125;' /etc/passwd</span></span><br><span class="line">bin</span><br><span class="line">daemon</span><br><span class="line">adm</span><br><span class="line">lp</span><br></pre></td></tr></table></figure>
+
+<p><code>BEGIN/END</code>模式<br><code>BEGIN{}</code>：仅在开始处理文件中的文本之前执行一次<br><code>END{}</code>：仅在文本处理完成之后执行一次  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]<span class="comment"># awk -F: 'BEGIN&#123;print "USER UID"&#125;(NR&gt;=2&amp;&amp;NR&lt;=4)&#123;print $1":"$3&#125;END&#123;print "end file"&#125;' /etc/passwd</span></span><br><span class="line">USER UID</span><br><span class="line">bin:1</span><br><span class="line">daemon:2</span><br><span class="line">adm:3</span><br><span class="line">end file</span><br><span class="line">[root@docker ~]<span class="comment"># cat /etc/passwd | head -3 | awk -F: '&#123;print "USER UID";print $1":"$3&#125;END&#123;print "end file"&#125;'</span></span><br><span class="line">USER UID</span><br><span class="line">root:0</span><br><span class="line">USER UID</span><br><span class="line">bin:1</span><br><span class="line">USER UID</span><br><span class="line">daemon:2</span><br><span class="line">end file</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: 'BEGIN&#123;print "USER UID \n ---------"&#125;&#123;print $1,$3&#125;' /etc/passwd</span></span><br><span class="line">USER UID </span><br><span class="line"> ---------</span><br><span class="line">root 0</span><br><span class="line">bin 1</span><br><span class="line">...</span><br><span class="line">[root@docker ~]<span class="comment"># awk -F: 'BEGIN&#123;print "USER UID \n ---------"&#125;&#123;print $1,$3&#125;'END'&#123;print "========="&#125;' /etc/passwd</span></span><br><span class="line">USER UID </span><br><span class="line"> ---------</span><br><span class="line">root 0</span><br><span class="line">...</span><br><span class="line">nginx 990</span><br><span class="line">=========</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="find"><a href="#find" class="headerlink" title="find"></a>find</h1>
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/07/14/shell-support/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/" rel="tag">shell</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/07/14/python-20/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            python之面向对象
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/13/tar-exclued/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">tar打包时排除或忽略某个子目录或文件</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

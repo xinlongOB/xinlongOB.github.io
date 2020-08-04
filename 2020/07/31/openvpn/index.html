@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    CentOS7 搭建OpenVPN服务器 |  我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-openvpn" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  CentOS7 搭建OpenVPN服务器
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/31/openvpn/" class="article-date">
+  <time datetime="2020-07-31T08:34:39.000Z" itemprop="datePublished">2020-07-31</time>
+</a>
+      
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">13 分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h2 id="简介和工作原理"><a href="#简介和工作原理" class="headerlink" title="简介和工作原理"></a>简介和工作原理</h2><p>VPN直译就是虚拟专用通道,是提供给企业之间或者个人与公司之间安全数据传输的隧道,OpenVPN无疑是Linux下开源VPN的先锋,提供了良好的性能和友好的用户GUI<br>它大量使用了OpenSSL加密库中的SSLv3/TLSv1协议函数库<br>目前OpenVPN能在Solaris、Linux、OpenBSD、FreeBSD、NetBSD、Mac OS X与Microsoft Windows以及Android和iOS上运行,并包含了许多安全性的功能。它并不是一个基于Web的VPN软件,也不与IPsec及其他VPN软件包兼容</p>
+<p>OpenVPN 是一个基于 OpenSSL 库的应用层 VPN 实现。和传统 VPN 相比,它的优点是简单易用</p>
+<p>OpenVPN服务器一般需要配置一个虚拟IP地址池和一个自用的静态虚拟IP地址（静态地址和地址池必须在同一个子网中）,然后为每一个成功建立SSL连接的客户端动态分配一个虚拟IP地址池中未分配的地址。这样,物理网络中的客户端和OpenVPN服务器就连接成一个虚拟网络上的星型结构局域网,OpenVPN服务器成为每个客户端在虚拟网络上的网关。OpenVPN服务器同时提供对客户端虚拟网卡的路由管理。当客户端对OpenVPN服务器后端的应用服务器的任何访问时,数据包都会经过路由流经虚拟网卡,OpenVPN程序在虚拟网卡上截获数据IP报文,然后使用SSL协议将这些IP报文封装起来,再经过物理网卡发送出去。OpenVPN的服务器和客户端在虚拟网卡之上建立起一个虚拟的局域网络,这个虚拟的局域网对系统的用户来说是透明的</p>
+<p>OpenVPN的服务器和客户端支持tcp和udp两种连接方式,只需在服务端和客户端预先定义好使用的连接方式（tcp或udp）和端口号,客户端和服务端在这个连接的基础上进行SSL握手。连接过程包括SSL的握手以及虚拟网络上的管理信息,OpenVPN将虚拟网上的网段、地址、路由发送给客户端。连接成功后,客户端和服务端建立起SSL安全连接,客户端和服务端的数据都流入虚拟网卡做SSL的处理,再在tcp或udp的连接上从物理网卡发送出去</p>
+<h2 id="环境部署"><a href="#环境部署" class="headerlink" title="环境部署"></a>环境部署</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.89 外网     39.19.18.30 内网</span><br><span class="line"></span><br><span class="line">系统环境</span><br><span class="line">[root@localhost ~]<span class="comment"># cat /etc/centos-release</span></span><br><span class="line">CentOS Linux release 7.5.1804 (Core) </span><br><span class="line">[root@localhost ~]<span class="comment"># </span></span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># uname -r</span></span><br><span class="line">3.10.0-862.el7.x86_64</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<h3 id="制作ca证书"><a href="#制作ca证书" class="headerlink" title="制作ca证书"></a>制作ca证书</h3><p>首先我们先使用easy-rsa制作openVPN证书<br>下载并解压easy-rsa软件包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install  lrzsz  unzip   wget   -y</span><br><span class="line">mkdir /data/tools -p </span><br><span class="line">wget -P /data/tools http://down.i4t.com/easy-rsa.zip</span><br><span class="line">unzip -d /usr/<span class="built_in">local</span> /data/tools/easy-rsa.zip</span><br></pre></td></tr></table></figure>
+<p>在开始制作CA证书之前,我们还需要编辑vars文件,修改如下相关选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vi  /usr/<span class="built_in">local</span>/easy-rsa-old-master/easy-rsa/2.0/vars</span><br><span class="line">    <span class="built_in">export</span> KEY_COUNTRY=<span class="string">"cn"</span></span><br><span class="line">    <span class="built_in">export</span> KEY_PROVINCE=<span class="string">"BJ"</span></span><br><span class="line">    <span class="built_in">export</span> KEY_CITY=<span class="string">"BJ"</span></span><br><span class="line">    <span class="built_in">export</span> KEY_ORG=<span class="string">"abcdocker"</span></span><br><span class="line">    <span class="built_in">export</span> KEY_EMAIL=<span class="string">"cyh@i4t.com"</span></span><br><span class="line">    <span class="built_in">export</span> KEY_CN=abc</span><br><span class="line">    <span class="built_in">export</span> KEY_NAME=abc</span><br><span class="line">    <span class="built_in">export</span> KEY_OU=abc</span><br><span class="line"></span><br><span class="line">    <span class="comment">#行数大约67行开始,主要是修改默认的注册信息,比如注册公司、公司名称、部门、国家城市等</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：以上内容,我们也可以使用系统默认的,也就是说不进行修改也是可以使用的<br>然后使用使环境变量生效</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#初始化环境边看</span></span><br><span class="line"><span class="built_in">source</span> vars</span><br><span class="line">./clean-all</span><br><span class="line"></span><br><span class="line"><span class="comment">#注意：执行clean-all命令会在当前目录下创建一个名词为keys的目录</span></span><br></pre></td></tr></table></figure>
+<p>接下来开始正式制作CA证书,命令如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./build-ca</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成根证书ca.crt和根密钥ca.key</span></span><br><span class="line"><span class="comment">#因为在vars中填写了证书的基本信息,所以这里一路回车即可</span></span><br></pre></td></tr></table></figure>
+<p>可以查看keys到目录,已经生成ca.crt和ca.key两个文件,其中ca.crt证书文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost 2.0]<span class="comment"># ls keys/</span></span><br><span class="line">ca.crt  ca.key  index.txt  serial</span><br></pre></td></tr></table></figure>
+<h3 id="制作Server端证书"><a href="#制作Server端证书" class="headerlink" title="制作Server端证书"></a>制作Server端证书</h3><p>为服务端生成证书和密钥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#一直回车,2个Y</span></span><br><span class="line"></span><br><span class="line">[root@localhost 2.0]<span class="comment"># ./build-key-server server</span></span><br><span class="line">....</span><br><span class="line">An optional company name []:</span><br><span class="line">Using configuration from /usr/<span class="built_in">local</span>/easy-rsa-old-master/easy-rsa/2.0/openssl-1.0.0.cnf</span><br><span class="line">Check that the request matches the signature</span><br><span class="line">Signature ok</span><br><span class="line">The Subject<span class="string">'s Distinguished Name is as follows</span></span><br><span class="line"><span class="string">countryName           :PRINTABLE:'</span>cn<span class="string">'</span></span><br><span class="line"><span class="string">stateOrProvinceName   :PRINTABLE:'</span>BJ<span class="string">'</span></span><br><span class="line"><span class="string">localityName          :PRINTABLE:'</span>BJ<span class="string">'</span></span><br><span class="line"><span class="string">organizationName      :PRINTABLE:'</span>abcdocker<span class="string">'</span></span><br><span class="line"><span class="string">organizationalUnitName:PRINTABLE:'</span>abc<span class="string">'</span></span><br><span class="line"><span class="string">commonName            :PRINTABLE:'</span>abc<span class="string">'</span></span><br><span class="line"><span class="string">name                  :PRINTABLE:'</span>abc<span class="string">'</span></span><br><span class="line"><span class="string">emailAddress          :IA5STRING:'</span>cyh@i4t.com<span class="string">'</span></span><br><span class="line"><span class="string">Certificate is to be certified until Jan 31 14:01:35 2030 GMT (3650 days)</span></span><br><span class="line"><span class="string">Sign the certificate? [y/n]:y</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">1 out of 1 certificate requests certified, commit? [y/n]y</span></span><br><span class="line"><span class="string">Write out database with 1 new entries</span></span><br><span class="line"><span class="string">Data Base Updated</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 这里的server就是我们server端的证书</span></span><br></pre></td></tr></table></figure>
+<p>查看新生成的证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost 2.0]<span class="comment"># ls keys</span></span><br><span class="line">01.pem   abc.key  index.txt       serial</span><br><span class="line">server.crt  ca.crt   index.txt.attr  serial.old</span><br><span class="line">server.csr  ca.key   index.txt.old</span><br></pre></td></tr></table></figure>
+<p>这里我们已经生成了server.crt、server.key、server.csr三个文件,其中server.crt和server.key两个文件是我们需要使用的</p>
+<h3 id="制作Client端证书"><a href="#制作Client端证书" class="headerlink" title="制作Client端证书"></a>制作Client端证书</h3><p>这里我们创建2个用户,分别为client1和client2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#每一个登陆的VPN客户端需要有一个证书,每个证书在同一时刻只能供一个客户端连接,下面建立2份</span></span><br><span class="line"><span class="comment">#为客户端生成证书和密钥（一路按回车,直到提示需要输入y/n时,输入y再按回车,一共两次）</span></span><br><span class="line">./build-key client1</span><br><span class="line">./build-key client2</span><br></pre></td></tr></table></figure>
+<p>每一个登陆的VPN客户端需要有一个证书,每个证书在同一时刻只可以一个客户端连接(可以修改配置文件)</p>
+<p>现在为服务器生成加密交换时的Diffie-Hellman文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./build-dh</span><br><span class="line"><span class="comment"># 创建迪菲·赫尔曼密钥,会生成dh2048.pem文件（生成过程比较慢,在此期间不要去中断它）</span></span><br></pre></td></tr></table></figure>
+<p>证书生成完毕</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost 2.0]<span class="comment"># ll keys</span></span><br><span class="line">总用量 116</span><br><span class="line">-rw-r--r-- 1 root root 8224 7月  31 14:36 01.pem</span><br><span class="line">-rw-r--r-- 1 root root 8107 7月  31 14:37 02.pem</span><br><span class="line">-rw-r--r-- 1 root root 8107 7月  31 14:37 03.pem</span><br><span class="line">-rw-r--r-- 1 root root 2431 7月  31 14:36 ca.crt</span><br><span class="line">-rw------- 1 root root 3272 7月  31 14:36 ca.key</span><br><span class="line">-rw-r--r-- 1 root root 8107 7月  31 14:37 client1.crt</span><br><span class="line">-rw-r--r-- 1 root root 1777 7月  31 14:37 client1.csr</span><br><span class="line">-rw------- 1 root root 3272 7月  31 14:37 client1.key</span><br><span class="line">-rw-r--r-- 1 root root 8107 7月  31 14:37 client2.crt</span><br><span class="line">-rw-r--r-- 1 root root 1777 7月  31 14:37 client2.csr</span><br><span class="line">-rw------- 1 root root 3272 7月  31 14:37 client2.key</span><br><span class="line">-rw-r--r-- 1 root root  424 7月  31 14:38 dh2048.pem</span><br><span class="line">-rw-r--r-- 1 root root  410 7月  31 14:37 index.txt</span><br><span class="line">-rw-r--r-- 1 root root   21 7月  31 14:37 index.txt.attr</span><br><span class="line">-rw-r--r-- 1 root root   21 7月  31 14:37 index.txt.attr.old</span><br><span class="line">-rw-r--r-- 1 root root  273 7月  31 14:37 index.txt.old</span><br><span class="line">-rw-r--r-- 1 root root    3 7月  31 14:37 serial</span><br><span class="line">-rw-r--r-- 1 root root    3 7月  31 14:37 serial.old</span><br><span class="line">-rw-r--r-- 1 root root 8224 7月  31 14:36 server.crt</span><br><span class="line">-rw-r--r-- 1 root root 1777 7月  31 14:36 server.csr</span><br><span class="line">-rw------- 1 root root 3272 7月  31 14:36 server.key</span><br><span class="line">[root@localhost 2.0]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>其中包含了一个client1用户和client2用户的证书</p>
+<blockquote>
+<p>其中只有.crt和.key文件是我们需要使用的</p>
+</blockquote>
+<h3 id="安装OpenVPN"><a href="#安装OpenVPN" class="headerlink" title="安装OpenVPN"></a>安装OpenVPN</h3><p>安装vpn的方法有2种,一种是使用yum安装,另外一种是编译安装。这两个我们选择一个就可以<br>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装依赖包</span></span><br><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line">yum makecache</span><br><span class="line">yum install -y lzo lzo-devel openssl openssl-devel pam pam-devel net-tools git lz4-devel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#下载openVPN软件包</span></span><br><span class="line">wget -P /data/tools http://down.i4t.com/openvpn-2.4.7.tar.gz</span><br><span class="line"><span class="built_in">cd</span> /data/tools</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装openVPN</span></span><br><span class="line">tar zxf openvpn-2.4.7.tar.gz</span><br><span class="line"><span class="built_in">cd</span> openvpn-2.4.7</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/openvpn-2.4.7</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建软连接</span></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/openvpn-2.4.7 /usr/<span class="built_in">local</span>/openvpn</span><br></pre></td></tr></table></figure>
+<p>yum安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line">yum clean all &amp;&amp; yum makecache</span><br><span class="line">yum install -y openvpn</span><br></pre></td></tr></table></figure>
+<h3 id="配置OpenVPN服务端"><a href="#配置OpenVPN服务端" class="headerlink" title="配置OpenVPN服务端"></a>配置OpenVPN服务端</h3><p>我们需要创建openVPN文件目录和证书目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># openVPN配置文件目录,yum安装默认存在</span></span><br><span class="line">mkdir /etc/openvpn</span><br><span class="line"></span><br><span class="line"><span class="comment">#openvpn证书目录</span></span><br><span class="line">mkdir /etc/openvpn/keys</span><br></pre></td></tr></table></figure>
+<p>生成tls-auth key并将其拷贝到证书目录中（防DDos攻击、UDP淹没等恶意攻击）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编译安装执行此句</span></span><br><span class="line">/usr/<span class="built_in">local</span>/openvpn/sbin/openvpn --genkey --secret ta.key</span><br><span class="line"></span><br><span class="line"><span class="comment"># yum安装执行此句</span></span><br><span class="line">openvpn --genkey --secret ta.key</span><br><span class="line"></span><br><span class="line"><span class="comment">#将本地的ta.key移动到openVPN证书目录</span></span><br><span class="line">mv ./ta.key /etc/openvpn/keys/</span><br></pre></td></tr></table></figure>
+<p>将我们上面生成的CA证书和服务端证书拷贝到证书目录中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/<span class="built_in">local</span>/easy-rsa-old-master/easy-rsa/2.0/keys/&#123;server.crt,server.key,ca.crt,dh2048.pem&#125; /etc/openvpn/keys/</span><br><span class="line"></span><br><span class="line">[root@localhost 2.0]<span class="comment"># ll /etc/openvpn/keys/</span></span><br><span class="line">总用量 28</span><br><span class="line">-rw-r--r-- 1 root root 2431 7月  31 15:21 ca.crt</span><br><span class="line">-rw-r--r-- 1 root root  424 7月  31 15:21 dh2048.pem</span><br><span class="line">-rw-r--r-- 1 root root 8224 7月  31 15:21 server.crt</span><br><span class="line">-rw------- 1 root root 3272 7月  31 15:21 server.key</span><br><span class="line">-rw------- 1 root root  636 7月  31 15:21 ta.key</span><br><span class="line">[root@localhost 2.0]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>拷贝OpenVPN配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编译安装</span></span><br><span class="line">cp /data/tools/openvpn-2.4.7/sample/sample-config-files/server.conf /etc/openvpn/</span><br><span class="line"></span><br><span class="line"><span class="comment"># yum安装</span></span><br><span class="line">cp /usr/share/doc/openvpn-2.4.9/sample/sample-config-files/server.conf /etc/openvpn/</span><br></pre></td></tr></table></figure>
+<p>接下来我们来配置服务端的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost 2.0]<span class="comment"># cat /etc/openvpn/server.conf  |grep -v ^#  |grep -v ^\; |grep  -v  ^$</span></span><br><span class="line">port 1194      <span class="comment">#openVPN端口</span></span><br><span class="line">proto udp      <span class="comment"># udp连接  也可以改成tcp  client改成对应的连接方式即可</span></span><br><span class="line">dev tun        <span class="comment"># 生成tun0虚拟网卡</span></span><br><span class="line">ca /etc/openvpn/keys/ca.crt       <span class="comment">#相关证书配置路径</span></span><br><span class="line">cert /etc/openvpn/keys/server.crt</span><br><span class="line">key /etc/openvpn/keys/server.key  <span class="comment"># This file should be kept secret</span></span><br><span class="line">dh /etc/openvpn/keys/dh2048.pem</span><br><span class="line">server 10.8.0.0 255.255.255.0     <span class="comment">#默认虚拟局域网网段,不要和实际的局域网冲突就可以</span></span><br><span class="line">ifconfig-pool-persist ipp.txt</span><br><span class="line">keepalive 10 120</span><br><span class="line">tls-auth /etc/openvpn/keys/ta.key 0 <span class="comment"># This file is secret</span></span><br><span class="line">cipher AES-256-CBC</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line">status openvpn-status.log</span><br><span class="line">verb 3</span><br><span class="line">explicit-exit-notify 1</span><br></pre></td></tr></table></figure>
+<h3 id="开启内核路由转发功能"><a href="#开启内核路由转发功能" class="headerlink" title="开启内核路由转发功能"></a>开启内核路由转发功能</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"net.ipv4.ip_forward = 1"</span> &gt;&gt;/etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+<h3 id="启动openvpn服务"><a href="#启动openvpn服务" class="headerlink" title="启动openvpn服务"></a>启动openvpn服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nohup  /usr/sbin/openvpn   --daemon  --config /etc/openvpn/server.conf   &amp;  </span><br><span class="line"></span><br><span class="line">[root@localhost 2.0]<span class="comment"># netstat  -atplnu  |grep  1194</span></span><br><span class="line">udp        0      0 0.0.0.0:1194            0.0.0.0:*                           4105/openvpn        </span><br><span class="line">[root@localhost 2.0]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>设置开机启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">" /usr/sbin/openvpn   --daemon  --config /etc/openvpn/server.conf &gt; /dev/null 2&gt;&amp;1 &amp;"</span> &gt;&gt;  /etc/rc.local</span><br></pre></td></tr></table></figure>
+<h3 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h3><p>以后我们如果想添加用户只需要到cd /usr/local/easy-rsa-old-master/easy-rsa/2.0目录下执行./build-key 用户名,在将keys目录下生成的用户名.crt和key导出,修改一下client.ovpn的用户key名称即可</p>
+<h2 id="客户端连接测试"><a href="#客户端连接测试" class="headerlink" title="客户端连接测试"></a>客户端连接测试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum安装</span></span><br><span class="line">cp /usr/share/doc/openvpn-2.4.9/sample/sample-config-files/client.conf    /root/</span><br><span class="line"></span><br><span class="line"><span class="comment">#修改如下,并将client.conf修改为client.ovpn</span></span><br><span class="line">[root@localhost 2.0]<span class="comment"># cat /root/client.conf</span></span><br><span class="line">client</span><br><span class="line">dev tun</span><br><span class="line">proto udp       <span class="comment"># 可server端对应</span></span><br><span class="line">remote 192.168.0.10 1194    <span class="comment">#openvpn服务器的外网IP和端口(可以写多个做到高可用)</span></span><br><span class="line">resolv-retry infinite</span><br><span class="line">nobind</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line">ca ca.crt</span><br><span class="line">cert client1.crt         <span class="comment">#用户的证书</span></span><br><span class="line">key client1.key</span><br><span class="line"></span><br><span class="line">tls-auth ta.key 1</span><br><span class="line">cipher AES-256-CBC</span><br><span class="line">comp-lzo</span><br><span class="line">verb 3</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#比较重点的就是修改remote 地址,这里的地址为server</span></span><br><span class="line">cert key,我们这里使用用户的证书,所以证书也应当修改为client1.crt和client1.key</span><br><span class="line">tls-auth 因为使用加密协议,所以ta.key也需要下载下来</span><br></pre></td></tr></table></figure>
+<p>修改后缀并导出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mv client.conf client.ovpn</span></span><br><span class="line">[root@localhost ~]<span class="comment"># sz client.ovpn </span></span><br><span class="line"><span class="comment">#同时还需要导出几个证书</span></span><br><span class="line">[root@localhost ~]<span class="comment">#  sz   /etc/openvpn/keys/ca.crt </span></span><br><span class="line">[root@localhost ~]<span class="comment">#  sz   /etc/openvpn/keys/ta.key </span></span><br><span class="line">[root@localhost ~]<span class="comment">#  sz   /usr/local/easy-rsa-old-master/easy-rsa/2.0/keys/client1.crt </span></span><br><span class="line">[root@localhost ~]<span class="comment">#  sz   /usr/local/easy-rsa-old-master/easy-rsa/2.0/keys/client1.key</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>Windows客户端下载<br><a href="http://down.i4t.com/openvpn-install-2.4.7-I606-Win10.exe" target="_blank" rel="noopener">http://down.i4t.com/openvpn-install-2.4.7-I606-Win10.exe</a></p>
+<p><a href="http://down.i4t.com/openvpn-install-2.4.7-I606-Win7.exe" target="_blank" rel="noopener">http://down.i4t.com/openvpn-install-2.4.7-I606-Win7.exe</a></p>
+<p>安装完成后点击桌面的logo,右击属性<br><img src="/2020/07/31/openvpn/2.png" alt><br>点击打开文件位置<br><img src="/2020/07/31/openvpn/3.png" alt><br>点击上方OpenVPN进入上级目录<br><img src="/2020/07/31/openvpn/4.png" alt><br>选择config目录<br><img src="/2020/07/31/openvpn/5.png" alt><br>将config目录下文件全部删除,然后将我们导出的5个证书复制过去<br><img src="/2020/07/31/openvpn/6.png" alt></p>
+<blockquote>
+<p>其中client1.*为client1用户的证书<br>现在我们进行启动openvpn客户端,进行连接<br><img src="/2020/07/31/openvpn/7.png" alt><br><img src="/2020/07/31/openvpn/8.png" alt><br><img src="/2020/07/31/openvpn/9.png" alt></p>
+</blockquote>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/07/31/openvpn/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openvpn/" rel="tag">openvpn</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2060/07/30/readme/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            makedown语法
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/28/nodejs/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">nodejs编译安装</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2020
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

@@ -43,6 +43,13 @@ var _hmt = _hmt || [];
 </script>
 
 
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
 <link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
 </head>
 
@@ -84,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">721</span>
+            <span class="post-count">757</span>
         </span>
     </span>
 
@@ -221,7 +228,8 @@ db.roles.find({ &quot;name&quot; : {$regex:/大气的.*/i}})        # 模糊查�
 
 db.towers.update({&quot;_id&quot; : ObjectId(&quot;5a6205e275a50f321e04b8ae&quot;)},{$set:{ &quot;levelCustomList.1.state&quot;:2}})        # 把匹配数据的levelCustomlist的第二个字段(state) 的值改为 2
 
-db.oreseasons.update({&quot;_id&quot; : ObjectId(&quot;5ad227d8da0d2e0522930156&quot;)},{$unset:{&quot;groups.0&quot;:&apos;&apos;}},false, true)    # 把匹配数据的groups中第一个字段删除</code></pre><h1 id="数据库的备份以及恢复"><a href="#数据库的备份以及恢复" class="headerlink" title="数据库的备份以及恢复"></a>数据库的备份以及恢复</h1><pre><code>mongodump   -h  IP    -d  DBNAME    -o  dir    # 备份数据库
+db.oreseasons.update({&quot;_id&quot; : ObjectId(&quot;5ad227d8da0d2e0522930156&quot;)},{$unset:{&quot;groups.0&quot;:&apos;&apos;}},false, true)    # 把匹配数据的groups中第一个字段删除</code></pre><h1 id="升序降序"><a href="#升序降序" class="headerlink" title="升序降序"></a>升序降序</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看表   已groupid 排序  1  为升序</span></span><br><span class="line">db.slgcountries.find().sort(&#123;<span class="string">"groupID"</span> : 1&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># -1 为降序</span></span><br><span class="line">db.slgcountries.find().sort(&#123;<span class="string">"groupID"</span> : -1&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="数据库的备份以及恢复"><a href="#数据库的备份以及恢复" class="headerlink" title="数据库的备份以及恢复"></a>数据库的备份以及恢复</h1><pre><code>mongodump   -h  IP    -d  DBNAME    -o  dir    # 备份数据库
 
 mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code></pre>
       
@@ -398,12 +406,6 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
     </ul>
     <ul>
       <li>
-        
-        
-        
-        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
-        <span class="division">|</span>
-        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
         
       </li>
     </ul>
