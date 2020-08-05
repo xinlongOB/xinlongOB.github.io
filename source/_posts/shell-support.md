@@ -639,6 +639,7 @@ P：显示替换成功的行
 W文件名：将替换成功的行保存至文件中
 ```
 ## awk
+awk是一种处理文本的编程语言工具，报告生成器，格式化文本输出  
 基本用法： 
 ```bash
 awk [options]  ’program’ var=value  file
@@ -649,6 +650,19 @@ awk [options]  ’program’ var=value  file
        -F 指名输入时用到的字符分隔符(不指定-F 按空格分隔)
        -v  var=value：自定义变量
 ```
+awk工作原理
+第一步：执行BEGIN{action;处理内容}语句块中的语句（可省）  
+第二步：从文件或标准输入（stdin）读取一行，然后执行pattern{action;处理内容}语句块，它逐行扫描文件，从第一行到最后一行重复这个过程，直到文件全部被读取完毕  
+第三步：当读至输入流末尾时，执行END{action;处理内容}语句块  
+BEGIN语句块在awk开始从输入流中读取之前被执行，这是一个可选的语句块，比如变量初始化、打印输出表格的表头等语句通常写在BEGIN语句块中  
+END语句块在awk从输入流中读取完所有的行之后即可被执行，比如打印所有行的分析结果这类信息汇总都是在END语句块中完成，它也是一个可选语句块  
+pattern语句块中的通用命令是最重要的部分，也是可选的，如果没有提供pattern语句块，则默认执行{print}，即打印每一个读取到的行，awk读取的每一行都会执行该语句块  
+print格式：print item1，item2...（item条目）  
+
+要点：  
+1. 逗号分隔符  
+2. 输出的各item可以是字符串，也可以是数值；当前记录的字段、变量或awk的表达式  
+3. 如省略item，相当于print $0  
 实例
 无论输入什么都打印hello,awk
 ```bash
@@ -733,6 +747,310 @@ lp--4--/sbin/nologin
 sync--5--/bin/sync
 shutdown--6--/sbin/shutdown
 ```
+NF:字段数量
+```bash
+# 打印列数
+[sgsm@centos ~]$ awk -F: '{print NF}' /etc/passwd
+7
+7
+7
+7
+7
+7
+# 打印最后一列内容
+[sgsm@centos ~]$ awk -F: '{print $NF}' /etc/passwd
+/bin/bash
+/sbin/nologin
+/sbin/nologin
+/sbin/nologin
+/sbin/nologin
+/bin/sync
+/sbin/shutdown
+# 打印倒数第二列内容
+[sgsm@centos ~]$ awk -F: '{print $(NF-1)}' /etc/passwd  
+/root
+/bin
+/sbin
+/var/adm
+/var/spool/lpd
+/sbin
+/sbin
+/sbin
+```
+NR：行号
+```bash
+# 打印第二行
+[sgsm@centos ~]$ awk  'NR==2{print }' /etc/passwd    
+bin:x:1:1:bin:/bin:/sbin/nologin
+```
+FILENAME：当前文件名  
+```bash
+[root@docker ~]# awk '{print FILENAME}' /etc/fstab  
+/etc/fstab
+/etc/fstab
+/etc/fstab
+...
+```
+ARGC：命令行参数的个数  
+```bash
+[root@docker ~]# awk '{print ARGC}' /etc/fstab /etc/inittab  
+3
+3
+3
+...
+[root@docker ~]# awk 'BEGIN{print ARGC}' /etc/fstab /etc/inittab  
+3
+```
+ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数，1为第二个参数，以此类推）  
+```bash
+[root@docker ~]# awk 'BEGIN{print ARGV[0]}' /etc/fstab /etc/inittab  
+awk
+[root@docker ~]# awk 'BEGIN{print ARGV[1]}' /etc/fstab /etc/inittab  
+/etc/fstab
+```
+
+## 自定义变量  
+1. `-v var=value`变量名区分大小写  
+2. 在program中直接定义  
+   
+示例：  
+```bash
+[root@docker ~]# awk -v test='hello gawk' '{print tast}' /etc/fstab  
+
+...
+[root@docker ~]# awk -v test='hello gawk' 'BEGIN{print test}'  
+hello gawk
+[root@docker ~]# awk 'BEGIN{test="hello gawk";print test}'  
+hello gawk
+```
+
+# awk格式化  
+
+`printf`命令  
+格式输出：`printf "FORMAT",item1,item2…`  
+必须指定FORMAT（格式）  
+不会自动换行，需要显示给出换行控制符 `\n`  
+FORMAT中需要分别为后面每个item指定格式符  
+格式符：与item一一对应  
+`%d`,`%i`：显示十进制整数  
+`%s`：显示字符串  
+`%%`：显示%自身  
+
+修饰符  
+`#`：打印#个字符宽度（可以为小数）  
+`-`：左对齐%-15s（默认不带 - 右对齐）  
+`+`：显示数值的正负符号%+d  
+```bash
+[root@docker ~]# awk -F: '{printf "%s",$1}' /etc/passwd  
+rootbindaemonadmlpsyncshutdownhaltmailoperatorgamesftpnobodydbussystemd-coredumpsystemd-resolvetsspolkitdlibstoragemgmtcockpit-wscockpit-wsinstancesssdsshdchronyrngdunboundnginx[root@docker ~]#   
+[root@docker ~]# awk -F: '{printf "USERNAME:%s\n",$1}' /etc/passwd  
+USERNAME:root
+USERNAME:bin
+USERNAME:daemon
+...
+[root@docker ~]# awk -F: '{printf "USERNAME:%s UID:%d\n",$1,$3}' /etc/passwd  
+USERNAME:root UID:0
+USERNAME:bin UID:1
+USERNAME:daemon UID:2
+...
+[root@docker ~]# awk -F: '{printf "USERNAME:%15s UID:%d\n",$1,$3}' /etc/passwd  
+USERNAME:           root UID:0
+USERNAME:            bin UID:1
+USERNAME:         daemon UID:2
+...
+[root@docker ~]# awk -F: '{printf "USERNAME:%-15s UID:%d\n",$1,$3}' /etc/passwd  
+USERNAME:root            UID:0
+USERNAME:bin             UID:1
+USERNAME:daemon          UID:2
+...
+```
+  
+# awk操作符  
+## 算数操作符：  
+`x+y`,`x-y`,`x*y`,`x/y`,`x^y`,`x%y`（x%y，即x÷y取余数）  
+```bash
+[root@docker ~]# awk 'BEGIN{print 1+2}'
+3
+[root@docker ~]# awk 'BEGIN{print 1-2}'
+-1
+[root@docker ~]# awk 'BEGIN{print 1*2}'
+2
+[root@docker ~]# awk 'BEGIN{print 1/2}'
+0.5
+[root@docker ~]# awk 'BEGIN{print 1^2}'
+1
+[root@docker ~]# awk 'BEGIN{print 1%2}'
+1
+[root@docker ~]# awk 'BEGIN{print 3%2}'
+1
+[root@docker ~]# awk 'BEGIN{print 3%1}'
+0
+[root@docker ~]# awk 'BEGIN{print 5%3}'
+2
+```
+`-x`：转换为负数（-用双引号引起来，可以在0前面加上-号）  
+```bash
+[root@docker ~]# awk -F: '{print -$3}' /etc/passwd
+0
+-1
+-2
+...
+```
+
+`+x`：转换为数值（同-，可以用双引号引起来）  
+```bash
+[root@docker ~]# awk -F: '{print +$3}' /etc/passwd
+0
+1
+2
+...
+```
+## 字符串操作符：没有符号的操作符，字符串连接  
+
+## 赋值操作符：  
+`=`，`+=`，`-=`，`*=`，`/=`，`%=`，`^=`，`++`，`--`（++每次加1，--每次减1）  
+```bash
+[root@docker ~]# awk 'BEGIN{a=1;print a++,a}'
+1 2
+[root@docker ~]# awk 'BEGIN{a=1;print a--,a}'
+1 0
+[root@docker ~]# awk 'BEGIN{a=1;print --a,a}'
+0 0
+[root@docker ~]# awk 'BEGIN{a=1;print ++a,a}'
+2 2
+```
+
+## 比较操作符：  
+`>`，`>=`，`<`，`<=`，`!=`，`==`  
+```bash
+[root@docker ~]# awk -F: '$3 > 999{print $3}' /etc/passwd
+65534
+[root@docker ~]# awk -F: '$3 >= 999{print $3}' /etc/passwd
+65534
+999
+[root@docker ~]# awk -F: '$3 < 3{print $3}' /etc/passwd
+0
+1
+2
+[root@docker ~]# awk -F: '$3 <= 3{print $3}' /etc/passwd
+0
+1
+2
+3
+[root@docker ~]# awk -F: '$3 != 2{print $3}' /etc/passwd
+0
+1
+3
+...
+[root@docker ~]# awk -F: '$3 == 2{print $3}' /etc/passwd
+2
+```
+
+## 模式匹配符：  
+`~`：左边包含右边匹配到的内容  
+`!~`：左边不包含右边匹配到的内容  
+```bash
+[root@docker ~]# awk '$0 ~ /root/{print}' /etc/passwd   # 支持正则表达式
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+[root@docker ~]# cat /etc/passwd | awk '$0 !~ /^root/'
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+...
+```
+
+## 逻辑操作符  
+或 `||`，与 `&&`，非`!`  
+```bash
+[root@docker ~]# awk -F: '$3>=0 && $3<=3{print $1,$3}' /etc/passwd
+root 0
+bin 1
+daemon 2
+adm 3
+[root@docker ~]# awk -F: '$3==0 || $3<=3{print $1,$3}' /etc/passwd
+root 0
+bin 1
+daemon 2
+adm 3
+[root@docker ~]# awk -F: '!($3>=3){print $1,$3}' /etc/passwd
+root 0
+bin 1
+daemon 2
+```
+  
+`PATTERN`：根据pattern条件，过滤匹配的行，再做处理  
+如果未指定：空模式，匹配每一行  
+`/正则表达式/`：仅处理能够被模式匹配到的行，需要用 `/ /` 括起来  
+```bash
+[root@docker ~]# awk '/^UUID/{print $1}' /etc/fstab
+UUID=8b1f186e-ffcb-4b8e-a9e2-caba58a3a850
+[root@docker ~]# awk '!/^UUID/{print $1}' /etc/fstab
+
+...
+/dev/mapper/cl-root
+/dev/mapper/cl-swap
+```
+  
+关系表达式：结果有"真"有"假"；结果为"真"才会被处理；  
+真：结果为非0值，非空字符串  
+假：结果为空字符串  
+示例：  
+```bash
+[root@docker ~]# awk -F: '$3>1000{print $1,$3}' /etc/passwd
+nobody 65534
+[root@docker ~]# awk -F: '$NF~/bash$/{print $1,$NF}' /etc/passwd
+root /bin/bash
+```
+  
+`line ranges`：行范围  
+`startline,endline`：`/pat1/,/pat2/`不支持直接给出数字格式  
+```bash
+[root@docker ~]# awk -F: '/^root/,/^lp/{print $1}' /etc/passwd
+root
+bin
+daemon
+adm
+lp
+[root@docker ~]# awk -F: '(NR>=2&&NR<=5){print $1}' /etc/passwd
+bin
+daemon
+adm
+lp
+```
+  
+`BEGIN/END`模式  
+`BEGIN{}`：仅在开始处理文件中的文本之前执行一次  
+`END{}`：仅在文本处理完成之后执行一次  
+```bash
+[root@docker ~]# awk -F: 'BEGIN{print "USER UID"}(NR>=2&&NR<=4){print $1":"$3}END{print "end file"}' /etc/passwd
+USER UID
+bin:1
+daemon:2
+adm:3
+end file
+[root@docker ~]# cat /etc/passwd | head -3 | awk -F: '{print "USER UID";print $1":"$3}END{print "end file"}'
+USER UID
+root:0
+USER UID
+bin:1
+USER UID
+daemon:2
+end file
+[root@docker ~]# awk -F: 'BEGIN{print "USER UID \n ---------"}{print $1,$3}' /etc/passwd
+USER UID 
+ ---------
+root 0
+bin 1
+...
+[root@docker ~]# awk -F: 'BEGIN{print "USER UID \n ---------"}{print $1,$3}'END'{print "========="}' /etc/passwd
+USER UID 
+ ---------
+root 0
+...
+nginx 990
+=========
+```
 
 
 
@@ -756,4 +1074,4 @@ shutdown--6--/sbin/shutdown
 
 
 
-## find
+# find

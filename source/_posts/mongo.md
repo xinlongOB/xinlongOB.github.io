@@ -129,7 +129,14 @@ date: 2020-01-08 16:09:50
 
 	db.oreseasons.update({"_id" : ObjectId("5ad227d8da0d2e0522930156")},{$unset:{"groups.0":''}},false, true)	# 把匹配数据的groups中第一个字段删除
 
+# 升序降序
+```bash
+# 查看表   已groupid 排序  1  为升序
+db.slgcountries.find().sort({"groupID" : 1})
 
+# -1 为降序
+db.slgcountries.find().sort({"groupID" : -1})
+```
 # 数据库的备份以及恢复
 
 	mongodump   -h  IP    -d  DBNAME    -o  dir	# 备份数据库
