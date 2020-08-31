@@ -282,10 +282,10 @@ sudo docker stop test
 然后停止服务
 ```bash
 sudo systemctl stop docker
-```	
+```
 
 修改配置文件&emsp;&emsp; ( [hash_of_the_container] 为容器id)
-```
+```bash
 vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json
 在 hostconfig.json 里有 "PortBindings":{} 这个配置项，可以改成 "PortBindings":{"9001/tcp":[{"HostIp":"","HostPort":"900"}]}
 																				前者为容器端口，后者为宿主机端口
@@ -539,7 +539,8 @@ cat  file.tar  | docker  import  - NAME
 镜像导出：
 ```bash
 docker save 镜像 xxx.tar
-```  
+```
+
 镜像导入：
 ```bash
 docker load -i xxx.tar
