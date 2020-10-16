@@ -46,11 +46,425 @@
   </entry>
   
   <entry>
+    <title>centos中history命令显示时间以及用户</title>
+    <link href="http://yoursite.com/2020/09/14/histort-date/"/>
+    <id>http://yoursite.com/2020/09/14/histort-date/</id>
+    <published>2020-09-14T02:32:30.000Z</published>
+    <updated>2020-10-16T01:19:55.952Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在 /etc/profile 文件中添加&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="history" scheme="http://yoursite.com/tags/history/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自建mongo数据库迁移至云数据库MongoDB</title>
+    <link href="http://yoursite.com/2020/09/11/mongodump/"/>
+    <id>http://yoursite.com/2020/09/11/mongodump/</id>
+    <published>2020-09-11T08:45:18.000Z</published>
+    <updated>2020-09-11T09:33:06.722Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;创建云数据库MongoDB&quot;&gt;&lt;a href=&quot;#创建云数据库MongoDB&quot; class=&quot;headerlink&quot; title=&quot;创建云数据库MongoDB&quot;&gt;&lt;/a&gt;创建云数据库MongoDB&lt;/h2&gt;&lt;p&gt;首先 在云数据库MongoDB控制台创建实例 
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ansible报错</title>
+    <link href="http://yoursite.com/2020/09/05/ansible-error/"/>
+    <id>http://yoursite.com/2020/09/05/ansible-error/</id>
+    <published>2020-09-05T06:25:22.000Z</published>
+    <updated>2020-09-05T06:28:10.903Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;img src=&quot;/2020/09/05/ansible-error/1.png&quot; alt&gt;&lt;br&gt;原因：python库中urllib3 (1.22) or chardet (2.2.1) 的版本不兼容 解决如下：&lt;/p&gt;
+&lt;figure
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ansible-playbook之when条件语句</title>
+    <link href="http://yoursite.com/2020/08/26/ansible-play-when/"/>
+    <id>http://yoursite.com/2020/08/26/ansible-play-when/</id>
+    <published>2020-08-26T06:04:18.000Z</published>
+    <updated>2020-08-27T08:08:41.554Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;When语句&quot;&gt;&lt;a href=&quot;#When语句&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>阿里云服务器如何设置IPV6通过appstore的审核</title>
+    <link href="http://yoursite.com/2020/08/20/ipv6/"/>
+    <id>http://yoursite.com/2020/08/20/ipv6/</id>
+    <published>2020-08-20T07:02:10.000Z</published>
+    <updated>2020-08-20T11:56:58.204Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;苹果上架要求：要求支持IPV6only(因为阿里云主机没有IPV6only)&lt;br&gt;确认IPV6是否开启：&lt;/p&gt;
+&lt;p&gt;方式1：使用ifconfig查看自己的IP地址是否含有IPV6地址&lt;br&gt;&lt;img src=&quot;/2020/08/20/ipv6/1.png&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="ipv6" scheme="http://yoursite.com/tags/ipv6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx网站服务</title>
+    <link href="http://yoursite.com/2020/08/11/nginx/"/>
+    <id>http://yoursite.com/2020/08/11/nginx/</id>
+    <published>2020-08-11T07:20:01.000Z</published>
+    <updated>2020-08-22T06:54:40.915Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Nginx简介&quot;&gt;&lt;a href=&quot;#Nginx简介&quot; class=&quot;headerlink&quot; title=&quot;Nginx简介&quot;&gt;&lt;/a&gt;Nginx简介&lt;/h2&gt;&lt;p&gt;Nginx是一个高性能的 HTTP 和 反向代理 服务器,也是一个 IMAP/POP3/SMTP
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx 和 Apache 各有什么优缺点</title>
+    <link href="http://yoursite.com/2020/08/10/nginx-diff-apache/"/>
+    <id>http://yoursite.com/2020/08/10/nginx-diff-apache/</id>
+    <published>2020-08-10T06:44:55.000Z</published>
+    <updated>2020-08-10T07:04:39.975Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;nginx 相对 apache 的优点：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
+    
+      <category term="apache" scheme="http://yoursite.com/tags/apache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>cacti创建设备error解决</title>
+    <link href="http://yoursite.com/2020/08/08/cacti-error/"/>
+    <id>http://yoursite.com/2020/08/08/cacti-error/</id>
+    <published>2020-08-08T08:53:27.000Z</published>
+    <updated>2020-08-08T11:13:13.596Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;添加设备报错&quot;&gt;&lt;a href=&quot;#添加设备报错&quot; class=&quot;headerlink&quot; title=&quot;添加设备报错&quot;&gt;&lt;/a&gt;添加设备报错&lt;/h2&gt;&lt;p&gt;如何解决cacti的snmp
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="cacti" scheme="http://yoursite.com/tags/cacti/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS7下安装搭建Cacti 详解</title>
+    <link href="http://yoursite.com/2020/08/07/cacti/"/>
+    <id>http://yoursite.com/2020/08/07/cacti/</id>
+    <published>2020-08-07T06:39:52.000Z</published>
+    <updated>2020-08-08T11:13:09.106Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;什么是Cacti&quot;&gt;&lt;a href=&quot;#什么是Cacti&quot; class=&quot;headerlink&quot; title=&quot;什么是Cacti&quot;&gt;&lt;/a&gt;什么是Cacti&lt;/h2&gt;&lt;p&gt;Cacti
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="cacti" scheme="http://yoursite.com/tags/cacti/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>fail2ban防暴力破解</title>
+    <link href="http://yoursite.com/2020/08/06/fail2ban/"/>
+    <id>http://yoursite.com/2020/08/06/fail2ban/</id>
+    <published>2020-08-06T07:16:27.000Z</published>
+    <updated>2020-08-06T10:24:59.104Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;关于Fail2ban&quot;&gt;&lt;a href=&quot;#关于Fail2ban&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="fail2ban" scheme="http://yoursite.com/tags/fail2ban/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shell数组的应用</title>
+    <link href="http://yoursite.com/2020/08/06/shell-array/"/>
+    <id>http://yoursite.com/2020/08/06/shell-array/</id>
+    <published>2020-08-06T06:01:30.000Z</published>
+    <updated>2020-08-06T07:03:11.555Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;什么是数组&quot;&gt;&lt;a href=&quot;#什么是数组&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python报&quot;TypeError:abytes-likeobjectisrequired,not&#39;str&#39;&quot;解决办法</title>
+    <link href="http://yoursite.com/2020/08/06/not-str/"/>
+    <id>http://yoursite.com/2020/08/06/not-str/</id>
+    <published>2020-08-06T05:42:18.000Z</published>
+    <updated>2020-08-08T11:13:15.484Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;解决办法非常的简单，只需要用上python的bytes和str两种类型转换的函数encode()、decode()即可！&lt;/p&gt;
+&lt;p&gt;str通过encode()方法可以编码为指定的bytes；&lt;/p&gt;
+&lt;p&gt;反过来，如果我们从网络或磁盘上读取了字节流，那么读到的数据就是b
+        
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python re匹配中文和非中文</title>
+    <link href="http://yoursite.com/2020/08/06/re-chinese/"/>
+    <id>http://yoursite.com/2020/08/06/re-chinese/</id>
+    <published>2020-08-06T01:34:52.000Z</published>
+    <updated>2020-08-06T01:35:28.868Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS7下安装Slowhttptest DDoS检测工具</title>
+    <link href="http://yoursite.com/2020/08/05/slowhttptest/"/>
+    <id>http://yoursite.com/2020/08/05/slowhttptest/</id>
+    <published>2020-08-05T02:07:07.000Z</published>
+    <updated>2020-08-05T10:13:24.051Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Slowhttptest简介&quot;&gt;&lt;a href=&quot;#Slowhttptest简介&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="slowhttptest" scheme="http://yoursite.com/tags/slowhttptest/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CentOS7 搭建OpenVPN服务器</title>
     <link href="http://yoursite.com/2020/07/31/openvpn/"/>
     <id>http://yoursite.com/2020/07/31/openvpn/</id>
     <published>2020-07-31T08:34:39.000Z</published>
-    <updated>2020-08-03T12:31:54.189Z</updated>
+    <updated>2020-08-05T02:08:37.754Z</updated>
     
     <summary type="html">
     
@@ -64,6 +478,8 @@
     
     </summary>
     
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
@@ -185,419 +601,6 @@
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
       <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Memcache 数据库缓存服务器</title>
-    <link href="http://yoursite.com/2020/07/23/memcache/"/>
-    <id>http://yoursite.com/2020/07/23/memcache/</id>
-    <published>2020-07-23T06:14:00.000Z</published>
-    <updated>2020-07-24T09:07:11.582Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;Memcached-的特征&quot;&gt;&lt;a href=&quot;#Memcached-的特征&quot; class=&quot;headerlink&quot; title=&quot;Memcached 的特征&quot;&gt;&lt;/a&gt;Memcached
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="memcache" scheme="http://yoursite.com/tags/memcache/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ansible免密登录</title>
-    <link href="http://yoursite.com/2020/07/21/ansible-sshkey/"/>
-    <id>http://yoursite.com/2020/07/21/ansible-sshkey/</id>
-    <published>2020-07-21T09:34:22.000Z</published>
-    <updated>2020-07-24T09:07:21.124Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;首先关闭公钥认证&quot;&gt;&lt;a href=&quot;#首先关闭公钥认证&quot; class=&quot;headerlink&quot; title=&quot;首先关闭公钥认证&quot;&gt;&lt;/a&gt;首先关闭公钥认证&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Shell 循环日期时间执行</title>
-    <link href="http://yoursite.com/2020/07/20/centos-for-date/"/>
-    <id>http://yoursite.com/2020/07/20/centos-for-date/</id>
-    <published>2020-07-20T12:09:22.000Z</published>
-    <updated>2020-07-24T09:07:39.444Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;因为for无法直接循环20:00:00这种格式的时间,所以需要先转为时间戳,循环时间戳然后在循环中在把时间戳转为想要的时间格式&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>centos去掉^M的方法</title>
-    <link href="http://yoursite.com/2020/07/20/centos-string2/"/>
-    <id>http://yoursite.com/2020/07/20/centos-string2/</id>
-    <published>2020-07-20T03:37:54.000Z</published>
-    <updated>2020-07-31T02:36:12.006Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;cat -A filename 就可以看到windows下的断元字符 ^M,要去除他,最简单用下面的命令&lt;br&gt;第一种方法：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>centos删除乱码名文件</title>
-    <link href="http://yoursite.com/2020/07/16/centos-string/"/>
-    <id>http://yoursite.com/2020/07/16/centos-string/</id>
-    <published>2020-07-16T06:46:14.000Z</published>
-    <updated>2020-07-31T02:36:09.681Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;文件上传到centos服务器上后,发现文件名出现乱码,使用下面命令删除乱码文件&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python之面向对象</title>
-    <link href="http://yoursite.com/2020/07/14/python-20/"/>
-    <id>http://yoursite.com/2020/07/14/python-20/</id>
-    <published>2020-07-14T10:29:35.000Z</published>
-    <updated>2020-07-14T11:08:20.664Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;在类的封装中,第一个参数必须是self&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux三剑客以及其他工具详解</title>
-    <link href="http://yoursite.com/2020/07/14/shell-support/"/>
-    <id>http://yoursite.com/2020/07/14/shell-support/</id>
-    <published>2020-07-14T06:06:22.000Z</published>
-    <updated>2020-07-31T02:35:45.954Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;cat&quot;&gt;&lt;a href=&quot;#cat&quot; class=&quot;headerlink&quot; title=&quot;cat&quot;&gt;&lt;/a&gt;cat&lt;/h2&gt;&lt;p&gt;-E 显示行结束符$&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>tar打包时排除或忽略某个子目录或文件</title>
-    <link href="http://yoursite.com/2020/07/13/tar-exclued/"/>
-    <id>http://yoursite.com/2020/07/13/tar-exclued/</id>
-    <published>2020-07-13T07:21:09.000Z</published>
-    <updated>2020-07-14T06:06:57.157Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;比如你想打包/home这个目录，但是/home/test/目录和/home/www/index.php文件你都不想打包，方法是：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="tar" scheme="http://yoursite.com/tags/tar/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>centos7 安装配置MySQL数据库</title>
-    <link href="http://yoursite.com/2020/07/11/mysql/"/>
-    <id>http://yoursite.com/2020/07/11/mysql/</id>
-    <published>2020-07-11T08:32:43.000Z</published>
-    <updated>2020-07-25T08:32:18.073Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;安装MySQL&quot;&gt;&lt;a href=&quot;#安装MySQL&quot; class=&quot;headerlink&quot; title=&quot;安装MySQL&quot;&gt;&lt;/a&gt;安装MySQL&lt;/h2&gt;&lt;p&gt;首先确保服务器可以连接网络,然后安装epel-release源&lt;/p&gt;
-&lt;figure
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo的ayer主题之添加在线聊天功能daovoice</title>
-    <link href="http://yoursite.com/2020/07/11/daovoice/"/>
-    <id>http://yoursite.com/2020/07/11/daovoice/</id>
-    <published>2020-07-11T07:16:13.000Z</published>
-    <updated>2020-07-11T08:00:55.894Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;daovoice官网配置&quot;&gt;&lt;a href=&quot;#daovoice官网配置&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Shell 基本运算符</title>
-    <link href="http://yoursite.com/2020/07/09/shellscript/"/>
-    <id>http://yoursite.com/2020/07/09/shellscript/</id>
-    <published>2020-07-09T07:13:43.000Z</published>
-    <updated>2020-07-24T09:49:59.917Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;文件测试运算符&quot;&gt;&lt;a href=&quot;#文件测试运算符&quot; class=&quot;headerlink&quot; title=&quot;文件测试运算符&quot;&gt;&lt;/a&gt;文件测试运算符&lt;/h2&gt;&lt;p&gt;别问什么把这个放在最前面,问就是没记住&lt;/p&gt;
-&lt;figure class=&quot;highlight
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Tomcat简介和安装部署</title>
-    <link href="http://yoursite.com/2020/07/09/tomcat/"/>
-    <id>http://yoursite.com/2020/07/09/tomcat/</id>
-    <published>2020-07-09T02:04:21.000Z</published>
-    <updated>2020-07-10T07:57:23.445Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Tomcat是Apache 软件基金会（Apache Software Foundation）的Jakarta
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="tomcat" scheme="http://yoursite.com/tags/tomcat/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>自动化运维工具——ansible-playbook</title>
-    <link href="http://yoursite.com/2020/07/08/ansible-playbook/"/>
-    <id>http://yoursite.com/2020/07/08/ansible-playbook/</id>
-    <published>2020-07-08T09:45:48.000Z</published>
-    <updated>2020-07-09T06:01:45.468Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;playbook简介&quot;&gt;&lt;a href=&quot;#playbook简介&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux expect介绍和用法</title>
-    <link href="http://yoursite.com/2020/07/06/expect/"/>
-    <id>http://yoursite.com/2020/07/06/expect/</id>
-    <published>2020-07-06T08:17:34.000Z</published>
-    <updated>2020-07-24T09:08:11.360Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;expect是一个自动化交互套件,主要用于执行命令和程序时,系统以交互形式要求输入指定字符串,实现交互通信&lt;/p&gt;
-&lt;h2
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="expect" scheme="http://yoursite.com/tags/expect/"/>
     
   </entry>
   

@@ -100,7 +100,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">21 分钟</span>
+            <span class="post-count">20 分钟</span>
         </span>
     </span>
 </div>
@@ -204,9 +204,13 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
 <h2 id="容器启动后端口映射"><a href="#容器启动后端口映射" class="headerlink" title="容器启动后端口映射"></a>容器启动后端口映射</h2><p>首先停止容器</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker stop <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 <p>然后停止服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop docker</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line">修改配置文件&amp;emsp;&amp;emsp; ( [hash_of_the_container] 为容器id)</span><br></pre></td></tr></table></figure>
-<p>vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json<br>在 hostconfig.json 里有 “PortBindings”:{} 这个配置项，可以改成 “PortBindings”:{“9001/tcp”:[{“HostIp”:””,”HostPort”:”900”}]}<br>                                                                                前者为容器端口，后者为宿主机端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">修改config.v2.json	&amp;emsp;	&amp;emsp;	(## 如果容器内端口从没有暴露 需要修改这个文件)</span><br><span class="line">&#96;&#96;&#96;bash</span><br><span class="line">vim &#x2F;var&#x2F;lib&#x2F;docker&#x2F;containers&#x2F;[hash_of_the_container]&#x2F;config.v2.json</span><br><span class="line">在 config.v2.json 里面添加一个配置项 &quot;ExposedPorts&quot;:&#123;&quot;80&#x2F;tcp&quot;:&#123;&#125;&#125; , ## 必须将这个配置项添加到 &quot;Tty&quot;: true, 前面</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop docker</span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件&emsp;&emsp; ( [hash_of_the_container] 为容器id)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json</span><br><span class="line">在 hostconfig.json 里有 <span class="string">"PortBindings"</span>:&#123;&#125; 这个配置项，可以改成 <span class="string">"PortBindings"</span>:&#123;<span class="string">"9001/tcp"</span>:[&#123;<span class="string">"HostIp"</span>:<span class="string">""</span>,<span class="string">"HostPort"</span>:<span class="string">"900"</span>&#125;]&#125;</span><br><span class="line">																				前者为容器端口，后者为宿主机端口</span><br></pre></td></tr></table></figure>
+
+<p>修改config.v2.json    &emsp;    &emsp;    (## 如果容器内端口从没有暴露 需要修改这个文件)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /var/lib/docker/containers/[hash_of_the_container]/config.v2.json</span><br><span class="line">在 config.v2.json 里面添加一个配置项 <span class="string">"ExposedPorts"</span>:&#123;<span class="string">"80/tcp"</span>:&#123;&#125;&#125; , <span class="comment">## 必须将这个配置项添加到 "Tty": true, 前面</span></span><br></pre></td></tr></table></figure>
 <p>最后重启 docker的守护进程 </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart  docker</span><br></pre></td></tr></table></figure>
 <p>然后需要启动容器id </p>
@@ -263,7 +267,10 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat  file.tar  | docker  import  - NAME</span><br></pre></td></tr></table></figure>
 
 <h2 id="镜像导入导出和更新"><a href="#镜像导入导出和更新" class="headerlink" title="镜像导入导出和更新"></a>镜像导入导出和更新</h2><p>镜像导出：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker save 镜像 xxx.tar</span><br><span class="line">```  </span><br><span class="line">镜像导入：</span><br><span class="line">```bash</span><br><span class="line">docker load -i xxx.tar</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save 镜像 xxx.tar</span><br></pre></td></tr></table></figure>
+
+<p>镜像导入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load -i xxx.tar</span><br></pre></td></tr></table></figure>
 <p>镜像的更新：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit -m 提交的描述 -a 提交作者 -p 更新时暂停此容器 新镜像名</span><br></pre></td></tr></table></figure>
 

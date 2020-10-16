@@ -117,6 +117,662 @@
       </tags>
   </entry>
   <entry>
+    <title>centos中history命令显示时间以及用户</title>
+    <url>/2020/09/14/histort-date/</url>
+    <content><![CDATA[<p>在 /etc/profile 文件中添加</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">USER_IP=`who -u am i 2&gt;/dev/null| awk <span class="string">'&#123;print $NF&#125;'</span>|sed -e <span class="string">'s/[()]//g'</span>`  </span><br><span class="line"><span class="built_in">export</span> HISTTIMEFORMAT=<span class="string">"[%F %T][`whoami`][<span class="variable">$&#123;USER_IP&#125;</span>]"</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>history</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自建mongo数据库迁移至云数据库MongoDB</title>
+    <url>/2020/09/11/mongodump/</url>
+    <content><![CDATA[<h2 id="创建云数据库MongoDB"><a href="#创建云数据库MongoDB" class="headerlink" title="创建云数据库MongoDB"></a>创建云数据库MongoDB</h2><p>首先 在云数据库MongoDB控制台创建实例  （建议是副本集群）</p>
+<p>副本集和分片集的区别</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  副本集相当于把一份数据被保存到N个机器上（相当于mysql数据的读写分离）</span><br><span class="line">分片集相当于把一份数据拆分为多份保存到N个机器上，合起来后一个份完整的数据（相当于raid阵列里的raid0）</span><br></pre></td></tr></table></figure>
+
+<p>选择实例（根据实际需求选择规格）</p>
+<p>创建完云库后停止服务器</p>
+<p>备份  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mongodump --host &lt;mongodb_host&gt; --port &lt;port&gt;  -u &lt;username&gt;  --authenticationDatabase  &lt;database&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="迁移至阿里云数据库MongoDB"><a href="#迁移至阿里云数据库MongoDB" class="headerlink" title="迁移至阿里云数据库MongoDB"></a>迁移至阿里云数据库MongoDB</h2><p> 获取单节点实例primary节点的连接地址<br>    登录控制台<br>    选择目标实例所在地域<br>    在左侧导航栏，单机副本集实例列表<br>    单机目标实例ID<br>    在左侧导航栏，单击数据库连接，查看数据库连接信息<br>  操作到这一步就可以看到primary节点</p>
+<p>在自建数据库服务器上执行以下语句将数据库数据全部迁移至阿里云数据库MongoDB</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  mongorestore --host &lt;Primary_host&gt;  -u &lt;username&gt; --authenticationDatabase admin   -d  &lt;database&gt;    &lt;Backup directory&gt; </span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">    &lt;Primary_host&gt;：副本集实例中 Primary 节点的连接地址。</span><br><span class="line">    &lt;username&gt;：登录阿里云MongoDB数据库的数据库账号，默认为 root。</span><br><span class="line">    &lt;database&gt;：对登录阿里云MongoDB数据库的账号和密码，进行认证的鉴权数据库，默认为 admin 。</span><br><span class="line">    &lt;Backup directory&gt;：备份文件存储目录，默认为 dump。（/data/backup/mongodb/`data`/）</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mongorestore --host   Primary 节点的连接地址     -u root --authenticationDatabase admin  -d  database_name    bashfilename</span><br><span class="line">mongorestore  --host   Primary 节点的连接地址   -u root  --authenticationDatabase  admin    -d  云服务器数据库名     /backup/mongo/</span><br></pre></td></tr></table></figure>
+
+<p>输入密码后数据开始迁移</p>
+<h2 id="Mongo-Shell-连接云服务器"><a href="#Mongo-Shell-连接云服务器" class="headerlink" title="Mongo Shell 连接云服务器"></a>Mongo Shell 连接云服务器</h2><p>前提条件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">安装与MongoDB实例版本相对应的Mongo Shell版本</span><br><span class="line">已将客户端的IP地址加入到MongoDB实例的白名单中</span><br></pre></td></tr></table></figure>
+<p>命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mongo --host &lt;host&gt; -u &lt;username&gt; -p --authenticationDatabase &lt;database&gt;</span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mongo --host  Primary 节点的连接地址    -u root -p --authenticationDatabase admin</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>mongo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ansible报错</title>
+    <url>/2020/09/05/ansible-error/</url>
+    <content><![CDATA[<p><img src="/2020/09/05/ansible-error/1.png" alt><br>原因：python库中urllib3 (1.22) or chardet (2.2.1) 的版本不兼容 解决如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@iZ2zebighqoqoun3zojd9qZ~]$ sudo pip uninstall urllib3</span><br><span class="line"></span><br><span class="line">[root@iZ2zebighqoqoun3zojd9qZ~]$ sudo pip uninstall chardet</span><br><span class="line"></span><br><span class="line">[root@iZ2zebighqoqoun3zojd9qZ~]$ sudo pip install requests</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ansible</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ansible-playbook之when条件语句</title>
+    <url>/2020/08/26/ansible-play-when/</url>
+    <content><![CDATA[<h2 id="When语句"><a href="#When语句" class="headerlink" title="When语句"></a>When语句</h2><p>有时候用户有可能需要某一个主机越过某一个特定的步骤.这个过程就可以简单的像在某一个特定版本的系统上少装了一个包一样或者像在一个满了的文件系统上执行清理操作一样.<br>这些操作在Ansible上,若使用when语句都异常简单.When语句也含Jinja2表达式<br>例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tasks:</span><br><span class="line">  - name: <span class="string">"shutdown Debian flavored systems"</span></span><br><span class="line">    <span class="built_in">command</span>: /sbin/shutdown -t now</span><br><span class="line">    when: ansible_os_family == <span class="string">"Debian"</span></span><br></pre></td></tr></table></figure>
+<p>如果你在RedHat系列linux系统执行，就不会被执行</p>
+<p>判断变量是否已经定义</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tasks:</span><br><span class="line">    - shell: <span class="built_in">echo</span> <span class="string">"I've got '&#123;&#123; foo &#125;&#125;' and am not afraid to use it!"</span></span><br><span class="line">      when: foo is defined</span><br><span class="line">    - fail: msg=<span class="string">"Bailing out. this play requires 'bar'"</span></span><br><span class="line">      when: bar is not defined</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># copy file to targets</span></span><br><span class="line">- name: del old package tar file</span><br><span class="line">  file: path=<span class="string">"/test/test1.txt"</span> state=absent </span><br><span class="line">  when: sgsm_state_tar == <span class="string">"del"</span> </span><br><span class="line"></span><br><span class="line">- name: copy file to targets</span><br><span class="line">  copy: src=/<span class="built_in">test</span>/test1.txt dest=/<span class="built_in">test</span></span><br><span class="line">  when: ecy_intranet is not defined</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Intranet copy</span></span><br><span class="line">- name: copy file to targets </span><br><span class="line">  copy: src=/data/test1.txt dest=/<span class="built_in">test</span></span><br><span class="line">  when: ecy_intranet is defined</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost /home/sgsm/support_ecy/ansible]<span class="comment"># ansible-playbook -i hosts-ecy copy.yml --extra-vars "sgsm_flag=support_ecy sgsm_hosts=aa sgsm_release_version=trunk_ecy sgsm_state_tar=del  ecy_intranet=yes"</span></span><br><span class="line"></span><br><span class="line">PLAY [copy file to targets] ************************************************************************************************************************************************************************</span><br><span class="line"></span><br><span class="line">TASK [Gathering Facts] *****************************************************************************************************************************************************************************</span><br><span class="line">ok: [aa-jump-1]</span><br><span class="line"></span><br><span class="line">TASK [copy : del old package tar file] *************************************************************************************************************************************************************</span><br><span class="line">changed: [aa-jump-1]</span><br><span class="line"></span><br><span class="line">TASK [copy : copy file to targets] *****************************************************************************************************************************************************************</span><br><span class="line">skipping: [aa-jump-1]</span><br><span class="line"></span><br><span class="line">TASK [copy : copy file to targets <span class="keyword">in</span> intranet] *****************************************************************************************************************************************************</span><br><span class="line">changed: [aa-jump-1]</span><br><span class="line"></span><br><span class="line">PLAY RECAP *****************************************************************************************************************************************************************************************</span><br><span class="line">aa-jump-1               : ok=3    changed=2    unreachable=0    failed=0   </span><br><span class="line"></span><br><span class="line">[root@localhost /home/sgsm/support_ecy/ansible]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>如果传递了ecy_intranet这个变量     ecy_intranet is not defined  这个tasks就不会执行了</p>
+<p>如果没有传递ecy_intranet 这个变量   ecy_intranet is defined  这个 tasks就不会执行了</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ansible</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>阿里云服务器如何设置IPV6通过appstore的审核</title>
+    <url>/2020/08/20/ipv6/</url>
+    <content><![CDATA[<p>苹果上架要求：要求支持IPV6only(因为阿里云主机没有IPV6only)<br>确认IPV6是否开启：</p>
+<p>方式1：使用ifconfig查看自己的IP地址是否含有IPV6地址<br><img src="/2020/08/20/ipv6/1.png" alt><br><img src="/2020/08/20/ipv6/2.png" alt><br>方式2：查看服务器监听的IP中是否有IPV6格式的地址(netstat -tuln)<br><img src="/2020/08/20/ipv6/3.png" alt></p>
+<h2 id="开启IPV6"><a href="#开启IPV6" class="headerlink" title="开启IPV6"></a>开启IPV6</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/20/ipv6/4.png" alt></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/modprobe.d/disable_ipv6.conf</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/20/ipv6/5.png" alt></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/sysconfig/network</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/20/ipv6/6.png" alt><br>至此ipv6的服务器端支持已经完成,重启服务器测试是否支持ipv6,重启后, ifconfig查看ipv6的信息,有看到有关IPV6的输出就可以<br><img src="/2020/08/20/ipv6/7.png" alt></p>
+<h2 id="添加ipv6隧道"><a href="#添加ipv6隧道" class="headerlink" title="添加ipv6隧道"></a>添加ipv6隧道</h2><p>注册Tunnel broker<br><a href="https://www.tunnelbroker.net/" target="_blank" rel="noopener">https://www.tunnelbroker.net/</a><br>注册很容易,就不讲了,注册需要邮箱验证,gmail、163能收得到认证邮件,qq还是一样收不到</p>
+<p>创建通道“Create Regular Tunnel”<br>填写云服务器ip以及选择默认的隧道节点,点击Create Tunnel创建。填写ip都,如果出现“IP is a potential tunnel endpoint.”则证明可以添加ipv6隧道,一般隧道节点系统已经默认分配,可以手动选择,大家可以在自己的云服务器上分别ping一下这些ip,选时延低的<br><img src="/2020/08/20/ipv6/8.png" alt><br>创建ipv6隧道及路由<br>到下一页面切换到Example configurations选项卡,如果你的VPS是centOS/Debian这些常见Linux的话,下拉菜单选择Linux-route2,出现了设置的命令,复制到自己的云服务器上运行</p>
+<blockquote>
+<p>注：一定要一条一条的复制</p>
+</blockquote>
+<p><img src="/2020/08/20/ipv6/9.png" alt><br>测试ipv6<br><img src="/2020/08/20/ipv6/10.png" alt><br>添加ipv6的dns服务器,在最后添加 nameserver 2001:4860:4860::8888,nameserver 2001:4860:4860::8844 谷歌的ipv6 dns服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/resolv.conf</span><br><span class="line">   options timeout:1 attempts:1 rotate</span><br><span class="line">   nameserver x.x.x.x</span><br><span class="line">   nameserver x.x.x.x</span><br><span class="line">   nameserver 2001:4860:4860::8888</span><br><span class="line">   nameserver 2001:4860:4860::8844</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ping6 -c 5 ipv6.google.com</span><br><span class="line"></span><br><span class="line">   PING ipv6.google.com(tsa03s01-in-x0e.1e100.net) 56 data bytes</span><br><span class="line">   64 bytes from tsa03s01-in-x0e.1e100.net: icmp_seq=1 ttl=55 time=25.5 ms</span><br><span class="line">   64 bytes from tsa03s01-in-x0e.1e100.net: icmp_seq=2 ttl=55 time=25.5 ms</span><br><span class="line">   64 bytes from tsa03s01-in-x0e.1e100.net: icmp_seq=3 ttl=55 time=33.1 ms</span><br><span class="line">   64 bytes from tsa03s01-in-x0e.1e100.net: icmp_seq=4 ttl=55 time=25.5 ms</span><br><span class="line">   64 bytes from tsa03s01-in-x0e.1e100.net: icmp_seq=5 ttl=55 time=25.4 ms</span><br><span class="line"></span><br><span class="line">   --- ipv6.google.com ping statistics ---</span><br><span class="line">   5 packets transmitted, 5 received, 0% packet loss, time 4031ms</span><br><span class="line">   rtt min/avg/max/mdev = 25.473/27.040/33.180/3.073 ms</span><br></pre></td></tr></table></figure>
+<p>阿里云服务配置</p>
+<p> 代理配置好之后服务器中执行ifconfig命令,找到he-ipv6虚拟网卡,找到scope为Global 的ipv6地址,在阿里云后台配置AAAA记录为上面提到的ipv6地址<br><img src="/2020/08/20/ipv6/11.png" alt></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ipv6</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx网站服务</title>
+    <url>/2020/08/11/nginx/</url>
+    <content><![CDATA[<h2 id="Nginx简介"><a href="#Nginx简介" class="headerlink" title="Nginx简介"></a>Nginx简介</h2><p>Nginx是一个高性能的 HTTP 和 反向代理 服务器,也是一个 IMAP/POP3/SMTP 服务器<br>Nginx是由伊戈尔·赛索耶夫为俄罗斯访问量第二的Rambler·ru站点（俄文：Рамблер）开发的,第一个公开版本0.1.0发布于2004年10月4日其将源代码以类BSD许可证的形式发布,因它的稳定性、丰富的功能集、示例配置文件和低系统资源的消耗而闻名,2011年6月1日,nginx1.0.4发布<br>Nginx是一款轻量级的Web 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器,在BSD-like 协议下发行。其特点是占有内存少,并发能力强,事实上nginx的并发能力确实在同类型的网页服务器中表现较好。Nginx能够支持高达5万个并发连接的响应。</p>
+<h2 id="Nginx的优点"><a href="#Nginx的优点" class="headerlink" title="Nginx的优点"></a>Nginx的优点</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">低资源：占用内存小,可以实现高并发访问、处理响应快</span><br><span class="line">高并发：可抗高并发,Nginx支持的并发连接上限取决于你的内存</span><br><span class="line">作用：可以实现http服务器、虚拟主机、反向代理、负载均衡</span><br><span class="line">配置简单：Nginx配置简单</span><br><span class="line">安全: 可以不暴露真实服务器IP地址</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nginx负载均衡和lvs对比"><a href="#Nginx负载均衡和lvs对比" class="headerlink" title="Nginx负载均衡和lvs对比"></a>Nginx负载均衡和lvs对比</h2><p>lvs的优势</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、抗负载能力强,因为lvs工作方式的逻辑是非常之简单,而且工作在网络4层仅做请求分发之用,没有流量,所以在有效上基本不需要太过考虑,在我手里的lvs,仅仅出过一次问题：在并发最高的一小段时间内均衡器出现丢包现象,据分析为网络问题,即网卡或linux2.4内核的承载能力已到上线,内存和cpu方面基本无消耗。</span><br><span class="line">2、配置性低,这通常是一大劣势,但同时也是一大优势,因为没有太多可配置的选项,所以除了增减服务器,并不需要经常在触碰它,大大减少了人为出错的几率。</span><br><span class="line">3、工作稳定,因为其本身抗负载能力很强,所以稳定性高也是顺理成章,另外各种lvs都有完整的双机热备方案,所以一点不用担心均衡器本身会出现什么问题,节点出现故障的话,lvs会自动判别,所以系统整体是非常稳定的</span><br><span class="line">4、无流量,上面已经有所提及了,lvs仅仅分发请求,而流量并不从它本身出去,所以可以利用它这点来做一些线路分流之用。没有流量同时也是保住了均衡器的IO性能不会受到大流量的影响</span><br><span class="line">5、基本上能支持所有应用,因为lvs工作在4层,所以它可以对几乎所有应用做负载均衡,包括http、数据库、聊天室等等。</span><br><span class="line">另：lvs也不是完全能判别节点故障的,譬如在wlc分配方式下,集群里有一个节点没有配置VIP,会使整个集群不能使用,这时使用wrr分配方式则会丢掉一台机,目前这个问题还在进一步测试中,所以,用lvs也得多多当心为妙</span><br></pre></td></tr></table></figure>
+<p>nginx对比lvs的优势</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、nginx工作在网络的7层,所以它可以针对http应用 本身来做分流策略,比如针对域名、目录结构等,相比之下lvs并不具备这样的功能,所以nginx单凭这点可利用的场合就远多于lvs了。但nginx有用的这些功能使其可调整度要高于lvs,所以经常要去触碰触碰,由lvs的第2条优点看,触碰多了。人为出问题的记录也就会大。</span><br><span class="line">2、nginx对网络的依赖较小,理论上只要ping得通,网页访问正常,nginx就能连得通,nginx同时还能区分内外网,如果是同时拥有内外网的 节点,就相当于单机拥有了备份线路；lvs就比较依赖于网络环境,目前来看服务器在同一网段内并且lvs使用direct方式分流,效果较能得到保证。另 外注意,lvs需要向托管商至少申请多一个ip来做Visual IP,貌似是不能用本身的IP来做VIP的。要做好LVS管理员,确实得跟进学习很多有关网络通信方面的知识,就不再是一个HTTP那么简单了。</span><br><span class="line">3、nginx安装和配置比较简单,测试起来也很方便,因为它基本能把错误用日志打印出来。lvs的安装和配置、测试就要花比较长的时间了,因为同上所述,lvs对网络依赖比较大,很多时候不能配置成功都是因为网络问题而不是配置问题,出了问题要解决也相应的会麻烦得多。</span><br><span class="line">4、nginx也同样能承受很高负载且稳定,但负载度和稳定度差lvs还有几个等级：nginx处理所有流量所以受限于机器IO和配置；本身的bug也还是难以避免的；nginx没有现成的双机热备方案,所以跑在单机上还是风险较大,单机上的事情全都很难说。</span><br><span class="line">5、nginx可以检测到服务器内部的故障,比如根据服务器处理网页返回的状态码、超时等等,并且会把返回错误的请求重新提交到另一个节点。目前lvs中 ldirectd也能支持针对服务器内部的情况来监控,但lvs的原理使其不能重发请求。重发请求这点,譬如用户正在上传一个文件,而处理该上传的节点刚 好在上传过程中出现故障,nginx会把上传切到另一台服务器重新处理,而lvs就直接断掉了,如果是上传一个很大的文件或者很重要的文件的话,用户可能 会因此而恼火。</span><br><span class="line">6、nginx对请求的异步处理可以帮助节点服务器减轻负载,假如使用apache直接对外服务,那么出现很多的窄带链接时apache服务器将会占用大 量内存而不能释放,使用多一个nginx做apache代理的话,这些窄带链接会被nginx挡住,apache上就不会堆积过多的请求,这样就减少了相 当多的内存占用。这点使用squid也有相同的作用,即使squid本身配置为不缓存,对apache还是有很大帮助的。lvs没有这些功能,也就无法能 比较。</span><br><span class="line">7、nginx能支持http和email（email的功能估计比较少人用）,lvs所支持的应用在这点上会比nginx更多。</span><br></pre></td></tr></table></figure>
+<h2 id="特点对比"><a href="#特点对比" class="headerlink" title="特点对比"></a>特点对比</h2><p>LVS特点：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.抗负载能力强,使用IP负载均衡技术,只做分发,所以LVS本身并没有多少流量产生；</span><br><span class="line">2.稳定性、可靠性好,自身有完美的热备方案；（如：LVS+Keepalived）</span><br><span class="line">3.应用范围比较广,可以对所有应用做负载均衡；</span><br><span class="line">4.不支持正则处理,不能做动静分离。</span><br><span class="line"></span><br><span class="line">常用四种算法：</span><br><span class="line"></span><br><span class="line">1.rr：轮询,轮流分配到后端服务器；</span><br><span class="line">2.wrr：权重轮询,根据后端服务器负载情况来分配；</span><br><span class="line">3.lc：最小连接,分配已建立连接最少的服务器上；</span><br><span class="line">4.wlc：权重最小连接,根据后端服务器处理能力来分配。</span><br><span class="line">可以采用ipvsadm –p（persistence）来保持session,默认是300/s</span><br></pre></td></tr></table></figure>
+<p>Nginx特点：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.工作在7层,可以对做正则规则处理；（如：针对域名、目录进行分流）</span><br><span class="line">2.配置简单,能ping通就能进行负载功能,可以通过端口检测后端服务器状态,不支持url检测；</span><br><span class="line">3.抗高并发,采用epoll网络模型处理客户请求；</span><br><span class="line">4.只支持HTTP和EMail,应用范围比较少；</span><br><span class="line">5.nginx主要是HTTP和反向代理服务器,低系统资源消耗。</span><br><span class="line"></span><br><span class="line">常用四种算法：</span><br><span class="line"></span><br><span class="line">1.RR：（默认）轮询,轮流分配到后端服务器；</span><br><span class="line">2.weight：根据后端服务器性能分配；</span><br><span class="line">3.ip_hash：每个请求按访问ip的<span class="built_in">hash</span>结果进行分配,并发小时合适,解决session问题；</span><br><span class="line">4.fair：（扩展策略）,默认不被编译nginx内核,根据后端服务器响应时间判断负载情况,选择最轻的进行处理。</span><br></pre></td></tr></table></figure>
+<p>为什么用Nginx而不用LVS?</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、高并发连接： 官方测试能够支撑5万并发连接,在实际生产环境中跑到 2~3 万并发连接数。</span><br><span class="line">2、内存消耗少： 在 3 万并发连接下,开启的 10 个 Nginx 进程才消耗 150M 内存（ 15M*10=150M ）。</span><br><span class="line">3、配置文件非常简单： 风格跟程序一样通俗易懂。</span><br><span class="line">4、成本低廉： Nginx 为开源软件,可以免费使用。而购买 F5 BIG-IP、NetScaler 等硬件负载均衡交换机则需要十多万至几十万人民币。</span><br><span class="line">  使用 Nginx 做七层负载均衡的理由?</span><br><span class="line">5、支持 Rewrite 重写规则： 能够根据域名、 URL 的不同,将 HTTP 请求分到不同的后端服务器群组。</span><br><span class="line">6、内置的健康检查功能： 如果 Nginx Proxy 后端的某台 Web 服务器宕机了,不会影响前端访问。</span><br><span class="line">7、节省带宽： 支持 GZIP 压缩,可以添加浏览器本地缓存的 Header 头。</span><br></pre></td></tr></table></figure>
+<h2 id="Nginx安装部署"><a href="#Nginx安装部署" class="headerlink" title="Nginx安装部署"></a>Nginx安装部署</h2><p>nginx官网下载地址：<a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">http://nginx.org/en/download.html</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装依赖工具包</span></span><br><span class="line">yum install  gcc*   c++*    pcre  pcre-devel  openssl  openssl-devel  -y</span><br><span class="line"><span class="comment"># 下载源码包</span></span><br><span class="line">wget  http://nginx.org/download/nginx-1.18.0.tar.gz</span><br><span class="line"><span class="comment"># 解压编译安装</span></span><br><span class="line">tar xf  nginx-1.18.0.tar.gz  -C /usr/src/</span><br><span class="line"><span class="built_in">cd</span>  /usr/src/nginx-1.18.0/</span><br><span class="line">./configure    --prefix=/usr/<span class="built_in">local</span>/nginx</span><br><span class="line">make   &amp;&amp; make  install  </span><br><span class="line">/usr/<span class="built_in">local</span>/nginx/sbin</span><br><span class="line"><span class="comment"># 启动nginx</span></span><br><span class="line">./nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">user nginx;</span><br><span class="line">worker_processes auto; （默认为自动,可以自己设置,一般不大于cpu核数）</span><br><span class="line">error_log /var/<span class="built_in">log</span>/nginx/error.log; （错误日志路径）</span><br><span class="line">pid /run/nginx.pid; （pid文件路径）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load dynamic modules. See /usr/share/nginx/README.dynamic.</span></span><br><span class="line">include /usr/share/nginx/modules/*.conf;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    accept_mutex on; （设置网路连接序列化,防止惊群现象发生,默认为on）</span><br><span class="line">    multi_accept on; （设置一个进程是否同时接受多个网络连接,默认为off）</span><br><span class="line">    worker_connections 1024; （一个进程的最大连接数）</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    log_format  main  <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span></span><br><span class="line">                      <span class="string">'$status $body_bytes_sent "$http_referer" '</span></span><br><span class="line">                      <span class="string">'"$http_user_agent" "$http_x_forwarded_for"'</span>;</span><br><span class="line">      <span class="comment"># 设置日志格式</span></span><br><span class="line">    </span><br><span class="line">    access_log  /var/<span class="built_in">log</span>/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    sendfile            on;</span><br><span class="line">    <span class="comment"># tcp_nopush          on; （这里注释掉）</span></span><br><span class="line">    tcp_nodelay        on;</span><br><span class="line">    keepalive_timeout  65; （连接超时时间）</span><br><span class="line">    types_hash_max_size 2048;</span><br><span class="line">    gzip on; （开启压缩）</span><br><span class="line">    include            /etc/nginx/mime.types;</span><br><span class="line">    default_type        application/octet-stream;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Load modular configuration files from the /etc/nginx/conf.d directory.</span></span><br><span class="line">    <span class="comment"># See http://nginx.org/en/docs/ngx_core_module.html#include</span></span><br><span class="line">    <span class="comment"># for more information.</span></span><br><span class="line">    include /etc/nginx/conf.d/*.conf;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里设置负载均衡,负载均衡有多中策略,nginx自带的有轮询,权重,ip-hash,响应时间等粗略。</span></span><br><span class="line"><span class="comment"># 默认为平分http负载,为轮询的方式。</span></span><br><span class="line"><span class="comment"># 权重则是按照权重来分发请求,权重高的负载大</span></span><br><span class="line"><span class="comment"># ip-hash,根据ip来分配,保持同一个ip分在同一台服务器上。</span></span><br><span class="line"><span class="comment"># 响应时间,根据服务器都nginx 的响应时间,优先分发给响应速度快的服务器。</span></span><br><span class="line"><span class="comment"># 集中策略可以适当组合</span></span><br><span class="line">    upstream tomcat &#123; （tomcat为自定义的负载均衡规则名）</span><br><span class="line">        ip_hash; （ip_hash则为ip-hash方法）</span><br><span class="line"></span><br><span class="line">　　　　　　server 192.168.2.78:80 weight=3 fail_timeout=20s;</span><br><span class="line">　　　　　　server 192.168.2.82:80 weight=4 fail_timeout=20s;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">## 可以定义多组规则</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen      80 default_server; （默认监听80端口）</span><br><span class="line">        listen      localhost; （监听的服务器）</span><br><span class="line">        server_name  _;</span><br><span class="line">        root        /usr/share/nginx/html;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Load configuration files for the default server block.</span></span><br><span class="line">        include /etc/nginx/default.d/*.conf;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location / &#123; （ /  表示所有请求,可以自定义来针对不同的域名设定不同负载规则 和服务）</span><br><span class="line">          proxy_pass    http://tomcat; （反向代理,填上你自己的负载均衡规则名）</span><br><span class="line">          proxy_redirect off; （下面一些设置可以直接复制过去,不要的话,有可能导致一些 没法认证等的问题）</span><br><span class="line">          proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">          proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">          proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">          proxy_connect_timeout 90; （下面这几个都只是一些超时设置,可不要）</span><br><span class="line">          proxy_send_timeout 90;</span><br><span class="line">          proxy_read_timeout 90;</span><br><span class="line">        &#125;</span><br><span class="line">  <span class="comment"># location ~\.(gif|jpg|png)$ &#123; （比如,以正则表达式写） </span></span><br><span class="line">  <span class="comment">#  root /home/root/images;</span></span><br><span class="line">  <span class="comment">#  &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        error_page 404 /404.html;</span><br><span class="line">            location = /40x.html &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        error_page 500 502 503 504 /50x.html;</span><br><span class="line">            location = /50x.html &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Settings for a TLS enabled server.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    server &#123;</span></span><br><span class="line"><span class="comment">#        listen      443 ssl http2 default_server;</span></span><br><span class="line"><span class="comment">#        listen      [::]:443 ssl http2 default_server;</span></span><br><span class="line"><span class="comment">#        server_name  _;</span></span><br><span class="line"><span class="comment">#        root        /usr/share/nginx/html;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#        ssl_certificate "/etc/pki/nginx/server.crt";</span></span><br><span class="line"><span class="comment">#        ssl_certificate_key "/etc/pki/nginx/private/server.key";</span></span><br><span class="line"><span class="comment">#        ssl_session_cache shared:SSL:1m;</span></span><br><span class="line"><span class="comment">#        ssl_session_timeout  10m;</span></span><br><span class="line"><span class="comment">#        ssl_ciphers HIGH:!aNULL:!MD5;</span></span><br><span class="line"><span class="comment">#        ssl_prefer_server_ciphers on;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#        # Load configuration files for the default server block.</span></span><br><span class="line"><span class="comment">#        include /etc/nginx/default.d/*.conf;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#        location / &#123;</span></span><br><span class="line"><span class="comment">#        &#125;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#        error_page 404 /404.html;</span></span><br><span class="line"><span class="comment">#            location = /40x.html &#123;</span></span><br><span class="line"><span class="comment">#        &#125;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#        error_page 500 502 503 504 /50x.html;</span></span><br><span class="line"><span class="comment">#            location = /50x.html &#123;</span></span><br><span class="line"><span class="comment">#        &#125;</span></span><br><span class="line"><span class="comment">#    &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#运行用户</span></span><br><span class="line">user www-data;    </span><br><span class="line"><span class="comment">#启动进程,通常设置成和cpu的数量相等</span></span><br><span class="line">worker_processes  1;</span><br><span class="line"> <span class="comment">#全局错误日志及PID文件</span></span><br><span class="line">error_log  /var/<span class="built_in">log</span>/nginx/error.log;</span><br><span class="line">pid        /var/run/nginx.pid;</span><br><span class="line"> <span class="comment">#工作模式及连接数上限</span></span><br><span class="line">events &#123;</span><br><span class="line">    use   epoll;             <span class="comment">#epoll是多路复用IO(I/O Multiplexing)中的一种方式,但是仅用于linux2.6以上内核,可以大大提高nginx的性能</span></span><br><span class="line">    worker_connections  1024;<span class="comment">#单个后台worker process进程的最大并发链接数</span></span><br><span class="line">    <span class="comment"># multi_accept on; </span></span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">#设定http服务器,利用它的反向代理功能提供负载均衡支持</span></span><br><span class="line">http &#123;</span><br><span class="line">     <span class="comment">#设定mime类型,类型由mime.type文件定义</span></span><br><span class="line">    include       /etc/nginx/mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line">    <span class="comment">#设定日志格式</span></span><br><span class="line">    access_log    /var/<span class="built_in">log</span>/nginx/access.log;</span><br><span class="line">   <span class="comment">#sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件,对于普通应用,</span></span><br><span class="line">    <span class="comment">#必须设为 on,如果用来进行下载等应用磁盘IO重负载应用,可设置为 off,以平衡磁盘与网络I/O处理速度,降低系统的uptime.</span></span><br><span class="line">    sendfile        on;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line">    <span class="comment">#连接超时时间</span></span><br><span class="line">    <span class="comment">#keepalive_timeout  0;</span></span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line">    tcp_nodelay        on;</span><br><span class="line">     <span class="comment">#开启gzip压缩</span></span><br><span class="line">    gzip  on;</span><br><span class="line">    gzip_disable <span class="string">"MSIE [1-6]\.(?!.*SV1)"</span>;</span><br><span class="line">    <span class="comment">#设定请求缓冲</span></span><br><span class="line">    client_header_buffer_size    1k;</span><br><span class="line">    large_client_header_buffers  4 4k;</span><br><span class="line">    include /etc/nginx/conf.d/*.conf;</span><br><span class="line">    include /etc/nginx/sites-enabled/*;</span><br><span class="line">    <span class="comment">#设定负载均衡的服务器列表</span></span><br><span class="line">     upstream mysvr &#123;</span><br><span class="line">    <span class="comment">#weigth参数表示权值,权值越高被分配到的几率越大</span></span><br><span class="line">    <span class="comment">#本机上的Squid开启3128端口</span></span><br><span class="line">    server 192.168.8.1:3128 weight=5;</span><br><span class="line">    server 192.168.8.2:80  weight=1;</span><br><span class="line">    server 192.168.8.3:80  weight=6;</span><br><span class="line">    &#125;</span><br><span class="line">   server &#123;</span><br><span class="line">    <span class="comment">#侦听80端口</span></span><br><span class="line">        listen       80;</span><br><span class="line">        <span class="comment">#定义使用www.xx.com访问</span></span><br><span class="line">        server_name  www.xx.com;</span><br><span class="line">        <span class="comment">#设定本虚拟主机的访问日志</span></span><br><span class="line">        access_log  logs/www.xx.com.access.log  main;</span><br><span class="line">    <span class="comment">#默认请求</span></span><br><span class="line">    location / &#123;</span><br><span class="line">          root   /root;      <span class="comment">#定义服务器的默认网站根目录位置</span></span><br><span class="line">          index index.php index.html index.htm;   <span class="comment">#定义首页索引文件的名称</span></span><br><span class="line">          fastcgi_pass  www.xx.com;</span><br><span class="line">          fastcgi_param  SCRIPT_FILENAME  <span class="variable">$document_root</span>/<span class="variable">$fastcgi_script_name</span>; 脚本文件请求的路径</span><br><span class="line">          include /etc/nginx/fastcgi_params;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment"># 定义错误提示页面</span></span><br><span class="line">    error_page   500 502 503 504 /50x.html;  </span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">        root   /root;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#静态文件,nginx自己处理</span></span><br><span class="line">    location ~ ^/(images|javascript|js|css|flash|media|static)/ &#123;</span><br><span class="line">        root /var/www/virtual/htdocs;</span><br><span class="line">        <span class="comment">#过期30天,静态文件不怎么更新,过期可以设大一点,如果频繁更新,则可以设置得小一点。</span></span><br><span class="line">        expires 30d;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#PHP 脚本请求全部转发到 FastCGI处理. 使用FastCGI默认配置.</span></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        root /root;</span><br><span class="line">        fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME /home/www/www<span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#设定查看Nginx状态的地址</span></span><br><span class="line">    location /NginxStatus &#123;</span><br><span class="line">        stub_status            on;</span><br><span class="line">        access_log              on;</span><br><span class="line">        auth_basic              <span class="string">"NginxStatus"</span>;</span><br><span class="line">        auth_basic_user_file  conf/htpasswd;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#禁止访问 .htxxx 文件</span></span><br><span class="line">    location ~ /\.ht &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="虚拟主机"><a href="#虚拟主机" class="headerlink" title="虚拟主机"></a>虚拟主机</h3><p>虚拟主机是使用特殊的软硬件技术,把一台真实的物理服务器主机分割成多个逻辑存储单元。每个逻辑单元都没有物理实体,但是每一个逻辑单元都能像真实的物理主机一样在网络上工作,具有单独的IP地址（或共享的IP地址）、独立的域名以及完整的Internet服务器（支持WWW、FTP、E-mail等）功能。<br>虚拟主机的关键技术在于,即使在同一台硬件、同一个操作系统上,运行着为多个用户打开的不同的服务器程式,也互不干扰。而各个用户拥有自己的一部分系统资源（IP地址、文档存储空间、内存、CPU等）。各个虚拟主机之间完全独立,在外界看来,每一台虚拟主机和一台单独的主机的表现完全相同。所以这种被虚拟化的逻辑主机被形象地称为”虚拟主机”</p>
+<h3 id="基于端口的虚拟主机"><a href="#基于端口的虚拟主机" class="headerlink" title="基于端口的虚拟主机"></a>基于端口的虚拟主机</h3><p>修改nginx.conf (server 配置段需要添加在http配置段中)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /webdate/<span class="built_in">test</span>;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen       8090;</span><br><span class="line">    server_name  localhost;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /webdata/test1;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>检测配置文件是否正确</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost sbin]<span class="comment"># ./nginx  -t            </span></span><br><span class="line">nginx: the configuration file /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf <span class="built_in">test</span> is successful</span><br></pre></td></tr></table></figure>
+<p>重启nginx并且测试</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost sbin]<span class="comment"># echo  "port is 80" &gt; /webdata/test/index.html </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># echo  "port is 8090" &gt; /webdata/test1/index.html </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># lsof -i:80</span></span><br><span class="line">COMMAND   PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">nginx   46506   root    6u  IPv4 695380      0t0  TCP *:http (LISTEN)</span><br><span class="line">nginx   46507 nobody    6u  IPv4 695380      0t0  TCP *:http (LISTEN)</span><br><span class="line">[root@localhost sbin]<span class="comment"># kill -9  46506 46507</span></span><br><span class="line">[root@localhost sbin]<span class="comment"># ./nginx </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># elinks  http://localhost:80   -dump  </span></span><br><span class="line">   port is 80</span><br><span class="line">[root@localhost sbin]<span class="comment"># elinks  http://localhost:8090   -dump  </span></span><br><span class="line">   port is 8090</span><br><span class="line">[root@localhost sbin]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="基于IP的虚拟主机"><a href="#基于IP的虚拟主机" class="headerlink" title="基于IP的虚拟主机"></a>基于IP的虚拟主机</h3><p>首先保证服务器有两个ip地址,实验环境是虚拟机直接添加个网络适配器配置下ip就可以了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.1.89  netmask 255.255.255.0  broadcast 192.168.1.255</span><br><span class="line">        inet6 fe80::e9b6:bbdd:9d72:9e0a  prefixlen 64  scopeid 0x20&lt;link&gt;</span><br><span class="line">        ether 00:0c:29:cb:96:c9  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 1111  bytes 138751 (135.4 KiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 247  bytes 41089 (40.1 KiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">ens37: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.1.110  netmask 255.255.255.0  broadcast 192.168.1.255</span><br><span class="line">        inet6 fe80::326:4059:a69b:80c  prefixlen 64  scopeid 0x20&lt;link&gt;</span><br><span class="line">        ether 00:0c:29:cb:96:d3  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 872  bytes 106472 (103.9 KiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 12  bytes 1176 (1.1 KiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br><span class="line">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;</span><br><span class="line">        loop  txqueuelen 1000  (Local Loopback)</span><br><span class="line">        RX packets 13  bytes 965 (965.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 13  bytes 965 (965.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br></pre></td></tr></table></figure>
+<p>配置nginx.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ../conf/nginx.conf</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       192.168.1.89:80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /webdata/<span class="built_in">test</span>;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       192.168.1.110:80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /webdata/test1;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>重启nginx并且测试</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost sbin]<span class="comment"># echo   "192.168.1.89" &gt; /webdata/test/index.html </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># echo "192.168.1.110" &gt; /webdata/test1/index.html </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># lsof -i:80</span></span><br><span class="line">COMMAND   PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">nginx   46506   root    6u  IPv4 695380      0t0  TCP *:http (LISTEN)</span><br><span class="line">nginx   46507 nobody    6u  IPv4 695380      0t0  TCP *:http (LISTEN)</span><br><span class="line">[root@localhost sbin]<span class="comment"># kill -9  46506 46507</span></span><br><span class="line">[root@localhost sbin]<span class="comment"># ./nginx </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># elinks  http://192.168.1.89:80   -dump            </span></span><br><span class="line">   192.168.1.89</span><br><span class="line">[root@localhost sbin]<span class="comment"># elinks  http://192.168.1.110:80   -dump   </span></span><br><span class="line">   192.168.1.110</span><br><span class="line">[root@localhost sbin]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<h3 id="基于域名的虚拟主机"><a href="#基于域名的虚拟主机" class="headerlink" title="基于域名的虚拟主机"></a>基于域名的虚拟主机</h3><p>修改/etc/hosts文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vi /etc/hosts</span><br><span class="line">    192.168.1.89  www.xin.com</span><br><span class="line">    192.168.1.89  www.long.com</span><br></pre></td></tr></table></figure>
+<p>修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.xin.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /webdata/<span class="built_in">test</span>;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.long.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /webdata/test1;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重启nginx并且测试</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost sbin]<span class="comment"># echo   "www.xin.com" &gt; /webdata/test/index.html </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># echo "www.long.com" &gt; /webdata/test1/index.html </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># lsof -i:80</span></span><br><span class="line">COMMAND   PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">nginx   46506   root    6u  IPv4 695380      0t0  TCP *:http (LISTEN)</span><br><span class="line">nginx   46507 nobody    6u  IPv4 695380      0t0  TCP *:http (LISTEN)</span><br><span class="line">[root@localhost sbin]<span class="comment"># kill -9  46506 46507</span></span><br><span class="line">[root@localhost sbin]<span class="comment"># ./nginx </span></span><br><span class="line">[root@localhost sbin]<span class="comment"># elinks  http://www.xin.com:80   -dump                 </span></span><br><span class="line">   www.xin.com</span><br><span class="line">[root@localhost sbin]<span class="comment"># elinks  http://www.long.com:80   -dump   </span></span><br><span class="line">   www.long.com</span><br><span class="line">[root@localhost sbin]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<h2 id="nginx认证配置"><a href="#nginx认证配置" class="headerlink" title="nginx认证配置"></a>nginx认证配置</h2><p>nginx basic auth指令<br>    语法:     auth_basic string | off;<br>    默认值:     auth_basic off;<br>    配置段:     http, server, location, limit_except<br>    默认表示不开启认证,后面如果跟上字符,这些字符会在弹窗中显示。<br>    语法:     auth_basic_user_file file;<br>    默认值:     —<br>    配置段:     http, server, location, limit_except<br>    用户密码文件,文件内容类似如下：<br>    ttlsauser1:password1<br>    ttlsauser2:password2:comment<br>生成密码文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@bogon sbin]<span class="comment"># htpasswd  -cm   /usr/local/nginx/.htpasswd   test</span></span><br><span class="line">New password:        <span class="comment"># 输入密码</span></span><br><span class="line">Re-type new password:     <span class="comment"># 确认密码</span></span><br><span class="line">Adding password <span class="keyword">for</span> user <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>nginx认证配置实例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.xin.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /webdata/<span class="built_in">test</span>;    <span class="comment"># 加密的目录</span></span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">        auth_basic  <span class="string">"nginx basic http test for ttlsa.com"</span>;    <span class="comment"># 描述文件</span></span><br><span class="line">        auth_basic_user_file  /usr/<span class="built_in">local</span>/nginx/.htpasswd;     <span class="comment"># 密码文件</span></span><br><span class="line">        autoindex  on;    <span class="comment"># 是否开启</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@bogon sbin]<span class="comment"># ./nginx  -t</span></span><br><span class="line">nginx: the configuration file /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf <span class="built_in">test</span> is successful</span><br></pre></td></tr></table></figure>
+<p>访问网站<br><img src="/2020/08/11/nginx/1.png" alt><br>提示需要输入密码<br><img src="/2020/08/11/nginx/2.png" alt><br>备注：一定要注意auth_basic_user_file路径,否则会不厌其烦的出现403</p>
+<h2 id="nginx-网站限速"><a href="#nginx-网站限速" class="headerlink" title="nginx 网站限速"></a>nginx 网站限速</h2><p>配置项：limit_rate_after<br>   当一个客户端连接后,将以最快的速度下载多大文件,然后在以限制速度下载文件<br>   该指令是下载字节量的大小值,而不是时间值<br>   当一个客户端连接后,将以最快的速度下载3M,然后再以大约10k的速度下载</p>
+<p>实例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">                listen 80;</span><br><span class="line">                server_name www.domain.com;</span><br><span class="line">                location / &#123;</span><br><span class="line">                        root /tmp/186;</span><br><span class="line">                        index index.html;</span><br><span class="line">                        limit_rate 10k;  <span class="comment"># 下载速度</span></span><br><span class="line">                        limit_rate_after 3m;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/11/nginx/11.png" alt><br><img src="/2020/08/11/nginx/12.png" alt><br><img src="/2020/08/11/nginx/13.png" alt><br><img src="/2020/08/11/nginx/14.png" alt><br><img src="/2020/08/11/nginx/15.png" alt><br><img src="/2020/08/11/nginx/16.png" alt><br><img src="/2020/08/11/nginx/17.png" alt></p>
+<p>配置项：limit_rate<br>    是指定向客户端传输数据的速度,单位是每秒传输的字节数<br>    该限制只针对一个连接的设定,如果同时两个连接数,那么速度是设置值的两倍<br>limit_rate_after<br>   当一个客户端连接后,将以最快的速度下载多大文件,然后在以限制速度下载文件<br>   该指令是下载字节量的大小值,而不是时间值<br>   当一个客户端连接后,将以最快的速度下载3M,然后再以大约10k的速度下载</p>
+<h2 id="nginx-区域配置规则"><a href="#nginx-区域配置规则" class="headerlink" title="nginx 区域配置规则"></a>nginx 区域配置规则</h2><h3 id="Location规则"><a href="#Location规则" class="headerlink" title="Location规则"></a>Location规则</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">语法规则： location [=|~|~*|^~] /url/ &#123;… &#125;</span><br><span class="line">匹配顺序： ＝／ ／  ^~   ~*</span><br><span class="line">符号含义</span><br><span class="line">=</span><br><span class="line">= 开头表示精确匹配</span><br><span class="line">^~</span><br><span class="line">^~开头表示uri以某个常规字符串开头,理解为匹配 url路径即可。nginx不对url做编码,因此请求为/static/20%/aa,可以被规则^~ /static/ /aa匹配到（注意是空格）</span><br><span class="line">~</span><br><span class="line">~ 开头表示区分大小写的正则匹配</span><br><span class="line">~*</span><br><span class="line">~* 开头表示不区分大小写的正则匹配</span><br><span class="line">!~和!~*</span><br><span class="line">!~和!~*分别为区分大小写不匹配及不区分大小写不匹配的正则</span><br><span class="line">/</span><br><span class="line">用户所使用的代理（一般为浏览器）</span><br><span class="line"><span class="variable">$http_x_forwarded_for</span></span><br><span class="line">可以记录客户端IP,通过代理服务器来记录客户端的ip地址</span><br><span class="line"><span class="variable">$http_referer</span></span><br><span class="line">可以记录用户是从哪个链接访问过来的</span><br></pre></td></tr></table></figure>
+<h3 id="匹配规则示例："><a href="#匹配规则示例：" class="headerlink" title="匹配规则示例："></a>匹配规则示例：</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = / &#123;  </span><br><span class="line">    <span class="comment">#规则A  </span></span><br><span class="line">&#125;  </span><br><span class="line">location = /login &#123;  </span><br><span class="line">    <span class="comment">#规则B  </span></span><br><span class="line">&#125;  </span><br><span class="line">location ^~ /static/ &#123;  </span><br><span class="line">    <span class="comment">#规则C  </span></span><br><span class="line">&#125;  </span><br><span class="line">location ~ \.(gif|jpg|png|js|css)$ &#123;  </span><br><span class="line">    <span class="comment">#规则D  </span></span><br><span class="line">&#125;  </span><br><span class="line">location ~* \.png$ &#123;  </span><br><span class="line">    <span class="comment">#规则E  </span></span><br><span class="line">&#125;  </span><br><span class="line">location !~ \.xhtml$ &#123;  </span><br><span class="line">    <span class="comment">#规则F  </span></span><br><span class="line">&#125;  </span><br><span class="line">location !~* \.xhtml$ &#123;  </span><br><span class="line">    <span class="comment">#规则G  </span></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">那么产生的效果如下：</span><br><span class="line">1. 访问根目录/,比如http://localhost/将匹配规则A</span><br><span class="line">2. 访问 http://localhost/login 将匹配规则B,</span><br><span class="line">3. 访问 http://localhost/static/a.html 将匹配规则C</span><br><span class="line">4. 访问 http://localhost/a.gif,http://localhost/b.jpg 将匹配规则D和规则E,但是规则D顺序优先,规则E不起作用,而http://localhost/static/c.png则优先匹配到规则C</span><br><span class="line">5. 访问 http://localhost/a.PNG 则匹配规则E,而不会匹配规则D,因为规则E不区分大小写。</span><br><span class="line">6. 访问 http://localhost/a.xhtml 不会匹配规则F和规则G,http://localhost/a.XHTML不会匹配规则G,因为不区分大小写。规则F,规则G属于排除法,符合匹配规则但是不会匹配到,所以想想看实际应用中哪里会用到。</span><br><span class="line">7. 访问 http://localhost/category/id/1111 则最终匹配到规则H,因为以上规则都不匹配,这个时候应该是nginx转发请求给后端应用服务器,比如FastCGI（php）,tomcat（jsp）,nginx作为方向代理服务器存在。</span><br></pre></td></tr></table></figure>
+<h3 id="实际常用规则"><a href="#实际常用规则" class="headerlink" title="实际常用规则"></a>实际常用规则</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#直接匹配网站根,通过域名访问网站首页比较频繁,使用这个会加速处理。</span></span><br><span class="line"><span class="comment">#这里是直接转发给后端应用服务器了,也可以是一个静态首页</span></span><br><span class="line"><span class="comment"># 第一个必选规则</span></span><br><span class="line">[plain] view plain copy</span><br><span class="line">location = / &#123;  </span><br><span class="line">   proxy_pass  http://tomcat:8080/index  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 第二个必选规则是处理静态文件请求,这是nginx作为http服务器的强项</span></span><br><span class="line"><span class="comment"># 有两种配置模式,目录匹配或后缀匹配,任选其一或搭配使用</span></span><br><span class="line">[plain] view plain copy</span><br><span class="line">    location ^~ /static/ &#123;  </span><br><span class="line">       <span class="comment"># 请求/static/a.txt 将被映射到实际目录文件:/webroot/res/static/a.txt  </span></span><br><span class="line">       root /webroot/res/;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    location ~* \.(gif|jpg|jpeg|png|css|js|ico)$&#123;  </span><br><span class="line">       root /webroot/res/;  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#第三个规则就是通用规则,用来转发动态请求到后端应用服务器</span></span><br><span class="line"><span class="comment">#非静态文件请求就默认是动态请求,自己根据实际把握</span></span><br><span class="line"><span class="comment">#毕竟目前的一些框架的流行,带.php,.jsp后缀的情况很少了</span></span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line">location / &#123;  </span><br><span class="line">   proxy_pass http://tomcat:8080/  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Location解析过程"><a href="#Location解析过程" class="headerlink" title="Location解析过程"></a>Location解析过程</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">先判断精准命中,如果命中,立即返回结果并结束解析过程。</span><br><span class="line">判断普通命中,如果有多个命中,“记录”下来“最长”的命中结果（记录但不结束,最长的为准）。</span><br><span class="line">继续判断正则表达式的解析结果,按配置里的正则表达式顺序为准,由上至下开始匹配,一旦匹配成功1个,立即返回结果,并结束解析过程。</span><br><span class="line">普通命中顺序无所谓,是因为按命中的长短来确定。正则命中,顺序有所谓,因为是从前入往后命中的。</span><br></pre></td></tr></table></figure>
+
+<h3 id="rewrite语法"><a href="#rewrite语法" class="headerlink" title="rewrite语法"></a>rewrite语法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Nginx提供的全局变量或自己设置的变量,结合正则表达式和标志位实现url重写以及重定向。</span><br><span class="line">rewrite只能放在server&#123;&#125;,location&#123;&#125;,<span class="keyword">if</span>&#123;&#125;中,并且只能对域名后边的除去传递的参数外的字符串起作用。</span><br><span class="line">Rewrite主要的功能就是实现URL的重写,Nginx的Rewrite规则采用Pcre,perl兼容正则表达式的语法规则匹配,如果需要Nginx的Rewrite功能,在编译Nginx之前,需要编译安装PCRE库。</span><br><span class="line">通过Rewrite规则,可以实现规范的URL、根据变量来做URL转向及选择配置</span><br></pre></td></tr></table></figure>
+<h3 id="rewrite相关指令"><a href="#rewrite相关指令" class="headerlink" title="rewrite相关指令"></a>rewrite相关指令</h3><table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">默认值</th>
+<th align="center">适用范围</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">break</td>
+<td align="center">none</td>
+<td align="center">if,server,location</td>
+<td align="center">完成当前规则集,不再处理rewrite指令,需要和last加以区分</td>
+</tr>
+<tr>
+<td align="center">if ( condition ) <br>{ … }</td>
+<td align="center">none</td>
+<td align="center">server,location</td>
+<td align="center">用于检测一个条件是否符合,符合则执行大括号内的语句。不支持嵌套,不支持多个条件&amp;&amp;或</td>
+</tr>
+<tr>
+<td align="center">return</td>
+<td align="center">none</td>
+<td align="center">server,if,location</td>
+<td align="center">用于结束规则的执行和返回状态码给客户端。状态码的值可以是：204,400,402~406,408,410,411,413,416以及500~504,另外非标准状态码444,表示以不发送任何的Header头来结束连接。</td>
+</tr>
+<tr>
+<td align="center">rewrite regex replacement flag</td>
+<td align="center"></td>
+<td align="center">server,location,if</td>
+<td align="center">该指令根据表达式来重定向URI,或者修改字符串。指令根据配置文件中的顺序来执行。注意重写表达式只对相对路径有效。</td>
+</tr>
+<tr>
+<td align="center">uninitialized_variable_warn on|off</td>
+<td align="center">on</td>
+<td align="center">http,server,location,if</td>
+<td align="center">该指令用于开启和关闭未初始化变量的警告信息,默认值为开启。</td>
+</tr>
+<tr>
+<td align="center">set  variable  value</td>
+<td align="center">none</td>
+<td align="center"></td>
+<td align="center">该指令用于定义一个变量,并且给变量进行赋值。变量的值可以是文本、一个变量或者变量和文本的联合,文本需要用引号引起来。</td>
+</tr>
+</tbody></table>
+<h3 id="rewrite全局变量"><a href="#rewrite全局变量" class="headerlink" title="rewrite全局变量"></a>rewrite全局变量</h3><table>
+<thead>
+<tr>
+<th align="center">变量</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$args</td>
+<td align="center">这个变量等于请求行中的参数,同$query_string</td>
+</tr>
+<tr>
+<td align="center">$content length</td>
+<td align="center">请求头中的Content-length字段</td>
+</tr>
+<tr>
+<td align="center">$content_type</td>
+<td align="center">请求头中的Content-Type字段</td>
+</tr>
+<tr>
+<td align="center">$document_root</td>
+<td align="center">当前请求在root指令中指定的值</td>
+</tr>
+<tr>
+<td align="center">$host</td>
+<td align="center">请求主机头字段,否则为服务器名称</td>
+</tr>
+<tr>
+<td align="center">$http_user_agent</td>
+<td align="center">客户端agent信息</td>
+</tr>
+<tr>
+<td align="center">$http_cookie</td>
+<td align="center">客户端cookie信息</td>
+</tr>
+<tr>
+<td align="center">$limit_rate</td>
+<td align="center">这个变量可以限制连接速率</td>
+</tr>
+<tr>
+<td align="center">$request_method</td>
+<td align="center">客户端请求的动作,通常为GET或POST</td>
+</tr>
+<tr>
+<td align="center">$remote_addr</td>
+<td align="center">客户端的IP地址</td>
+</tr>
+<tr>
+<td align="center">$remote_port</td>
+<td align="center">客户端的端口</td>
+</tr>
+<tr>
+<td align="center">$remote_user</td>
+<td align="center">已经经过Auth Basic Module验证的用户名</td>
+</tr>
+<tr>
+<td align="center">$request_filename</td>
+<td align="center">当前请求的文件路径,由root或alias指令与URI请求生成</td>
+</tr>
+<tr>
+<td align="center">$scheme</td>
+<td align="center">HTTP方法（如http,https）</td>
+</tr>
+<tr>
+<td align="center">$server_protocol</td>
+<td align="center">请求使用的协议,通常是HTTP/1.0或HTTP/1.1</td>
+</tr>
+<tr>
+<td align="center">$server_addr</td>
+<td align="center">服务器地址,在完成一次系统调用后可以确定这个值</td>
+</tr>
+<tr>
+<td align="center">$server_name</td>
+<td align="center">服务器名称</td>
+</tr>
+<tr>
+<td align="center">$server_port</td>
+<td align="center">请求到达服务器的端口号</td>
+</tr>
+<tr>
+<td align="center">$request_uri</td>
+<td align="center">包含请求参数的原始URI,不包含主机名,如”/foo/bar.php?arg=baz”</td>
+</tr>
+<tr>
+<td align="center">$uri</td>
+<td align="center">不带请求参数的当前URI,$uri不包含主机名,如”/foo/bar.html”</td>
+</tr>
+<tr>
+<td align="center">$document_uri</td>
+<td align="center">与$uri相同</td>
+</tr>
+</tbody></table>
+<h3 id="rewrite语法规则"><a href="#rewrite语法规则" class="headerlink" title="rewrite语法规则"></a>rewrite语法规则</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">= ,!=</td>
+<td align="center">比较的一个变量和字符串</td>
+</tr>
+<tr>
+<td align="center">~, ~*</td>
+<td align="center">与正则表达式匹配的变量,如果这个正则表达式中包含},;则整个表达式需要用”或’包围</td>
+</tr>
+<tr>
+<td align="center">-f,!-f</td>
+<td align="center">检查一个文件是否存在</td>
+</tr>
+<tr>
+<td align="center">-d, !-d</td>
+<td align="center">检查一个目录是否存在</td>
+</tr>
+<tr>
+<td align="center">-e,!-e</td>
+<td align="center">检查一个文件、目录、符号链接是否存在</td>
+</tr>
+<tr>
+<td align="center">-x, !-x</td>
+<td align="center">检查一个文件是否可执行</td>
+</tr>
+</tbody></table>
+<h3 id="if指令"><a href="#if指令" class="headerlink" title="if指令"></a>if指令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>  语法格式</span><br><span class="line">     <span class="keyword">if</span> 空格 (条件) &#123;</span><br><span class="line">        重写模式</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 限制浏览器访问</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ Firefox) &#123; </span><br><span class="line">      rewrite ^(.*)$ /firefox/<span class="variable">$1</span> <span class="built_in">break</span>; </span><br><span class="line">    &#125;      </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ MSIE) &#123; </span><br><span class="line">        rewrite ^(.*)$ /msie/<span class="variable">$1</span> <span class="built_in">break</span>; </span><br><span class="line">    &#125;      </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ Chrome) &#123; </span><br><span class="line">        rewrite ^(.*)$ /chrome/<span class="variable">$1</span> <span class="built_in">break</span>; </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>案例：<br><img src="/2020/08/11/nginx/31.png" alt><br><img src="/2020/08/11/nginx/32.png" alt><br><img src="/2020/08/11/nginx/33.png" alt><br><img src="/2020/08/11/nginx/34.png" alt></p>
+<h3 id="return指令"><a href="#return指令" class="headerlink" title="return指令"></a>return指令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 限制IP访问</span></span><br><span class="line"><span class="keyword">if</span>  (<span class="variable">$remote_addr</span> = 192.168.197.142) &#123;</span><br><span class="line">   <span class="built_in">return</span> 403;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/11/nginx/21.png" alt></p>
+<h3 id="rewrite指令"><a href="#rewrite指令" class="headerlink" title="rewrite指令"></a>rewrite指令</h3><p>判断目录是否存在<br>服务器内部的rewrite和302跳转不一样.跳转的话URL都变了,变成重新http请求index.html,而内部rewrite,上下文没变</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!-e <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>) &#123;</span><br><span class="line">    rewrite ^.*$ /index.html <span class="built_in">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="set指令"><a href="#set指令" class="headerlink" title="set指令"></a>set指令</h3><p>set指令是设置变量用的,可以用来达到多条件判断时作标志用<br>判断IE并重写,且不用break;我们用set变量来达到目的</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~* msie) &#123;</span><br><span class="line">        <span class="built_in">set</span> <span class="variable">$isie</span> 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$fastcgi_script_name</span> = ie.html) &#123;</span><br><span class="line">        <span class="built_in">set</span> <span class="variable">$isie</span> 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$isie</span> 1) &#123;</span><br><span class="line">        rewrite ^.*$ ie.html;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用例子"><a href="#常用例子" class="headerlink" title="常用例子"></a>常用例子</h3><p>表示访问路径有a,b,c,d都跳转到//127.0.0.1:8080$Request_uri</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> location ~^/(a|b|c|d)&#123;</span><br><span class="line">    proxy_pass http://127.0.0.1:8080<span class="variable">$Request_uri</span>;</span><br><span class="line">    client_max_body_size   10240k;</span><br><span class="line">    client_body_buffer_size   128k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="实现防盗链"><a href="#实现防盗链" class="headerlink" title="实现防盗链"></a>实现防盗链</h3><p>实例：nginx服务端配置防盗链如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* \.(gif|jpg|png|jpeg)$ &#123;</span><br><span class="line">        valid_referers none blocked 192.168.0.23 192.168.0.123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">        <span class="comment">#rewrite ^/ http://ww4.sinaimg.cn/bmiddle/051bbed1gw1egjc4xl7srj20cm08aaa6.jpg;  </span></span><br><span class="line">        <span class="built_in">return</span> 403;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注解：valid_referers可以理解为白名单。后面可以使用<em>通配符来配置白名单,例如：</em>.baidu.com都可以通过盗链访问服务器<br>none 允许客户机直接访问服务器,blocked允许通过防火墙</p>
+</blockquote>
+<p>客户端通过盗链访问服务端配置：编一个html文件,复制以下内容。并启动httpd服务<br>href配置成防盗链服务器的IP地址：<a href="http://192.168.0.23/index.png" target="_blank" rel="noopener">http://192.168.0.23/index.png</a></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">html</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>fang dao lian ce shi<span class="tag">&lt;/<span class="name">title</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">"5"</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://192.168.0.23/index.png"</span>&gt;</span>dao lian<span class="tag">&lt;/<span class="name">a</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;/<span class="name">br</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">font</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/11/nginx/51.png" alt><br><img src="/2020/08/11/nginx/52.png" alt><br><img src="/2020/08/11/nginx/53.png" alt><br><img src="/2020/08/11/nginx/54.png" alt><br><img src="/2020/08/11/nginx/55.png" alt><br><img src="/2020/08/11/nginx/56.png" alt><br><img src="/2020/08/11/nginx/57.png" alt><br><img src="/2020/08/11/nginx/58.png" alt><br><img src="/2020/08/11/nginx/59.png" alt><br><img src="/2020/08/11/nginx/60.png" alt><br><img src="/2020/08/11/nginx/61.png" alt></p>
+<h2 id="Nginx负载就均衡算法"><a href="#Nginx负载就均衡算法" class="headerlink" title="Nginx负载就均衡算法"></a>Nginx负载就均衡算法</h2><p>1、轮询（默认）<br>每个请求按时间顺序逐一分配到不同的后端服务,如果后端某台服务器死机,自动剔除故障系统,使用户访问不影响<br>2、weight（轮询权值    权重）<br>Weight的值越大,分配到的访问概率越高,主要用于后端每台服务器性能不均衡的情况下,或者仅仅为在主从的情况下设置不同的权值,达到合理有效的利用主机资源<br>3、ip_hash<br>每个请求按访问的IP的哈希结果分配,使来自同一个IP的访客固定访问一台后端服务器,并且可以有效解决动态网页存在的session共享问题</p>
+<h3 id="轮询-默认"><a href="#轮询-默认" class="headerlink" title="轮询(默认)"></a>轮询(默认)</h3><p>每个请求按时间顺序逐一分配到不同的后端服务器,如果后端服务器down掉,能自动删除<br><img src="/2020/08/11/nginx/71.png" alt><br><img src="/2020/08/11/nginx/72.png" alt><br><img src="/2020/08/11/nginx/73.png" alt><br><img src="/2020/08/11/nginx/74.png" alt><br><img src="/2020/08/11/nginx/75.png" alt><br><img src="/2020/08/11/nginx/76.png" alt></p>
+<h3 id="权重-weight"><a href="#权重-weight" class="headerlink" title="权重(weight)"></a>权重(weight)</h3><p>指定轮询几率,weight和访问比率成正比,用于后端服务器性能不均的情况<br>复制代码代码如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream bakend &#123;  </span><br><span class="line">server 192.168.0.14 weight=3;  </span><br><span class="line">server 192.168.0.15 weight=1;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/11/nginx/81.png" alt><br><img src="/2020/08/11/nginx/82.png" alt><br><img src="/2020/08/11/nginx/83.png" alt></p>
+<h3 id="ip-hash"><a href="#ip-hash" class="headerlink" title="ip_hash"></a>ip_hash</h3><p>每个请求按访问ip的hash结果分配,这样每个访客固定访问一个后端服务器,可以解决session的问题<br>复制代码代码如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream bakend &#123;  </span><br><span class="line">ip_hash;  </span><br><span class="line">server 192.168.0.14:88;  </span><br><span class="line">server 192.168.0.15:80;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/11/nginx/91.png" alt><br><img src="/2020/08/11/nginx/92.png" alt><br><img src="/2020/08/11/nginx/93.png" alt><br><img src="/2020/08/11/nginx/94.png" alt></p>
+<h2 id="nginx负载均衡调度状态"><a href="#nginx负载均衡调度状态" class="headerlink" title="nginx负载均衡调度状态"></a>nginx负载均衡调度状态</h2><p>在nginx upstream模块中,可以设定每台后端服务器在负载均衡调度中的状态,常用状态有<br>down: 表示当前的server暂时不参与负载均衡<br><img src="/2020/08/11/nginx/95.png" alt><br><img src="/2020/08/11/nginx/96.png" alt><br><img src="/2020/08/11/nginx/97.png" alt></p>
+<p>Backup: 预留的备份及其,当其他所有的非backup及其出现故障或者忙的时候,才会请求backup机器,因此这台及其的访问压力最低<br><img src="/2020/08/11/nginx/100.png" alt><br><img src="/2020/08/11/nginx/101.png" alt><br><img src="/2020/08/11/nginx/102.png" alt></p>
+<p>Max_fails: 允许请求失败的次数,默认为1,当超过最大次数后,返回proxy_next_upstream模块定义的错误</p>
+<p>Fail_timeout: 请求失败超时时间,在经历了max_fails次失败后暂停服务时间,max_fails和fail_timeout可以一起使用</p>
+<h2 id="获取数据源地址"><a href="#获取数据源地址" class="headerlink" title="获取数据源地址"></a>获取数据源地址</h2><p>具体配置过程如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream linux &#123; </span><br><span class="line">      server 10.0.6.108:7080; </span><br><span class="line">      server 10.0.0.85:8980; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将server节点下的location节点中的proxy_pass配置为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123; </span><br><span class="line">            root  html; </span><br><span class="line">            index  index.html index.htm; </span><br><span class="line">            proxy_pass http://linuxidc;</span><br><span class="line">            proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">            proxy_set_header REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">            proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>; </span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">注解：</span><br><span class="line">            ＃代理到upstream定义的服务地址池</span><br><span class="line">            proxy_pass http://linuxidc;</span><br><span class="line">            ＃获取数据源地址</span><br><span class="line">            proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">            ＃获取到远程主机地址</span><br><span class="line">            proxy_set_header REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">            ＃让服务端获取真实客户端地址</span><br><span class="line">            proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/11/nginx/111.png" alt><br><img src="/2020/08/11/nginx/112.png" alt><br><img src="/2020/08/11/nginx/113.png" alt><br><img src="/2020/08/11/nginx/114.png" alt><br><img src="/2020/08/11/nginx/115.png" alt><br><img src="/2020/08/11/nginx/116.png" alt><br><img src="/2020/08/11/nginx/117.png" alt><br><img src="/2020/08/11/nginx/118.png" alt><br><img src="/2020/08/11/nginx/119.png" alt><br><img src="/2020/08/11/nginx/120.png" alt><br><img src="/2020/08/11/nginx/121.png" alt><br><img src="/2020/08/11/nginx/122.png" alt><br><img src="/2020/08/11/nginx/123.png" alt></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx 和 Apache 各有什么优缺点</title>
+    <url>/2020/08/10/nginx-diff-apache/</url>
+    <content><![CDATA[<p>nginx 相对 apache 的优点：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">轻量级,同样起web 服务,比apache 占用更少的内存及资源抗并发,</span><br><span class="line">nginx 处理请求是异步非阻塞的,而apache 则是阻塞型的,在高并发下nginx 能保持低资源低消耗高性能</span><br><span class="line">高度模块化的设计,编写模块相对简单</span><br><span class="line">社区活跃,各种高性能模块出品迅速啊</span><br><span class="line">nginx适合静态和反向代理</span><br></pre></td></tr></table></figure>
+<p>apache 相对nginx 的优点：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rewrite ,比nginx 的rewrite 强大</span><br><span class="line">模块超多,基本想到的都可以找到</span><br><span class="line">少bug ,nginx 的bug 相对较多</span><br><span class="line">超稳定</span><br><span class="line">apache处理动态请求</span><br></pre></td></tr></table></figure>
+<p>存在就是理由,一般来说,需要性能的web 服务,用nginx 。如果不需要性能只求稳定,那就apache 吧</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+        <tag>apache</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>cacti创建设备error解决</title>
+    <url>/2020/08/08/cacti-error/</url>
+    <content><![CDATA[<h2 id="添加设备报错"><a href="#添加设备报错" class="headerlink" title="添加设备报错"></a>添加设备报错</h2><p>如何解决cacti的snmp error<br>第一,确定cacti所有的主机能ping通被监控主机；如果不能ping通,请确认网络配置和被监控主机的ip设置是否正确。</p>
+<p>第二,如果能ping通,那么确认被监控主机是否启用snmpd服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -ef | grep snmp</span><br></pre></td></tr></table></figure>
+<p>或者直接重启被监控主机的snmp服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart snmpd.service</span><br></pre></td></tr></table></figure>
+<p>然后到cacti服务器上,用root用户：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">snmpwalk -c public -v 2c 192.168.124.14    --&gt; (这个ip为被监控主机的ip)</span><br></pre></td></tr></table></figure>
+<p>如果能够接收到被监控机器的数据信息,则表示被监控主机的snmp配置已经完成,没有错误。如果没有接收到被监控主机的数据信息,那么进行第三步操作。</p>
+<p>第三,用root登录被监控主机,修改snmp的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vi /etc/snmp/snmpd.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后配置如下：</span></span><br><span class="line"></span><br><span class="line">syslocation Server Room</span><br><span class="line"></span><br><span class="line">syscontact Sysadmin (root@localhost)</span><br><span class="line"></span><br><span class="line">rocommunity public 127.0.0.1</span><br><span class="line"></span><br><span class="line">agentaddress 161</span><br><span class="line"></span><br><span class="line">rocommunity public</span><br><span class="line"></span><br><span class="line">rwcommunity private</span><br><span class="line"></span><br><span class="line">trapsink 192.168.124.14 public 162     --&gt; 这里的ip=192.168.124.14为被监控主机ip</span><br></pre></td></tr></table></figure>
+<p>然后,再执行第二步操作即可。</p>
+<h2 id="unkuow状态"><a href="#unkuow状态" class="headerlink" title="unkuow状态"></a>unkuow状态</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/bin/php /usr/share/cacti/poller.php  --force</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>cacti</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS7下安装搭建Cacti 详解</title>
+    <url>/2020/08/07/cacti/</url>
+    <content><![CDATA[<h2 id="什么是Cacti"><a href="#什么是Cacti" class="headerlink" title="什么是Cacti"></a>什么是Cacti</h2><p>Cacti 在英文中的意思是仙人掌的意思,Cacti是一套基于PHP,MySQL,SNMP及RRDTool开发的网络流量监测图形分析工具。它通过snmpget来获取数据,使用 RRDtool绘画图形,而且你完全可以不需要了解RRDtool复杂的参数。它提供了非常强大的数据和用户管理功能,可以指定每一个用户能查看树状结构、host以及任何一张图,还可以与LDAP结合进行用户验证,同时也能自己增加模板,功能非常强大完善。Cacti 的发展是基于让 RRDTool 使用者更方便使用该软件,除了基本的 Snmp 流量跟系统资讯监控外,Cacti 也可外挂 Scripts 及加上 Templates 来作出各式各样的监控图。</p>
+<p>cacti是用php语言实现的一个软件,它的主要功能是用snmp服务获取数据,然后用rrdtool储存和更新数据,当用户需要查看数据的时候用rrdtool生成图表呈现给用户。因此,snmp和rrdtool是cacti的关键。Snmp关系着数据的收集,rrdtool关系着数据存储和图表的生成。</p>
+<p>Mysql配合PHP程序存储一些变量数据并对变量数据进行调用,如：主机名、主机ip、snmp团体名、端口号、模板信息等变量。</p>
+<p>snmp抓到数据不是存储在mysql中,而是存在rrdtool生成的rrd文件中（在cacti根目录的rra文件夹下）。rrdtool对数据的更新和存储就是对rrd文件的处理,rrd文件是大小固定的档案文件（Round Robin Archive）,它能够存储的数据笔数在创建时就已经定义。</p>
+<h2 id="什么是SNMP"><a href="#什么是SNMP" class="headerlink" title="什么是SNMP"></a>什么是SNMP</h2><p>nmp(Simple Network Management Protocal, 简单网络管理协议)在架构体系的监控子系统中将扮演重要角色。大体上,其基本原理是,在每一个被监控的主机或节点上 (如交换机)都运行了一个 agent,用来收集这个节点的所有相关的信息,同时监听 snmp 的 port,也就是 UDP 161,并从这个端口接收来自监控主机的指令(查询和设置)。</p>
+<p>如果安装 net-snmp,被监控主机需要安装 net-snmp(包含了 snmpd 这个 agent),而监控端需要安装 net-snmp-utils,若接受被监控端通过trap-communicate发来的信息的话,则需要安装net-snmp,并启用trap服务。如果自行编译,需要 beecrypt(libbeecrypt)和 elf(libraryelf)的库</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>Cacti首先要做的工作就是收集数据,cacti使用poller（轮询器）收集数据,poller是操作系统scheduler的扩展,如在unix系统中的crontab。现在的IT设施中会有许多不同的设备,如服务器、网络设备等,cacti主要使用SNMP协议来从远端的设备上收集数据,所有可以使用SNMP协议的设备都可以被cacti监控</p>
+<h2 id="安装部署及配置"><a href="#安装部署及配置" class="headerlink" title="安装部署及配置"></a>安装部署及配置</h2><h3 id="安装lamp环境"><a href="#安装lamp环境" class="headerlink" title="安装lamp环境"></a>安装lamp环境</h3><p>升级系统组件到最新的版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo  yum  update -y</span><br></pre></td></tr></table></figure>
+<p>关闭selinux</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">setenforce 0       <span class="comment">#临时关闭命令</span></span><br><span class="line">vi /etc/selinux/config    <span class="comment">#将SELINUX=enforcing改为SELINUX=disabled 设置后需要重启才能生效</span></span><br><span class="line">getenforce         <span class="comment">#检测selinux是否关闭,Disabled 为关闭</span></span><br></pre></td></tr></table></figure>
+<p>关闭防火墙</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">firewall-cmd --state    <span class="comment">#查看默认防火墙状态,关闭后显示not running,开启后显示running</span></span><br><span class="line">systemctl stop firewalld.service    <span class="comment">#临时关闭firewal</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld.service <span class="comment">#禁止firewall开机启动</span></span><br></pre></td></tr></table></figure>
+<p>安装lamp环境</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install  epel-release  -y</span><br><span class="line">yum  install  httpd  mariadb-server mysql-devel    php php-mysql php-gd php-pear  -y</span><br></pre></td></tr></table></figure>
+<p>启动并设置开机自启</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl start httpd   &amp;&amp; systemctl <span class="built_in">enable</span> httpd</span><br><span class="line">systemctl start mariadb  &amp;&amp; systemctl <span class="built_in">enable</span> mariadb</span><br></pre></td></tr></table></figure>
+<p>配置php</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vi /etc/php.ini </span><br><span class="line">    date.timezone =PRC      <span class="comment"># 修改时区</span></span><br></pre></td></tr></table></figure>
+<p>添加测试页并重启httpd</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"&lt;?php echo phpinfo();?&gt;"</span>  &gt;  /var/www/html/index.php</span><br><span class="line">systemctl restart httpd</span><br></pre></td></tr></table></figure>
+<p>配置mariadb</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 初始化数据库设置密码</span></span><br><span class="line">mysqladmin -u root password 123456  </span><br><span class="line"><span class="comment">#root用户登陆数据库</span></span><br><span class="line">mysql -u root -p123456</span><br><span class="line"><span class="comment"># 创建用于测试php和mariadb连通性的用户</span></span><br><span class="line">grant all privileges on *.* to <span class="built_in">test</span>@localhost identified by <span class="string">'RedHat'</span>; </span><br><span class="line"><span class="comment"># 立即生效</span></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<p>如果是线上服务器不可以关闭防火墙可以添加规则</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">firewall-cmd --permanent --add-service=http</span><br><span class="line">firewall-cmd --reload</span><br><span class="line">firewall-cmd --permanent --add-port=3306/tcp</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<h3 id="安装配置cacti"><a href="#安装配置cacti" class="headerlink" title="安装配置cacti"></a>安装配置cacti</h3><p>下载cacti</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line">wget http://www.cacti.net/downloads/cacti-0.8.8f.tar.gz</span><br><span class="line">tar zxvf cacti-0.8.8f.tar.gz</span><br><span class="line">mv cacti-0.8.8f /var/www/html/cacti</span><br></pre></td></tr></table></figure>
+<p>创建cacti数据库和cacti用户,赋予权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p123456</span><br><span class="line">create database cacti default character <span class="built_in">set</span> utf8;</span><br><span class="line">grant all privileges on cacti.* to cacti@localhost identified by <span class="string">'redhat'</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<p>把cacti.sql导入数据库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -ucacti -predhat cacti &lt; /var/www/html/cacti/cacti.sql</span><br></pre></td></tr></table></figure>
+<p>编辑config.php和global.php</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /var/www/html/cacti/include/config.php</span><br><span class="line">    <span class="variable">$database_type</span> = <span class="string">"mysql"</span>;</span><br><span class="line">    <span class="variable">$database_default</span> = <span class="string">"cacti"</span>;</span><br><span class="line">    <span class="variable">$database_hostname</span> = <span class="string">"localhost"</span>;</span><br><span class="line">    <span class="variable">$database_username</span> = <span class="string">"cacti"</span>;</span><br><span class="line">    <span class="variable">$database_password</span> = <span class="string">"redhat"</span>;</span><br><span class="line">    <span class="variable">$database_port</span> = <span class="string">"3306"</span>;</span><br><span class="line">    <span class="variable">$database_ssl</span> = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">vim /var/www/html/cacti/include/global.php</span><br><span class="line">    <span class="variable">$database_type</span> = <span class="string">"mysql"</span>;</span><br><span class="line">    <span class="variable">$database_default</span> = <span class="string">"cacti"</span>;</span><br><span class="line">    <span class="variable">$database_hostname</span> = <span class="string">"localhost"</span>;</span><br><span class="line">    <span class="variable">$database_username</span> = <span class="string">"cacti"</span>;</span><br><span class="line">    <span class="variable">$database_password</span> = <span class="string">"redhat"</span>;</span><br><span class="line">    <span class="variable">$database_port</span> = <span class="string">"3306"</span>;</span><br><span class="line">    <span class="variable">$database_ssl</span> = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+<p>安装rrdtool以生成图像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum  install rrdtool rrdtool-devel rrdtool-php rrdtool-perl  -y </span><br><span class="line">yum  install gd gd-devel php-gd   -y   ---rrdtool绘制图像需要的图形库</span><br></pre></td></tr></table></figure>
+<p>安装snmp服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum -y install net-snmp net-snmp-utils php-snmp net-snmp-libs</span><br></pre></td></tr></table></figure>
+<p>编辑配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vi   /etc/snmp/snmpd.conf</span><br><span class="line">    <span class="comment"># 41行</span></span><br><span class="line">    com2sec notConfigUser  127.0.0.1      public</span><br><span class="line">    <span class="comment"># 62行</span></span><br><span class="line">    access  notConfigGroup <span class="string">""</span>  any    noauth    exact  all none none</span><br><span class="line">    <span class="comment"># 85行</span></span><br><span class="line">    view all    included  .1          80</span><br><span class="line">    <span class="comment"># 最后</span></span><br><span class="line">    syslocation Server Room</span><br><span class="line">    syscontact Sysadmin (root@localhost)</span><br><span class="line">    rocommunity public 127.0.0.1</span><br><span class="line">    agentaddress 161</span><br><span class="line">    rocommunity public</span><br><span class="line">    rwcommunity private</span><br><span class="line">    trapsink 192.168.124.14 public 162     <span class="comment"># --&gt; 这里的ip=192.168.124.14为被监控主机ip</span></span><br></pre></td></tr></table></figure>
+<p>启动snmp并加入自启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart snmpd.service</span><br><span class="line">systemctl <span class="built_in">enable</span> snmpd.service</span><br></pre></td></tr></table></figure>
+<p>授权目录权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建cacti系统账号 不需要建立登录目录</span></span><br><span class="line">useradd -r -M cacti</span><br><span class="line">chown -R cacti /var/www/html/cacti/rra/</span><br><span class="line">chown -R cacti /var/www/html/cacti/<span class="built_in">log</span>/</span><br></pre></td></tr></table></figure>
+<p>创建抓图的计划任务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">      */1 * * * * /usr/bin/php  /var/www/html/cacti/poller.php &gt;&gt; /tmp/cacti_rrdtool.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="后台管理配置"><a href="#后台管理配置" class="headerlink" title="后台管理配置"></a>后台管理配置</h3><p>浏览器访问cacti管理页面进行安装<br><a href="http://cacti_ip/cacti" target="_blank" rel="noopener">http://cacti_ip/cacti</a>  首次登录用户名和密码均为admin,之后可以设置新密码<br><img src="/2020/08/07/cacti/1.png" alt><br><img src="/2020/08/07/cacti/2.png" alt><br><img src="/2020/08/07/cacti/3.png" alt><br>默认账号密码为admin<br><img src="/2020/08/07/cacti/4.png" alt><br>修改密码输入新密码,再次输入确认密码<br><img src="/2020/08/07/cacti/5.png" alt></p>
+<p>创建监控本机设备<br><img src="/2020/08/07/cacti/6.png" alt><br><img src="/2020/08/07/cacti/7.png" alt><br>创建成功会显示详细信息<br><img src="/2020/08/07/cacti/8.png" alt><br><img src="/2020/08/07/cacti/9.png" alt><br><img src="/2020/08/07/cacti/10.png" alt><br><img src="/2020/08/07/cacti/11.png" alt><br>刚创建完没有图像<br><img src="/2020/08/07/cacti/12.png" alt><br>过一会就可以刷新出来图像了<br><img src="/2020/08/07/cacti/13.png" alt><br>再等一会就可以看到流量了<br><img src="/2020/08/07/cacti/19.png" alt></p>
+<h2 id="配置被监控端"><a href="#配置被监控端" class="headerlink" title="配置被监控端"></a>配置被监控端</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum  install net-snmp lm_sensors  -y</span><br></pre></td></tr></table></figure>
+<p>修改被监控端的snmpd.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vi  /etc/snmp/snmpd.conf </span><br><span class="line"></span><br><span class="line">    <span class="comment">#允许谁可以读取数据  第41行</span></span><br><span class="line">    com2sec notConfigUser  172.16.55.144       public</span><br><span class="line">    <span class="comment">#修改访问权限改成all   第62行</span></span><br><span class="line">    access  notConfigGroup <span class="string">""</span>      any       noauth    exact  all none none</span><br><span class="line">    <span class="comment">#去掉注释   第85行</span></span><br><span class="line">    view all    included  .1</span><br></pre></td></tr></table></figure>
+<p>启动服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl start  snmpd</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/07/cacti/21.png" alt><br><img src="/2020/08/07/cacti/22.png" alt><br><img src="/2020/08/07/cacti/23.png" alt><br><img src="/2020/08/07/cacti/24.png" alt><br><img src="/2020/08/07/cacti/25.png" alt><br><img src="/2020/08/07/cacti/26.png" alt><br><img src="/2020/08/07/cacti/27.png" alt><br><img src="/2020/08/07/cacti/28.png" alt><br><img src="/2020/08/07/cacti/29.png" alt><br>等一会刷新就有流量了<br><img src="/2020/08/07/cacti/30.png" alt></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>cacti</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>fail2ban防暴力破解</title>
+    <url>/2020/08/06/fail2ban/</url>
+    <content><![CDATA[<h2 id="关于Fail2ban"><a href="#关于Fail2ban" class="headerlink" title="关于Fail2ban"></a>关于Fail2ban</h2><p>Fail2ban可以监视你的系统日志,然后匹配日志的错误信息（正则式匹配）执行相应的屏蔽动作（一般情况下是调用防火墙屏蔽）,如:当有人在试探你的HTTP、SSH、SMTP、FTP密码,只要达到你预设的次数,fail2ban就会调用防火墙屏蔽这个IP,而且可以发送e-mail通知系统管理员,是一款很实用、很强大的软件<br>功能和特性<br>1、支持大量服务,如ssh、apache、qmail、proftpd、sasl等<br>2、支持多种动作,如iptables、tcp-weapper,shorewall（iptables第三方工具）,mail notifications（邮件通知）等<br>3、在logpath（日志路径）选择中支持通配符<br>4、需要Gamin支持（注：Gamin是用于监视文件和目录是否更改的服务工具）<br>5、需要安装python、iptables、tcp-wrapper、shorewall、Gamin。如果想要发邮件,那必须安装postfix或sendmail<br>核心原理：其实fail2ban就是用来监控,具体是调用iptables来实现动作</p>
+<h2 id="安装Fail2ban"><a href="#安装Fail2ban" class="headerlink" title="安装Fail2ban"></a>安装Fail2ban</h2><p>从CentOS7开始,官方的标准防火墙设置软件从iptables变更为firewalld。 为了使Fail2ban与iptables联动,需禁用自带的firewalld服务,同时安装iptables服务。因此,在进行Fail2ban的安装与使用前需根据博客CentOS7安装和配置iptables防火墙进行环境配置</p>
+<p>首先需要到Fail2ban官网下载程序源码包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://codeload.github.com/fail2ban/fail2ban/tar.gz/0.8.14</span><br></pre></td></tr></table></figure>
+<p>成功下载之后,解压源码包并进行安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -xf 0.8.14</span><br><span class="line"><span class="built_in">cd</span> fail2ban-0.8.14</span><br><span class="line">python setup.py install</span><br></pre></td></tr></table></figure>
+<p>安装完成后要手动生成一下程序的启动脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp files/redhat-initd /etc/init.d/fail2ban</span><br><span class="line">chkconfig --add fail2ban</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置Fail2ban"><a href="#配置Fail2ban" class="headerlink" title="配置Fail2ban"></a>配置Fail2ban</h2><p>安装完成后,服务配置目录为:<br>action.d       #动作文件夹,内含默认文件,iptables和mail等动作配置<br>fail2ban.conf  #定义了fail2ban日志级别、日志位置及sock文件位置<br>filter.d       # 条件文件夹,内含默认文件。过滤日志关键内容设置<br>jail.conf      #主配置文件。模块化,主要设置启用ban动作的服务及动作阀值</p>
+<p><img src="/2020/08/06/fail2ban/1.png" alt><br>新建jail.local来覆盖Fail2ban在jail.conf的默认配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local</span><br><span class="line">vim /etc/fail2ban/jail.local</span><br><span class="line"></span><br><span class="line">    [ssh-iptables]</span><br><span class="line">    enabled  = <span class="literal">true</span></span><br><span class="line">    filter   = sshd   <span class="comment">#监控服务名称</span></span><br><span class="line">    action   = iptables[name=SSH, port=22, protocol=tcp]</span><br><span class="line">    logpath  = /var/<span class="built_in">log</span>/secure  <span class="comment"># 日志文件</span></span><br><span class="line">    maxretry = 3     <span class="comment"># 错误最高次数</span></span><br><span class="line">    findtime  = 300</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：logpath要写成/var/log/secure,这个系统登录日志,不能随意设置</p>
+</blockquote>
+<p>启动fail2ban</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl   start  fail2ban</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试功能"><a href="#测试功能" class="headerlink" title="测试功能"></a>测试功能</h2><p>开启后在防火墙会出现一个自定义链</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost fail2ban-0.8.14]<span class="comment"># iptables -nL</span></span><br><span class="line">Chain INPUT (policy ACCEPT)</span><br><span class="line">target     prot opt <span class="built_in">source</span>               destination         </span><br><span class="line">fail2ban-SSH  tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:22</span><br><span class="line"></span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">target     prot opt <span class="built_in">source</span>               destination         </span><br><span class="line"></span><br><span class="line">Chain OUTPUT (policy ACCEPT)</span><br><span class="line">target     prot opt <span class="built_in">source</span>               destination         </span><br><span class="line"></span><br><span class="line">Chain fail2ban-SSH (1 references)</span><br><span class="line">target     prot opt <span class="built_in">source</span>               destination         </span><br><span class="line">RETURN     all  --  0.0.0.0/0            0.0.0.0/0</span><br></pre></td></tr></table></figure>
+<p>ssh登录测试</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[sgsm@ipason monitorlog]$ ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN </span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    link/ether 00:e0:4c:13:7c:87 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.1.100/24 brd 192.168.1.255 scope global eth0</span><br><span class="line">    inet6 fe80::2e0:4cff:fe13:7c87/64 scope link </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">3: wlan0: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN qlen 1000</span><br><span class="line">    link/ether ac:67:5d:95:40:75 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">[sgsm@ipason monitorlog]$ </span><br><span class="line">[sgsm@ipason monitorlog]$ ssh  192.168.1.89</span><br><span class="line">The authenticity of host <span class="string">'192.168.1.89 (192.168.1.89)'</span> can<span class="string">'t be established.</span></span><br><span class="line"><span class="string">RSA key fingerprint is 8f:a5:4d:da:e7:be:b4:ca:4f:6a:f9:75:85:b4:f7:e1.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added '</span>192.168.1.89<span class="string">' (RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">sgsm@192.168.1.89'</span>s password: </span><br><span class="line">Permission denied, please try again.</span><br><span class="line">sgsm@192.168.1.89<span class="string">'s password: </span></span><br><span class="line"><span class="string">Permission denied, please try again.</span></span><br><span class="line"><span class="string">sgsm@192.168.1.89'</span>s password: </span><br><span class="line">Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).</span><br><span class="line">[sgsm@ipason monitorlog]$ ssh  192.168.1.89</span><br><span class="line">ssh: connect to host 192.168.1.89 port 22: Connection refused</span><br></pre></td></tr></table></figure>
+<p>fail2ban状态  阻挡了此ip的连接</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost fail2ban-0.8.14]<span class="comment"># fail2ban-client status ssh-iptables</span></span><br><span class="line">Status <span class="keyword">for</span> the jail: ssh-iptables</span><br><span class="line">|- filter</span><br><span class="line">|  |- File list:        /var/<span class="built_in">log</span>/secure </span><br><span class="line">|  |- Currently failed: 0</span><br><span class="line">|  `- Total failed:     3</span><br><span class="line">`- action</span><br><span class="line">   |- Currently banned: 1</span><br><span class="line">   |  `- IP list:       192.168.1.100 </span><br><span class="line">   `- Total banned:     1</span><br><span class="line">[root@localhost fail2ban-0.8.14]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Fail2ban命令"><a href="#Fail2ban命令" class="headerlink" title="Fail2ban命令"></a>Fail2ban命令</h2><p>查看被ban的IP</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fail2ban-client status ssh-iptables</span><br></pre></td></tr></table></figure>
+<p>从黑名单删除</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/bin/fail2ban-client  <span class="built_in">set</span>  ssh-iptables   unbanip  IP地址</span><br></pre></td></tr></table></figure>
+<p>添加白名单</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fail2ban-client <span class="built_in">set</span> ssh-iptables addignoreip IP地址</span><br></pre></td></tr></table></figure>
+<p>删除白名单</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fail2ban-client <span class="built_in">set</span> ssh-iptables delignoreip IP地址</span><br></pre></td></tr></table></figure>
+
+<h2 id="阻止恶意扫描"><a href="#阻止恶意扫描" class="headerlink" title="阻止恶意扫描"></a>阻止恶意扫描</h2><p>新增[nginx-dir-scan]模块,配置信息如下。此处,port和logpath应按照实际情况填写</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[nginx-dir-scan]</span><br><span class="line"></span><br><span class="line">enabled = <span class="literal">true</span></span><br><span class="line">filter = nginx-dir-scan</span><br><span class="line">action   = iptables[name=nginx-dir-scan, port=443, protocol=tcp]</span><br><span class="line">logpath = /path/to/nginx/access.log</span><br><span class="line">maxretry = 1</span><br><span class="line">bantime = 172800</span><br><span class="line">findtime  = 300</span><br></pre></td></tr></table></figure>
+<p>然后在filter.d目录下新建nginx-dir-scan.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /etc/fail2ban/filter.d/nginx-http-auth.conf /etc/fail2ban/filter.d/nginx-dir-scan.conf</span><br><span class="line">vim /etc/fail2ban/filter.d/nginx-dir-scan.conf</span><br><span class="line">    [Definition]</span><br><span class="line"></span><br><span class="line">    failregex = &lt;HOST&gt; -.*- .*Mozilla/4.0* .* .*$</span><br><span class="line">    ignoreregex =</span><br></pre></td></tr></table></figure>
+<p>此处的正则匹配规则是根据nginx的访问日志进行撰写,不同的恶意扫描有不同的日志特征。</p>
+<p>本文采用此规则是因为在特殊的应用场景下有绝大的把握可以肯定Mozilla/4.0是一些老旧的数据采集软件使用的UA,所以就针对其做了屏蔽。不可否认Mozilla/4.0 这样的客户端虽然是少数,但仍旧存在。因此,此规则并不适用于任何情况。</p>
+<p>使用如下命令,可以测试正则规则的有效性</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fail2ban-regex /path/to/nginx/access.log /etc/fail2ban/filter.d/nginx-dir-scan.conf</span><br></pre></td></tr></table></figure>
+<p>Fail2ban已经内置很多匹配规则,位于filter.d目录下,包含了常见的SSH/FTP/Nginx/Apache等日志匹配,如果都还无法满足需求,也可以自行新建规则来匹配异常IP。总之,使用Fail2ban+iptables来阻止恶意IP是行之有效的办法,可极大提高服务器安全</p>
+<p>变更iptables封禁策略</p>
+<p>Fail2ban的默认iptables封禁策略为 REJECT –reject-with icmp-port-unreachable,需要变更iptables封禁策略为DROP。</p>
+<p>在/etc/fail2ban/action.d/目录下新建文件iptables-blocktype.local。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/fail2ban/action.d/</span><br><span class="line">cp iptables-blocktype.conf iptables-blocktype.local</span><br><span class="line">vim iptables-blocktype.local</span><br><span class="line"></span><br><span class="line">    [INCLUDES]</span><br><span class="line"></span><br><span class="line">    after = iptables-blocktype.local</span><br><span class="line"></span><br><span class="line">    [Init]</span><br><span class="line"></span><br><span class="line">    blocktype = DROP</span><br></pre></td></tr></table></figure>
+<p>最后,别忘记重启fail2ban使其生效。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart fail2ban</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>fail2ban</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>shell数组的应用</title>
+    <url>/2020/08/06/shell-array/</url>
+    <content><![CDATA[<h2 id="什么是数组"><a href="#什么是数组" class="headerlink" title="什么是数组"></a>什么是数组</h2><p>Shell数组就是一个元素的集合，它有限个数的元素（变量和字符内容），用一个名字来命名，用下标进行区分，这个名字就称为数组名，组成数组的变量称之为数组元素，使用数组可以缩短和简化程序开发</p>
+<h2 id="定义与增删改查"><a href="#定义与增删改查" class="headerlink" title="定义与增删改查"></a>定义与增删改查</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查询数组所有元素</span></span><br><span class="line">[sgsm@ipason monitorlog]$ array=(1 2 3)  </span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span> <span class="variable">$&#123;array[*]&#125;</span></span><br><span class="line">1 2 3</span><br><span class="line">[sgsm@ipason monitorlog]$ num=(1 2 3 4 5) </span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;num[@]&#125;</span>  </span><br><span class="line">1 2 3 4 5</span><br><span class="line">[sgsm@ipason monitorlog]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示数组的第一个元素</span></span><br><span class="line">[sgsm@ipason monitorlog]$ array=(1 2 3)  </span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span> <span class="variable">$&#123;array[0]&#125;</span></span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取数组的元素个数</span></span><br><span class="line">[sgsm@ipason monitorlog]$ array=(1 2 3)  </span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;#array[*]&#125;</span></span><br><span class="line">3</span><br><span class="line">[sgsm@ipason monitorlog]$</span><br></pre></td></tr></table></figure>
+<p>数组的赋值</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 索引为3 的值为4</span></span><br><span class="line">[sgsm@ipason monitorlog]$ array=(1 2 3)  </span><br><span class="line">[sgsm@ipason monitorlog]$ array[3]=4</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;array[*]&#125;</span> </span><br><span class="line">1 2 3 4</span><br><span class="line">[sgsm@ipason monitorlog]$</span><br></pre></td></tr></table></figure>
+<p>数组的删除</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除第二个元素</span></span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;array[*]&#125;</span> </span><br><span class="line">1 2 3 4</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">unset</span> array[1]</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;array[*]&#125;</span> </span><br><span class="line">1 3 4</span><br><span class="line">[sgsm@ipason monitorlog]$</span><br></pre></td></tr></table></figure>
+<p>数组内容的切片和替换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 截取第2个至第四个</span></span><br><span class="line">[sgsm@ipason monitorlog]$ a=(1 2 3 4 5 6 7)</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;a[*]&#125;</span>     </span><br><span class="line">1 2 3 4 5 6 7</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;a[*]:1:3&#125;</span> </span><br><span class="line">2 3 4</span><br><span class="line">[sgsm@ipason monitorlog]$</span><br></pre></td></tr></table></figure>
+<p>替换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 把 "," 替换为空格</span></span><br><span class="line">[sgsm@ipason monitorlog]$ num=(1,2,3,4,5)</span><br><span class="line">[sgsm@ipason monitorlog]$ array=(<span class="variable">$&#123;num//,/ &#125;</span>)      </span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;array[*]&#125;</span> </span><br><span class="line">1 2 3 4 5</span><br><span class="line">[sgsm@ipason monitorlog]$ num=(1,2,3,4,5)    </span><br><span class="line">[sgsm@ipason monitorlog]$ array=(<span class="variable">$&#123;num//,/+&#125;</span>)</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;array[*]&#125;</span>  </span><br><span class="line">1+2+3+4+5</span><br></pre></td></tr></table></figure>
+<p>循环1,2,3,4,5 </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[sgsm@ipason monitorlog]$ cat  for.sh </span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">num=(1,2,3,4,5)</span><br><span class="line">array=(<span class="variable">$&#123;num//,/ &#125;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$&#123;array[*]&#125;</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">[sgsm@ipason monitorlog]$ sh for.sh   </span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">[sgsm@ipason monitorlog]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 替换数组里面的值</span></span><br><span class="line">[sgsm@ipason monitorlog]$ a=(1 2 3 4 5 6 7)</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;a[*]&#125;</span> </span><br><span class="line">1 2 3 4 5 6 7</span><br><span class="line">[sgsm@ipason monitorlog]$ <span class="built_in">echo</span>  <span class="variable">$&#123;a[*]/2/b&#125;</span>  </span><br><span class="line">1 b 3 4 5 6 7</span><br><span class="line">[sgsm@ipason monitorlog]$</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python报&quot;TypeError:abytes-likeobjectisrequired,not&#39;str&#39;&quot;解决办法</title>
+    <url>/2020/08/06/not-str/</url>
+    <content><![CDATA[<p>解决办法非常的简单，只需要用上python的bytes和str两种类型转换的函数encode()、decode()即可！</p>
+<p>str通过encode()方法可以编码为指定的bytes；</p>
+<p>反过来，如果我们从网络或磁盘上读取了字节流，那么读到的数据就是bytes。要把bytes变为str，就需要用decode()方法；</p>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str = <span class="string">'this is test'</span></span><br><span class="line"></span><br><span class="line">str = str.encode()</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python re匹配中文和非中文</title>
+    <url>/2020/08/06/re-chinese/</url>
+    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">data = <span class="string">"""我始终！@@##¥%…………&amp;alkjdfsb1234\n</span></span><br><span class="line"><span class="string">566667是中国人woaldsfkjzlkcjxv123*())&lt;&gt;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 匹配所有汉字</span></span><br><span class="line">print(re.findall(<span class="string">'[\u4e00-\u9fa5]'</span>, data))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 匹配所有单字符，英文，数字，特殊符号</span></span><br><span class="line">print(re.findall(<span class="string">'[\x00-\xff]'</span>, data))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 匹配所有非单字符，入汉字和省略号</span></span><br><span class="line">print(re.findall(<span class="string">'[^\x00-\xff]'</span>, data))</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS7下安装Slowhttptest DDoS检测工具</title>
+    <url>/2020/08/05/slowhttptest/</url>
+    <content><![CDATA[<h2 id="Slowhttptest简介"><a href="#Slowhttptest简介" class="headerlink" title="Slowhttptest简介"></a>Slowhttptest简介</h2><p>Slowhttptest是依赖HTTP协议的慢速攻击DoS攻击工具，设计的基本原理是服务器在请求完全接收后才会进行处理，如果客户端的发送速度缓慢或者发送不完整，服务端为其保留连接资源池占用，大量此类请求并发将导致DoS。</p>
+<h2 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h2><p>slowloris：完整的http请求是以\r\n\r\n结尾，攻击时仅发送\r\n，少发送一个\r\n，服务器认为请求还未发完，就会一直等待直至超时。等待过程中占用连接数达到服务器连接数上限，服务器便无法处理其他请求。</p>
+<p>slow http post：原理和slowloris有点类似，这次是通过声明一个较大的content-length后，body缓慢发送，导致服务器一直等待</p>
+<p>slow read attack：向服务器发送一个正常合法的read请求，请求一个很大的文件，但认为的把TCP滑动窗口设置得很小，服务器就会以滑动窗口的大小切割文件，然后发送。文件长期滞留在内存中，消耗资源。这里有两点要注意：<br>    1.tcp窗口设置要比服务器的socket缓存小，这样发送才慢。<br>    2.请求的文件要比服务器的socket缓存大，使得服务器无法一下子将文件放到缓存，然后去处理其他事情，而是必须不停的将文件切割成窗口大小，再放入缓存。同时攻击端一直说自己收不到。</p>
+<h2 id="安装Slowhttptest"><a href="#安装Slowhttptest" class="headerlink" title="安装Slowhttptest"></a>安装Slowhttptest</h2><p>安装Slowhttptest需要依赖以下组件，可按照以下步骤来进行(如果组件已经安装，可以跳过)：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装libssl-dev   C++编译器</span></span><br><span class="line"> yum install openssl openssl-devel   gcc-c++   -y</span><br></pre></td></tr></table></figure>
+<p>安装m4、autoconf、perl和automake</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方法一：通过yum直接安装</span></span><br><span class="line">yum install m4</span><br><span class="line">yum install autoconf</span><br><span class="line">yum install perl</span><br><span class="line">yum install automake </span><br><span class="line"><span class="comment"># 注意：需要按照顺序进行安装，因为automake依赖于m4，autoconf和perl，autoconf依赖于m4</span></span><br></pre></td></tr></table></figure>
+<p>本例中automake是通过下载包进行安装，原因为通过yum中的版本1.13较低，而安装slowhttptest需要automake-1.16版本,所以需要使用编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方法二：通过直接下载包文件进行安装（m4、autoconf和automake是GNU中的开源软件，本例中automake安装在/usr/local/下）</span></span><br><span class="line"><span class="comment"># 安装目录</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/</span><br><span class="line"><span class="comment"># 安装m4</span></span><br><span class="line">wget http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.gz</span><br><span class="line">tar -zxvf m4-1.4.18.tar.gz</span><br><span class="line"><span class="built_in">cd</span> m4-1.4.18/</span><br><span class="line">./configure   &amp;&amp; make   &amp;&amp; make install</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="comment"># 安装autoconf</span></span><br><span class="line">wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz</span><br><span class="line">tar -zxvf autoconf-2.69.tar.gz</span><br><span class="line"><span class="built_in">cd</span>  autoconf-2.69/</span><br><span class="line">./configure   &amp;&amp; make   &amp;&amp; make install</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="comment"># 安装automake</span></span><br><span class="line">wget http://ftp.gnu.org/gnu/automake/automake-1.16.1.tar.gz</span><br><span class="line">tar -xvf automake-1.16.1.tar.gz</span><br><span class="line"><span class="built_in">cd</span> automake-1.16.1/</span><br><span class="line">./configure --prefix=/usr/   &amp;&amp;  make  &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>安装slowhttptest</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 代码托管在https://github.com/shekyan/slowhttptest   需要使用git下载</span></span><br><span class="line">yum install  git    -y</span><br><span class="line">git  <span class="built_in">clone</span>   https://github.com/shekyan/slowhttptest</span><br><span class="line"><span class="built_in">cd</span> slowhttptest/</span><br><span class="line">./configure  &amp;&amp;  make  &amp;&amp; make install</span><br><span class="line"><span class="comment"># 安装后可以使用 slowhttptest  -h  查看帮助文档</span></span><br><span class="line">slowhttptest  -h</span><br></pre></td></tr></table></figure>
+<h2 id="运行Slowhttptest"><a href="#运行Slowhttptest" class="headerlink" title="运行Slowhttptest"></a>运行Slowhttptest</h2><p>参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g      在测试完成后，以时间戳为名生成一个CVS和HTML文件的统计数据</span><br><span class="line">-H      SlowLoris模式</span><br><span class="line">-B      Slow POST模式</span><br><span class="line">-R      Range Header模式</span><br><span class="line">-X      Slow Read模式</span><br><span class="line">-c      number of connections 测试时建立的连接数</span><br><span class="line">-d      HTTP proxy host:port  为所有连接指定代理</span><br><span class="line">-e      HTTP proxy host:port  为探测连接指定代理</span><br><span class="line">-i      seconds 在slowrois和Slow POST模式中，指定发送数据间的间隔。</span><br><span class="line">-l      seconds 测试维持时间</span><br><span class="line">-n      seconds 在Slow Read模式下，指定每次操作的时间间隔。</span><br><span class="line">-o      file name 使用-g参数时，可以使用此参数指定输出文件名</span><br><span class="line">-p      seconds 指定等待时间来确认DoS攻击已经成功</span><br><span class="line">-r      connections per second 每秒连接个数</span><br><span class="line">-s      bytes 声明Content-Length header的值</span><br><span class="line">-t      HTTP verb 在请求时使用什么操作，默认GET</span><br><span class="line">-u      URL  指定目标url</span><br><span class="line">-v      level 日志等级（详细度）</span><br><span class="line">-w      bytes slow <span class="built_in">read</span>模式中指定tcp窗口范围下限</span><br><span class="line">-x      bytes 在slowloris and Slow POST tests模式中，指定发送的最大数据长度</span><br><span class="line">-y      bytes slow <span class="built_in">read</span>模式中指定tcp窗口范围上限</span><br><span class="line">-z      bytes 在每次的<span class="built_in">read</span>()中，从buffer中读取数据量</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">使用以下攻击命令，slowhttptest -c 5000 -u [hostname/ip]</span><br><span class="line"></span><br><span class="line">    -c 表示发起5000个连接，由于是慢速DDOS且是基于http协议的，这里发起的连接请求是确确实实会与服务器进行三次握手并维持与服务器的连接的</span><br><span class="line">    -u 注意这里的 hostname 或者 ip 都需要在前面加上协议 http://</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">slowloris模式：</span><br><span class="line">slowhttptest -c 1000 -H -g -o my_header_stats -i 10 -r 200 -t GET -u https://xxxxxx.xxxxx.xx -x 24 -p 3</span><br><span class="line"></span><br><span class="line">slow post模式：</span><br><span class="line">slowhttptest -c 3000 -B -g -o my_body_stats -i 110 -r 200 -s 8192 -t FAKEVERB -u http://xxx.xxx.xxx -x 10 -p 3</span><br><span class="line"></span><br><span class="line">slow <span class="built_in">read</span>模式：</span><br><span class="line">slowhttptest -c 8000 -X -r 200 -w 512 -y 1024 -n 5 -z 32 -k 3 -u https://xxx.xxx.xxx -p 3</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="报错解决"><a href="#报错解决" class="headerlink" title="报错解决"></a>报错解决</h2><p>直接下载包文件进行安装时遇到的一些问题和解决方法：</p>
+<p>问题1：执行./configure时提示“没有权限”。</p>
+<p>解决方法：可以用以下命令解决。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod -R 777 ./</span><br></pre></td></tr></table></figure>
+<p>　　<br>问题2：安装automake-1.16在make失败，提示–no-discard-stderr。</p>
+<p>解决方法：修改automake-1.16文件夹下Makefile源代码第3694行，在其后增加–no-discard-stderr：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#3694行  automake-$(APIVERSION) --no-discard-stderr</span></span><br></pre></td></tr></table></figure>
+
+<p>问题3：安装automake-1.16后，后续对slowhttptest执行make操作时仍然提示missing automake-1.16 –foreign<br>解决方法：建议安装automake-1.16.1</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>slowhttptest</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CentOS7 搭建OpenVPN服务器</title>
     <url>/2020/07/31/openvpn/</url>
     <content><![CDATA[<h2 id="简介和工作原理"><a href="#简介和工作原理" class="headerlink" title="简介和工作原理"></a>简介和工作原理</h2><p>VPN直译就是虚拟专用通道,是提供给企业之间或者个人与公司之间安全数据传输的隧道,OpenVPN无疑是Linux下开源VPN的先锋,提供了良好的性能和友好的用户GUI<br>它大量使用了OpenSSL加密库中的SSLv3/TLSv1协议函数库<br>目前OpenVPN能在Solaris、Linux、OpenBSD、FreeBSD、NetBSD、Mac OS X与Microsoft Windows以及Android和iOS上运行,并包含了许多安全性的功能。它并不是一个基于Web的VPN软件,也不与IPsec及其他VPN软件包兼容</p>
@@ -183,6 +839,9 @@
 <p>其中client1.*为client1用户的证书<br>现在我们进行启动openvpn客户端,进行连接<br><img src="/2020/07/31/openvpn/7.png" alt><br><img src="/2020/07/31/openvpn/8.png" alt><br><img src="/2020/07/31/openvpn/9.png" alt></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
       <tags>
         <tag>linux</tag>
         <tag>openvpn</tag>
@@ -2878,9 +3537,13 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
 <h2 id="容器启动后端口映射"><a href="#容器启动后端口映射" class="headerlink" title="容器启动后端口映射"></a>容器启动后端口映射</h2><p>首先停止容器</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo docker stop <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 <p>然后停止服务</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop docker</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line">修改配置文件&amp;emsp;&amp;emsp; ( [hash_of_the_container] 为容器id)</span><br></pre></td></tr></table></figure>
-<p>vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json<br>在 hostconfig.json 里有 “PortBindings”:{} 这个配置项，可以改成 “PortBindings”:{“9001/tcp”:[{“HostIp”:””,”HostPort”:”900”}]}<br>                                                                                前者为容器端口，后者为宿主机端口</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">修改config.v2.json	&amp;emsp;	&amp;emsp;	(## 如果容器内端口从没有暴露 需要修改这个文件)</span><br><span class="line">&#96;&#96;&#96;bash</span><br><span class="line">vim &#x2F;var&#x2F;lib&#x2F;docker&#x2F;containers&#x2F;[hash_of_the_container]&#x2F;config.v2.json</span><br><span class="line">在 config.v2.json 里面添加一个配置项 &quot;ExposedPorts&quot;:&#123;&quot;80&#x2F;tcp&quot;:&#123;&#125;&#125; , ## 必须将这个配置项添加到 &quot;Tty&quot;: true, 前面</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop docker</span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件&emsp;&emsp; ( [hash_of_the_container] 为容器id)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /var/lib/docker/containers/[hash_of_the_container]/hostconfig.json</span><br><span class="line">在 hostconfig.json 里有 <span class="string">"PortBindings"</span>:&#123;&#125; 这个配置项，可以改成 <span class="string">"PortBindings"</span>:&#123;<span class="string">"9001/tcp"</span>:[&#123;<span class="string">"HostIp"</span>:<span class="string">""</span>,<span class="string">"HostPort"</span>:<span class="string">"900"</span>&#125;]&#125;</span><br><span class="line">																				前者为容器端口，后者为宿主机端口</span><br></pre></td></tr></table></figure>
+
+<p>修改config.v2.json    &emsp;    &emsp;    (## 如果容器内端口从没有暴露 需要修改这个文件)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /var/lib/docker/containers/[hash_of_the_container]/config.v2.json</span><br><span class="line">在 config.v2.json 里面添加一个配置项 <span class="string">"ExposedPorts"</span>:&#123;<span class="string">"80/tcp"</span>:&#123;&#125;&#125; , <span class="comment">## 必须将这个配置项添加到 "Tty": true, 前面</span></span><br></pre></td></tr></table></figure>
 <p>最后重启 docker的守护进程 </p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart  docker</span><br></pre></td></tr></table></figure>
 <p>然后需要启动容器id </p>
@@ -2937,7 +3600,10 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat  file.tar  | docker  import  - NAME</span><br></pre></td></tr></table></figure>
 
 <h2 id="镜像导入导出和更新"><a href="#镜像导入导出和更新" class="headerlink" title="镜像导入导出和更新"></a>镜像导入导出和更新</h2><p>镜像导出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker save 镜像 xxx.tar</span><br><span class="line">```  </span><br><span class="line">镜像导入：</span><br><span class="line">```bash</span><br><span class="line">docker load -i xxx.tar</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker save 镜像 xxx.tar</span><br></pre></td></tr></table></figure>
+
+<p>镜像导入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker load -i xxx.tar</span><br></pre></td></tr></table></figure>
 <p>镜像的更新：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker commit -m 提交的描述 -a 提交作者 -p 更新时暂停此容器 新镜像名</span><br></pre></td></tr></table></figure>
 
@@ -3133,8 +3799,8 @@ fatal: unable to auto-detect email address (got &apos;root@suyuerunCentos.(none)
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>subversion</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -4186,8 +4852,8 @@ svn: E210005: No repository found in &apos;svn://xxx&apos;</code></pre><p>是因
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>subversion</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -5837,8 +6503,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -6213,8 +6879,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
