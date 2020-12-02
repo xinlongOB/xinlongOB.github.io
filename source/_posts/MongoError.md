@@ -52,3 +52,16 @@ mongod宕机常见报错
 
 Current表示当前到实例上正在运行的连接数。
 <br/>Available表示当前实例还可以支持的并发连接数。<br/>
+
+
+报错
+```bash
+2020-11-04T09:00:19.923+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory
+2020-11-04T09:13:58.322+0800 I CONTROL  [main] ***** SERVER RESTARTED *****
+2020-11-04T09:13:58.329+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory
+```
+解决办法
+```bash
+ touch  /var/run/mongodb/mongod.pid
+ chown -R mongodb:mongodb /var/run/mongodb/mongod.pid
+```

@@ -45,7 +45,7 @@ mongodump --host <mongodb_host> --port <port>  -u <username>  --authenticationDa
 ```
 实例：
 ```bash
-   mongorestore --host   Primary 节点的连接地址     -u root --authenticationDatabase admin  -d  database_name    bashfilename
+   mongorestore --host   Primary 节点的连接地址     -u root --authenticationDatabase admin  -d  database_name    -o   bashdirname
    mongorestore  --host   Primary 节点的连接地址   -u root  --authenticationDatabase  admin    -d  云服务器数据库名     /backup/mongo/
 ```
 
