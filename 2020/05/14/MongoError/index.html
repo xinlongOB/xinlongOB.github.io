@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">254</span>
+            <span class="post-count">337</span>
         </span>
     </span>
 
@@ -136,7 +136,10 @@ var _hmt = _hmt || [];
 <pre><code>ulimit -n 4096</code></pre><p>查看mongo连接数</p>
 <pre><code>db.serverStatus().connections
 { &quot;current&quot; : 80, &quot;available&quot; : 52348, &quot;totalCreated&quot; : NumberLong(367) }</code></pre><p>Current表示当前到实例上正在运行的连接数。<br><br>Available表示当前实例还可以支持的并发连接数。<br></p>
-
+<p>报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2020-11-04T09:00:19.923+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br><span class="line">2020-11-04T09:13:58.322+0800 I CONTROL  [main] ***** SERVER RESTARTED *****</span><br><span class="line">2020-11-04T09:13:58.329+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>解决办法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch  /var/run/mongodb/mongod.pid</span><br><span class="line">chown -R mongodb:mongodb /var/run/mongodb/mongod.pid</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       

@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">537</span>
+            <span class="post-count">538</span>
         </span>
     </span>
 
@@ -138,7 +138,7 @@ var _hmt = _hmt || [];
 <p>在自建数据库服务器上执行以下语句将数据库数据全部迁移至阿里云数据库MongoDB</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  mongorestore --host &lt;Primary_host&gt;  -u &lt;username&gt; --authenticationDatabase admin   -d  &lt;database&gt;    &lt;Backup directory&gt; </span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">    &lt;Primary_host&gt;：副本集实例中 Primary 节点的连接地址。</span><br><span class="line">    &lt;username&gt;：登录阿里云MongoDB数据库的数据库账号，默认为 root。</span><br><span class="line">    &lt;database&gt;：对登录阿里云MongoDB数据库的账号和密码，进行认证的鉴权数据库，默认为 admin 。</span><br><span class="line">    &lt;Backup directory&gt;：备份文件存储目录，默认为 dump。（/data/backup/mongodb/`data`/）</span><br></pre></td></tr></table></figure>
 <p>实例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mongorestore --host   Primary 节点的连接地址     -u root --authenticationDatabase admin  -d  database_name    bashfilename</span><br><span class="line">mongorestore  --host   Primary 节点的连接地址   -u root  --authenticationDatabase  admin    -d  云服务器数据库名     /backup/mongo/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mongorestore --host   Primary 节点的连接地址     -u root --authenticationDatabase admin  -d  database_name    -o   bashdirname</span><br><span class="line">mongorestore  --host   Primary 节点的连接地址   -u root  --authenticationDatabase  admin    -d  云服务器数据库名     /backup/mongo/</span><br></pre></td></tr></table></figure>
 
 <p>输入密码后数据开始迁移</p>
 <h2 id="Mongo-Shell-连接云服务器"><a href="#Mongo-Shell-连接云服务器" class="headerlink" title="Mongo Shell 连接云服务器"></a>Mongo Shell 连接云服务器</h2><p>前提条件</p>

@@ -46,6 +46,149 @@
   </entry>
   
   <entry>
+    <title>centos下时间戳转换</title>
+    <link href="http://yoursite.com/2020/12/01/date/"/>
+    <id>http://yoursite.com/2020/12/01/date/</id>
+    <published>2020-12-01T08:29:08.000Z</published>
+    <updated>2020-12-01T08:34:50.018Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;当前时间戳转换&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="date" scheme="http://yoursite.com/tags/date/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SVN 更新报错</title>
+    <link href="http://yoursite.com/2020/11/30/subversion/"/>
+    <id>http://yoursite.com/2020/11/30/subversion/</id>
+    <published>2020-11-30T11:02:20.000Z</published>
+    <updated>2020-11-30T11:05:03.760Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;[linux@*****-04 webapps]$ svn up&lt;br&gt;Updating ‘.’:&lt;br&gt;Skipped ‘template’ – Node remains in conflict&lt;br&gt;At revision 133.&lt;br&gt;Summary of
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="subversion" scheme="http://yoursite.com/tags/subversion/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ntpdate</title>
+    <link href="http://yoursite.com/2020/11/05/ntpdate/"/>
+    <id>http://yoursite.com/2020/11/05/ntpdate/</id>
+    <published>2020-11-05T03:24:15.000Z</published>
+    <updated>2020-11-05T03:24:54.841Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;sudo  ntpdate 
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jenkins报错解决</title>
+    <link href="http://yoursite.com/2020/10/22/jenkins-not-net/"/>
+    <id>http://yoursite.com/2020/10/22/jenkins-not-net/</id>
+    <published>2020-10-22T07:17:19.000Z</published>
+    <updated>2020-10-23T12:07:02.741Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;首次访问jenkins显示离线&quot;&gt;&lt;a href=&quot;#首次访问jenkins显示离线&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="jenkins" scheme="http://yoursite.com/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>服务器无法卸载磁盘</title>
+    <link href="http://yoursite.com/2020/10/21/mount/"/>
+    <id>http://yoursite.com/2020/10/21/mount/</id>
+    <published>2020-10-21T02:59:28.000Z</published>
+    <updated>2020-10-21T03:11:16.333Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;原因：服务器突然无法访问，检查发现mongo数据库服务未开启，尝试start失败，错误提示：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="mount" scheme="http://yoursite.com/tags/mount/"/>
+    
+  </entry>
+  
+  <entry>
     <title>centos中history命令显示时间以及用户</title>
     <link href="http://yoursite.com/2020/09/14/histort-date/"/>
     <id>http://yoursite.com/2020/09/14/histort-date/</id>
@@ -80,7 +223,7 @@
     <link href="http://yoursite.com/2020/09/11/mongodump/"/>
     <id>http://yoursite.com/2020/09/11/mongodump/</id>
     <published>2020-09-11T08:45:18.000Z</published>
-    <updated>2020-09-11T09:33:06.722Z</updated>
+    <updated>2020-11-10T09:16:20.476Z</updated>
     
     <summary type="html">
     
@@ -98,9 +241,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
       <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
   </entry>
   
@@ -456,151 +599,6 @@
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
       <category term="slowhttptest" scheme="http://yoursite.com/tags/slowhttptest/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS7 搭建OpenVPN服务器</title>
-    <link href="http://yoursite.com/2020/07/31/openvpn/"/>
-    <id>http://yoursite.com/2020/07/31/openvpn/</id>
-    <published>2020-07-31T08:34:39.000Z</published>
-    <updated>2020-08-05T02:08:37.754Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;简介和工作原理&quot;&gt;&lt;a href=&quot;#简介和工作原理&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="openvpn" scheme="http://yoursite.com/tags/openvpn/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nodejs编译安装</title>
-    <link href="http://yoursite.com/2020/07/28/nodejs/"/>
-    <id>http://yoursite.com/2020/07/28/nodejs/</id>
-    <published>2020-07-28T09:21:09.000Z</published>
-    <updated>2020-07-28T09:35:35.515Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="nodejs" scheme="http://yoursite.com/tags/nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Shell脚本case判断</title>
-    <link href="http://yoursite.com/2020/07/24/shell-case/"/>
-    <id>http://yoursite.com/2020/07/24/shell-case/</id>
-    <published>2020-07-24T09:05:56.000Z</published>
-    <updated>2020-07-28T09:35:31.330Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;if-判断是否包含&quot;&gt;&lt;a href=&quot;#if-判断是否包含&quot; class=&quot;headerlink&quot; title=&quot;if =~ 判断是否包含&quot;&gt;&lt;/a&gt;if =~ 判断是否包含&lt;/h2&gt;&lt;figure class=&quot;highlight
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Lvs虚拟服务器</title>
-    <link href="http://yoursite.com/2020/07/24/lvs/"/>
-    <id>http://yoursite.com/2020/07/24/lvs/</id>
-    <published>2020-07-24T06:52:25.000Z</published>
-    <updated>2020-07-28T09:35:38.182Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;lvs简介&quot;&gt;&lt;a href=&quot;#lvs简介&quot; class=&quot;headerlink&quot; title=&quot;lvs简介&quot;&gt;&lt;/a&gt;lvs简介&lt;/h2&gt;&lt;p&gt;LVS是Linux Virtual Server
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="lvs" scheme="http://yoursite.com/tags/lvs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常用端口总结</title>
-    <link href="http://yoursite.com/2020/07/24/port-all/"/>
-    <id>http://yoursite.com/2020/07/24/port-all/</id>
-    <published>2020-07-24T05:59:23.000Z</published>
-    <updated>2020-07-24T09:07:00.664Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;共享工具类&quot;&gt;&lt;a href=&quot;#共享工具类&quot; class=&quot;headerlink&quot; title=&quot;共享工具类&quot;&gt;&lt;/a&gt;共享工具类&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
     
   </entry>
   

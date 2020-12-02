@@ -117,6 +117,97 @@
       </tags>
   </entry>
   <entry>
+    <title>centos下时间戳转换</title>
+    <url>/2020/12/01/date/</url>
+    <content><![CDATA[<p>当前时间戳转换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">date +%s</span><br></pre></td></tr></table></figure>
+<p>指定时间戳转换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">date -d <span class="string">"2008-01-01 00:00:00"</span> +%s</span><br></pre></td></tr></table></figure>
+
+<p>修改时间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">date -s <span class="string">"2020-12-01 10:00:00"</span></span><br></pre></td></tr></table></figure>
+
+<p>修改时区</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   CST时区</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S rm  /etc/localtime</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S ln -s /usr/share/zoneinfo/Asia/Shanghai    /etc/localtime</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"当前时间是`date`"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  JST时区</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S rm  /etc/localtime</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S ln -s /usr/share/zoneinfo/Asia/Tokyo    /etc/localtime</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>date</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SVN 更新报错</title>
+    <url>/2020/11/30/subversion/</url>
+    <content><![CDATA[<p>[linux@*****-04 webapps]$ svn up<br>Updating ‘.’:<br>Skipped ‘template’ – Node remains in conflict<br>At revision 133.<br>Summary of conflicts:<br>  Skipped paths: 1</p>
+<p>解决方法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">svn revert --depth=infinity template</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>subversion</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ntpdate</title>
+    <url>/2020/11/05/ntpdate/</url>
+    <content><![CDATA[<p>sudo  ntpdate  cn.ntppod.com</p>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jenkins报错解决</title>
+    <url>/2020/10/22/jenkins-not-net/</url>
+    <content><![CDATA[<h2 id="首次访问jenkins显示离线"><a href="#首次访问jenkins显示离线" class="headerlink" title="首次访问jenkins显示离线"></a>首次访问jenkins显示离线</h2><p>修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/var/lib/jenkins/hudson.model.UpdateCenter.xml </span><br><span class="line"></span><br><span class="line">&lt;?xml version=<span class="string">'1.1'</span> encoding=<span class="string">'UTF-8'</span>?&gt;</span><br><span class="line">&lt;sites&gt;</span><br><span class="line">  &lt;site&gt;</span><br><span class="line">    &lt;id&gt;default&lt;/id&gt;</span><br><span class="line">    &lt;url&gt;https://updates.jenkins.io/update-center.json&lt;/url&gt;</span><br><span class="line">  &lt;/site&gt;</span><br><span class="line">&lt;/sites&gt;</span><br><span class="line">```bash</span><br><span class="line">修改为</span><br><span class="line">```bash</span><br><span class="line">&lt;?xml version=<span class="string">'1.1'</span> encoding=<span class="string">'UTF-8'</span>?&gt;</span><br><span class="line">&lt;sites&gt;</span><br><span class="line">  &lt;site&gt;</span><br><span class="line">    &lt;id&gt;default&lt;/id&gt;</span><br><span class="line">    &lt;url&gt;http://mirror.esuni.jp/jenkins/updates/update-center.json&lt;/url&gt;</span><br><span class="line">  &lt;/site&gt;</span><br><span class="line">&lt;/sites&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="No-such-plugin-cloudbees-folder"><a href="#No-such-plugin-cloudbees-folder" class="headerlink" title="No such plugin: cloudbees-folder"></a>No such plugin: cloudbees-folder</h2><p>jenkins 安装出现一个错误： No such plugin: cloudbees-folder</p>
+<p>上面的错误显示是，安装插件cloudbees-folder失败，是因bai为下载的Jenkins.war里没有cloudbees-folder插件</p>
+<p>需要在网上下载：<a href="http://ftp.icm.edu.pl/packages/jenkins/plugins/cloudbees-folder/" target="_blank" rel="noopener">http://ftp.icm.edu.pl/packages/jenkins/plugins/cloudbees-folder/</a></p>
+<p>下载cloudbees-folder.hpi放在/var/cache/jenkins/war/WEB-INF/detached-plugins即可<br>重启jenkins，浏览器访问Jenkins服务器，安装插件并设置用户名、密码等，然后进入Jenkins首页 </p>
+<h2 id="jenkins汉化"><a href="#jenkins汉化" class="headerlink" title="jenkins汉化"></a>jenkins汉化</h2><p>jenkins转换显示语言为中文简体<br>主界面–&gt;系统管理–&gt;插件管理–&gt;可选插件<br>安装插件locale plugin<br>系统管理–&gt;系统设置–&gt;Locale<br>填入：zh_CN<br>应用保存</p>
+<p>如果以上方法生效了，恭喜你，不用向下看了。不过有些版本不生效，那我们继续：</p>
+<p>安装汉化包<br>Localization: Chinese (Simplified)<br>Localization Support</p>
+<h2 id="无法安装插件"><a href="#无法安装插件" class="headerlink" title="无法安装插件"></a>无法安装插件</h2><p>更换jdk版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install   java  java-devel   -y</span><br></pre></td></tr></table></figure>
+<p>或者更改源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http://updates.jenkins.io/update-center.json</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>服务器无法卸载磁盘</title>
+    <url>/2020/10/21/mount/</url>
+    <content><![CDATA[<p>原因：服务器突然无法访问，检查发现mongo数据库服务未开启，尝试start失败，错误提示：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Read-only file system</span><br></pre></td></tr></table></figure>
+<p>检查发现 / 目录下所有文件都无法写入或者使用<br>尝试卸载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">umount  /</span><br></pre></td></tr></table></figure>
+<p>没有报错但是df -h 查看还是挂载状态</p>
+<p>关机重新插磁盘接口以及主板接口,启动后还是显示挂载状态并且无法卸载</p>
+<p>最后尝试重新挂载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -o  remount  /</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>网上有文章说使用 mount -o  remount  rw /    加上rw 表示读写   但是尝试无果</p>
+</blockquote>
+<p>重新挂载后可以使用其他命令,修改/etc/fstab  重启服务器恢复正常状态</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>mount</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>centos中history命令显示时间以及用户</title>
     <url>/2020/09/14/histort-date/</url>
     <content><![CDATA[<p>在 /etc/profile 文件中添加</p>
@@ -145,7 +236,7 @@
 <p>在自建数据库服务器上执行以下语句将数据库数据全部迁移至阿里云数据库MongoDB</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">  mongorestore --host &lt;Primary_host&gt;  -u &lt;username&gt; --authenticationDatabase admin   -d  &lt;database&gt;    &lt;Backup directory&gt; </span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">    &lt;Primary_host&gt;：副本集实例中 Primary 节点的连接地址。</span><br><span class="line">    &lt;username&gt;：登录阿里云MongoDB数据库的数据库账号，默认为 root。</span><br><span class="line">    &lt;database&gt;：对登录阿里云MongoDB数据库的账号和密码，进行认证的鉴权数据库，默认为 admin 。</span><br><span class="line">    &lt;Backup directory&gt;：备份文件存储目录，默认为 dump。（/data/backup/mongodb/`data`/）</span><br></pre></td></tr></table></figure>
 <p>实例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mongorestore --host   Primary 节点的连接地址     -u root --authenticationDatabase admin  -d  database_name    bashfilename</span><br><span class="line">mongorestore  --host   Primary 节点的连接地址   -u root  --authenticationDatabase  admin    -d  云服务器数据库名     /backup/mongo/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mongorestore --host   Primary 节点的连接地址     -u root --authenticationDatabase admin  -d  database_name    -o   bashdirname</span><br><span class="line">mongorestore  --host   Primary 节点的连接地址   -u root  --authenticationDatabase  admin    -d  云服务器数据库名     /backup/mongo/</span><br></pre></td></tr></table></figure>
 
 <p>输入密码后数据开始迁移</p>
 <h2 id="Mongo-Shell-连接云服务器"><a href="#Mongo-Shell-连接云服务器" class="headerlink" title="Mongo Shell 连接云服务器"></a>Mongo Shell 连接云服务器</h2><p>前提条件</p>
@@ -158,8 +249,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3799,8 +3890,8 @@ fatal: unable to auto-detect email address (got &apos;root@suyuerunCentos.(none)
         <category>运维</category>
       </categories>
       <tags>
-        <tag>subversion</tag>
         <tag>linux</tag>
+        <tag>subversion</tag>
       </tags>
   </entry>
   <entry>
@@ -4852,8 +4943,8 @@ svn: E210005: No repository found in &apos;svn://xxx&apos;</code></pre><p>是因
         <category>运维</category>
       </categories>
       <tags>
-        <tag>subversion</tag>
         <tag>linux</tag>
+        <tag>subversion</tag>
       </tags>
   </entry>
   <entry>
@@ -6498,13 +6589,16 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
 <pre><code>ulimit -n 4096</code></pre><p>查看mongo连接数</p>
 <pre><code>db.serverStatus().connections
 { &quot;current&quot; : 80, &quot;available&quot; : 52348, &quot;totalCreated&quot; : NumberLong(367) }</code></pre><p>Current表示当前到实例上正在运行的连接数。<br><br>Available表示当前实例还可以支持的并发连接数。<br></p>
-]]></content>
+<p>报错</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">2020-11-04T09:00:19.923+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br><span class="line">2020-11-04T09:13:58.322+0800 I CONTROL  [main] ***** SERVER RESTARTED *****</span><br><span class="line">2020-11-04T09:13:58.329+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>解决办法</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch  /var/run/mongodb/mongod.pid</span><br><span class="line">chown -R mongodb:mongodb /var/run/mongodb/mongod.pid</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -6879,8 +6973,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
