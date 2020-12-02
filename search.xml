@@ -129,6 +129,9 @@
 
 <p>修改时区</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   CST时区</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S rm  /etc/localtime</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S ln -s /usr/share/zoneinfo/Asia/Shanghai    /etc/localtime</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"当前时间是`date`"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  JST时区</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S rm  /etc/localtime</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$passwd</span>  |  sudo -S ln -s /usr/share/zoneinfo/Asia/Tokyo    /etc/localtime</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
       <tags>
         <tag>linux</tag>
         <tag>date</tag>
@@ -249,8 +252,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -262,8 +265,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -284,8 +287,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1193,8 +1196,8 @@ memcached 数据丢失,设为永久有效,却莫名其妙的丢失了。
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1693,8 +1696,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1922,8 +1925,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -6597,8 +6600,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -6973,8 +6976,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
