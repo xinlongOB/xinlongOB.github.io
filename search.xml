@@ -117,6 +117,50 @@
       </tags>
   </entry>
   <entry>
+    <title>Centos 6无法使用yum解决办法</title>
+    <url>/2020/12/17/centos6-yum-error/</url>
+    <content><![CDATA[<h2 id="文章借鉴链接"><a href="#文章借鉴链接" class="headerlink" title="文章借鉴链接"></a>文章借鉴<a href="https://www.xmpan.com/944.html" target="_blank" rel="noopener">链接</a></h2><p>12月后Centos 6 系统无法使用yum出现错误</p>
+<p>相信已经有一部分朋友今天连接到CentOS 6的服务器后执行yum后发现报错，那么发生了什么？</p>
+<p>CentOS 6已经随着2020年11月的结束进入了EOL（Reaches End of Life），不过有一些老设备依然需要支持，CentOS官方也给这些还不想把CentOS 6扔进垃圾堆的用户保留了最后一个版本的镜像，只是这个镜像不会再有更新了</p>
+<p>官方便在12月2日正式将CentOS 6相关的软件源移出了官方源，随之而来逐级镜像也会陆续将其删除。</p>
+<p>不过有一些老设备依然需要维持在当前系统，CentOS官方也给这些还不想把CentOS 6扔进垃圾堆的用户保留了各个版本软件源的镜像，只是这个软件源不会再有更新了。</p>
+<p>一键修复</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -i <span class="string">"s|enabled=1|enabled=0|g"</span> /etc/yum/pluginconf.d/fastestmirror.conf</span><br><span class="line">mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</span><br><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo https://www.xmpan.com/Centos-6-Vault-Aliyun.repo </span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
+
+<p>手动修复教程:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 首先把fastestmirrors关了</span></span><br><span class="line"><span class="comment"># 编辑</span></span><br><span class="line">vi /etc/yum/pluginconf.d/fastestmirror.conf</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line"><span class="built_in">enable</span>=0</span><br><span class="line"><span class="comment"># 或者执行以下命令</span></span><br><span class="line">sed -i <span class="string">"s|enabled=1|enabled=0|g"</span> /etc/yum/pluginconf.d/fastestmirror.conf</span><br></pre></td></tr></table></figure>
+
+<p>先把之前的repo挪到备份</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak</span><br></pre></td></tr></table></figure>
+
+<p>镜像二选一</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 替换为官方Vault源(海外服务器用)</span></span><br><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo https://www.xmpan.com/Centos-6-Vault-Official.repo</span><br><span class="line"><span class="comment"># 或者替换为阿里云Vault镜像(国内服务器用)</span></span><br><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo https://www.xmpan.com/Centos-6-Vault-Aliyun.repo</span><br></pre></td></tr></table></figure>
+
+
+<p>报错详情</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[sgsm@ipason yum.repos.d]$ sudo yum  makecache</span><br><span class="line">Loaded plugins: fastestmirror, security</span><br><span class="line">Determining fastest mirrors</span><br><span class="line"> * base: mirrors.aliyun.com</span><br><span class="line"> * extras: mirrors.aliyun.com</span><br><span class="line"> * updates: mirrors.aliyun.com</span><br><span class="line">http://mirrors.aliyun.com/centos/6/os/x86_64/repodata/repomd.xml: [Errno 14] PYCURL ERROR 22 - <span class="string">"The requested URL returned error: 404 Not Found"</span></span><br><span class="line">Trying other mirror.</span><br><span class="line">To address this issue please refer to the below knowledge base article </span><br><span class="line"></span><br><span class="line">https://access.redhat.com/articles/1320623</span><br><span class="line"></span><br><span class="line">If above article doesn<span class="string">'t help to resolve this issue please open a ticket with Red Hat Support.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">http://mirrors.aliyuncs.com/centos/6/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://mirrors.aliyuncs.com/centos/6/os/x86_64/repodata/repomd.xml: (28, '</span>connect() timed out!<span class="string">')</span></span><br><span class="line"><span class="string">Trying other mirror.</span></span><br><span class="line"><span class="string">http://mirrors.cloud.aliyuncs.com/centos/6/os/x86_64/repodata/repomd.xml: [Errno 14] PYCURL ERROR 6 - "Couldn'</span>t resolve host <span class="string">'mirrors.cloud.aliyuncs.com'</span><span class="string">"</span></span><br><span class="line"><span class="string">Trying other mirror.</span></span><br><span class="line"><span class="string">Error: Cannot retrieve repository metadata (repomd.xml) for repository: base. Please verify its path and try again</span></span><br><span class="line"><span class="string">[sgsm@ipason yum.repos.d]$</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[sgsm@ipason yum.repos.d]$ sudo  yum makecache</span><br><span class="line">Loaded plugins: fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">YumRepo Error: All mirror URLs are not using ftp, http[s] or file.</span><br><span class="line"> Eg. Invalid release/repo/arch combination/</span><br><span class="line">removing mirrorlist with no valid mirrors: /var/cache/yum/x86_64/6/base/mirrorlist.txt</span><br><span class="line">Error: Cannot find a valid baseurl <span class="keyword">for</span> repo: base</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>yum</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>unity_packages</title>
+    <url>/2020/12/11/unity-packages/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#参数判断  </span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> != 1 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"需要传入打包配置文件"</span>  </span><br><span class="line">    <span class="built_in">exit</span>     </span><br><span class="line"><span class="keyword">fi</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">#Log颜色处理-------------start</span></span><br><span class="line"><span class="keyword">function</span> infolog()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">echo</span> -e Log: <span class="string">"\033[32m<span class="variable">$1</span>\033[0m"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#输出报错log</span></span><br><span class="line"><span class="keyword">function</span> errorlog()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">echo</span> -e Error: <span class="string">"\033[01;31m<span class="variable">$1</span>\033[0m"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#输出报错log并停止运行</span></span><br><span class="line"><span class="keyword">function</span> errorlogExit()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">echo</span> -e Error: <span class="string">"\033[01;31m<span class="variable">$1</span>\033[0m"</span></span><br><span class="line">    <span class="built_in">echo</span> -e Error: <span class="string">"\033[01;31m打包失败\033[0m"</span></span><br><span class="line">	<span class="built_in">exit</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#Log颜色处理-------------end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#解析打包配置文件</span></span><br><span class="line">CONFIG_PLIST=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 版本号</span></span><br><span class="line">CONFIG_Version=$(/usr/libexec/PlistBuddy -c <span class="string">'Print :CFBundleShortVersionString'</span> <span class="variable">$CONFIG_PLIST</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打包格式文件</span></span><br><span class="line">CONFIG_exportOptionsPlist=$(/usr/libexec/PlistBuddy -c <span class="string">'Print :exportOptionsPlist'</span> <span class="variable">$CONFIG_PLIST</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否为Il2cpp模式打包</span></span><br><span class="line">CONFIG_isIl2cpp=$(/usr/libexec/PlistBuddy -c <span class="string">'Print :isIl2cpp'</span> <span class="variable">$CONFIG_PLIST</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># build号</span></span><br><span class="line">CFBundleVersion=$(/usr/libexec/PlistBuddy -c <span class="string">'Print :buildVersion'</span> <span class="variable">$CONFIG_PLIST</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拼接游戏名称</span></span><br><span class="line">ipa_name=<span class="string">"xxxx_ios_publish_"</span><span class="variable">$&#123;CFBundleShortVersionString&#125;</span><span class="string">"."</span><span class="variable">$&#123;CFBundleVersion&#125;</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">#UNITY程序的路径#</span></span><br><span class="line">UNITY_PATH=/Applications/Unity/Unity.app/Contents/MacOS/Unity</span><br><span class="line"></span><br><span class="line"><span class="comment">#游戏程序路径 需要将本文件放入unity工程目录中#</span></span><br><span class="line">PROJECT_PATH=$(dirname <span class="string">"<span class="variable">$0</span>"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#复制文件目录</span></span><br><span class="line">COPY_FILE_PATH=<span class="string">"要复制替换的文件路径"</span></span><br><span class="line">COPY_FILE_PATH_PLIST=<span class="variable">$&#123;COPY_FILE_PATH&#125;</span>/info.plist</span><br><span class="line">COPY_FILE_PATH_XCODEPROJECT=<span class="variable">$&#123;COPY_FILE_PATH&#125;</span><span class="string">"/Unity-iPhone.xcodeproj"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Xcode工程版本号</span></span><br><span class="line">CFBundleShortVersionString=<span class="variable">$CONFIG_Version</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 传给unity的XCODE导出路径</span></span><br><span class="line">Xcode_Untiy_ProjectPath=<span class="string">"build/iOS/XcodeProject"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Xcode工程目录</span></span><br><span class="line">Xcode_ProjectPath=<span class="variable">$&#123;PROJECT_PATH&#125;</span><span class="string">"/"</span><span class="variable">$&#123;Xcode_Untiy_ProjectPath&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将unity导出成xcode工程-----------------------------------start</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">#try </span></span><br><span class="line">		<span class="variable">$UNITY_PATH</span> -projectPath <span class="variable">$PROJECT_PATH</span> -executeMethod AutoBuild.BuildIos <span class="string">"Path_"</span><span class="variable">$&#123;Xcode_Untiy_ProjectPath&#125;</span> -quit</span><br><span class="line">	&#125; || &#123; </span><br><span class="line">		<span class="comment">#catch</span></span><br><span class="line">		errorlogExit <span class="string">"unity导出Xcode工程失败"</span></span><br><span class="line">	&#125;</span><br><span class="line">	infolog <span class="string">"----------XCODE工程生成完毕,路径:"</span><span class="variable">$&#123;Xcode_ProjectPath&#125;</span></span><br><span class="line"><span class="comment">#将unity导出成xcode工程-----------------------------------end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将复制文件拷贝到工程中-----------------------------------start</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">#try </span></span><br><span class="line">		</span><br><span class="line">		infolog <span class="string">"----------开始复制/替换文件,替换文件路径:"</span><span class="variable">$&#123;COPY_FILE_PATH&#125;</span></span><br><span class="line">		cp <span class="variable">$COPY_FILE_PATH_PLIST</span> <span class="variable">$&#123;Xcode_ProjectPath&#125;</span></span><br><span class="line">		cp -R <span class="variable">$COPY_FILE_PATH_XCODEPROJECT</span> <span class="variable">$&#123;Xcode_ProjectPath&#125;</span></span><br><span class="line">	&#125; || &#123; </span><br><span class="line">		<span class="comment">#catch</span></span><br><span class="line">		errorlogExit <span class="string">"复制资源失败"</span></span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">#将复制文件拷贝到工程中-----------------------------------end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置Xcode info.plist-----------------------------------start</span></span><br><span class="line">	infolog <span class="string">"----------开始修改plist配置"</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">#try</span></span><br><span class="line">		<span class="comment">#修改plist中版本号</span></span><br><span class="line">		<span class="comment">#获取到info.plist</span></span><br><span class="line">		PLIST_PATH=<span class="variable">$&#123;Xcode_ProjectPath&#125;</span>/info.plist</span><br><span class="line"></span><br><span class="line">		<span class="comment">#使用PlistBuddy 修改plist中内容 注:PlistBuddy为绝对路径</span></span><br><span class="line">		/usr/libexec/PlistBuddy -c <span class="string">'Set :CFBundleShortVersionString '</span><span class="variable">$&#123;CFBundleShortVersionString&#125;</span> <span class="variable">$PLIST_PATH</span></span><br><span class="line">		/usr/libexec/PlistBuddy -c <span class="string">'Set :CFBundleVersion '</span><span class="variable">$&#123;CFBundleVersion&#125;</span> <span class="variable">$PLIST_PATH</span></span><br><span class="line">	&#125;||&#123;</span><br><span class="line">		<span class="comment">#catch</span></span><br><span class="line">		errorlogExit <span class="string">"修改plist内容失败"</span></span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">#设置Xcode info.plist-----------------------------------end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#开始打包ipa-----------------------------------start</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">#try</span></span><br><span class="line">		<span class="comment">#清理编译工程</span></span><br><span class="line">		EXPORT_PATH=<span class="string">"ipa包导出地址"</span></span><br><span class="line">		xcodebuild clean -quiet</span><br><span class="line"></span><br><span class="line">		<span class="built_in">cd</span> <span class="variable">$Xcode_ProjectPath</span></span><br><span class="line">		<span class="comment">#编译工程</span></span><br><span class="line">		xcodebuild archive -scheme <span class="string">"Unity-iPhone"</span> -configuration <span class="string">"Release"</span> -archivePath  <span class="variable">$&#123;EXPORT_PATH&#125;</span><span class="variable">$&#123;ipa_name&#125;</span><span class="string">"/xxxx_Archive.xcarchive"</span> -quiet || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">#打包  -archivePath Xcode导出的文件路径   -configuration 导出格式(Debug/Release)   -exportPath ipa导出路径  -exportOptionsPlist 导出模式,使用plist文件控制 在xcode手动打包时会在ipa同目录下生成对应格式的plist文件 可以直接使用改pist文件并根据不同格式备份多份</span></span><br><span class="line">		xcodebuild -exportArchive -archivePath <span class="variable">$&#123;EXPORT_PATH&#125;</span><span class="variable">$&#123;ipa_name&#125;</span><span class="string">"/xxxx_Archive.xcarchive"</span> -configuration <span class="string">"Release"</span> -exportPath <span class="variable">$&#123;EXPORT_PATH&#125;</span><span class="variable">$&#123;ipa_name&#125;</span> -exportOptionsPlist <span class="variable">$&#123;CONFIG_exportOptionsPlist&#125;</span> -quiet || <span class="built_in">exit</span></span><br><span class="line">	&#125;||&#123;</span><br><span class="line">		<span class="comment">#catch</span></span><br><span class="line">		errorlogExit <span class="string">"xcode工程清理/打包/导出失败 请查看上层error log"</span></span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">#开始打包ipa-----------------------------------start</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#复制字符表文件到导出ipa的文件夹------------------start</span></span><br><span class="line">	<span class="keyword">if</span> [ ! -d <span class="variable">$&#123;EXPORT_PATH&#125;</span><span class="variable">$&#123;ipa_name&#125;</span><span class="string">"/xxxx_Archive.xcarchive/dSYMs"</span> ]; <span class="keyword">then</span></span><br><span class="line">		errorlog <span class="string">"----------dSYM字符表文件未导出,检查Xcode设置!!!!!!!!!"</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">cd</span> <span class="variable">$&#123;EXPORT_PATH&#125;</span><span class="variable">$&#123;ipa_name&#125;</span><span class="string">"/xxxx_Archive.xcarchive/dSYMs"</span></span><br><span class="line">		<span class="keyword">if</span> [ ! -e <span class="string">"xxxx.app.dSYM"</span> ]; <span class="keyword">then</span></span><br><span class="line">			<span class="comment">#字符表文件不存在</span></span><br><span class="line">			errorlog <span class="string">"----------dSYM字符表文件未导出,检查Xcode设置!!!!!!!!!"</span></span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			cp -R <span class="string">"xxxx.app.dSYM"</span> <span class="variable">$&#123;EXPORT_PATH&#125;</span><span class="variable">$&#123;ipa_name&#125;</span></span><br><span class="line">		<span class="keyword">fi</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="comment">#复制字符表文件到导出ipa的文件夹------------------end</span></span><br><span class="line"></span><br><span class="line">infolog <span class="string">"Ipa导出成功!!!!!!!!!"</span></span><br><span class="line"><span class="comment">#打开指定文件夹</span></span><br><span class="line">open <span class="variable">$&#123;EXPORT_PATH&#125;</span><span class="variable">$&#123;ipa_name&#125;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>centos下时间戳转换</title>
     <url>/2020/12/01/date/</url>
     <content><![CDATA[<p>当前时间戳转换</p>
@@ -252,8 +296,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -265,8 +309,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -287,8 +331,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -1196,8 +1240,8 @@ memcached 数据丢失,设为永久有效,却莫名其妙的丢失了。
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -1696,8 +1740,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -1925,8 +1969,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -6600,8 +6644,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -6976,8 +7020,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
