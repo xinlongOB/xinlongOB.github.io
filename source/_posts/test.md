@@ -125,6 +125,7 @@ categories: 运维
  
 		[program:/]
 		@manager = rw
+		* =  ## 代表其他人没有任何权限
 <br/>![](../24.png)<br/>
 配置服务：
 
