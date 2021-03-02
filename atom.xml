@@ -46,6 +46,150 @@
   </entry>
   
   <entry>
+    <title>CentOS下部署ftp共享服务</title>
+    <link href="http://yoursite.com/2021/03/02/vsftpd/"/>
+    <id>http://yoursite.com/2021/03/02/vsftpd/</id>
+    <published>2021-03-02T08:40:07.000Z</published>
+    <updated>2021-03-02T10:20:29.156Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;FTP概述：&quot;&gt;&lt;a href=&quot;#FTP概述：&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="vsftpd" scheme="http://yoursite.com/tags/vsftpd/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx 配置中的变量参数</title>
+    <link href="http://yoursite.com/2021/01/12/nginx-variable/"/>
+    <id>http://yoursite.com/2021/01/12/nginx-variable/</id>
+    <published>2021-01-12T02:31:40.000Z</published>
+    <updated>2021-01-12T02:32:29.294Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos下mount挂载报错buys</title>
+    <link href="http://yoursite.com/2021/01/05/mount-buys/"/>
+    <id>http://yoursite.com/2021/01/05/mount-buys/</id>
+    <published>2021-01-05T09:18:33.000Z</published>
+    <updated>2021-01-05T09:32:26.148Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;在单用户模式下无法修改文件–提示只读&quot;&gt;&lt;a href=&quot;#在单用户模式下无法修改文件–提示只读&quot; class=&quot;headerlink&quot; title=&quot;在单用户模式下无法修改文件–提示只读&quot;&gt;&lt;/a&gt;在单用户模式下无法修改文件–提示只读&lt;/h2&gt;&lt;figure
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="mount" scheme="http://yoursite.com/tags/mount/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos下svn创建多个目录</title>
+    <link href="http://yoursite.com/2020/12/31/subversion-dir/"/>
+    <id>http://yoursite.com/2020/12/31/subversion-dir/</id>
+    <published>2020-12-31T10:26:20.000Z</published>
+    <updated>2020-12-31T10:41:26.366Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;部署svn之后默认只有一个跟分支(/)&lt;br&gt;例如：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="subversion" scheme="http://yoursite.com/tags/subversion/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos下禅道部署</title>
+    <link href="http://yoursite.com/2020/12/31/zbox/"/>
+    <id>http://yoursite.com/2020/12/31/zbox/</id>
+    <published>2020-12-31T08:42:30.000Z</published>
+    <updated>2020-12-31T10:42:22.437Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;部署禅道&quot;&gt;&lt;a href=&quot;#部署禅道&quot; class=&quot;headerlink&quot; title=&quot;部署禅道&quot;&gt;&lt;/a&gt;部署禅道&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="zbox" scheme="http://yoursite.com/tags/zbox/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Centos 6无法使用yum解决办法</title>
     <link href="http://yoursite.com/2020/12/17/centos6-yum-error/"/>
     <id>http://yoursite.com/2020/12/17/centos6-yum-error/</id>
@@ -452,153 +596,6 @@
       <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
     
       <category term="apache" scheme="http://yoursite.com/tags/apache/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>cacti创建设备error解决</title>
-    <link href="http://yoursite.com/2020/08/08/cacti-error/"/>
-    <id>http://yoursite.com/2020/08/08/cacti-error/</id>
-    <published>2020-08-08T08:53:27.000Z</published>
-    <updated>2020-08-08T11:13:13.596Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;添加设备报错&quot;&gt;&lt;a href=&quot;#添加设备报错&quot; class=&quot;headerlink&quot; title=&quot;添加设备报错&quot;&gt;&lt;/a&gt;添加设备报错&lt;/h2&gt;&lt;p&gt;如何解决cacti的snmp
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="cacti" scheme="http://yoursite.com/tags/cacti/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS7下安装搭建Cacti 详解</title>
-    <link href="http://yoursite.com/2020/08/07/cacti/"/>
-    <id>http://yoursite.com/2020/08/07/cacti/</id>
-    <published>2020-08-07T06:39:52.000Z</published>
-    <updated>2020-08-08T11:13:09.106Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;什么是Cacti&quot;&gt;&lt;a href=&quot;#什么是Cacti&quot; class=&quot;headerlink&quot; title=&quot;什么是Cacti&quot;&gt;&lt;/a&gt;什么是Cacti&lt;/h2&gt;&lt;p&gt;Cacti
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="cacti" scheme="http://yoursite.com/tags/cacti/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>fail2ban防暴力破解</title>
-    <link href="http://yoursite.com/2020/08/06/fail2ban/"/>
-    <id>http://yoursite.com/2020/08/06/fail2ban/</id>
-    <published>2020-08-06T07:16:27.000Z</published>
-    <updated>2020-08-06T10:24:59.104Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;关于Fail2ban&quot;&gt;&lt;a href=&quot;#关于Fail2ban&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="fail2ban" scheme="http://yoursite.com/tags/fail2ban/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shell数组的应用</title>
-    <link href="http://yoursite.com/2020/08/06/shell-array/"/>
-    <id>http://yoursite.com/2020/08/06/shell-array/</id>
-    <published>2020-08-06T06:01:30.000Z</published>
-    <updated>2020-08-06T07:03:11.555Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;什么是数组&quot;&gt;&lt;a href=&quot;#什么是数组&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python报&quot;TypeError:abytes-likeobjectisrequired,not&#39;str&#39;&quot;解决办法</title>
-    <link href="http://yoursite.com/2020/08/06/not-str/"/>
-    <id>http://yoursite.com/2020/08/06/not-str/</id>
-    <published>2020-08-06T05:42:18.000Z</published>
-    <updated>2020-08-08T11:13:15.484Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;解决办法非常的简单，只需要用上python的bytes和str两种类型转换的函数encode()、decode()即可！&lt;/p&gt;
-&lt;p&gt;str通过encode()方法可以编码为指定的bytes；&lt;/p&gt;
-&lt;p&gt;反过来，如果我们从网络或磁盘上读取了字节流，那么读到的数据就是b
-        
-      
-    
-    </summary>
-    
-    
-      <category term="开发" scheme="http://yoursite.com/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
     
   </entry>
   

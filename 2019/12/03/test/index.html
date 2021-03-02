@@ -169,7 +169,8 @@ http://pkg.jenkins-ci.org/redhat-stable/</code></pre><p>编辑配置文件更改
     manager = xinlong
 
     [program:/]
-    @manager = rw</code></pre><p><br><img src="/2019/12/03/test/24.png" alt><br><br>配置服务：</p>
+    @manager = rw
+    * =  ## 代表其他人没有任何权限</code></pre><p><br><img src="/2019/12/03/test/24.png" alt><br><br>配置服务：</p>
 <pre><code>vim /data/svn/program/conf/svnserve.conf
 
     anon-access = none ## 匿名用户可读(关闭)
@@ -394,7 +395,7 @@ SSLCertificateKeyFile /etc/httpd/ssl/httpd.key</code></pre><p>如果要停用 ht
     <ul>
       <li>
         Copyrights &copy;
-        2019-2020
+        2019-2021
         <i class="ri-heart-fill heart_icon"></i> XIN LONG
       </li>
     </ul>

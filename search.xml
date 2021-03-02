@@ -117,6 +117,172 @@
       </tags>
   </entry>
   <entry>
+    <title>CentOS下部署ftp共享服务</title>
+    <url>/2021/03/02/vsftpd/</url>
+    <content><![CDATA[<h2 id="FTP概述："><a href="#FTP概述：" class="headerlink" title="FTP概述："></a>FTP概述：</h2><p>FTP（文件传输协议）是典型的C/S架构的应用层协议，需要由服务端软件、客户端软件两部分共同实现文件传输功能。</p>
+<h2 id="FTP连接及传输模式"><a href="#FTP连接及传输模式" class="headerlink" title="FTP连接及传输模式"></a>FTP连接及传输模式</h2><p>FTP的两个端口：<br>1、控制连接：TCP的21号端口，用于控制连接，发送FTP命令信息。<br>2、数据连接：TCP的20号端口，用于上传、下载数据。</p>
+<p>一般观测FTP时，只观测21号端口即可，存在则说明服务正在运行。<br>数据连接的建立类型：主动模式、被动模式(以服务器的角度)</p>
+<p>主动模式：服务器主动发起数据连接<br>  首先由服务器的21号端口建立FTP控制连接，当需要数据连接时，客户端以PORT命令告知服务器，“我打开了某个端口，你过来连接我”，于是服务器从20号端口向客户端的该端口发送请求并建立数据连接。<br>这其中的“某端口”是客户端任意挑选的一个未被使用的随即端口。</p>
+<p>被动模式：服务器被动等待数据连接<br>  如果客户机所在网络的防火墙禁止主动模式连接，通常会使用被动模式，首先由客户端向服务器的21号端口建立FTP控制连接，当需要数据连接时，服务器以PASV命令告知客户端（非20号端口）发送请求并建立数据连接。<br>这其中的“某端口”是服务器任意挑选的一个未被使用的随即端口。<br>客户端与服务器建立好数据连接之后就可以根据控制连接中发送FTP命令上传或下载文件了。</p>
+<p>在传输文件时，根据是否进行字符转换，分为文本模式和二进制模式。<br>1、文本模式：又称为ASCII（美国信息交换标准码）模式，这种模式在传输文件时使用ASCII标准字符序列，一般只用于“纯文本”的传输。<br>2、二进制模式：又称为Binary模式，这种模式不会转换文件中的字符序列，更适合传输程序，图片等非纯文本字符的文件。<br>使用二进制模式比文本模式更有效率，大多数FTP客户端工具根据文件类型自动选项文件传输模式，而不需要用户手动指定。</p>
+<h2 id="FTP的用户类型"><a href="#FTP的用户类型" class="headerlink" title="FTP的用户类型"></a>FTP的用户类型</h2><p>FTP用户类型可分为三类<br>1、使用FTP客户端软件访问服务器时，通常要用到一类特殊的用户账号，其用户名为ftp或者anonymous，提供任意密码（包括空密码）都可以通过FTP服务器的验证，这样的用户称为“匿名用户”。<br>2、除了不需要密码验证的匿名用户以外，FTP服务区还可以直接使用本机的系统用户帐号进行验证，这些用户通常被称为“本地用户”。<br>3、有些FTP服务器软件还可以维护一份独立的用户数据库文件，而不是直接使用系统用户帐号，这些位于独立数据文件中的FTP用户帐号，通常被称为“虚拟用户”，通过使用虚拟用户将FTP账户与linux系统账户的关联性降至最低，增加了系统的安全性。</p>
+<h2 id="FTP服务器软件的种类"><a href="#FTP服务器软件的种类" class="headerlink" title="FTP服务器软件的种类"></a>FTP服务器软件的种类</h2><p>在windows系统中，常见的FTP服务器软件包括file zilla server、serv-U等。<br>在linux系统中，vsftpd是目前在linux/Unix领域应用十分广泛的一款FTP服务软件。<br>vsftpd服务的全名来源于“very secure FTP daemon”。<br>该软件针对安全性方面做了大量的设计，除了安全性外，vsftpd在速度和稳定性方面的表现也相当突出。<br>最简单的FTP客户端工具莫过于“ftp”命令程序了，除了之外还有大量的图形化FTP客户端工具，windows中比较常用的包括“Cuter FTP”、“Flash FXP”、“Leap FTP”、“Filezilla”等。<br>还有一些下载工具软件，如“Flash Get”、“wget”等。包括大多数网页浏览器程序，都支持通过FTP协议下载文件，但因不具备FTP上传等管理功能，通常不称为FTP客户端工具。<br>Vsftpd的配置文件<br>通过安装vsftpd软件包，将会自动添加名为vsftpd的系统服务。因此，启动、停止vsftpd服务变得非常方便。构建vsftpd服务器的关键在于熟悉相关的配置文件。Vsftpd服务的配置文件位于 /etc/vsftpd/目录下，包括用户列表文件ftpusers、user_list和主机配置文件vsftpd.conf等。</p>
+<h2 id="FTP服务器配置"><a href="#FTP服务器配置" class="headerlink" title="FTP服务器配置"></a>FTP服务器配置</h2><p>1、用户列表文件ftpusers和user_list<br>在ftpusers、user_list文件中，各自记录了若干个FTP用户的帐号名称，两个文件都用于FTP登录控制，但是控制方式存在一些差别。<br>  ftpusers文件：此文件中列出的用户将禁止登录vsftpd服务器，不管该用户是否在user_list文件中出现，默认已经包括root、bin、daemon等用于系统允许的特殊用户（就如同黑名单）。<br>user-list文件：此文件中包含的用户可能被禁止登录，也可能被允许登录，具体取决主配置文件vsftpd.conf中的设置，当存在“userlist_enable = YES”的配置项时，user_list列表文件方可生效。若指定“userlist_deny = YES”则仅禁止此文件列表中的用户登录。若制定“userlist_deny = NO”，则仅允许此文件列表中的用户登录。<br>ftpusers文件相当于黑名单，为vsftpd服务提供了一份禁止登录的用户列表，而user_list文件提供了一份可以灵活控制的用户列表，二者相互结合，为FTP帐号的登录控制提供了辩解的途径。</p>
+<p>2、主配置文件vsftpd.conf<br>在vsftpd的主配置文件中，配置航采用“配置项 = 参数”形式。<br>以下为常见的配置项及含义说明：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">anoinymous_enable = YES ：是否允许匿名访问。Yes表示允许。</span><br><span class="line">anon_umask = 022 ：设置匿名用户上传文件的默认权限掩码值。</span><br><span class="line">anon_root = /var/ftp ：设置匿名用户的FTP根目录（默认/var/ftp）</span><br><span class="line">anon_upload_enable = YES ：是否允许匿名用户上传文件，YES为允许。</span><br><span class="line">anon_mkdir_write_enable = YES : 是否允许匿名用户有创建目录的写入权限。</span><br><span class="line">anon_other_write_enable ：是否允许匿名用户有其他写入权限，如：对文件改名、覆盖及删除文件等操作。</span><br><span class="line">anon_max_rate = 0 ：限制匿名用户的最大传输速率（0表示无限制），单位为：  字节/秒</span><br><span class="line">用于本地用户验证配置项：</span><br><span class="line">local_enable = YES ：是否允许本地系统用户访问。</span><br><span class="line">local_umask = 022 ：设本地用户所上传文件的默认权限掩码值。</span><br><span class="line">local_root = /var/ftp ：设置本地用户的FTP根目录（默认为用户的家目录）。</span><br><span class="line">chroot_local_user = YES ：是否将FTP本地用户禁锢在家目录中。</span><br><span class="line">local_max_rate = 0 ：限制本地用户的最大传输速率（0表示无限制），单位为： 字节/秒</span><br><span class="line">全局配置项：</span><br><span class="line">Listen = YES ；是否以独立运行的方式监听服务</span><br><span class="line">Listen_address = 0.0.0.0 ：设置监听FTP服务的ip地址</span><br><span class="line">Listen_port = 21 ：设置监听FTP服务的端口号。</span><br><span class="line">Write_enable =YES ：启用任何形式的写入权限，如上传、删除文件等都需要开启此项。</span><br><span class="line">download_enable = YES ：是否允许下载文件（建立仅限于浏览、上传的FTP服务器时可将其设置为 NO ）。</span><br><span class="line">Xferlog_enable = YES ：启用xferlog日志，默认记录到/var/<span class="built_in">log</span>/xferlog</span><br><span class="line">Xferlog_std_format = YES ：启用标准的xferlog日志格式，若仅用此项，将使用vsftpd自己的日志格式。</span><br><span class="line">Connect_from_port_20 = YES ：允许服务器主动模式（从20号端口尽力数据连接）。</span><br><span class="line">Pasv_enable = YES ：允许被动模式连接</span><br><span class="line">Pasv_max_port = 24600 :设置用于被动模式的服务器最大端口号</span><br><span class="line">Pasv_min_port = 24500 :设置用于被动模式的服务器最小端口号</span><br><span class="line">Pam_server_name = vsftpd : 设置用户认证的PAM文件位置（/etc/pam.d/目录中对应的文件名）</span><br><span class="line">userlist_enable = YES ：是否启用user_list用户列表文件</span><br><span class="line">userlist_deny = YES ：是否禁止user_list列表文件中的用户帐号。</span><br><span class="line">max_clients = 0 ：最多允许多少个客户端同时连接（0为无限制）</span><br><span class="line">max_per_ip = 0 ：对来自同一个ip地址的客户端，最多允许多少个并发连接（0为无限制）</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于匿名访问的FTP服务"><a href="#基于匿名访问的FTP服务" class="headerlink" title="基于匿名访问的FTP服务"></a>基于匿名访问的FTP服务</h2><p>Vsftpd服务可以使用linux主机中的系统用户账号作为登录FTP的帐号，包括匿名访问和用户验证两种方式。<br>匿名访问的FTP服务:访问匿名FTP服务器时，不需要密码，任何人都可以使用，非常方便，当需要提供公开访问的文件下载资源或者让用户上传一些不需要保密的数据资料时，可以选择搭建匿名FTP服务器。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum -y -install vsftpd</span><br></pre></td></tr></table></figure>
+<p>设置匿名访问的FTP服务器需要三步</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、准备匿名FTP访问的目录</span><br><span class="line">2、开放匿名用户配置并启动vsftpd服务</span><br><span class="line">3、测试匿名FTP访问</span><br></pre></td></tr></table></figure>
+<p>具体步骤<br>1、准备匿名访问的目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">FTP匿名用户对应的系统用户为ftp，其家目录为/var/ftp/。也就是匿名访问vsftpd服务时所在的FTP根目录，基于安全性考虑，FT根目录的权限不允许匿名用户或者其他用户有写入权限（否则会报500错误）</span><br><span class="line">为了测试，可以在/var/ftp/目录下创建一个用于下载的测试文件，例如执行一下操作复制一个文件到/var/ftp目录下。</span><br><span class="line"></span><br><span class="line">cp  /etc/issue  /var/ftp/</span><br><span class="line"></span><br><span class="line">/var/ftp/目录下默认设置了一个名为pub的子目录，可以给匿名访问FTP时上传文件使用。</span><br><span class="line">将/var/ftp/pub目录赋予匿名用户ftp写入权限：</span><br><span class="line">chown  ftp  /var/ftp/pub （ftp这个目录权限不能给777.最多755。777的话。连接时会报错）</span><br></pre></td></tr></table></figure>
+<p>2、开放匿名用户配置并启动vsftpd服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">配置vsftpd服务时，是否开启匿名FTP访问取决于配置项“anonymous_enable”，只要将其设置为“YES”即可。</span><br><span class="line">启用此项后默认只有读取权限，只能查看和下载文件，若要允许匿名用户有上传文件的权限，就需要开放更多的配置，主要有以下几项：</span><br><span class="line">write_enable = YES             启用任何形式的写入权限</span><br><span class="line">anon_upload_enable = YES       允许匿名用户上传文件</span><br><span class="line">anon_mkdir_write_enable = YES   允许匿名用户可创建目录</span><br><span class="line">anon_other_write_enable = YES   允许匿名用户有写入权限</span><br><span class="line">以上配置项应根据实际需要选择设置。</span><br><span class="line"></span><br><span class="line">重启vsftpd服务</span><br><span class="line">systemctl   restart  vsftpd</span><br></pre></td></tr></table></figure>
+<p>3、测试匿名FTP访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">在linux的字符界面中，可使用ftp命令进行测试。</span><br><span class="line">安装ftp命令 </span><br><span class="line">yum  -y  install  ftp</span><br><span class="line"></span><br><span class="line">例如：执行一下操作可以匿名登录到FTP服务器192.168.0.136</span><br><span class="line">ftp 192.168.0.136</span><br><span class="line">…………</span><br><span class="line">Name(192.168.0.136:root):ftp 	  输入用户名ftp</span><br><span class="line">passwd:         		直接回车即可</span><br><span class="line">…………ftp&gt; 		成功</span><br><span class="line"></span><br><span class="line">成功登录后执行“？”或者“<span class="built_in">help</span>”会显示出登录环境中的可用命令。</span><br><span class="line"></span><br><span class="line">或者在windows主机中可直接在“我的电脑”或“计算机”地址栏中输入URL地址访问，如ftp://192.168.0.125</span><br></pre></td></tr></table></figure>
+<h2 id="搭建用户验证的FTP服务"><a href="#搭建用户验证的FTP服务" class="headerlink" title="搭建用户验证的FTP服务"></a>搭建用户验证的FTP服务</h2><p>vsftpd可以直接使用linux主机的系统用户作为FTP帐号，提供基于用户名/密码的登录验证。用户使用系统用户帐号登录FTP服务器后将默认位于自己的家目录中，且在家目录中拥有读写权限。</p>
+<p>1、基于本地用户验证</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">使用基于本地用户验证只需要打开local_enable 、write_enable两个配置项即可，为了提高上传文件的权限，可以将权限掩码设定为077，若还希望将所有的用户禁锢在其家目录中，可以添加chroot_local_user配置项，否则用户将能够任意切换到服务器的任意目录中，这样就会带来一定的安全隐患，建议将用户禁锢。</span><br><span class="line">vim  /etc/vsftpd/vsftpd.conf</span><br><span class="line">local_enable = YES            允许本地系统用户访问</span><br><span class="line">write_enable = YES            允许任何形式的写入权限</span><br><span class="line">local_umask = 077  本地用户所上传文件的默认权限掩码值</span><br><span class="line">chroot_local_user = YES		将FTP本地用户禁锢在家目录中</span><br></pre></td></tr></table></figure>
+<p>在访问要求用户验证的FTP服务器时，如果选用URL地址的形式，必须知道FTP帐号名称。<br>如：访问”<a href="ftp://name@192.168.0.125&quot;。可以根据提示输入密码进行验证。也可以在URL地址中直接指定密码&quot;ftp://name:passwd@192.168.0.125&quot;">ftp://name@192.168.0.125&quot;。可以根据提示输入密码进行验证。也可以在URL地址中直接指定密码&quot;ftp://name:passwd@192.168.0.125&quot;</a></p>
+<p>2、使用user_list用户列表文件<br>当vsftpd服务器开放了”local_enable”配置项以后，默认情况下除了root外所有的系统用户都可以登录到此FTP服务器的，若只希望为一小部分系统用户开放FTP服务，则需要开放用户列表控制相关配置项，其中主要包括userlist_enable、userlist_deny。</p>
+<p>例如：执行一下操作后，vsftpd服务器将只允许bad、tom和jerry这三个用户登录。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Vim  /etc/vsftpd/user_list</span><br><span class="line">    bad</span><br><span class="line">    tom</span><br><span class="line">    jerry</span><br><span class="line"></span><br><span class="line">Vim  /etc/vsftpd/vsftpd.conf</span><br><span class="line">    userlist_enable = YES   <span class="comment"># 开启user_list用户列表文件</span></span><br><span class="line">    userlist_deny = NO    <span class="comment"># 不禁用user_list列表文件中的用户</span></span><br><span class="line">    allow_writeable_chroot=YES  <span class="comment"># 从2.3.5之后vsftpd增强了安全检查  基于用户认证必须添加此配置</span></span><br></pre></td></tr></table></figure>
+<p>3、测试用户FTP访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl   restart  vsftpd</span><br></pre></td></tr></table></figure>
+
+<h2 id="vsftpd服务的其他常用配置"><a href="#vsftpd服务的其他常用配置" class="headerlink" title="vsftpd服务的其他常用配置"></a>vsftpd服务的其他常用配置</h2><p>1、修改vsftpd服务的监听地址、端口</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">listen = YES 			 允许独立监听服务</span><br><span class="line">listen_address = 192.168.0.136</span><br><span class="line">listen_port = 21212</span><br><span class="line">重启生效即可</span><br><span class="line">systemctl   restart  vsftpd</span><br></pre></td></tr></table></figure>
+<p>2、允许使用FTP服务的被动模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">pasv_enable = YES</span><br><span class="line">pasv_min_port = 24500</span><br><span class="line">pasv_max_port = 24600</span><br><span class="line">重启生效即可：systemctl   restart  vsftpd</span><br></pre></td></tr></table></figure>
+<p>3、限制FTP的并发连接数、传输速率</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim  /etc/vsftpd/vsftpd.conf</span><br><span class="line">max_clients = 10     限制并发客户连接数最多10个</span><br><span class="line">max_per_ip = 5      限制每个ip地址的连接数最多5个</span><br><span class="line">anon_max_rate = 100000  限制匿名用户传输速率为100kb/s</span><br><span class="line">local_max_rate = 200000  限制本地用户传输速率为200kb/s</span><br><span class="line">重启生效即可：systemctl   restart  vsftpd</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于虚拟用户的FTP服务"><a href="#基于虚拟用户的FTP服务" class="headerlink" title="基于虚拟用户的FTP服务"></a>基于虚拟用户的FTP服务</h2><p>vsftpd服务使用Berkeley DB格式的数据库文件来存放虚拟用户账户，建立这种数据库需要用到db_load工具，由db4-utils软件包提供。</p>
+<p>虚拟用户建立的大体步骤<br>    1、创建文本格式的用户名、密码列表<br>    2、创建Berkeley DB格式的数据库文件<br>    3、添加虚拟用户的映射账号、创建FTP根目录<br>    4、为虚拟用户建立PAM认证文件<br>    5、修改vsftpd配置、添加虚拟用户支持<br>    6、为不同的虚拟用户建立独立的配置文件<br>    7、测试</p>
+<p>1、创建文本格式的用户名和密码列表</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">首先需要建立文本格式的用户名、密码列表文件，奇数行为用户名，偶数行为上一行中用户所对应的密码。</span><br><span class="line">例如：添加两个用户hali、bote密码分别为123、789可以执行以下操作：</span><br><span class="line">vim /etc/vsftpd/vusers.list      （为新建文件，名字任意）</span><br><span class="line">    hali</span><br><span class="line">    123</span><br><span class="line">    bote</span><br><span class="line">    789</span><br></pre></td></tr></table></figure>
+<p>2、创建Berkeley DB格式的数据库文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">有了文本格式的用户名、密码列表文件以后，以此文件为数据源，通过db_load工具创建处Berkeley DB格式的数据库文件。</span><br><span class="line"><span class="built_in">cd</span>  /etc/vsftpd</span><br><span class="line">db_load  -T  -t  <span class="built_in">hash</span>  -f  vusers.list  vusers.db</span><br><span class="line"></span><br><span class="line">file  vusers.db    查看转换后的文件类型</span><br><span class="line">为了提高此文件的安全性，chmod 600 vusers.db    防止数据外泄</span><br></pre></td></tr></table></figure>
+<p>3、添加虚拟用户的映射账户，创建FTP根目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vsftpd服务器对虚拟用户的控制采用了映射的控制方式，将所有虚拟用户对应到同一个系统用户，该系统用户家目录作为所有虚拟用户登录后共同的FTP根目录，因此还需要添加一个对应的系统用户账户（此账户无需设置登录密码和登录shell）</span><br><span class="line">创建好的虚拟用户的帐号数据文件之后，还需要对vsftpd服务的配置做相应的调整，以便识别并读取新的用户信息，在vsftpd服务器中，用户认证提供PAM机制实现，该机制包含灵活的选择认证方式。</span><br><span class="line"></span><br><span class="line">useradd   long</span><br></pre></td></tr></table></figure>
+<p>4、为虚拟用户建立PAM认证文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vsftpd服务默认的PAM认证文件为/etc/pam.d/vsftpd。该文件适用于linux主机的系统用户账户进行认证，若要读取虚拟用户的账户数据文件，则需要创建新的PAM认证配置。</span><br><span class="line">例如：可以参考一下内容在/etc/pam.d/目录下建立一个名为vaftpd.vu的新文件。</span><br><span class="line">vim  /etc/pam.d/vsftpd.vu</span><br><span class="line">    <span class="comment">#%PAM-1.0</span></span><br><span class="line">    auth  required  pam_userdb.so  db=/etc/vsftpd/vusers</span><br><span class="line">    account  required  pam_userdb.so  db=/etc/vsftpd/vusers</span><br><span class="line">保存退出即可</span><br></pre></td></tr></table></figure>
+<p>上述PAM配置内容中，通过“db=/etc/vsftpd/vusers”参数指定了虚拟用户数据库文件位置（省略 .db扩展名）即对应为“/etc/vsftpd/vusers.db”文件。</p>
+<p>5、修改vsftpd配置、添加虚拟用户支持</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">在vsftpd.conf配置文件中添加guest_enable 、guest_username配置项，将访问FTP服务的所有虚拟用户对应到同一系列用户账户long，并修改pam_server_name配置项，指向上一步建立的 /etc/pam.d/vsftpd.vu认证文件。</span><br><span class="line">vim  /etc/vsftpd/vsftpd.conf</span><br><span class="line">    .........</span><br><span class="line">    local_enable = YES      	允许本地系统用户访问</span><br><span class="line">    write_enable = YES				允许可写权限</span><br><span class="line">    anon_umask = 022				匿名用户所上传文件的默认权限掩码值</span><br><span class="line">    guest_enable = YES				启用用户映射功能</span><br><span class="line">    guest_username = long    指定映射的系统用户名称</span><br><span class="line">    pam_service_name = vsftpd.vu			指定新的PAM认证文件</span><br></pre></td></tr></table></figure>
+<p>在vsftpd服务中，虚拟用户被默认作为匿名用户进行处理，以降低权限，因此对应的配置项通常以 anon_ 开头，例如：在设置虚拟用户所上传文件的默认权限掩码时，应采用配置项为anon_umask而不是local_umask。</p>
+<p>6、为不同的虚拟用户建立独立的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">通过前面的几个步骤，实际上已经可以重新加载vsftpd并提供服务了，使用任意一个虚拟账号都可以登录FTP服务器并下载文件，但应为所有的虚拟用户都映射到了同一个系统用户账户，因此FTP访问权限也是相同的要么都可以，要么都不可以。</span><br><span class="line">若要为不同的虚拟用户账号设置不同的访问权限，可以通过为每个虚拟用户建立单独的配置文件实现，为FTP用户启用独立配置文件，需要修改vsftpd.conf配置文件，添加一条配置项 user_config_dir</span><br><span class="line">例如：设置表示将从/etc/vsftpd/vusers_dir/目录中查找每个用户的独立配置文件：   、</span><br><span class="line"></span><br><span class="line">vim  /etc/vsftpd/vsftpd.conf</span><br><span class="line">.........</span><br><span class="line">user_config_dir = /etc/vsftpd/vusers_dir</span><br></pre></td></tr></table></figure>
+<p>有了上述配置以后，就可以在/etc/vsftpd/vusers_dir/目录中为每个用户分别建立配置文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">例如：用户hali仍然只有默认的下载权限，而boli有上传文件和目录的权利，可以执行一下操作：</span><br><span class="line">mkdir  /etc/vsftpd/vusers_dir			创建目录</span><br><span class="line"><span class="built_in">cd</span>  /etc/vsftpd/vusers_dir</span><br><span class="line">touch  hali               为hali创建空的配置文件</span><br><span class="line"></span><br><span class="line">vim  bote             为bote创建配置文件</span><br><span class="line">anon_upload_enable = YES</span><br><span class="line">anon_mkdir_write_enable = YES</span><br></pre></td></tr></table></figure>
+<p>重启生效即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl   restart  vsftpd</span><br></pre></td></tr></table></figure>
+
+<p>在vsftpd.conf文件中启用了”user_config_dir”配置项以后，应该为每一个虚拟用户都建立一个单独的配置文件（可以是空文件），否则该用户可能无法登录，在每个用户的独立配置文件中，可以添加新的配置项来限制访问权限、下载速率等。<br>有了虚拟用户数据文件，并未vsftpd正确添加了虚拟用户支持以后就可以重新加载vsftpd服务，用户可以使用FTP客户端程序访问该FTP服务器，以虚拟用户账号进行测试，根据之前配置过程，至少确认一下结果。<br>1、用户hali可以登录，并能够正常浏览，下载文件，但不能上传。<br>2、用户bote可以登录，正常浏览、下载、上传文件。<br>3、Linux主机中的系统用户无法登录。</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>vsftpd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx 配置中的变量参数</title>
+    <url>/2021/01/12/nginx-variable/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$args</span>                    <span class="comment">#请求中的参数值</span></span><br><span class="line"><span class="variable">$query_string</span>            <span class="comment">#同 $args</span></span><br><span class="line"><span class="variable">$arg_NAME</span>                <span class="comment">#GET请求中NAME的值</span></span><br><span class="line"><span class="variable">$is_args</span>                 <span class="comment">#如果请求中有参数，值为"?"，否则为空字符串</span></span><br><span class="line"><span class="variable">$uri</span>                     <span class="comment">#请求中的当前URI(不带请求参数，参数位于$args)，可以不同于浏览器传递的$request_uri的值，它可以通过内部重定向，或者使用index指令进行修改，$uri不包含主机名，如"/foo/bar.html"。</span></span><br><span class="line"><span class="variable">$document_uri</span>            <span class="comment">#同 $uri</span></span><br><span class="line"><span class="variable">$document_root</span>           <span class="comment">#当前请求的文档根目录或别名</span></span><br><span class="line"><span class="variable">$host</span>                    <span class="comment">#优先级：HTTP请求行的主机名&gt;"HOST"请求头字段&gt;符合请求的服务器名.请求中的主机头字段，如果请求中的主机头不可用，则为服务器处理请求的服务器名称</span></span><br><span class="line"><span class="variable">$hostname</span>                <span class="comment">#主机名</span></span><br><span class="line"><span class="variable">$https</span>                   <span class="comment">#如果开启了SSL安全模式，值为"on"，否则为空字符串。</span></span><br><span class="line"><span class="variable">$binary_remote_addr</span>      <span class="comment">#客户端地址的二进制形式，固定长度为4个字节</span></span><br><span class="line"><span class="variable">$body_bytes_sent</span>         <span class="comment">#传输给客户端的字节数，响应头不计算在内；这个变量和Apache的mod_log_config模块中的"%B"参数保持兼容</span></span><br><span class="line"><span class="variable">$bytes_sent</span>              <span class="comment">#传输给客户端的字节数</span></span><br><span class="line"><span class="variable">$connection</span>              <span class="comment">#TCP连接的序列号</span></span><br><span class="line"><span class="variable">$connection_requests</span>     <span class="comment">#TCP连接当前的请求数量</span></span><br><span class="line"><span class="variable">$content_length</span>          <span class="comment">#"Content-Length" 请求头字段</span></span><br><span class="line"><span class="variable">$content_type</span>            <span class="comment">#"Content-Type" 请求头字段</span></span><br><span class="line"><span class="variable">$cookie_name</span>             <span class="comment">#cookie名称</span></span><br><span class="line"><span class="variable">$limit_rate</span>              <span class="comment">#用于设置响应的速度限制</span></span><br><span class="line"><span class="variable">$msec</span>                    <span class="comment">#当前的Unix时间戳</span></span><br><span class="line"><span class="variable">$nginx_version</span>           <span class="comment">#nginx版本</span></span><br><span class="line"><span class="variable">$pid</span>                     <span class="comment">#工作进程的PID</span></span><br><span class="line"><span class="variable">$pipe</span>                    <span class="comment">#如果请求来自管道通信，值为"p"，否则为"."</span></span><br><span class="line"><span class="variable">$proxy_protocol_addr</span>     <span class="comment">#获取代理访问服务器的客户端地址，如果是直接访问，该值为空字符串</span></span><br><span class="line"><span class="variable">$realpath_root</span>           <span class="comment">#当前请求的文档根目录或别名的真实路径，会将所有符号连接转换为真实路径</span></span><br><span class="line"><span class="variable">$remote_addr</span>             <span class="comment">#客户端地址</span></span><br><span class="line"><span class="variable">$remote_port</span>             <span class="comment">#客户端端口</span></span><br><span class="line"><span class="variable">$remote_user</span>             <span class="comment">#用于HTTP基础认证服务的用户名</span></span><br><span class="line"><span class="variable">$request</span>                 <span class="comment">#代表客户端的请求地址</span></span><br><span class="line"><span class="variable">$request_body</span>            <span class="comment">#客户端的请求主体：此变量可在location中使用，将请求主体通过proxy_pass，fastcgi_pass，uwsgi_pass和scgi_pass传递给下一级的代理服务器</span></span><br><span class="line"><span class="variable">$request_body_file</span>       <span class="comment">#将客户端请求主体保存在临时文件中。文件处理结束后，此文件需删除。如果需要之一开启此功能，需要设置client_body_in_file_only。如果将次文件传 递给后端的代理服务器，需要禁用request body，即设置proxy_pass_request_body off，fastcgi_pass_request_body off，uwsgi_pass_request_body off，or scgi_pass_request_body off</span></span><br><span class="line"><span class="variable">$request_completion</span>      <span class="comment">#如果请求成功，值为"OK"，如果请求未完成或者请求不是一个范围请求的最后一部分，则为空</span></span><br><span class="line"><span class="variable">$request_filename</span>        <span class="comment">#当前连接请求的文件路径，由root或alias指令与URI请求生成</span></span><br><span class="line"><span class="variable">$request_length</span>          <span class="comment">#请求的长度 (包括请求的地址，http请求头和请求主体)</span></span><br><span class="line"><span class="variable">$request_method</span>          <span class="comment">#HTTP请求方法，通常为"GET"或"POST"</span></span><br><span class="line"><span class="variable">$request_time</span>            <span class="comment">#处理客户端请求使用的时间,单位为秒，精度毫秒； 从读入客户端的第一个字节开始，直到把最后一个字符发送给客户端后进行日志写入为止。</span></span><br><span class="line"><span class="variable">$request_uri</span>             <span class="comment">#这个变量等于包含一些客户端请求参数的原始URI，它无法修改，请查看$uri更改或重写URI，不包含主机名，例如："/cnphp/test.php?arg=freemouse"</span></span><br><span class="line"><span class="variable">$scheme</span>                  <span class="comment">#请求使用的Web协议，"http" 或 "https"</span></span><br><span class="line"><span class="variable">$server_addr</span>             <span class="comment">#服务器端地址，需要注意的是：为了避免访问linux系统内核，应将ip地址提前设置在配置文件中</span></span><br><span class="line"><span class="variable">$server_name</span>             <span class="comment">#服务器名</span></span><br><span class="line"><span class="variable">$server_port</span>             <span class="comment">#服务器端口</span></span><br><span class="line"><span class="variable">$server_protocol</span>         <span class="comment">#服务器的HTTP版本，通常为 "HTTP/1.0" 或 "HTTP/1.1"</span></span><br><span class="line"><span class="variable">$status</span>                  <span class="comment">#HTTP响应代码</span></span><br><span class="line"><span class="variable">$time_iso8601</span>            <span class="comment">#服务器时间的ISO 8610格式</span></span><br><span class="line"><span class="variable">$time_local</span>              <span class="comment">#服务器时间（LOG Format 格式）</span></span><br><span class="line"><span class="variable">$cookie_NAME</span>             <span class="comment">#客户端请求Header头中的cookie变量，前缀"$cookie_"加上cookie名称的变量，该变量的值即为cookie名称的值</span></span><br><span class="line"><span class="variable">$http_NAME</span>               <span class="comment">#匹配任意请求头字段；变量名中的后半部分NAME可以替换成任意请求头字段，如在配置文件中需要获取http请求头："Accept-Language"，$http_accept_language即可</span></span><br><span class="line"><span class="variable">$http_cookie</span>　　　　　　　 <span class="comment">#请求的所有cookie</span></span><br><span class="line"><span class="variable">$http_host</span>               <span class="comment">#请求地址，即浏览器中你输入的地址（IP或域名）</span></span><br><span class="line"><span class="variable">$http_referer</span>            <span class="comment">#url跳转来源,用来记录从那个页面链接访问过来的</span></span><br><span class="line"><span class="variable">$http_user_agent</span>         <span class="comment">#用户终端浏览器等信息</span></span><br><span class="line"><span class="variable">$http_x_forwarded_for</span>    <span class="comment">#客户端的IP和代理服务器的IP，以逗号隔开；可伪造</span></span><br><span class="line"><span class="variable">$http_x_forwarded_proto</span>  <span class="comment">#请求的协议</span></span><br><span class="line"><span class="variable">$sent_http_NAME</span>          <span class="comment">#可以设置任意http响应头字段；变量名中的后半部分NAME可以替换成任意响应头字段，如需要设置响应头Content-length，$sent_http_content_length即可</span></span><br><span class="line"><span class="variable">$sent_http_cache_control</span></span><br><span class="line"><span class="variable">$sent_http_connection</span></span><br><span class="line"><span class="variable">$sent_http_content_type</span></span><br><span class="line"><span class="variable">$sent_http_keep_alive</span></span><br><span class="line"><span class="variable">$sent_http_last_modified</span></span><br><span class="line"><span class="variable">$sent_http_location</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos下mount挂载报错buys</title>
+    <url>/2021/01/05/mount-buys/</url>
+    <content><![CDATA[<h2 id="在单用户模式下无法修改文件–提示只读"><a href="#在单用户模式下无法修改文件–提示只读" class="headerlink" title="在单用户模式下无法修改文件–提示只读"></a>在单用户模式下无法修改文件–提示只读</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -o remount ,rw /</span><br></pre></td></tr></table></figure>
+<p>这样把根目录磁盘重新挂载下就可以修改了 </p>
+<h2 id="查看设备被占用的进程"><a href="#查看设备被占用的进程" class="headerlink" title="查看设备被占用的进程"></a>查看设备被占用的进程</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fuser -m  /dev/sdb1  <span class="comment"># 查到进程pid   没有命令的话  yum install psmisc  -y</span></span><br><span class="line"></span><br><span class="line">ps -aux  |grep  <span class="variable">$pid</span>  </span><br><span class="line"></span><br><span class="line"><span class="built_in">kill</span> -9 <span class="variable">$pid</span>   <span class="comment"># 结束进程</span></span><br><span class="line"></span><br><span class="line">mount  /dev/sdb1  /<span class="built_in">test</span>  <span class="comment"># 重新挂载</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="修复磁盘"><a href="#修复磁盘" class="headerlink" title="修复磁盘"></a>修复磁盘</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fsck -t ext4  -r /dev/sdb1</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>mount</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos下svn创建多个目录</title>
+    <url>/2020/12/31/subversion-dir/</url>
+    <content><![CDATA[<p>部署svn之后默认只有一个跟分支(/)<br>例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[groups]</span><br><span class="line">group = long,xin</span><br><span class="line"></span><br><span class="line">[program:/]</span><br><span class="line">@group = rw</span><br><span class="line">* =</span><br></pre></td></tr></table></figure>
+<p>这样可以把根分支检出，<br><img src="/2020/12/31/subversion-dir/34.png" alt><br>如果想多要几个分支，在根目录创建目录提交就好，然后在authz文件中配置权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[groups]</span><br><span class="line">group = long,xin</span><br><span class="line"><span class="built_in">test</span> = join</span><br><span class="line"></span><br><span class="line">[program:/]</span><br><span class="line">@group = rw</span><br><span class="line">* = </span><br><span class="line"></span><br><span class="line">[program:/program]  <span class="comment"># 新创建并提交的目录</span></span><br><span class="line">@group = rw</span><br><span class="line">@<span class="built_in">test</span> = rw</span><br><span class="line">* = </span><br><span class="line"></span><br><span class="line">[program:/server]  <span class="comment"># 新创建并提交的目录</span></span><br><span class="line">@group = rw</span><br><span class="line">@<span class="built_in">test</span> = rw</span><br><span class="line">* =</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/12/31/subversion-dir/35.png" alt><br><br><img src="/2020/12/31/subversion-dir/36.png" alt><br><br>之后test分组里面的成员就可以使用  <a href="http://192.168.1.230/program/server" target="_blank" rel="noopener">http://192.168.1.230/program/server</a>  检出分支了<br>对于根目录没有权限</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>subversion</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos下禅道部署</title>
+    <url>/2020/12/31/zbox/</url>
+    <content><![CDATA[<h2 id="部署禅道"><a href="#部署禅道" class="headerlink" title="部署禅道"></a>部署禅道</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">64位下载：wget http://dl.cnezsoft.com/zentao/9.0.1/ZenTaoPMS.9.0.1.zbox_64.tar.gz</span><br><span class="line">32位下载：wget http://dl.cnezsoft.com/zentao/9.0.1/ZenTaoPMS.9.0.1.zbox_32.tar.gz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tar -zxvf ZenTaoPMS.9.0.1.zbox_64.tar.gz -C /opt/   <span class="comment"># 必须解压到这个目录</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /opt/zbox/ </span><br><span class="line"></span><br><span class="line">./zbox start   <span class="comment"># 启动Apache和MySQL</span></span><br><span class="line"></span><br><span class="line">./zbox  -ap 8080 start  <span class="comment"># 指定httpd端口号启动</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="修改禅道端口号"><a href="#修改禅道端口号" class="headerlink" title="修改禅道端口号"></a>修改禅道端口号</h2><p>一、修改Apache端口</p>
+<pre><code> 首先，如果我们的服务器的80端口没有开放的话，那么我们就是只能修改Apache应用服务的端口了，其实非常简单，安装完成禅道后，在任意目录下输入命令：
+
+ /opt/zbox/zbox  -h   //查看zbox的帮助命令
+
+/opt/zbox/zbox  -ap  8080  //修改Apache服务器的端口号为8080
+
+/opt/zbox/zbox  restart    //重启Apache服务器
+
+ 做完以上操作之后，禅道的端口号就被修改为8080了</code></pre><p>二、修改mysql端口</p>
+<pre><code>修改mysql端口，其实非常简单，做的操作和上面的类似：       
+
+
+/opt/zbox/zbox  -mp  8090  //修改mysql服务器的端口号为8090
+
+/opt/zbox/zbox  restart    //重启Apache服务器
+
+至此，禅道中带的mysql数据库端口就修改完成了
+
+但是，事情没有那么简单就可以了，我们修改了数据库的端口，但是禅道发布在Apache上的服务却不会认这个新发布的端口，这个时候，我们打开前端服务的地址，点击禅道的服务进入之后，整个页面就是一片空白。
+
+ 这个时候，我们还需要设置一下访问的数据库端口：
+
+ 在服务器上，我们先定位到以下位置：
+
+            /opt/zbox/app/zentao/config
+
+ 然后再里面找到my.php，用vi命令去操作：</code></pre><p><img src="/2020/12/31/zbox/1.png" alt></p>
+<p>第二种方式</p>
+<p>进入到禅道安装目录 一般为 /opt/zbox</p>
+<p>依次执行下面命令</p>
+<p>./zbox stop                     #关闭禅道</p>
+<p>./zbox -ap 8082             #更改禅道内置 apache 端口</p>
+<p>./zbox -mp 3307            #更改禅道内置 mysql 端口</p>
+<p>./zbox start                    #启动禅道</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>zbox</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos 6无法使用yum解决办法</title>
     <url>/2020/12/17/centos6-yum-error/</url>
     <content><![CDATA[<h2 id="文章借鉴链接"><a href="#文章借鉴链接" class="headerlink" title="文章借鉴链接"></a>文章借鉴<a href="https://www.xmpan.com/944.html" target="_blank" rel="noopener">链接</a></h2><p>12月后Centos 6 系统无法使用yum出现错误</p>
@@ -6611,7 +6777,12 @@ chown   yunying.yunying  yunyingmeishu/ -R
 chown  yanfa.yanfa  yanfa/ -R</code></pre><h2 id="启动服务就可以访问了"><a href="#启动服务就可以访问了" class="headerlink" title="启动服务就可以访问了"></a>启动服务就可以访问了</h2><pre><code>/etc/init.d/smb  start
 /etc/init.d/nmb  start</code></pre><h2 id="好礼大放送–wind客户端清理已保存的samba用户和密码"><a href="#好礼大放送–wind客户端清理已保存的samba用户和密码" class="headerlink" title="好礼大放送–wind客户端清理已保存的samba用户和密码"></a>好礼大放送–wind客户端清理已保存的samba用户和密码</h2><pre><code>net  use      # 查看已保存的用户和密码
 
-net use  *  /del   /y     # 清除所有账号密码</code></pre>]]></content>
+net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10无法访问Samba共享文件夹【解决方案】"><a href="#Win10无法访问Samba共享文件夹【解决方案】" class="headerlink" title="Win10无法访问Samba共享文件夹【解决方案】"></a>Win10无法访问Samba共享文件夹【解决方案】</h2><ol>
+<li>进入“控制面板”，进入“程序和功能“</li>
+</ol>
+<p>2、选择“启用或关闭Windows功能”</p>
+<p>3、在功能列表中确保选中“SMB1.0/CIFS文件共享支持”，然后确定安装，重新启动电脑即可生效。</p>
+]]></content>
       <categories>
         <category>运维</category>
       </categories>
@@ -7125,7 +7296,8 @@ http://pkg.jenkins-ci.org/redhat-stable/</code></pre><p>编辑配置文件更改
     manager = xinlong
 
     [program:/]
-    @manager = rw</code></pre><p><br><img src="/2019/12/03/test/24.png" alt><br><br>配置服务：</p>
+    @manager = rw
+    * =  ## 代表其他人没有任何权限</code></pre><p><br><img src="/2019/12/03/test/24.png" alt><br><br>配置服务：</p>
 <pre><code>vim /data/svn/program/conf/svnserve.conf
 
     anon-access = none ## 匿名用户可读(关闭)
