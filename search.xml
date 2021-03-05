@@ -117,6 +117,33 @@
       </tags>
   </entry>
   <entry>
+    <title>prometheus+grafana监控搭建</title>
+    <url>/2021/03/05/prometheus/</url>
+    <content><![CDATA[<h2 id="官网地址"><a href="#官网地址" class="headerlink" title="官网地址"></a>官网地址</h2><p>源码包下载地址<br>prometheus: <a href="https://prometheus.io/" target="_blank" rel="noopener">https://prometheus.io/</a><br>grafana：<a href="https://grafana.com/grafana/" target="_blank" rel="noopener">https://grafana.com/grafana/</a></p>
+<p>监控模板–下载地址：<a href="https://grafana.com/grafana/dashboards/1860?pg=dashboards&amp;plcmt=featured-sub1" target="_blank" rel="noopener">https://grafana.com/grafana/dashboards/1860?pg=dashboards&amp;plcmt=featured-sub1</a><br><img src="/2021/03/05/prometheus/14.png" alt></p>
+<h2 id="监控端配置"><a href="#监控端配置" class="headerlink" title="监控端配置"></a>监控端配置</h2><p>下载源码包后上传到服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar xf prometheus-2.25.0.linux-amd64.tar.gz </span><br><span class="line"><span class="comment"># 重命名</span></span><br><span class="line">mv  prometheus-2.25.0.linux-amd64   prometheus</span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line"><span class="built_in">cd</span> prometheus</span><br><span class="line">nohup  ./prometheus   &amp;</span><br><span class="line"><span class="comment"># 查看端口是否被监听</span></span><br><span class="line">lsof -i:9090</span><br></pre></td></tr></table></figure>
+<p>登录prometheus后台查看是否启动成功(默认端口9090)<br><img src="/2021/03/05/prometheus/01.png" alt></p>
+<p>没问题后安装grafana</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载源码包</span></span><br><span class="line">wget https://dl.grafana.com/oss/release/grafana-7.4.3-1.x86_64.rpm</span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line">yum install  grafana-7.4.3-1.x86_64.rpm   -y</span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">/etc/init.d/grafana-server  start</span><br><span class="line"><span class="comment"># 查看端口是否被监听</span></span><br><span class="line">lsof -i:3000</span><br></pre></td></tr></table></figure>
+<p>登录grafana后台查看(默认端口3000)<br><img src="/2021/03/05/prometheus/02.png" alt><br>添加数据来源<br><img src="/2021/03/05/prometheus/03.png" alt><br>选择添加<br><img src="/2021/03/05/prometheus/04.png" alt><br>选择prometheus然后点击select<br><img src="/2021/03/05/prometheus/05.png" alt><br>输入名字以及prometheus的url<br><img src="/2021/03/05/prometheus/06.png" alt><br>点击保存测试<br><img src="/2021/03/05/prometheus/07.png" alt></p>
+<h2 id="被监控端配置"><a href="#被监控端配置" class="headerlink" title="被监控端配置"></a>被监控端配置</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar xf prometheus-2.25.0.linux-amd64.tar.gz </span><br><span class="line"><span class="comment"># 重命名</span></span><br><span class="line">mv  prometheus-2.25.0.linux-amd64   prometheus</span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line"><span class="built_in">cd</span> prometheus</span><br><span class="line">nohup  ./prometheus   &amp;</span><br><span class="line"><span class="comment"># 查看端口是否被监听</span></span><br><span class="line">lsof -i:9090</span><br></pre></td></tr></table></figure>
+<h2 id="监控端添加被监控服务器"><a href="#监控端添加被监控服务器" class="headerlink" title="监控端添加被监控服务器"></a>监控端添加被监控服务器</h2><p>监控端配置文件添加被监控端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim   prometheus.yml </span><br><span class="line">*******</span><br><span class="line">      - job_name: <span class="string">'Test'</span></span><br><span class="line">    static_configs:</span><br><span class="line">    - targets: [<span class="string">'192.168.1.104:9090'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加被监控ip:端口  保存退出</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/05/prometheus/08.png" alt><br>重启prometheus</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@centos6 prometheus]<span class="comment"># ps aux | grep prometh</span></span><br><span class="line">root     28752  0.0  0.7 1101676 61596 pts/1   Sl   00:56   0:00 ./prometheus</span><br><span class="line">root     28777  0.0  0.0 103324   892 pts/1    S+   01:11   0:00 grep prometh</span><br><span class="line">[root@centos6 prometheus]<span class="comment"># kill  -9  28752 </span></span><br><span class="line">[1]+  Killed                  nohup ./prometheus</span><br><span class="line">[root@centos6 prometheus]<span class="comment"># nohup   ./prometheus   &amp;  </span></span><br><span class="line">[1] 28778</span><br><span class="line">[root@centos6 prometheus]<span class="comment"># nohup: ignoring input and appending output to `nohup.out'</span></span><br></pre></td></tr></table></figure>
+<p>查看添加成功了并且状态是up<br><img src="/2021/03/05/prometheus/09.png" alt></p>
+<h2 id="grafana配置被监控端"><a href="#grafana配置被监控端" class="headerlink" title="grafana配置被监控端"></a>grafana配置被监控端</h2><p>选择import导入<br><img src="/2021/03/05/prometheus/10.png" alt><br>选择上传JSON文件<br><img src="/2021/03/05/prometheus/11.png" alt><br>选择之前下载好的json文件<br><img src="/2021/03/05/prometheus/12.png" alt><br>填写名字以及选择数据源<br><img src="/2021/03/05/prometheus/13.png" alt></p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>prometheus</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CentOS下部署ftp共享服务</title>
     <url>/2021/03/02/vsftpd/</url>
     <content><![CDATA[<h2 id="FTP概述："><a href="#FTP概述：" class="headerlink" title="FTP概述："></a>FTP概述：</h2><p>FTP（文件传输协议）是典型的C/S架构的应用层协议，需要由服务端软件、客户端软件两部分共同实现文件传输功能。</p>
@@ -462,8 +489,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -475,8 +502,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -497,8 +524,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1406,8 +1433,8 @@ memcached 数据丢失,设为永久有效,却莫名其妙的丢失了。
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1906,8 +1933,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2135,8 +2162,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -6815,8 +6842,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -7191,8 +7218,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
