@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    makedown语法 |  我在人间凑数的日子
+    CentOS通过nvm安装管理node版本 |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -59,7 +59,7 @@ var _hmt = _hmt || [];
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-readme" class="article article-type-post" itemscope
+  <article id="post-nvm" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -67,7 +67,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  makedown语法
+  CentOS通过nvm安装管理node版本
 </h1>
  
 
@@ -76,8 +76,8 @@ var _hmt = _hmt || [];
 
     
     <div class="article-meta">
-      <a href="/2060/07/30/readme/" class="article-date">
-  <time datetime="2060-07-30T02:52:44.000Z" itemprop="datePublished">2060-07-30</time>
+      <a href="/2021/03/10/nvm/" class="article-date">
+  <time datetime="2021-03-10T08:07:58.000Z" itemprop="datePublished">2021-03-10</time>
 </a>
       
   <div class="article-category">
@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">933</span>
+            <span class="post-count">681</span>
         </span>
     </span>
 
@@ -125,110 +125,19 @@ var _hmt = _hmt || [];
       
 
       
-      <h1 id="readme-md"><a href="#readme-md" class="headerlink" title="readme.md"></a>readme.md</h1><p>如果想写文章, 又不希望被看到, 那么可以<br><code>hexo new draft newdraft</code><br>这样会在source/_draft中新建一个newdraft.md文件, 如果你的草稿文件写的过程中, 想要预览一下, 那么可以使用<br><code>hexo server --draft</code></p>
-<p>如果你的草稿文件写完了, 想要发表到post中<br><code>hexo publish draft newdraft</code><br>就会自动把newdraft.md发送到post中<br>最后<code>hexo clean &amp;&amp; hexo g &amp;&amp; gulp &amp;&amp; hexo d</code>就可以了.</p>
-<p>写作请使用:<br><code>hexo new post --path 无极OPS/docker3 &quot;docker--容器创建后添加端口映射&quot;</code>  </p>
-<hr>
-<p>分割线三个减号— 上下空行即可  </p>
-<hr>
-<p><a href="https://www.runoob.com/markdown/md-tutorial.html" target="_blank" rel="noopener">md小技巧</a><br><code>&amp;emsp;&amp;emsp;  空白格, 用于中文段落首行缩进</code></p>
-<!-- # 一级标题 这样写右侧目录不显示一级标题.-->
+      <h2 id="安装nvm"><a href="#安装nvm" class="headerlink" title="安装nvm"></a>安装nvm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash</span><br><span class="line"></span><br><span class="line"> 或者</span><br><span class="line"></span><br><span class="line"> wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash</span><br></pre></td></tr></table></figure>
+<p>立即生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h2 id="命令相关"><a href="#命令相关" class="headerlink" title="命令相关"></a>命令相关</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有可安装的node版本号</span></span><br><span class="line">nvm ls-remote</span><br><span class="line"><span class="comment">#  安装13.0.0版本的node</span></span><br><span class="line">nvm install 13.0.0</span><br><span class="line"><span class="comment"># 安装15系列中最高版本的node  比如15系列有15.0.0,　　15.0.1,　　15.1.1,　　15.1.2,　　15.2.1,　　15.3.0,那么最后安装的就是15.3.0</span></span><br><span class="line">nvm install 15</span><br><span class="line"><span class="comment"># 安装14.2系列中最高版本的node</span></span><br><span class="line">nvm install 14.2</span><br><span class="line"><span class="comment"># 查看已安装的所有node版本以及默认的版本</span></span><br><span class="line">nvm list</span><br><span class="line"><span class="comment"># 使用13.0.0版本的node</span></span><br><span class="line">nvm use 13.0.0</span><br><span class="line"><span class="comment"># 使用14.2系列的最高版本node</span></span><br><span class="line">nvm use 14.2</span><br><span class="line"><span class="comment"># 卸载13.0.0版本的node</span></span><br><span class="line">nvm uninstall 13.0.0</span><br></pre></td></tr></table></figure>
 
-<hr>
-<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><p>&emsp;&emsp;如果配置不行, 建议增加上下行空行, 标题尾部双空格等  </p>
-<h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><!-- # 一级标题 -->
-<!-- ## 一级标题 -->
-
-<p>段落的换行是使用两个以上空格加上回车 或者空一行表示换行</p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*斜体文本* &amp;emsp;&amp;emsp;**粗体文本** &amp;emsp;&amp;emsp; ~~删除线~~ \_\_init__显示本体 不转义</span><br></pre></td></tr></table></figure>
-<p><em>斜体文本</em> &emsp;&emsp;<strong>粗体文本</strong> &emsp;&emsp; <del>删除线</del>&emsp;&emsp;__init__  </p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;这是引用的内容  </span><br><span class="line">&gt;&gt;这是引用的内容</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这是引用的内容  </p>
-<blockquote>
-<p>这是引用的内容  </p>
-</blockquote>
-</blockquote>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载地址书写:[download](https:&#x2F;&#x2F;wujiops.coding.net&#x2F;p&#x2F;xuexibiji&#x2F;d&#x2F;xuexibiji&#x2F;git&#x2F;raw&#x2F;master&#x2F;类和方法.zip &quot;类和方法.zip&quot;)</span><br></pre></td></tr></table></figure>
-<p>下载地址书写:<a href="https://wujiops.coding.net/p/xuexibiji/d/xuexibiji/git/raw/master/类和方法.zip" target="_blank" rel="noopener" title="类和方法.zip">download</a> </p>
-<hr>
-<p><code>![图片alt](图片地址 &#39;&#39;图片title&#39;&#39;)</code><br><code>![](/media/hdp/5.jpg)</code><br><code>![](/media/sourcetree/0.jpg)</code><br>图片alt 就是显示在图片下面的文字, 相当于对图片内容的解释<br>图片title 是图片的标题, 当鼠标移到图片上时显示的内容。title可加可不加  </p>
-<p><code>[超链接名](超链接地址 &quot;超链接title&quot;)</code><br>title可加可不加  </p>
-<p>示例<br><a href="http://jianshu.com" target="_blank" rel="noopener">简书</a><br><a href="http://baidu.com" target="_blank" rel="noopener">百度</a>  </p>
-<hr>
-<p>无序列表用 - + * 任何一种都可以<br>注意: - + * 跟内容之间都要有一个空格   </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">- 列表内容</span><br><span class="line">- 列表内容</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>列表内容</li>
-<li>列表内容</li>
-<li>列表内容</li>
-</ul>
-<hr>
-<p>有序列表<br>注意: 序号跟内容之间要有空格   </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 列表内容  </span><br><span class="line">2. 列表内容  </span><br><span class="line">3. 列表内容</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>列表内容  </li>
-<li>列表内容  </li>
-<li>列表内容<br>列表嵌套<br>上一级和下一级之间敲三个空格即可   </li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 列表1  </span><br><span class="line">2. 列表2  </span><br><span class="line">   * 嵌套1</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>列表1  </li>
-<li>列表2  <ul>
-<li>嵌套1  </li>
-</ul>
-</li>
-</ol>
-<hr>
-<p>表格对齐方式</p>
-<p>-: 设置内容和标题栏居右对齐。<br>:- 设置内容和标题栏居左对齐。<br>:-: 设置内容和标题栏居中对齐。<br>实例如下：  </p>
-<table>
-<thead>
-<tr>
-<th align="left">左</th>
-<th align="center">居中</th>
-<th align="right">右</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">abc</td>
-<td align="center">bcd</td>
-<td align="right">cde</td>
-</tr>
-<tr>
-<td align="left">abc</td>
-<td align="center">bcd</td>
-<td align="right">cde</td>
-</tr>
-<tr>
-<td align="left">abc</td>
-<td align="center">bcd</td>
-<td align="right">cde</td>
-</tr>
-</tbody></table>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;font face=<span class="string">"黑体"</span>&gt;我是黑体字&lt;/font&gt;</span><br><span class="line">&lt;font face=<span class="string">"微软雅黑"</span>&gt;我是微软雅黑&lt;/font&gt;</span><br><span class="line">&lt;font face=<span class="string">"STCAIYUN"</span>&gt;我是华文彩云&lt;/font&gt;</span><br><span class="line">&lt;font color=red&gt;我是红色&lt;/font&gt;</span><br><span class="line">&lt;font color=<span class="comment">#008000&gt;我是绿色&lt;/font&gt;</span></span><br><span class="line">&lt;font color=Blue&gt;我是蓝色&lt;/font&gt;</span><br><span class="line">&lt;font size=5&gt;我是尺寸&lt;/font&gt;</span><br><span class="line">&lt;font face=<span class="string">"黑体"</span> color=green size=5&gt;我是黑体, 绿色, 尺寸为5&lt;/font&gt;</span><br><span class="line">&lt;center&gt;居中&lt;/center&gt;</span><br></pre></td></tr></table></figure>
-
-<p><font face="黑体">我是黑体字</font>  </p>
-<p><font face="微软雅黑">我是微软雅黑</font>  </p>
-<p><font face="STCAIYUN">我是华文彩云</font>  </p>
-<p><font color="red">我是红色</font>  </p>
-<p><font color="#008000">我是绿色</font>  </p>
-<p><font color="Blue">我是蓝色</font>  </p>
-<p><font size="5">我是尺寸</font>  </p>
-<center>居中</center>  
-
-<p><font face="黑体" color="green" size="5">我是黑体, 绿色, 尺寸为5</font>  </p>
-<hr>
-<p>参考<a href="https://blog.csdn.net/heimu24/article/details/81189700" target="_blank" rel="noopener">链接</a></p>
-<p>脚注是对文本的补充说明。<br>[^要注明的文本]<br>创建脚注格式类似这样 [^RUNOOB]。<br>[^RUNOOB]: 菜鸟教程 – 学的不仅是技术, 更是梦想！！！  </p>
-<p>TODO 待完成<br>FIXME 代码需要修正和原因说明<br>XXX 虽然实现功能，但是代码需要改进和说明<br>HACK 补锅踩雷填坑<br>BUG 丢锅埋雷挖坑  </p>
-<p><code>Ctrl+G</code>快速去某一行</p>
+<h2 id="安装过程中的报错"><a href="#安装过程中的报错" class="headerlink" title="安装过程中的报错"></a>安装过程中的报错</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@iZ2ze9k2rrtcy962g9wiyrZ server]$ nvm install  v14.15.4</span><br><span class="line">v14.15.4 is already installed.</span><br><span class="line">Error: ENOENT: no such file or directory, uv_cwd</span><br><span class="line">    at process.wrappedCwd (internal/bootstrap/switches/does_own_process_state.js:129:28)</span><br><span class="line">    at process.cwd (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:10:19)</span><br><span class="line">    at Conf.loadPrefix (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/lib/config/load-prefix.js:46:24)</span><br><span class="line">    at load_ (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/lib/config/core.js:109:8)</span><br><span class="line">    at Conf.&lt;anonymous&gt; (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/lib/config/core.js:96:5)</span><br><span class="line">    at Conf.emit (events.js:315:20)</span><br><span class="line">    at ConfigChain._resolve (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/node_modules/config-chain/index.js:281:34)</span><br><span class="line">    at ConfigChain.add (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/node_modules/config-chain/index.js:259:10)</span><br><span class="line">    at Conf.add (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/lib/config/core.js:338:27)</span><br><span class="line">    at Conf.&lt;anonymous&gt; (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/lib/config/core.js:314:25)</span><br><span class="line">internal/bootstrap/switches/does_own_process_state.js:129</span><br><span class="line">    cachedCwd = rawMethods.cwd();</span><br><span class="line">                           ^</span><br><span class="line"></span><br><span class="line">Error: ENOENT: no such file or directory, uv_cwd</span><br><span class="line">    at process.wrappedCwd (internal/bootstrap/switches/does_own_process_state.js:129:28)</span><br><span class="line">    at process.cwd (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:10:19)</span><br><span class="line">    at process.errorHandler (/home/sgsm/.nvm/versions/node/v14.15.4/lib/node_modules/npm/lib/utils/error-handler.js:183:30)</span><br><span class="line">    at process.emit (events.js:315:20)</span><br><span class="line">    at process._fatalException (internal/process/execution.js:163:25) &#123;</span><br><span class="line">  errno: -2,</span><br><span class="line">  code: <span class="string">'ENOENT'</span>,</span><br><span class="line">  syscall: <span class="string">'uv_cwd'</span></span><br><span class="line">&#125;</span><br><span class="line">nvm is not compatible with the npm config <span class="string">"prefix"</span> option: currently <span class="built_in">set</span> to <span class="string">""</span></span><br><span class="line">Run `npm config delete prefix` or `nvm use --delete-prefix v14.15.4` to <span class="built_in">unset</span> it.</span><br><span class="line">Creating default <span class="built_in">alias</span>: default -&gt; v14.15.4</span><br></pre></td></tr></table></figure>
+<p>安装v14.15.4版本的时候 报错 nvm与npm的配置文件不兼容<br>执行一下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config delete prefix</span><br><span class="line">npm config <span class="built_in">set</span> prefix <span class="variable">$NVM_DIR</span>/versions/node/v14.15.4</span><br></pre></td></tr></table></figure>
+<p>之后在安装就可以了   注意：不能再node进程的目录中执行上面命令</p>
+<h2 id="升级pm2"><a href="#升级pm2" class="headerlink" title="升级pm2"></a>升级pm2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm  install pm2@4.5.5  -g</span><br></pre></td></tr></table></figure>
+<p>安装之后关闭窗口 新建窗口执行 pm2 list 会提示</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@iZ2zebqwvcwhckgto4m1afZ ~]$ pm2 list</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt; In-memory PM2 is out-of-date, <span class="keyword">do</span>:</span><br><span class="line">&gt;&gt;&gt;&gt; $ pm2 update</span><br><span class="line">In memory PM2 version: 2.8.0</span><br><span class="line">Local PM2 version: 4.5.5</span><br></pre></td></tr></table></figure>
+<p>这个时候执行下 pm2  update     在执行pm2 list 就正常了 </p>
 
       
       <!-- reward -->
@@ -293,14 +202,14 @@ var _hmt = _hmt || [];
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2060/07/30/readme/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2021/03/10/nvm/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nvm/" rel="tag">nvm</a></li></ul>
 
 
     </footer>
@@ -311,10 +220,19 @@ var _hmt = _hmt || [];
   
   <nav class="article-nav">
     
+      <a href="/2060/07/30/readme/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            makedown语法
+          
+        </div>
+      </a>
     
-      <a href="/2021/03/10/nvm/" class="article-nav-link">
+    
+      <a href="/2021/03/05/prometheus/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">CentOS通过nvm安装管理node版本</div>
+        <div class="article-nav-title">prometheus+grafana监控搭建</div>
       </a>
     
   </nav>

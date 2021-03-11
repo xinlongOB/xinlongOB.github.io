@@ -46,6 +46,35 @@
   </entry>
   
   <entry>
+    <title>CentOS通过nvm安装管理node版本</title>
+    <link href="http://yoursite.com/2021/03/10/nvm/"/>
+    <id>http://yoursite.com/2021/03/10/nvm/</id>
+    <published>2021-03-10T08:07:58.000Z</published>
+    <updated>2021-03-10T09:21:48.882Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;安装nvm&quot;&gt;&lt;a href=&quot;#安装nvm&quot; class=&quot;headerlink&quot; title=&quot;安装nvm&quot;&gt;&lt;/a&gt;安装nvm&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="nvm" scheme="http://yoursite.com/tags/nvm/"/>
+    
+  </entry>
+  
+  <entry>
     <title>prometheus+grafana监控搭建</title>
     <link href="http://yoursite.com/2021/03/05/prometheus/"/>
     <id>http://yoursite.com/2021/03/05/prometheus/</id>
@@ -472,9 +501,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
       <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
   </entry>
   
@@ -502,9 +531,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
-    
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
     
   </entry>
   
@@ -531,9 +560,9 @@
       <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
     
     
-      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
-    
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
     
   </entry>
   
@@ -564,35 +593,6 @@
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
       <category term="ipv6" scheme="http://yoursite.com/tags/ipv6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nginx网站服务</title>
-    <link href="http://yoursite.com/2020/08/11/nginx/"/>
-    <id>http://yoursite.com/2020/08/11/nginx/</id>
-    <published>2020-08-11T07:20:01.000Z</published>
-    <updated>2020-08-22T06:54:40.915Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;Nginx简介&quot;&gt;&lt;a href=&quot;#Nginx简介&quot; class=&quot;headerlink&quot; title=&quot;Nginx简介&quot;&gt;&lt;/a&gt;Nginx简介&lt;/h2&gt;&lt;p&gt;Nginx是一个高性能的 HTTP 和 反向代理 服务器,也是一个 IMAP/POP3/SMTP
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
     
   </entry>
   
