@@ -654,3 +654,72 @@ tmpfs           3.9G     0  3.9G   0% /sys/fs/cgroup
 tmpfs           783M     0  783M   0% /run/user/1000
 yes yes yes 
 ```
+## unarchive模块
+用途：从本地机器上复制存档后，将其解包。
+说明：
+该unarchive模块将解压缩一个存档。
+默认情况下，它将在解包之前将源文件从本地系统复制到目标。
+设置remote_src=yes为解包目标上已经存在的档案。
+对于Windows目标，请改用win_unzip模块。
+
+常用选项：
+    dest：远程绝对路径，档案应该被解压缩
+    exec：列出需要排除的目录和文件
+    src：指定源
+    creates：一个文件名，当它已经存在时，这个步骤将不会被运行
+```bash
+# 案例
+# 传递参数当这个文件存在就不会解压  如果不存在则解压
+- name: unzip pvp release to dir
+  unarchive: 
+    src={{ sgsm_release_copy_dir }}{{ copy_file_name  }} 
+    dest={{ sgsm_convey_pvp_dir  }} 
+    remote_src=yes 
+  args:
+    creates: "{{ sgsm_convey_pvp_dir }}/{{ sgsm_release_version }}"
+```
+## template 模块
+常被用作传输文件，同时支持预定义变量替换，并且可由Jinja2渲染格式
+
+    文件文件，嵌套有脚本（使用模板编程语言编写）；
+    jinja2语言，使用字面量，有以下形式：
+        字符串：使用单引号或双引号；
+        数字：整数，浮点数；
+        列表：[ item1,item2,……]
+        元组：(item1,item2,……)
+        字典：{key1:value1,key2,value2,……}
+        布尔型：true/false
+    算术运算：+，-，*，/，//，%，**
+    比较操作：==，!=，>，>=，<，<=
+    逻辑运算：and，or，not
+    流表达式：for，if，when
+
+常用选项：
+    backup：建立个包括timestamp在内的文件备份，以备不时之需.
+    dest：远程节点上的绝对路径，用于放置template文件
+    src：本地Jinjia2模版的template文件位置
+    group：设置远程节点上的的template文件的所属用户组
+    mode：设置远程节点上的template文件权限。类似Linux中chmod的用法
+    owner：设置远程节点上的template文件所属用户
+
+```bash
+# 案例1
+- name: test template
+  template: src="test.cnf.j2" dest="/etc/test.cnf" backup=yes
+
+$ cat templates/nginx.conf.j2    #该文件就是nginx的配置文件复制而成的
+…………      #省略部分内容
+worker_processes {{ ansible_processor_vcpus**2 }};    #使用变量是cpu核心数的2次方
+listen       {{ http_port }} default_server;
+listen       [::]:{{ http_port }} default_server; 
+```
+```bash
+# 案例2
+# 使用template模块调用的j2文件使用{% if %} {% endif %}进行控制
+[root@master ansible]# cat roles/temp/templates/test_if.j2 
+{% if ansible_hostname == master_hostname %}
+ExecStart=/usr/local/bin/etcd --name {{ master_hostname }} --initial-advertise-peer-urls http://{{ master_ip }}:2380
+{% elif ansible_hostname == node1_hostname %}
+ExecStart=/usr/local/bin/etcd --name {{ node1_hostname }} --initial-advertise-peer-urls http://{{ node1_ip }}:2380
+{% endif %}
+```
