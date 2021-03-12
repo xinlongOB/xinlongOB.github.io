@@ -129,6 +129,8 @@ date: 2020-01-08 16:09:50
 
 	db.oreseasons.update({"_id" : ObjectId("5ad227d8da0d2e0522930156")},{$unset:{"groups.0":''}},false, true)	# 把匹配数据的groups中第一个字段删除
 
+	db.roles.find({},{"logoutTime" : 1}).sort({"logoutTime" : -1}).limit(10) # 以登出时间降序    取前十个 并且只显示登出时间
+
 # 升序降序
 ```bash
 # 查看表   已groupid 排序  1  为升序
