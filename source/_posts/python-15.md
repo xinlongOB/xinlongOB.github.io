@@ -459,8 +459,14 @@ print(ret)
     
 re.finditer(pattern, string, flags=0) 找到RE匹配的所有字符串，并把他们作为一个迭代器返回
 ```python
+
 ```
 
 re.sub(pattern, repl, string, count=0, flags=0) 替换匹配到的字符串
 ```python
+re.sub('[abc]', 'o', 'Mark')
+
+'Mork'
+
+查看Mark是否包含a,b或者c，如果有，则将其一一替换为o
 ```
