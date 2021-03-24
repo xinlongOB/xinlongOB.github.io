@@ -65,3 +65,15 @@ Current表示当前到实例上正在运行的连接数。
  touch  /var/run/mongodb/mongod.pid
  chown -R mongodb:mongodb /var/run/mongodb/mongod.pid
 ```
+
+mongo操作记录可以在log中查看
+```bash
+cat  /data/log/mongodb/mongod.log   |grep  dropDatabase
+2021-03-11T22:56:41.750+0800 I COMMAND  [conn594] dropDatabase sgsm-game-1 starting
+2021-03-11T22:56:42.261+0800 I COMMAND  [conn594] dropDatabase sgsm-game-1 finished
+2021-03-11T22:56:42.261+0800 I COMMAND  [conn594] command sgsm-game-1 command: dropDatabase { dropDatabase: 1.0 } keyUpdates:0 writeConflicts:0 numYields:0 reslen:47 locks:{ Global: { acquireCount: { r: 2, w: 1, W: 1 } }, Database: { acquireCount: { W: 1 } } } protocol:op_command 511ms
+
+# 或者
+cat  /data/log/mongodb/mongod.log   |grep  find
+2021-03-09T15:29:36.653+0800 I COMMAND  [conn34] command sgsm-game-1.gamedatas command: find { find: "gamedatas", filter: { dataID: 3 }, limit: 1, batchSize: 1, singleBatch: true } planSummary: IXSCAN { dataID: 1 } keysExamined:0 docsExamined:0 cursorExhausted:1 keyUpdates:0 writeConflicts:0 numYields:0 nreturned:0 reslen:127 locks:{ Global: { acquireCount: { r: 2 } }, Database: { acquireCount: { r: 1 }, acquireWaitCount: { r: 1 }, timeAcquiringMicros: { r: 119778 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 119ms
+```
