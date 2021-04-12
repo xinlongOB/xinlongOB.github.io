@@ -46,6 +46,125 @@
   </entry>
   
   <entry>
+    <title>CentOS下使用免密使用sudo命令</title>
+    <link href="http://yoursite.com/2021/04/12/sudo-NOPASSWD/"/>
+    <id>http://yoursite.com/2021/04/12/sudo-NOPASSWD/</id>
+    <published>2021-04-12T08:17:04.000Z</published>
+    <updated>2021-04-12T08:30:09.463Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;配置文件&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="sudo" scheme="http://yoursite.com/tags/sudo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos中shell脚本里面使用sudo报错</title>
+    <link href="http://yoursite.com/2021/04/06/sudo/"/>
+    <id>http://yoursite.com/2021/04/06/sudo/</id>
+    <published>2021-04-06T03:23:29.000Z</published>
+    <updated>2021-04-06T03:25:34.011Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;报错&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="sudo" scheme="http://yoursite.com/tags/sudo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx如何识别多个conf配置文件</title>
+    <link href="http://yoursite.com/2021/04/01/nginx-include/"/>
+    <id>http://yoursite.com/2021/04/01/nginx-include/</id>
+    <published>2021-04-01T11:30:58.000Z</published>
+    <updated>2021-04-01T11:33:11.211Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在主配置文件添加include&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos下安装node版本报错升级lib库</title>
+    <link href="http://yoursite.com/2021/03/22/glibc/"/>
+    <id>http://yoursite.com/2021/03/22/glibc/</id>
+    <published>2021-03-22T02:07:29.000Z</published>
+    <updated>2021-03-22T05:49:29.904Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;GLIBCXX报错&quot;&gt;&lt;a href=&quot;#GLIBCXX报错&quot; class=&quot;headerlink&quot; title=&quot;GLIBCXX报错&quot;&gt;&lt;/a&gt;GLIBCXX报错&lt;/h2&gt;&lt;figure class=&quot;highlight
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="node" scheme="http://yoursite.com/tags/node/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CentOS通过nvm安装管理node版本</title>
     <link href="http://yoursite.com/2021/03/10/nvm/"/>
     <id>http://yoursite.com/2021/03/10/nvm/</id>
@@ -475,124 +594,6 @@
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
       <category term="history" scheme="http://yoursite.com/tags/history/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>自建mongo数据库迁移至云数据库MongoDB</title>
-    <link href="http://yoursite.com/2020/09/11/mongodump/"/>
-    <id>http://yoursite.com/2020/09/11/mongodump/</id>
-    <published>2020-09-11T08:45:18.000Z</published>
-    <updated>2020-11-10T09:16:20.476Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;创建云数据库MongoDB&quot;&gt;&lt;a href=&quot;#创建云数据库MongoDB&quot; class=&quot;headerlink&quot; title=&quot;创建云数据库MongoDB&quot;&gt;&lt;/a&gt;创建云数据库MongoDB&lt;/h2&gt;&lt;p&gt;首先 在云数据库MongoDB控制台创建实例 
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="mongo" scheme="http://yoursite.com/tags/mongo/"/>
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ansible报错</title>
-    <link href="http://yoursite.com/2020/09/05/ansible-error/"/>
-    <id>http://yoursite.com/2020/09/05/ansible-error/</id>
-    <published>2020-09-05T06:25:22.000Z</published>
-    <updated>2020-09-05T06:28:10.903Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;img src=&quot;/2020/09/05/ansible-error/1.png&quot; alt&gt;&lt;br&gt;原因：python库中urllib3 (1.22) or chardet (2.2.1) 的版本不兼容 解决如下：&lt;/p&gt;
-&lt;figure
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ansible-playbook之when条件语句</title>
-    <link href="http://yoursite.com/2020/08/26/ansible-play-when/"/>
-    <id>http://yoursite.com/2020/08/26/ansible-play-when/</id>
-    <published>2020-08-26T06:04:18.000Z</published>
-    <updated>2020-08-27T08:08:41.554Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;When语句&quot;&gt;&lt;a href=&quot;#When语句&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="ansible" scheme="http://yoursite.com/tags/ansible/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>阿里云服务器如何设置IPV6通过appstore的审核</title>
-    <link href="http://yoursite.com/2020/08/20/ipv6/"/>
-    <id>http://yoursite.com/2020/08/20/ipv6/</id>
-    <published>2020-08-20T07:02:10.000Z</published>
-    <updated>2020-08-20T11:56:58.204Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;苹果上架要求：要求支持IPV6only(因为阿里云主机没有IPV6only)&lt;br&gt;确认IPV6是否开启：&lt;/p&gt;
-&lt;p&gt;方式1：使用ifconfig查看自己的IP地址是否含有IPV6地址&lt;br&gt;&lt;img src=&quot;/2020/08/20/ipv6/1.png&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="ipv6" scheme="http://yoursite.com/tags/ipv6/"/>
     
   </entry>
   

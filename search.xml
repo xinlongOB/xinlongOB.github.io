@@ -117,6 +117,86 @@
       </tags>
   </entry>
   <entry>
+    <title>CentOS下使用免密使用sudo命令</title>
+    <url>/2021/04/12/sudo-NOPASSWD/</url>
+    <content><![CDATA[<p>配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">## Allow root to run any commands anywhere </span></span><br><span class="line">root    ALL=(ALL)       ALL</span><br><span class="line"></span><br><span class="line"><span class="comment">## Allows members of the 'sys' group to run networking, software, </span></span><br><span class="line"><span class="comment">## service management apps and more.</span></span><br><span class="line"><span class="comment"># %sys ALL = NETWORKING, SOFTWARE, SERVICES, STORAGE, DELEGATING, PROCESSES, LOCATE, DRIVERS</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Allows people in group wheel to run all commands</span></span><br><span class="line">%wheel  ALL=(ALL)       ALL</span><br><span class="line"></span><br><span class="line"><span class="comment">## Same thing without a password</span></span><br><span class="line"><span class="comment"># %wheel        ALL=(ALL)       NOPASSWD: ALL</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Allows members of the users group to mount and unmount the </span></span><br><span class="line"><span class="comment">## cdrom as root</span></span><br><span class="line"><span class="comment"># %users  ALL=/sbin/mount /mnt/cdrom, /sbin/umount /mnt/cdrom</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Allows members of the users group to shutdown this system</span></span><br><span class="line"><span class="comment"># %users  localhost=/sbin/shutdown -h now</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)</span></span><br><span class="line"><span class="comment">#includedir /etc/sudoers.d</span></span><br></pre></td></tr></table></figure>
+<p>上面配置中  %wheel  ALL=(ALL)       ALL  代表wheel组里面所有人可以使用所有命令</p>
+<p>完整配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@ipason ~]<span class="comment"># groupadd   test</span></span><br><span class="line">[root@ipason ~]<span class="comment"># useradd   -G  test  name1</span></span><br><span class="line">[root@ipason ~]<span class="comment"># id name1</span></span><br><span class="line">uid=501(name1) gid=502(name1) groups=502(name1),501(<span class="built_in">test</span>)</span><br><span class="line"></span><br><span class="line">vim  /etc/sudoers</span><br><span class="line">    <span class="comment"># %test  ALL=(ALL)       ALL</span></span><br><span class="line">    %<span class="built_in">test</span>  ALL=(ALL)       NOPASSWD: ALL</span><br></pre></td></tr></table></figure>
+<p>如果也可以在 /etc/sudoers.d 下面新建文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim   test_sudoers </span><br><span class="line">    %<span class="built_in">test</span>  ALL=(ALL)       NOPASSWD: ALL</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>sudo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos中shell脚本里面使用sudo报错</title>
+    <url>/2021/04/06/sudo/</url>
+    <content><![CDATA[<p>报错</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo: sorry, you must have a tty to run sudo</span><br></pre></td></tr></table></figure>
+<p>因为默认情况下需要终端，可以在配置文件关闭</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Defaults    requiretty  # 把这行注释</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>sudo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx如何识别多个conf配置文件</title>
+    <url>/2021/04/01/nginx-include/</url>
+    <content><![CDATA[<p>在主配置文件添加include</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">	server &#123;</span><br><span class="line">		......省略......</span><br><span class="line">	&#125;</span><br><span class="line">	include /etc/nginx/conf.d/*.conf;  <span class="comment"># 正则识别</span></span><br><span class="line">	include /etc/nginx/sites-enabled/*;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos下安装node版本报错升级lib库</title>
+    <url>/2021/03/22/glibc/</url>
+    <content><![CDATA[<h2 id="GLIBCXX报错"><a href="#GLIBCXX报错" class="headerlink" title="GLIBCXX报错"></a>GLIBCXX报错</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.14<span class="string">' not found (required by node)</span></span><br><span class="line"><span class="string">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.18'</span> not found (required by node)</span><br><span class="line">node: /usr/lib64/libstdc++.so.6: version `CXXABI_1.3.5<span class="string">' not found (required by node)</span></span><br><span class="line"><span class="string">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.15'</span> not found (required by node)</span><br></pre></td></tr></table></figure>
+<p>首先检查动态库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># strings /usr/lib64/libstdc++.so.6 | grep GLIBC</span></span><br><span class="line">GLIBCXX_3.4</span><br><span class="line">GLIBCXX_3.4.1</span><br><span class="line">GLIBCXX_3.4.2</span><br><span class="line">GLIBCXX_3.4.3</span><br><span class="line">GLIBCXX_3.4.4</span><br><span class="line">GLIBCXX_3.4.5</span><br><span class="line">GLIBCXX_3.4.6</span><br><span class="line">GLIBCXX_3.4.7</span><br><span class="line">GLIBCXX_3.4.8</span><br><span class="line">GLIBCXX_3.4.9</span><br><span class="line">GLIBCXX_3.4.10</span><br><span class="line">GLIBCXX_3.4.11</span><br><span class="line">GLIBCXX_3.4.12</span><br><span class="line">GLIBCXX_3.4.13</span><br><span class="line">GLIBC_2.2.5</span><br><span class="line">GLIBC_2.3</span><br><span class="line">GLIBC_2.4</span><br><span class="line">GLIBC_2.3.2</span><br><span class="line">GLIBCXX_FORCE_NEW</span><br><span class="line">GLIBCXX_DEBUG_MESSAGE_LENGTH</span><br></pre></td></tr></table></figure>
+<p>发现最高只有 GLIBCXX_3.4.13，所以这里需要下载最新gcc库：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">wget http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-8.3.0/gcc-8.3.0.tar.gz</span><br></pre></td></tr></table></figure>
+<p>解压安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf gcc-8.3.0.tar.gz</span><br><span class="line"><span class="built_in">cd</span> gcc-8.3.0/ </span><br><span class="line"></span><br><span class="line">./contrib/download_prerequisites</span><br><span class="line"></span><br><span class="line">mkdir build</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> build   </span><br><span class="line"></span><br><span class="line">../configure --<span class="built_in">enable</span>-checking=release --<span class="built_in">enable</span>-languages=c,c++ --<span class="built_in">disable</span>-multilib</span><br><span class="line"></span><br><span class="line">make &amp;&amp; make install  <span class="comment"># 时间非常久</span></span><br><span class="line"></span><br><span class="line">cp /usr/<span class="built_in">local</span>/lib64/libstdc++.so.6.0.25 /usr/lib64</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /usr/lib64</span><br><span class="line"></span><br><span class="line">rm -rf libstdc++.so.6</span><br><span class="line"></span><br><span class="line">ln -s libstdc++.so.6.0.25 libstdc++.so.6</span><br></pre></td></tr></table></figure>
+<p>然后再次执行以下命令来查看是否包括 GLIBCXX_3.4.14</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">strings /usr/lib64/libstdc++.so.6 | grep GLIBC</span><br><span class="line">GLIBCXX_3.4</span><br><span class="line">GLIBCXX_3.4.1</span><br><span class="line">GLIBCXX_3.4.2</span><br><span class="line">GLIBCXX_3.4.3</span><br><span class="line">GLIBCXX_3.4.4</span><br><span class="line">GLIBCXX_3.4.5</span><br><span class="line">GLIBCXX_3.4.6</span><br><span class="line">GLIBCXX_3.4.7</span><br><span class="line">GLIBCXX_3.4.8</span><br><span class="line">GLIBCXX_3.4.9</span><br><span class="line">GLIBCXX_3.4.10</span><br><span class="line">GLIBCXX_3.4.11</span><br><span class="line">GLIBCXX_3.4.12</span><br><span class="line">GLIBCXX_3.4.13</span><br><span class="line">GLIBCXX_3.4.14</span><br><span class="line">GLIBCXX_3.4.15</span><br><span class="line">GLIBCXX_3.4.16</span><br><span class="line">GLIBCXX_3.4.17</span><br><span class="line">GLIBCXX_3.4.18</span><br><span class="line">GLIBCXX_3.4.19</span><br><span class="line">GLIBCXX_3.4.20</span><br><span class="line">GLIBCXX_3.4.21</span><br><span class="line">GLIBCXX_3.4.22</span><br><span class="line">GLIBCXX_3.4.23</span><br><span class="line">GLIBCXX_3.4.24</span><br><span class="line">GLIBCXX_3.4.25</span><br><span class="line">GLIBC_2.2.5</span><br><span class="line">GLIBC_2.3</span><br><span class="line">GLIBC_2.14</span><br><span class="line">GLIBC_2.18</span><br><span class="line">GLIBC_2.16</span><br><span class="line">GLIBC_2.17</span><br><span class="line">GLIBC_2.3.2</span><br><span class="line">GLIBCXX_FORCE_NEW</span><br><span class="line">GLIBCXX_DEBUG_MESSAGE_LENGTH</span><br></pre></td></tr></table></figure>
+
+<h2 id="GLIBC报错"><a href="#GLIBC报错" class="headerlink" title="GLIBC报错"></a>GLIBC报错</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node: /lib64/libc.so.6: version `GLIBC_2.17<span class="string">' not found (required by ./node)</span></span><br></pre></td></tr></table></figure>
+<p>查看系统中可使用的glibc版</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">//使用strings命令查看</span><br><span class="line">strings /lib64/libc.so.6 |grep GLIBC_</span><br><span class="line">//查看结果如下：</span><br><span class="line">GLIBC_2.2.5</span><br><span class="line">GLIBC_2.2.6</span><br><span class="line">GLIBC_2.3</span><br><span class="line">GLIBC_2.3.2</span><br><span class="line">GLIBC_2.3.3</span><br><span class="line">GLIBC_2.3.4</span><br><span class="line">GLIBC_2.4</span><br><span class="line">GLIBC_2.5</span><br><span class="line">GLIBC_2.6</span><br><span class="line">GLIBC_2.7</span><br><span class="line">GLIBC_2.8</span><br><span class="line">GLIBC_2.9</span><br><span class="line">GLIBC_2.10</span><br><span class="line">GLIBC_2.11</span><br><span class="line">GLIBC_2.12</span><br><span class="line">GLIBC_2.13</span><br><span class="line">GLIBC_2.14</span><br><span class="line">GLIBC_2.15</span><br><span class="line">GLIBC_2.16</span><br><span class="line">GLIBC_PRIVATE</span><br></pre></td></tr></table></figure>
+<p>下载高版本的glibc库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">wget https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz</span><br><span class="line">tar -xvf glibc-2.17.tar.gz</span><br></pre></td></tr></table></figure>
+<p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#进入glibc-2.17目录中</span></span><br><span class="line"><span class="built_in">cd</span> glibc-2.17</span><br><span class="line"><span class="comment">#创建build目录</span></span><br><span class="line">mkdir build</span><br><span class="line"><span class="comment">#进入build目录中</span></span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"><span class="comment">#执行./configure</span></span><br><span class="line">../configure --prefix=/usr --<span class="built_in">disable</span>-profile --<span class="built_in">enable</span>-add-ons --with-headers=/usr/include --with-binutils=/usr/bin</span><br><span class="line"><span class="comment">#安装</span></span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>查看共享库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l /lib64/libc.so.6</span><br><span class="line">=====================</span><br><span class="line">//可以看到已经建立了软链接</span><br><span class="line">lrwxrwxrwx. 1 root root 12 Jan 13 01:49 /lib64/libc.so.6 -&gt; libc-2.17.so</span><br></pre></td></tr></table></figure>
+<p>再次查看系统中可使用的glibc版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># strings /lib64/libc.so.6 |grep GLIBC_</span></span><br><span class="line">GLIBC_2.2.5</span><br><span class="line">GLIBC_2.2.6</span><br><span class="line">GLIBC_2.3</span><br><span class="line">GLIBC_2.3.2</span><br><span class="line">GLIBC_2.3.3</span><br><span class="line">GLIBC_2.3.4</span><br><span class="line">GLIBC_2.4</span><br><span class="line">GLIBC_2.5</span><br><span class="line">GLIBC_2.6</span><br><span class="line">GLIBC_2.7</span><br><span class="line">GLIBC_2.8</span><br><span class="line">GLIBC_2.9</span><br><span class="line">GLIBC_2.10</span><br><span class="line">GLIBC_2.11</span><br><span class="line">GLIBC_2.12</span><br><span class="line">GLIBC_2.13</span><br><span class="line">GLIBC_2.14</span><br><span class="line">GLIBC_2.15</span><br><span class="line">GLIBC_2.16</span><br><span class="line">GLIBC_2.17</span><br><span class="line">GLIBC_PRIVATE</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>node</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CentOS通过nvm安装管理node版本</title>
     <url>/2021/03/10/nvm/</url>
     <content><![CDATA[<h2 id="安装nvm"><a href="#安装nvm" class="headerlink" title="安装nvm"></a>安装nvm</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash</span><br><span class="line"></span><br><span class="line"> 或者</span><br><span class="line"></span><br><span class="line"> wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash</span><br></pre></td></tr></table></figure>
@@ -514,8 +594,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -527,8 +607,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -549,8 +629,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1458,8 +1538,8 @@ memcached 数据丢失,设为永久有效,却莫名其妙的丢失了。
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1958,8 +2038,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2205,8 +2285,8 @@ jinja2语言，使用字面量，有以下形式：
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>ansible</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2605,7 +2685,10 @@ laowang
 [&apos;9999&apos;, &apos;7890&apos;, &apos;12345&apos;]
 
 进程已结束，退出代码 0</code></pre><p>re.finditer(pattern, string, flags=0) 找到RE匹配的所有字符串，并把他们作为一个迭代器返回</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">re.sub(pattern, repl, string, count=<span class="number">0</span>, flags=<span class="number">0</span>) 替换匹配到的字符串</span><br><span class="line">```python</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>re.sub(pattern, repl, string, count=0, flags=0) 替换匹配到的字符串</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">re.sub(<span class="string">'[abc]'</span>, <span class="string">'o'</span>, <span class="string">'Mark'</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'Mork'</span></span><br><span class="line"></span><br><span class="line">查看Mark是否包含a,b或者c，如果有，则将其一一替换为o</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>开发</category>
       </categories>
@@ -6880,13 +6963,16 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10�
 <p>报错</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">2020-11-04T09:00:19.923+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br><span class="line">2020-11-04T09:13:58.322+0800 I CONTROL  [main] ***** SERVER RESTARTED *****</span><br><span class="line">2020-11-04T09:13:58.329+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br></pre></td></tr></table></figure>
 <p>解决办法</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch  /var/run/mongodb/mongod.pid</span><br><span class="line">chown -R mongodb:mongodb /var/run/mongodb/mongod.pid</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch  /var/run/mongodb/mongod.pid</span><br><span class="line">chown -R mongodb:mongodb /var/run/mongodb/mongod.pid</span><br></pre></td></tr></table></figure>
+
+<p>mongo操作记录可以在log中查看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat  /data/<span class="built_in">log</span>/mongodb/mongod.log   |grep  dropDatabase</span><br><span class="line">2021-03-11T22:56:41.750+0800 I COMMAND  [conn594] dropDatabase sgsm-game-1 starting</span><br><span class="line">2021-03-11T22:56:42.261+0800 I COMMAND  [conn594] dropDatabase sgsm-game-1 finished</span><br><span class="line">2021-03-11T22:56:42.261+0800 I COMMAND  [conn594] <span class="built_in">command</span> sgsm-game-1 <span class="built_in">command</span>: dropDatabase &#123; dropDatabase: 1.0 &#125; keyUpdates:0 writeConflicts:0 numYields:0 reslen:47 locks:&#123; Global: &#123; acquireCount: &#123; r: 2, w: 1, W: 1 &#125; &#125;, Database: &#123; acquireCount: &#123; W: 1 &#125; &#125; &#125; protocol:op_command 511ms</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">cat  /data/<span class="built_in">log</span>/mongodb/mongod.log   |grep  find</span><br><span class="line">2021-03-09T15:29:36.653+0800 I COMMAND  [conn34] <span class="built_in">command</span> sgsm-game-1.gamedatas <span class="built_in">command</span>: find &#123; find: <span class="string">"gamedatas"</span>, filter: &#123; dataID: 3 &#125;, <span class="built_in">limit</span>: 1, batchSize: 1, singleBatch: <span class="literal">true</span> &#125; planSummary: IXSCAN &#123; dataID: 1 &#125; keysExamined:0 docsExamined:0 cursorExhausted:1 keyUpdates:0 writeConflicts:0 numYields:0 nreturned:0 reslen:127 locks:&#123; Global: &#123; acquireCount: &#123; r: 2 &#125; &#125;, Database: &#123; acquireCount: &#123; r: 1 &#125;, acquireWaitCount: &#123; r: 1 &#125;, timeAcquiringMicros: &#123; r: 119778 &#125; &#125;, Collection: &#123; acquireCount: &#123; r: 1 &#125; &#125; &#125; protocol:op_query 119ms</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -7253,7 +7339,9 @@ db.roles.find({ &quot;name&quot; : {$regex:/大气的.*/i}})        # 模糊查�
 
 db.towers.update({&quot;_id&quot; : ObjectId(&quot;5a6205e275a50f321e04b8ae&quot;)},{$set:{ &quot;levelCustomList.1.state&quot;:2}})        # 把匹配数据的levelCustomlist的第二个字段(state) 的值改为 2
 
-db.oreseasons.update({&quot;_id&quot; : ObjectId(&quot;5ad227d8da0d2e0522930156&quot;)},{$unset:{&quot;groups.0&quot;:&apos;&apos;}},false, true)    # 把匹配数据的groups中第一个字段删除</code></pre><h1 id="升序降序"><a href="#升序降序" class="headerlink" title="升序降序"></a>升序降序</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看表   已groupid 排序  1  为升序</span></span><br><span class="line">db.slgcountries.find().sort(&#123;<span class="string">"groupID"</span> : 1&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># -1 为降序</span></span><br><span class="line">db.slgcountries.find().sort(&#123;<span class="string">"groupID"</span> : -1&#125;)</span><br></pre></td></tr></table></figure>
+db.oreseasons.update({&quot;_id&quot; : ObjectId(&quot;5ad227d8da0d2e0522930156&quot;)},{$unset:{&quot;groups.0&quot;:&apos;&apos;}},false, true)    # 把匹配数据的groups中第一个字段删除
+
+db.roles.find({},{&quot;logoutTime&quot; : 1}).sort({&quot;logoutTime&quot; : -1}).limit(10) # 以登出时间降序    取前十个 并且只显示登出时间</code></pre><h1 id="升序降序"><a href="#升序降序" class="headerlink" title="升序降序"></a>升序降序</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看表   已groupid 排序  1  为升序</span></span><br><span class="line">db.slgcountries.find().sort(&#123;<span class="string">"groupID"</span> : 1&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># -1 为降序</span></span><br><span class="line">db.slgcountries.find().sort(&#123;<span class="string">"groupID"</span> : -1&#125;)</span><br></pre></td></tr></table></figure>
 <h1 id="数据库的备份以及恢复"><a href="#数据库的备份以及恢复" class="headerlink" title="数据库的备份以及恢复"></a>数据库的备份以及恢复</h1><pre><code>mongodump   -h  IP    -d  DBNAME    -o  dir    # 备份数据库
 
 mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code></pre>]]></content>
@@ -7261,8 +7349,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>

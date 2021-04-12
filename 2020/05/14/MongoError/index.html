@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">337</span>
+            <span class="post-count">541</span>
         </span>
     </span>
 
@@ -100,7 +100,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -140,6 +140,9 @@ var _hmt = _hmt || [];
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2020-11-04T09:00:19.923+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br><span class="line">2020-11-04T09:13:58.322+0800 I CONTROL  [main] ***** SERVER RESTARTED *****</span><br><span class="line">2020-11-04T09:13:58.329+0800 I CONTROL  [main] ERROR: Cannot write pid file to /var/run/mongodb/mongod.pid: No such file or directory</span><br></pre></td></tr></table></figure>
 <p>解决办法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch  /var/run/mongodb/mongod.pid</span><br><span class="line">chown -R mongodb:mongodb /var/run/mongodb/mongod.pid</span><br></pre></td></tr></table></figure>
+
+<p>mongo操作记录可以在log中查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat  /data/<span class="built_in">log</span>/mongodb/mongod.log   |grep  dropDatabase</span><br><span class="line">2021-03-11T22:56:41.750+0800 I COMMAND  [conn594] dropDatabase sgsm-game-1 starting</span><br><span class="line">2021-03-11T22:56:42.261+0800 I COMMAND  [conn594] dropDatabase sgsm-game-1 finished</span><br><span class="line">2021-03-11T22:56:42.261+0800 I COMMAND  [conn594] <span class="built_in">command</span> sgsm-game-1 <span class="built_in">command</span>: dropDatabase &#123; dropDatabase: 1.0 &#125; keyUpdates:0 writeConflicts:0 numYields:0 reslen:47 locks:&#123; Global: &#123; acquireCount: &#123; r: 2, w: 1, W: 1 &#125; &#125;, Database: &#123; acquireCount: &#123; W: 1 &#125; &#125; &#125; protocol:op_command 511ms</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">cat  /data/<span class="built_in">log</span>/mongodb/mongod.log   |grep  find</span><br><span class="line">2021-03-09T15:29:36.653+0800 I COMMAND  [conn34] <span class="built_in">command</span> sgsm-game-1.gamedatas <span class="built_in">command</span>: find &#123; find: <span class="string">"gamedatas"</span>, filter: &#123; dataID: 3 &#125;, <span class="built_in">limit</span>: 1, batchSize: 1, singleBatch: <span class="literal">true</span> &#125; planSummary: IXSCAN &#123; dataID: 1 &#125; keysExamined:0 docsExamined:0 cursorExhausted:1 keyUpdates:0 writeConflicts:0 numYields:0 nreturned:0 reslen:127 locks:&#123; Global: &#123; acquireCount: &#123; r: 2 &#125; &#125;, Database: &#123; acquireCount: &#123; r: 1 &#125;, acquireWaitCount: &#123; r: 1 &#125;, timeAcquiringMicros: &#123; r: 119778 &#125; &#125;, Collection: &#123; acquireCount: &#123; r: 1 &#125; &#125; &#125; protocol:op_query 119ms</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       
