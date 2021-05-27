@@ -117,6 +117,111 @@
       </tags>
   </entry>
   <entry>
+    <title>查看已删除空间却没有释放的进程</title>
+    <url>/2021/05/27/disk/</url>
+    <content><![CDATA[<p>lsof -n / |grep deleted查看已删除空间却没有释放的进程</p>
+<p>查看已经删除的文件，空间有没有释放，没有的话kill掉pid</p>
+<p>lsof -n |grep deleted</p>
+<p>lsof简介lsof(list open files)是一个列出当前系统打开文件的工具。</p>
+<p>使用du -h -x –max-depth=1 查看哪个目录占用过高，对于过高目录中的内容适当删减腾出一些空间<br>du -lh –max-depth=1</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>lsof</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编译安装Nginx报错</title>
+    <url>/2021/05/06/nginx-error/</url>
+    <content><![CDATA[<p>nginx安装成功后，输入命令nginx，启动成功。<br>但输入命令nginx -s reload 和 nginx -s stop都提示   无效的pid号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nginx: [error] invalid PID number <span class="string">""</span> <span class="keyword">in</span><span class="string">"/usr/local/nginx/logs/nginx.pid"</span></span><br></pre></td></tr></table></figure>
+
+<p>解决办法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -aux | grep nginx</span><br><span class="line">root     10140  0.0  0.1  46600  2288 ?        Ss   Apr26   0:00 nginx: master process ./nginx</span><br><span class="line">sgsm     24477  0.0  2.4  90616 45940 ?        S    10:11   0:00 nginx: worker process</span><br><span class="line">sgsm     24478  0.0  2.4  90616 45944 ?        S    10:11   0:00 nginx: worker process</span><br><span class="line">root     24528  0.0  0.0 112808   968 pts/1    R+   10:16   0:00 grep --color=auto nginx</span><br><span class="line"><span class="built_in">echo</span> 10140 &gt; /usr/<span class="built_in">local</span>/nginx/logs/nginx.pid</span><br></pre></td></tr></table></figure>
+<p>此时可分别重新输入 nginx -s reload 、 nginx -s stop命令，重启成功、停止成功</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编译安装Nginx配置开机自启动</title>
+    <url>/2021/04/26/nginx-execreload/</url>
+    <content><![CDATA[<h2 id="Yum安装"><a href="#Yum安装" class="headerlink" title="Yum安装"></a>Yum安装</h2><p>如果使用yum安装的nginx 可以直接使用下面方法添加到开机自启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chkconfig --level 235 nginx on </span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">systemctl <span class="built_in">enable</span> nginx</span><br></pre></td></tr></table></figure>
+<p>编译安装需要手动添加脚本</p>
+<h2 id="编译安装第一种方法"><a href="#编译安装第一种方法" class="headerlink" title="编译安装第一种方法"></a>编译安装第一种方法</h2><p>利用rc.local脚本<br>    rc.local是启动加载文件,在linux中要把一个程序加入开机启动，一般可以通过修改rc.local来完成，这个文件时开机就要加载的文件，所以我们就可以利用linux这个文件设置nginx开机自启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim  /etc/rc.local </span><br><span class="line"><span class="comment"># 在最后添加</span></span><br><span class="line">    /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span><br></pre></td></tr></table></figure>
+<h2 id="编译安装第二种方法"><a href="#编译安装第二种方法" class="headerlink" title="编译安装第二种方法"></a>编译安装第二种方法</h2><p>设置系统服务<br>    在/usr/lib/systemd/system路径下添加nginx.service文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim  /usr/lib/systemd/system/nginx.service </span><br><span class="line"></span><br><span class="line">    [Unit]</span><br><span class="line">    Description=nginx       <span class="comment"># 描述</span></span><br><span class="line">    After=network.target    <span class="comment"># 描述服务类别</span></span><br><span class="line">    </span><br><span class="line">    [Service] </span><br><span class="line">    Type=forking          <span class="comment"># 设置运行方式，后台运行</span></span><br><span class="line">    PIDFile=/usr/<span class="built_in">local</span>/nginx/logs/nginx.pid   <span class="comment"># 设置PID文件</span></span><br><span class="line">    ExecStart=/usr/<span class="built_in">local</span>/nginx/sbin/nginx     <span class="comment"># 启动命令</span></span><br><span class="line">    ExecReload=/usr/<span class="built_in">local</span>/nginx/sbin/nginx reload   <span class="comment"># 重启命令</span></span><br><span class="line">    ExecStop=/usr/<span class="built_in">local</span>/nginx/sbin/nginx quit   <span class="comment"># 关闭命令</span></span><br><span class="line">    PrivateTmp=<span class="literal">true</span>       <span class="comment"># 分配独立的临时空间</span></span><br><span class="line">    </span><br><span class="line">    [Install] </span><br><span class="line">    WantedBy=multi-user.target   <span class="comment"># 服务安装的相关设置，可设置为多用户</span></span><br></pre></td></tr></table></figure>
+<p>注意：此文件需要754的权限</p>
+<p>设置开启自启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 754   nginx.service </span><br><span class="line">systemctl <span class="built_in">enable</span> nginx</span><br></pre></td></tr></table></figure>
+<h2 id="编译安装第三种方法"><a href="#编译安装第三种方法" class="headerlink" title="编译安装第三种方法"></a>编译安装第三种方法</h2><p>init.d设置开机启动<br>    init启动方式在centos7系统版本已经不推荐使用了,在/etc/init.d目录中创建启动文件nginx</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># chkconfig: 345 80 20    //启动顺序</span></span><br><span class="line"><span class="comment"># description: start the nginx deamon    //说明</span></span><br><span class="line"><span class="comment"># Source function library</span></span><br><span class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span></span><br><span class="line"></span><br><span class="line">prog=nginx</span><br><span class="line"><span class="comment"># 根据自己的路径改写CATALANA_HOME</span></span><br><span class="line">CATALANA_HOME=/usr/<span class="built_in">local</span>/nginx</span><br><span class="line"><span class="built_in">export</span> CATALINA_HOME</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">start)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Starting nginx..."</span></span><br><span class="line"><span class="variable">$CATALANA_HOME</span>/sbin/nginx</span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line">stop)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Stopping nginx..."</span></span><br><span class="line"><span class="variable">$CATALANA_HOME</span>/sbin/nginx -s stop</span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line">restart)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Stopping nginx..."</span></span><br><span class="line"><span class="variable">$CATALANA_HOME</span>/sbin/nginx -s stop</span><br><span class="line">sleep 2</span><br><span class="line"><span class="built_in">echo</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Starting nginx..."</span></span><br><span class="line"><span class="variable">$CATALANA_HOME</span>/sbin/nginx</span><br><span class="line">;;</span><br><span class="line">*)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Usage: <span class="variable">$prog</span> &#123;start|stop|restart&#125;"</span></span><br><span class="line">;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># chmod +x /etc/init.d/nginx</span></span><br><span class="line">chmod +x /etc/init.d/nginx</span><br></pre></td></tr></table></figure>
+<p>在centos7中init.d中的服务默认也会在system目录中</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx中http模块和stream模块</title>
+    <url>/2021/04/12/nginx-http-stream/</url>
+    <content><![CDATA[<p>nginx配置文件中的模块共分为两大部分：</p>
+<pre><code>第一：http/https–存在于http{ } 模块中
+第二：tcp / udp --存在于stream{ } 模块中</code></pre><p>什么是空闲连接超时</p>
+<pre><code>在超时时间内一直没有访问请求，负载均衡会暂时中断当前连接，直到下一次请求来临时重新建立新的连接。</code></pre><p>Nginx七层配置（http模块）</p>
+<pre><code>&quot;proxy_read_timeout&quot;：从代理服务器读取响应的超时时间（默认60s），这个可以解决因为代理服务器响应过慢而导致的504Time-out
+&quot;proxy_send_timeout&quot;：向代理服务器发送请求的超时时间（默认60s）
+&quot;keepalive_timeout&quot;：设置一个保持活动的客户端连接在服务器端保持打开状态的超时时间（默认75s）
+&quot;keepalive_requests&quot;：这个参数默认是100，意思就是，一个连接，在他保持连接的状态内（我们设置的是300s），最多能发送1000个请求，如果超过1000请求，那么nginx会把这个连接断掉</code></pre><p>keepalive_timeout 既可以配置到http{ }作为全局配置， 也可以配置到server{ }里作为每个监听器的配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">  proxy_read_timeout 300s;</span><br><span class="line">  proxy_send_timeout 300s;</span><br><span class="line">  keepalive_requests 1000;</span><br><span class="line">  <span class="comment">#keepalive_timeout 300s;</span></span><br><span class="line"> </span><br><span class="line">  server &#123;</span><br><span class="line">    listen 88;</span><br><span class="line">    server_name localhost;</span><br><span class="line">    keepalive_timeout 100s;</span><br><span class="line">    location / &#123;</span><br><span class="line">      proxy_pass http://bb;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">   upstream bb &#123;</span><br><span class="line">     server 192.168.159.159:8080;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Nginx四层配置（stream模块）</p>
+<p>“proxy_timeout” 这个参数可以写在stream{ }下，所有server都生效，也可以单独写在一个server的节点下。这个参数不配置的话，默认连接超时是10min</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">  server_traffic_status_zone;</span><br><span class="line">  <span class="comment">#proxy_timeout 200s;</span></span><br><span class="line">  server &#123;</span><br><span class="line">    listen 192.168.159.159:880;</span><br><span class="line">    proxy_timeout 300s;</span><br><span class="line">    proxy_pass aaa;</span><br><span class="line">  &#125;</span><br><span class="line">  upstream aaa &#123;</span><br><span class="line">    server 192.168.159.159:8080;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS下nginx配置 stream 转发</title>
+    <url>/2021/04/12/nginx-proxy/</url>
+    <content><![CDATA[<p>nginx tcp 代理</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nginx-1.17.9使用增加了stream 模块用于一般的TCP 代理和负载均衡，ngx_stream_core_module 这个模块在1.90版本后将被启用。但是并不会默认安装，</span><br><span class="line">    需要在编译时通过指定 --with-stream 参数来激活这个模块</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget   http://nginx.org/download/nginx-1.16.1.tar.gz</span><br><span class="line"></span><br><span class="line">yum install -y freetype-devel bzip2 bzip2-devel ncurses-devel openssl-devel libxml2 libxml2-devel libjpeg-dev gd-devel gd lrzsz libxml2-devel gcc gcc-c++ re2c libxml2 libxml2-devel libcurl-devel libjpeg-turbo libjpeg-turbo-devel libpng libpng-devel  libtool-ltdl-devel openssl openssl-devel freetype-devel libmemcached cyrus-sasl cyrus-sasl-lib cyrus-sasl-devel libmemcached-devel pcre-devel openssl* zlib zlib-devel tcl gdbm-devel</span><br><span class="line"></span><br><span class="line">tar xf  nginx-1.16.1.tar.gz    -C  /usr/src/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意：如果使用 nginx 的 stream 功能，在编译时一定要加上 "--with-stream"</span></span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/nginx-1.16.1 --error-log-path=/var/logs/nginx/error.log --user=www --group=www --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_ssl_module --with-cc-opt=<span class="string">'-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic'</span>  --with-http_stub_status_module</span><br><span class="line"></span><br><span class="line">make  &amp;&amp;  make install</span><br></pre></td></tr></table></figure>
+<p>配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@iZt4ng8emsvi9tuuj4ha6vZ conf]<span class="comment"># cat nginx.conf</span></span><br><span class="line">user  www www;</span><br><span class="line">worker_processes  auto;</span><br><span class="line"></span><br><span class="line">worker_rlimit_nofile 102400;</span><br><span class="line">events &#123;</span><br><span class="line">    use epoll;  <span class="comment"># 使用 epoll 的 I/O 模型</span></span><br><span class="line">    worker_connections 102400;  <span class="comment"># 连接数，在大量请求的时候需要调大此参数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line">    log_format access <span class="string">'$time_local |$request |$remote_addr |$http_host |'</span></span><br><span class="line">                    <span class="string">'$status |$request_time |$upstream_response_time |$body_bytes_sent |'</span></span><br><span class="line">                    <span class="string">'"$http_referer" |$request_method |"$uri" |$http_host$uri |'</span></span><br><span class="line">                    <span class="string">'$upstream_addr |$upstream_status |'</span></span><br><span class="line">                    <span class="string">'"$http_x_forwarded_for" |"$http_user_agent"'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    access_log  /var/<span class="built_in">log</span>/nginx/http-access.log access;</span><br><span class="line">    sendfile        on;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    include vhosts/*.conf;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># steam 流转发配置</span></span><br><span class="line">stream &#123;</span><br><span class="line">    log_format proxy <span class="string">'$remote_addr [$time_local] '</span></span><br><span class="line">                 <span class="string">'$protocol $status $bytes_sent $bytes_received '</span></span><br><span class="line">                 <span class="string">'$session_time "$upstream_addr" '</span></span><br><span class="line">                 <span class="string">'"$upstream_bytes_sent" "$upstream_bytes_received" "$upstream_connect_time"'</span>;</span><br><span class="line">    access_log /var/<span class="built_in">log</span>/nginx/tcp-access.log proxy ;</span><br><span class="line">    open_log_file_cache off;</span><br><span class="line">    include tcpproxy/*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@iZt4ng8emsvi9tuuj4ha6vZ conf]<span class="comment"># cat vhosts/rft-log.conf  # 代理</span></span><br><span class="line"></span><br><span class="line">upstream rft-log.com&#123;</span><br><span class="line">        server 192.168.4.201:80 weight=4 max_fails=1 fail_timeout=10s;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name   rft-log.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass  http://rft-log.com;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">[root@iZt4ng8emsvi9tuuj4ha6vZ conf]<span class="comment"># cat tcpproxy/10000.conf   # 转发  IP后必须加端口</span></span><br><span class="line">    upstream backend10000 &#123;</span><br><span class="line">       <span class="comment"># hash $remote_addr consistent;</span></span><br><span class="line">        server 192.168.4.201:10000;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 10000 so_keepalive=on; <span class="comment"># 支持长链接</span></span><br><span class="line">       <span class="comment"># proxy_connect_timeout 1s;</span></span><br><span class="line">       <span class="comment"># proxy_timeout 3s;</span></span><br><span class="line">        proxy_pass 192.168.4.201:10000;</span><br><span class="line">        <span class="comment"># proxy_pass  backend10000;</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 集群模板</span></span><br><span class="line">upstream back&#123;</span><br><span class="line">    server 10.10.62.210:3306 up;</span><br><span class="line">    server 10.10.51.213:3306 up;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 3301;</span><br><span class="line">    proxy_connect_timeout 5s;</span><br><span class="line">    proxy_timeout 300s;</span><br><span class="line">    proxy_pass back;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>转</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CentOS下使用免密使用sudo命令</title>
     <url>/2021/04/12/sudo-NOPASSWD/</url>
     <content><![CDATA[<p>配置文件</p>
@@ -594,8 +699,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -607,8 +712,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -629,8 +734,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -1538,8 +1643,8 @@ memcached 数据丢失,设为永久有效,却莫名其妙的丢失了。
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -2038,8 +2143,8 @@ ARGV：数组，保存的是命令行所给定的各参数（0为第一个参数
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -2285,8 +2390,8 @@ jinja2语言，使用字面量，有以下形式：
         <category>运维</category>
       </categories>
       <tags>
-        <tag>ansible</tag>
         <tag>linux</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -6930,12 +7035,15 @@ chown   yunying.yunying  yunyingmeishu/ -R
 chown  yanfa.yanfa  yanfa/ -R</code></pre><h2 id="启动服务就可以访问了"><a href="#启动服务就可以访问了" class="headerlink" title="启动服务就可以访问了"></a>启动服务就可以访问了</h2><pre><code>/etc/init.d/smb  start
 /etc/init.d/nmb  start</code></pre><h2 id="好礼大放送–wind客户端清理已保存的samba用户和密码"><a href="#好礼大放送–wind客户端清理已保存的samba用户和密码" class="headerlink" title="好礼大放送–wind客户端清理已保存的samba用户和密码"></a>好礼大放送–wind客户端清理已保存的samba用户和密码</h2><pre><code>net  use      # 查看已保存的用户和密码
 
-net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10无法访问Samba共享文件夹【解决方案】"><a href="#Win10无法访问Samba共享文件夹【解决方案】" class="headerlink" title="Win10无法访问Samba共享文件夹【解决方案】"></a>Win10无法访问Samba共享文件夹【解决方案】</h2><ol>
-<li>进入“控制面板”，进入“程序和功能“</li>
-</ol>
+net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10无法访问Samba共享文件夹【解决方案】"><a href="#Win10无法访问Samba共享文件夹【解决方案】" class="headerlink" title="Win10无法访问Samba共享文件夹【解决方案】"></a>Win10无法访问Samba共享文件夹【解决方案】</h2><p>1、进入“控制面板”，进入“程序和功能“</p>
 <p>2、选择“启用或关闭Windows功能”</p>
 <p>3、在功能列表中确保选中“SMB1.0/CIFS文件共享支持”，然后确定安装，重新启动电脑即可生效。</p>
-]]></content>
+<h2 id="多个用户有不同的权限"><a href="#多个用户有不同的权限" class="headerlink" title="多个用户有不同的权限"></a>多个用户有不同的权限</h2><p>需求：研发组和其他人组能看到只有研发组内的用户可写</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[yanfa]</span><br><span class="line">        path = /home/samba/yanfa</span><br><span class="line">        directory  mask = 0755</span><br><span class="line">        create mask = 0644</span><br><span class="line">        valid users = @yanfa @other</span><br><span class="line">        guest ok = no</span><br><span class="line">        write list = @yanfa</span><br><span class="line">        browsable = yes</span><br><span class="line">        security = user</span><br></pre></td></tr></table></figure>
+
+
+<p>参考大佬配置的各种情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1。首先服务器采用用户验证的方式，每个用户可以访问自己的宿主目录，并且只有该用户能访问宿主目录，并具有完全的权限，而其他人不能看到你的宿主目录。</span><br><span class="line"></span><br><span class="line">2。建立一个caiwu的文件夹，希望caiwu组和lingdao组的人能看到，network02也可以访问，但只有caiwu01有写的权限。</span><br><span class="line"></span><br><span class="line">3。建立一个lindao的目录，只有领导组的人可以访问并读写，还有network02也可以访问，但外人看不到那个目录</span><br><span class="line"></span><br><span class="line">4。建立一个文件交换目录exchange，所有人都能读写，包括guest用户，但每个人不能删除别人的文件。</span><br><span class="line"></span><br><span class="line">5。建立一个公共的只读文件夹public，所有人只读这个文件夹的内容。</span><br><span class="line"></span><br><span class="line">我们先来前期的工作</span><br><span class="line"></span><br><span class="line">建立3个组：</span><br><span class="line"><span class="comment">#groupadd caiwu</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#groupadd network</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#groupadd lingdao</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">添加用户并加入相关的组当中：</span><br><span class="line"><span class="comment">#useradd caiwu01 -g caiwu</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#useradd caiwu02 -g caiwu</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#useradd network01 -g network</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#useradd network02 -g network</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#useradd lingdao01 -g lingdao</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#useradd lingdao02 -g lingdao</span></span><br><span class="line"></span><br><span class="line">然后我们使用smbpasswd -a caiwu01的命令为6个帐户分别添加到samba用户中</span><br><span class="line"></span><br><span class="line"><span class="comment">#mkdir /home/samba</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mkdir /home/samba/caiwu</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mkdir /home/samba/lingdao</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mkdir /home/samba/exchange</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mkdir /home/samba/public</span></span><br><span class="line"></span><br><span class="line">我们为了避免麻烦可以在这里把上面所有的文件夹的权限都设置成777，我们通过samba灵活的权限管理来设置上面的5点要求。</span><br><span class="line"></span><br><span class="line">以下是我的smb.conf的配置文件</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line"></span><br><span class="line">workgroup = bmit </span><br><span class="line"></span><br><span class="line"><span class="comment">#我的网络工作组</span></span><br><span class="line"></span><br><span class="line">server string = Frank<span class="string">'s Samba File Server</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#我的服务器名描述</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">security = user</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#使用用户验证机制</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">encrypt passwords = yes</span></span><br><span class="line"><span class="string">smb passwd file = /etc/samba/smbpasswd</span></span><br><span class="line"><span class="string">#使用加密密码机制，在win95和winnt使用的是明文</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">其他的基本上可以按照默认的来。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[homes]</span></span><br><span class="line"><span class="string">comment = Home Directories</span></span><br><span class="line"><span class="string">browseable = no</span></span><br><span class="line"><span class="string">writable = yes</span></span><br><span class="line"><span class="string">valid users = %S</span></span><br><span class="line"><span class="string">create mode = 0664</span></span><br><span class="line"><span class="string">directory mode = 0775</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#homes段满足第1条件</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[caiwu]</span></span><br><span class="line"><span class="string">comment = caiwu</span></span><br><span class="line"><span class="string">path = /home/samba/caiwu</span></span><br><span class="line"><span class="string">public = no</span></span><br><span class="line"><span class="string">valid users = @caiwu,@lingdao,network02</span></span><br><span class="line"><span class="string">write list = caiwu01</span></span><br><span class="line"><span class="string">printable = no</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#caiwu段满足我们的第2要求</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[lingdao]</span></span><br><span class="line"><span class="string">comment = lingdao</span></span><br><span class="line"><span class="string">path = /home/samba/lingdao</span></span><br><span class="line"><span class="string">public = no</span></span><br><span class="line"><span class="string">browseable = no</span></span><br><span class="line"><span class="string">valid users = @lingdao,network02</span></span><br><span class="line"><span class="string">printable = no</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#lingdao段能满足我们的第3要求</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[exchage]</span></span><br><span class="line"><span class="string">comment = Exchange File Directory</span></span><br><span class="line"><span class="string">path = /home/samba/exchange</span></span><br><span class="line"><span class="string">public = yes</span></span><br><span class="line"><span class="string">writable = yes</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#exchange段基本能满足我们的第4要求，但不能满足每个人不能删除别人的文件这个条件，即使里设置了mask也是没用，其实这个条件只要unix设置一个粘着位就行</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">chmod -R 1777 /home/samba/exchange </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">注意这里权限是1777，类似的系统目录/tmp也具有相同的权限，这个权限能实现每个人能自由写文件，但不能删除别人的文件这个要求</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[public]</span></span><br><span class="line"><span class="string">comment = Read Only Public</span></span><br><span class="line"><span class="string">path = /home/samba/public</span></span><br><span class="line"><span class="string">public = yes</span></span><br><span class="line"><span class="string">read only = yes</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#这个public段能满足我们的第5要求。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">到此为止我们的设置已经能实现我们的共享文件要求，记得重启服务哦</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#/etc/rc.d/init.d/smb restart</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>运维</category>
       </categories>
@@ -6971,8 +7079,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -7349,8 +7457,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
