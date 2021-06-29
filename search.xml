@@ -117,6 +117,100 @@
       </tags>
   </entry>
   <entry>
+    <title>file_max_limit</title>
+    <url>/2021/06/29/file-max-limit/</url>
+    <content><![CDATA[<p>如出现 “too many open files” 提示, 可能是单进程文件句柄限制 或者 inotify文件系统事件监控</p>
+<h2 id="单进程文件句柄限制"><a href="#单进程文件句柄限制" class="headerlink" title="单进程文件句柄限制"></a>单进程文件句柄限制</h2><p>Linux 是有文件句柄限制的, 默认不高, 一般是 1024。作为生产环境的话很容易超出这个数值，因此大多数时候都需要调高该限制数。</p>
+<p>文件句柄数限制是针对：</p>
+<pre><code>针对单个进程的限制
+修改该值时不影响当前运行中的程序</code></pre><p>查看当前句柄数限制： ulimit -n</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 临时修改句柄数限制</span></span><br><span class="line"><span class="built_in">ulimit</span> -n  4096</span><br><span class="line"><span class="comment"># 写入配置文件 (永久生效)</span></span><br><span class="line">vim /etc/security/limits.conf</span><br><span class="line">    </span><br><span class="line">    *   hard    nofile  65535</span><br><span class="line">    *   soft    nofile  65535</span><br><span class="line"><span class="comment"># hard 是硬限制，即实际限制 ；soft 是软限制，即warning</span></span><br></pre></td></tr></table></figure>
+
+<p>分析句柄数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">（1）统计各进程打开句柄数：lsof -n|awk <span class="string">'&#123;print $2&#125;'</span>|sort|uniq -c|sort -nr</span><br><span class="line"></span><br><span class="line">（2）统计各用户打开句柄数：lsof -n|awk <span class="string">'&#123;print $3&#125;'</span>|sort|uniq -c|sort -nr</span><br><span class="line"></span><br><span class="line">（3）统计各命令打开句柄数：lsof -n|awk <span class="string">'&#123;print $1&#125;'</span>|sort|uniq -c|sort -nr</span><br></pre></td></tr></table></figure>
+
+<h2 id="inotify-文件系统事件监控"><a href="#inotify-文件系统事件监控" class="headerlink" title="inotify 文件系统事件监控"></a>inotify 文件系统事件监控</h2><p>报错： Caught exception: Error: watch EMFILE</p>
+<p>项目使用 pomelo，”reloadHandlers会监听handler文件的修改，导致了这个fs.watch这个问题</p>
+<p>inotify 是linux的文件系统时间监控机制。</p>
+<p>在/proc/sys/fs/inotify目录下有三个文件，对inotify机制有一定的限制</p>
+<pre><code>max_user_watches:设置inotifywait或inotifywatch命令可以监视的文件数量（单进程）
+max_user_instances:设置每个用户可以运行的inotifywait或inotifywatch命令的进程数
+max_queued_events:设置inotify实例事件（event）队列可容纳的事件数量。</code></pre><p>临时修改该参数配置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> 8192 &gt; /proc/sys/fs/inotify/max_user_instances</span><br></pre></td></tr></table></figure>
+<p>参数持久化</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"fs.inotify.max_user_instance=8192"</span> &gt;&gt; /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="系统总文件句柄限制"><a href="#系统总文件句柄限制" class="headerlink" title="系统总文件句柄限制"></a>系统总文件句柄限制</h2><p>除了对单进程可打开的文件句柄数量限制外, linux还会对系统级别的能够打开的文件句柄的数量进行限制, 即是对整个系统的限制, 而非针对单用户或单进程.</p>
+<p>查看当前系统级别能够打开的文件句柄数量:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /proc/sys/fs/file-max   <span class="comment"># 794168 Centos7 的默认值</span></span><br></pre></td></tr></table></figure>
+
+<p>系统级打开最大文件句柄的数量永久生效的修改方法:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># /etc/sysctl.conf 文件末尾追加</span></span><br><span class="line"></span><br><span class="line">vim  /etc/sysctl.conf</span><br><span class="line">  fs.file-max = 2000000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行 sysctl -p ，使修改配置立即生效</span></span><br><span class="line"><span class="comment"># -p 从指定的文件加载系统参数，如不指定即从/etc/sysctl.conf中加载</span></span><br></pre></td></tr></table></figure>
+<p>查看系统已分配句柄数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /proc/sys/fs/file-nr</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>修改内核参数ip_local_reserved_ports避免tomcat端口占用</title>
+    <url>/2021/06/29/port-occupy/</url>
+    <content><![CDATA[<p>问题描述：<br>tomcat 重启时候 遇到这个情况，出现60080端口被占用而无法启动，需要等该端口释放后才启动成功。</p>
+<p>问题分析：<br>60080端口被该服务器上的客户端(dubbo motan)随机选取源端口给占用掉了。</p>
+<p>解决方案：<br>使用net.ipv4.ip_local_port_range参数，规划出一段端口段预留作为服务的端口，这种方法是可以解决当前问题，但是会有个问题，端口使用量减少了，当服务器需要消耗大量的端口号的话，比如反代服务器，就存在瓶颈了。<br>最好的做法是将服务监听的端口以逗号分隔全部添加到ip_local_reserved_ports中，TCP/IP协议栈从ip_local_port_range中随机选取源端口时，会排除ip_local_reserved_ports中定义的端口，因此就不会出现端口被占用了服务无法启动。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vim /etc/sysctl.conf</span></span><br><span class="line">net.ipv4.ip_local_reserved_ports = 18080-18087, 60080-60087</span><br><span class="line"><span class="comment"># sysctl -p</span></span><br></pre></td></tr></table></figure>
+<p>注意：内核版本要大于2.6.18-164，否则不支持该参数。 ubuntu12.04 内核版本3.8.0-29 所以ubuntu12.04以上版本是支持的</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos离线安装软件</title>
+    <url>/2021/06/18/off-line-install/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找有外网的机器执行</span></span><br><span class="line">yum install --downloadonly --downloaddir=/opt/http httpd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把/opt/http这个目录打包  上传    安装这个目录里面的所有包</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">localinstall</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mongod-redis</title>
+    <url>/2021/06/04/mongod-redis/</url>
+    <content><![CDATA[<h2 id="mongo"><a href="#mongo" class="headerlink" title="mongo"></a>mongo</h2><p>mongodb占用内存非常高，这是因为官方为了提升存储的效率，设计就这么设计的。</p>
+<p>但是大部分的个人开发者所购买的服务器内存并没有那么大，所以，我们需要配置下MongoDB的内存缓存大小，不然mongodb会占用非常多。</p>
+<p>以mongodb 3.2为例，WiredTiger内部缓存，默认会用掉</p>
+<pre><code>60% * 内存 - 1GB
+1GB</code></pre><p>当你的内存大于1GB，mongodb会用掉 内存的60% - 1GB 的内存作为缓存；</p>
+<p>当你的内存小于1GB，mongodb会直接用掉1GB。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">下面是修改后的配置：/etc/mongod.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># Where and how to store data.</span></span><br><span class="line">storage:</span><br><span class="line">  dbPath: /var/lib/mongo</span><br><span class="line">  <span class="comment">#dbPath: /mongodata </span></span><br><span class="line">  journal:</span><br><span class="line">    enabled: <span class="literal">true</span></span><br><span class="line"><span class="comment">#  engine:</span></span><br><span class="line">  mmapv1:</span><br><span class="line">    smallFiles: <span class="literal">true</span></span><br><span class="line">  wiredTiger:</span><br><span class="line">    engineConfig:</span><br><span class="line">      configString : cache_size=512M</span><br><span class="line"></span><br><span class="line">其实重点就是下面一项，配置之后，重启mongodb生效：</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">wiredTiger:</span><br><span class="line">    engineConfig:</span><br><span class="line">      configString : cache_size=512M</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>maxmemory：设置Redis的最大内存，如果设置为0 。表示不作限制。通常是配合下面介绍的maxmemory-policy参数一起使<br>maxmemory-policy ：当内存使用达到maxmemory设置的最大值时，redis使用的内存清除策略。有以下几种可以选择：</p>
+<p>设置了maxmemory的选项，redis内存使用达到上限。可以通过设置LRU算法来删除部分key，释放空间。默认是按照过期时间的,如果set时候没有加上过期时间就会导致数据写满maxmemory</p>
+<p>LRU是Least Recently Used 近期最少使用算法。</p>
+<p>volatile-lru -&gt; 根据LRU算法生成的过期时间来删除。</p>
+<p>allkeys-lru -&gt; 根据LRU算法删除任何key。</p>
+<p>volatile-random -&gt; 根据过期设置来随机删除key。</p>
+<p>allkeys-random -&gt; 无差别随机删。</p>
+<p>volatile-ttl -&gt; 根据最近过期时间来删除(辅以TTL)</p>
+<p>noeviction -&gt; 谁也不删，直接在写操作时返回错误。</p>
+<p>如果设置了maxmemory，一般都要设置过期策略。打开Redis的配置文件有如下描述，Redis有六种过期策略：</p>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>查看已删除空间却没有释放的进程</title>
     <url>/2021/05/27/disk/</url>
     <content><![CDATA[<p>lsof -n / |grep deleted查看已删除空间却没有释放的进程</p>
@@ -244,7 +338,7 @@
     <url>/2021/04/06/sudo/</url>
     <content><![CDATA[<p>报错</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo: sorry, you must have a tty to run sudo</span><br></pre></td></tr></table></figure>
-<p>因为默认情况下需要终端，可以在配置文件关闭</p>
+<p>在一个终端中调用另一个shell，始终是无法执行的，后来捕捉到报错信息为sudo: sorry, you must have a tty to run sudo<br>因为默认情况下需要终端，可以在配置文件关闭</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Defaults    requiretty  # 把这行注释</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>

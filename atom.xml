@@ -46,6 +46,116 @@
   </entry>
   
   <entry>
+    <title>file_max_limit</title>
+    <link href="http://yoursite.com/2021/06/29/file-max-limit/"/>
+    <id>http://yoursite.com/2021/06/29/file-max-limit/</id>
+    <published>2021-06-29T11:28:11.000Z</published>
+    <updated>2021-06-29T11:38:17.520Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;如出现 “too many open files” 提示, 可能是单进程文件句柄限制 或者 inotify文件系统事件监控&lt;/p&gt;
+&lt;h2 id=&quot;单进程文件句柄限制&quot;&gt;&lt;a href=&quot;#单进程文件句柄限制&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>修改内核参数ip_local_reserved_ports避免tomcat端口占用</title>
+    <link href="http://yoursite.com/2021/06/29/port-occupy/"/>
+    <id>http://yoursite.com/2021/06/29/port-occupy/</id>
+    <published>2021-06-29T11:26:11.000Z</published>
+    <updated>2021-06-29T11:27:38.453Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;问题描述：&lt;br&gt;tomcat 重启时候 遇到这个情况，出现60080端口被占用而无法启动，需要等该端口释放后才启动成功。&lt;/p&gt;
+&lt;p&gt;问题分析：&lt;br&gt;60080端口被该服务器上的客户端(dubbo
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos离线安装软件</title>
+    <link href="http://yoursite.com/2021/06/18/off-line-install/"/>
+    <id>http://yoursite.com/2021/06/18/off-line-install/</id>
+    <published>2021-06-18T03:15:28.000Z</published>
+    <updated>2021-06-18T03:44:23.418Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mongod-redis</title>
+    <link href="http://yoursite.com/2021/06/04/mongod-redis/"/>
+    <id>http://yoursite.com/2021/06/04/mongod-redis/</id>
+    <published>2021-06-04T07:27:21.000Z</published>
+    <updated>2021-06-04T07:33:21.190Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;mongo&quot;&gt;&lt;a href=&quot;#mongo&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
     <title>查看已删除空间却没有释放的进程</title>
     <link href="http://yoursite.com/2021/05/27/disk/"/>
     <id>http://yoursite.com/2021/05/27/disk/</id>
@@ -233,7 +343,7 @@
     <link href="http://yoursite.com/2021/04/06/sudo/"/>
     <id>http://yoursite.com/2021/04/06/sudo/</id>
     <published>2021-04-06T03:23:29.000Z</published>
-    <updated>2021-04-06T03:25:34.011Z</updated>
+    <updated>2021-06-04T08:44:48.215Z</updated>
     
     <summary type="html">
     
@@ -487,121 +597,6 @@
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
       <category term="subversion" scheme="http://yoursite.com/tags/subversion/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>centos下禅道部署</title>
-    <link href="http://yoursite.com/2020/12/31/zbox/"/>
-    <id>http://yoursite.com/2020/12/31/zbox/</id>
-    <published>2020-12-31T08:42:30.000Z</published>
-    <updated>2020-12-31T10:42:22.437Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;部署禅道&quot;&gt;&lt;a href=&quot;#部署禅道&quot; class=&quot;headerlink&quot; title=&quot;部署禅道&quot;&gt;&lt;/a&gt;部署禅道&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="zbox" scheme="http://yoursite.com/tags/zbox/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Centos 6无法使用yum解决办法</title>
-    <link href="http://yoursite.com/2020/12/17/centos6-yum-error/"/>
-    <id>http://yoursite.com/2020/12/17/centos6-yum-error/</id>
-    <published>2020-12-17T11:48:16.000Z</published>
-    <updated>2020-12-17T12:00:51.729Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;文章借鉴链接&quot;&gt;&lt;a href=&quot;#文章借鉴链接&quot; class=&quot;headerlink&quot; title=&quot;文章借鉴链接&quot;&gt;&lt;/a&gt;文章借鉴&lt;a href=&quot;https://www.xmpan.com/944.html&quot; target=&quot;_blank&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="yum" scheme="http://yoursite.com/tags/yum/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>unity_packages</title>
-    <link href="http://yoursite.com/2020/12/11/unity-packages/"/>
-    <id>http://yoursite.com/2020/12/11/unity-packages/</id>
-    <published>2020-12-11T06:40:48.000Z</published>
-    <updated>2020-12-11T06:41:37.833Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>centos下时间戳转换</title>
-    <link href="http://yoursite.com/2020/12/01/date/"/>
-    <id>http://yoursite.com/2020/12/01/date/</id>
-    <published>2020-12-01T08:29:08.000Z</published>
-    <updated>2020-12-02T08:13:00.902Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;当前时间戳转换&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="date" scheme="http://yoursite.com/tags/date/"/>
     
   </entry>
   
