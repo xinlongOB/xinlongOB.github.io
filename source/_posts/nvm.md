@@ -94,3 +94,41 @@ In memory PM2 version: 2.8.0
 Local PM2 version: 4.5.5
 ```
 这个时候执行下 pm2  update     在执行pm2 list 就正常了 
+
+
+## 多个版本设置默认node版本
+```bash
+[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ nvm  ls
+         v4.4.4
+->       system
+default -> v14.15.4 (-> N/A)
+node -> stable (-> v4.4.4) (default)
+stable -> 4.4 (-> v4.4.4) (default)
+iojs -> N/A (default)
+lts/* -> lts/fermium (-> N/A)
+lts/argon -> v4.9.1 (-> N/A)
+lts/boron -> v6.17.1 (-> N/A)
+lts/carbon -> v8.17.0 (-> N/A)
+lts/dubnium -> v10.24.1 (-> N/A)
+lts/erbium -> v12.22.1 (-> N/A)
+lts/fermium -> v14.17.1 (-> N/A)
+[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ 
+[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ nvm  alias default  v4.4.4
+default -> v4.4.4
+
+[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ nvm  ls
+->       v4.4.4
+       v14.15.4
+         system
+default -> v4.4.4
+node -> stable (-> v14.15.4) (default)
+stable -> 14.15 (-> v14.15.4) (default)
+iojs -> N/A (default)
+lts/* -> lts/fermium (-> N/A)
+lts/argon -> v4.9.1 (-> N/A)
+lts/boron -> v6.17.1 (-> N/A)
+lts/carbon -> v8.17.0 (-> N/A)
+lts/dubnium -> v10.24.1 (-> N/A)
+lts/erbium -> v12.22.1 (-> N/A)
+lts/fermium -> v14.17.1 (-> N/A)
+```
