@@ -139,7 +139,10 @@ categories: 运维
 <br/>![](../25.png)<br/>
 启动subversion
 
-		svnserve -d
+		svnserve -d  -r  /data/svn/program/   
+		
+		-d   后台开启守护进程
+		-r   指定版本库
 
 开通HTTP协议 安装httpd及其svn模块
 	
