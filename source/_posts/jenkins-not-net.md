@@ -44,6 +44,7 @@ jenkins 安装出现一个错误： No such plugin: cloudbees-folder
 
 
 
+
 ## jenkins汉化
 jenkins转换显示语言为中文简体
 主界面-->系统管理-->插件管理-->可选插件
