@@ -35,7 +35,7 @@ jenkins 安装出现一个错误： No such plugin: cloudbees-folder
 
 上面的错误显示是，安装插件cloudbees-folder失败，是因bai为下载的Jenkins.war里没有cloudbees-folder插件
 
-需要在网上下载：http://ftp.icm.edu.pl/packages/jenkins/plugins/cloudbees-folder/
+需要在网上下载：https://updates.jenkins-ci.org/download/plugins/cloudbees-folder/
 
 
 下载cloudbees-folder.hpi放在/var/cache/jenkins/war/WEB-INF/detached-plugins即可
