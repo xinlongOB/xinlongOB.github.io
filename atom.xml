@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-07-30T07:55:25.690Z</updated>
+  <updated>2021-10-15T07:00:39.072Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/2060/07/30/readme/"/>
     <id>http://yoursite.com/2060/07/30/readme/</id>
     <published>2060-07-30T02:52:44.000Z</published>
-    <updated>2020-07-30T07:55:25.690Z</updated>
+    <updated>2021-10-15T07:00:39.072Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,7 @@
       
         
         
-          &lt;h1 id=&quot;readme-md&quot;&gt;&lt;a href=&quot;#readme-md&quot; class=&quot;headerlink&quot; title=&quot;readme.md&quot;&gt;&lt;/a&gt;readme.md&lt;/h1&gt;&lt;p&gt;如果想写文章, 又不希望被看到, 那么可以&lt;br&gt;&lt;code&gt;hexo new
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -46,11 +46,11 @@
   </entry>
   
   <entry>
-    <title>file_max_limit</title>
-    <link href="http://yoursite.com/2021/06/29/file-max-limit/"/>
-    <id>http://yoursite.com/2021/06/29/file-max-limit/</id>
-    <published>2021-06-29T11:28:11.000Z</published>
-    <updated>2021-06-29T11:38:17.520Z</updated>
+    <title>centos下查看某个命令的安装包名</title>
+    <link href="http://yoursite.com/2021/12/03/1203/"/>
+    <id>http://yoursite.com/2021/12/03/1203/</id>
+    <published>2021-12-03T01:33:51.000Z</published>
+    <updated>2021-12-03T01:35:44.347Z</updated>
     
     <summary type="html">
     
@@ -58,8 +58,59 @@
       
         
         
-          &lt;p&gt;如出现 “too many open files” 提示, 可能是单进程文件句柄限制 或者 inotify文件系统事件监控&lt;/p&gt;
-&lt;h2 id=&quot;单进程文件句柄限制&quot;&gt;&lt;a href=&quot;#单进程文件句柄限制&quot; class=&quot;headerlink&quot;
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="yum" scheme="http://yoursite.com/tags/yum/"/>
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>kube-flannel</title>
+    <link href="http://yoursite.com/2021/10/15/kube-flannel/"/>
+    <id>http://yoursite.com/2021/10/15/kube-flannel/</id>
+    <published>2021-10-15T07:00:25.564Z</published>
+    <updated>2021-10-15T07:00:25.892Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>file_max_limit</title>
+    <link href="http://yoursite.com/2021/06/29/file-max-limit/"/>
+    <id>http://yoursite.com/2021/06/29/file-max-limit/</id>
+    <published>2021-06-29T11:28:11.000Z</published>
+    <updated>2021-10-15T07:00:45.944Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -78,7 +129,7 @@
     <link href="http://yoursite.com/2021/06/29/port-occupy/"/>
     <id>http://yoursite.com/2021/06/29/port-occupy/</id>
     <published>2021-06-29T11:26:11.000Z</published>
-    <updated>2021-06-29T11:27:38.453Z</updated>
+    <updated>2021-10-15T07:00:45.953Z</updated>
     
     <summary type="html">
     
@@ -86,8 +137,7 @@
       
         
         
-          &lt;p&gt;问题描述：&lt;br&gt;tomcat 重启时候 遇到这个情况，出现60080端口被占用而无法启动，需要等该端口释放后才启动成功。&lt;/p&gt;
-&lt;p&gt;问题分析：&lt;br&gt;60080端口被该服务器上的客户端(dubbo
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -106,7 +156,7 @@
     <link href="http://yoursite.com/2021/06/18/off-line-install/"/>
     <id>http://yoursite.com/2021/06/18/off-line-install/</id>
     <published>2021-06-18T03:15:28.000Z</published>
-    <updated>2021-06-18T03:44:23.418Z</updated>
+    <updated>2021-10-15T07:00:45.682Z</updated>
     
     <summary type="html">
     
@@ -114,7 +164,7 @@
       
         
         
-          &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -133,7 +183,7 @@
     <link href="http://yoursite.com/2021/06/04/mongod-redis/"/>
     <id>http://yoursite.com/2021/06/04/mongod-redis/</id>
     <published>2021-06-04T07:27:21.000Z</published>
-    <updated>2021-06-04T07:33:21.190Z</updated>
+    <updated>2021-10-15T07:00:45.514Z</updated>
     
     <summary type="html">
     
@@ -141,7 +191,7 @@
       
         
         
-          &lt;h2 id=&quot;mongo&quot;&gt;&lt;a href=&quot;#mongo&quot; class=&quot;headerlink&quot;
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -160,7 +210,7 @@
     <link href="http://yoursite.com/2021/05/27/disk/"/>
     <id>http://yoursite.com/2021/05/27/disk/</id>
     <published>2021-05-27T07:01:22.000Z</published>
-    <updated>2021-05-27T07:06:00.543Z</updated>
+    <updated>2021-10-15T07:00:45.329Z</updated>
     
     <summary type="html">
     
@@ -168,10 +218,7 @@
       
         
         
-          &lt;p&gt;lsof -n / |grep deleted查看已删除空间却没有释放的进程&lt;/p&gt;
-&lt;p&gt;查看已经删除的文件，空间有没有释放，没有的话kill掉pid&lt;/p&gt;
-&lt;p&gt;lsof -n |grep deleted&lt;/p&gt;
-&lt;p&gt;lsof简介lsof(list open
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -192,7 +239,7 @@
     <link href="http://yoursite.com/2021/05/06/nginx-error/"/>
     <id>http://yoursite.com/2021/05/06/nginx-error/</id>
     <published>2021-05-06T10:13:22.000Z</published>
-    <updated>2021-05-06T10:16:43.803Z</updated>
+    <updated>2021-10-15T07:00:44.930Z</updated>
     
     <summary type="html">
     
@@ -200,8 +247,7 @@
       
         
         
-          &lt;p&gt;nginx安装成功后，输入命令nginx，启动成功。&lt;br&gt;但输入命令nginx -s reload 和 nginx -s stop都提示   无效的pid号&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -222,7 +268,7 @@
     <link href="http://yoursite.com/2021/04/26/nginx-execreload/"/>
     <id>http://yoursite.com/2021/04/26/nginx-execreload/</id>
     <published>2021-04-26T06:53:40.000Z</published>
-    <updated>2021-05-06T10:17:08.481Z</updated>
+    <updated>2021-10-15T07:00:44.945Z</updated>
     
     <summary type="html">
     
@@ -230,8 +276,7 @@
       
         
         
-          &lt;h2 id=&quot;Yum安装&quot;&gt;&lt;a href=&quot;#Yum安装&quot; class=&quot;headerlink&quot; title=&quot;Yum安装&quot;&gt;&lt;/a&gt;Yum安装&lt;/h2&gt;&lt;p&gt;如果使用yum安装的nginx 可以直接使用下面方法添加到开机自启动&lt;/p&gt;
-&lt;figure
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -252,7 +297,7 @@
     <link href="http://yoursite.com/2021/04/12/nginx-http-stream/"/>
     <id>http://yoursite.com/2021/04/12/nginx-http-stream/</id>
     <published>2021-04-12T11:36:35.000Z</published>
-    <updated>2021-04-12T12:13:23.500Z</updated>
+    <updated>2021-10-15T07:00:44.952Z</updated>
     
     <summary type="html">
     
@@ -260,9 +305,7 @@
       
         
         
-          &lt;p&gt;nginx配置文件中的模块共分为两大部分：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;第一：http/https–存在于http{ } 模块中
-第二：tcp / udp --存在于stream{ }
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -283,7 +326,7 @@
     <link href="http://yoursite.com/2021/04/12/nginx-proxy/"/>
     <id>http://yoursite.com/2021/04/12/nginx-proxy/</id>
     <published>2021-04-12T09:07:40.000Z</published>
-    <updated>2021-04-13T12:03:55.507Z</updated>
+    <updated>2021-10-15T07:00:44.959Z</updated>
     
     <summary type="html">
     
@@ -291,8 +334,7 @@
       
         
         
-          &lt;p&gt;nginx tcp 代理&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -313,7 +355,7 @@
     <link href="http://yoursite.com/2021/04/12/sudo-NOPASSWD/"/>
     <id>http://yoursite.com/2021/04/12/sudo-NOPASSWD/</id>
     <published>2021-04-12T08:17:04.000Z</published>
-    <updated>2021-04-12T08:30:09.463Z</updated>
+    <updated>2021-10-15T07:00:44.612Z</updated>
     
     <summary type="html">
     
@@ -321,8 +363,7 @@
       
         
         
-          &lt;p&gt;配置文件&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -343,7 +384,7 @@
     <link href="http://yoursite.com/2021/04/06/sudo/"/>
     <id>http://yoursite.com/2021/04/06/sudo/</id>
     <published>2021-04-06T03:23:29.000Z</published>
-    <updated>2021-06-04T08:44:48.215Z</updated>
+    <updated>2021-10-15T07:00:45.515Z</updated>
     
     <summary type="html">
     
@@ -351,8 +392,7 @@
       
         
         
-          &lt;p&gt;报错&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -373,7 +413,7 @@
     <link href="http://yoursite.com/2021/04/01/nginx-include/"/>
     <id>http://yoursite.com/2021/04/01/nginx-include/</id>
     <published>2021-04-01T11:30:58.000Z</published>
-    <updated>2021-04-01T11:33:11.211Z</updated>
+    <updated>2021-10-15T07:00:44.263Z</updated>
     
     <summary type="html">
     
@@ -381,8 +421,7 @@
       
         
         
-          &lt;p&gt;在主配置文件添加include&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -403,7 +442,7 @@
     <link href="http://yoursite.com/2021/03/22/glibc/"/>
     <id>http://yoursite.com/2021/03/22/glibc/</id>
     <published>2021-03-22T02:07:29.000Z</published>
-    <updated>2021-03-22T05:49:29.904Z</updated>
+    <updated>2021-10-15T07:00:44.113Z</updated>
     
     <summary type="html">
     
@@ -411,7 +450,7 @@
       
         
         
-          &lt;h2 id=&quot;GLIBCXX报错&quot;&gt;&lt;a href=&quot;#GLIBCXX报错&quot; class=&quot;headerlink&quot; title=&quot;GLIBCXX报错&quot;&gt;&lt;/a&gt;GLIBCXX报错&lt;/h2&gt;&lt;figure class=&quot;highlight
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -432,7 +471,7 @@
     <link href="http://yoursite.com/2021/03/10/nvm/"/>
     <id>http://yoursite.com/2021/03/10/nvm/</id>
     <published>2021-03-10T08:07:58.000Z</published>
-    <updated>2021-03-10T09:21:48.882Z</updated>
+    <updated>2021-10-15T07:00:46.119Z</updated>
     
     <summary type="html">
     
@@ -440,7 +479,7 @@
       
         
         
-          &lt;h2 id=&quot;安装nvm&quot;&gt;&lt;a href=&quot;#安装nvm&quot; class=&quot;headerlink&quot; title=&quot;安装nvm&quot;&gt;&lt;/a&gt;安装nvm&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -461,7 +500,7 @@
     <link href="http://yoursite.com/2021/03/05/prometheus/"/>
     <id>http://yoursite.com/2021/03/05/prometheus/</id>
     <published>2021-03-05T08:45:11.000Z</published>
-    <updated>2021-03-05T09:22:30.696Z</updated>
+    <updated>2021-10-15T07:00:42.717Z</updated>
     
     <summary type="html">
     
@@ -469,7 +508,7 @@
       
         
         
-          &lt;h2 id=&quot;官网地址&quot;&gt;&lt;a href=&quot;#官网地址&quot; class=&quot;headerlink&quot; title=&quot;官网地址&quot;&gt;&lt;/a&gt;官网地址&lt;/h2&gt;&lt;p&gt;源码包下载地址&lt;br&gt;prometheus: &lt;a href=&quot;https://prometheus.io/&quot;
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -490,7 +529,7 @@
     <link href="http://yoursite.com/2021/03/02/vsftpd/"/>
     <id>http://yoursite.com/2021/03/02/vsftpd/</id>
     <published>2021-03-02T08:40:07.000Z</published>
-    <updated>2021-03-02T10:20:29.156Z</updated>
+    <updated>2021-10-15T07:00:42.544Z</updated>
     
     <summary type="html">
     
@@ -498,7 +537,7 @@
       
         
         
-          &lt;h2 id=&quot;FTP概述：&quot;&gt;&lt;a href=&quot;#FTP概述：&quot; class=&quot;headerlink&quot;
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -519,7 +558,7 @@
     <link href="http://yoursite.com/2021/01/12/nginx-variable/"/>
     <id>http://yoursite.com/2021/01/12/nginx-variable/</id>
     <published>2021-01-12T02:31:40.000Z</published>
-    <updated>2021-01-12T02:32:29.294Z</updated>
+    <updated>2021-10-15T07:00:42.350Z</updated>
     
     <summary type="html">
     
@@ -527,7 +566,7 @@
       
         
         
-          &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
         
       
     
@@ -540,63 +579,6 @@
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
       <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>centos下mount挂载报错buys</title>
-    <link href="http://yoursite.com/2021/01/05/mount-buys/"/>
-    <id>http://yoursite.com/2021/01/05/mount-buys/</id>
-    <published>2021-01-05T09:18:33.000Z</published>
-    <updated>2021-01-05T09:32:26.148Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;在单用户模式下无法修改文件–提示只读&quot;&gt;&lt;a href=&quot;#在单用户模式下无法修改文件–提示只读&quot; class=&quot;headerlink&quot; title=&quot;在单用户模式下无法修改文件–提示只读&quot;&gt;&lt;/a&gt;在单用户模式下无法修改文件–提示只读&lt;/h2&gt;&lt;figure
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="mount" scheme="http://yoursite.com/tags/mount/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>centos下svn创建多个目录</title>
-    <link href="http://yoursite.com/2020/12/31/subversion-dir/"/>
-    <id>http://yoursite.com/2020/12/31/subversion-dir/</id>
-    <published>2020-12-31T10:26:20.000Z</published>
-    <updated>2020-12-31T10:41:26.366Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;部署svn之后默认只有一个跟分支(/)&lt;br&gt;例如：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="subversion" scheme="http://yoursite.com/tags/subversion/"/>
     
   </entry>
   

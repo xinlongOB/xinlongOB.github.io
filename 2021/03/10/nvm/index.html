@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">681</span>
+            <span class="post-count">903</span>
         </span>
     </span>
 
@@ -100,7 +100,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">5 分钟</span>
         </span>
     </span>
 </div>
@@ -138,7 +138,7 @@ var _hmt = _hmt || [];
 <p>安装之后关闭窗口 新建窗口执行 pm2 list 会提示</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@iZ2zebqwvcwhckgto4m1afZ ~]$ pm2 list</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt; In-memory PM2 is out-of-date, <span class="keyword">do</span>:</span><br><span class="line">&gt;&gt;&gt;&gt; $ pm2 update</span><br><span class="line">In memory PM2 version: 2.8.0</span><br><span class="line">Local PM2 version: 4.5.5</span><br></pre></td></tr></table></figure>
 <p>这个时候执行下 pm2  update     在执行pm2 list 就正常了 </p>
-
+<h2 id="多个版本设置默认node版本"><a href="#多个版本设置默认node版本" class="headerlink" title="多个版本设置默认node版本"></a>多个版本设置默认node版本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ nvm  ls</span><br><span class="line">         v4.4.4</span><br><span class="line">-&gt;       system</span><br><span class="line">default -&gt; v14.15.4 (-&gt; N/A)</span><br><span class="line">node -&gt; stable (-&gt; v4.4.4) (default)</span><br><span class="line">stable -&gt; 4.4 (-&gt; v4.4.4) (default)</span><br><span class="line">iojs -&gt; N/A (default)</span><br><span class="line">lts/* -&gt; lts/fermium (-&gt; N/A)</span><br><span class="line">lts/argon -&gt; v4.9.1 (-&gt; N/A)</span><br><span class="line">lts/boron -&gt; v6.17.1 (-&gt; N/A)</span><br><span class="line">lts/carbon -&gt; v8.17.0 (-&gt; N/A)</span><br><span class="line">lts/dubnium -&gt; v10.24.1 (-&gt; N/A)</span><br><span class="line">lts/erbium -&gt; v12.22.1 (-&gt; N/A)</span><br><span class="line">lts/fermium -&gt; v14.17.1 (-&gt; N/A)</span><br><span class="line">[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ </span><br><span class="line">[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ nvm  <span class="built_in">alias</span> default  v4.4.4</span><br><span class="line">default -&gt; v4.4.4</span><br><span class="line"></span><br><span class="line">[sgsm@iZ2ze9k2rrtcy962g9wiyrZ ~]$ nvm  ls</span><br><span class="line">-&gt;       v4.4.4</span><br><span class="line">       v14.15.4</span><br><span class="line">         system</span><br><span class="line">default -&gt; v4.4.4</span><br><span class="line">node -&gt; stable (-&gt; v14.15.4) (default)</span><br><span class="line">stable -&gt; 14.15 (-&gt; v14.15.4) (default)</span><br><span class="line">iojs -&gt; N/A (default)</span><br><span class="line">lts/* -&gt; lts/fermium (-&gt; N/A)</span><br><span class="line">lts/argon -&gt; v4.9.1 (-&gt; N/A)</span><br><span class="line">lts/boron -&gt; v6.17.1 (-&gt; N/A)</span><br><span class="line">lts/carbon -&gt; v8.17.0 (-&gt; N/A)</span><br><span class="line">lts/dubnium -&gt; v10.24.1 (-&gt; N/A)</span><br><span class="line">lts/erbium -&gt; v12.22.1 (-&gt; N/A)</span><br><span class="line">lts/fermium -&gt; v14.17.1 (-&gt; N/A)</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       
@@ -695,6 +695,6 @@ var _hmt = _hmt || [];
 
     
   </div>
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 
 </html>
