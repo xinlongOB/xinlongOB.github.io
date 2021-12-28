@@ -1,5 +1,5 @@
 .sidebar {
-  left: -8rem;
+  left: 8rem;
   width: 8rem;
 }
 .sidebar.on {
@@ -9,7 +9,7 @@
   margin-left: 0 !important;
 }
 .navbar-toggle {
-  left: 9.5rem;
+  left: 1.5rem 8rem;
 }
 .search-form-wrap {
   right: 8rem;

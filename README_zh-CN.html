@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+     我在人间凑数的日子
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?b67415e769cf821f4f0b7db65a16e914";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/d4088897.js","daovoice")
+  daovoice('init', {
+  app_id: "d4088897",
+  });
+  daovoice('update');
+  </script>
+<link rel="alternate" href="/atom.xml" title="我在人间凑数的日子" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="page-" class="article article-type-page" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h1 id="KubeKey"><a href="#KubeKey" class="headerlink" title="KubeKey"></a>KubeKey</h1><p><a href="https://github.com/kubesphere/kubekey/actions?query=event%3Apush+branch%3Amaster+workflow%3ACI+" target="_blank" rel="noopener"><img src="https://github.com/kubesphere/kubekey/workflows/CI/badge.svg?branch=master&event=push" alt="CI"></a></p>
+<blockquote>
+<p><a href="README.md">English</a> | 中文</p>
+</blockquote>
+<p>从 v3.0.0 开始，<a href="https://kubesphere.io" target="_blank" rel="noopener">KubeSphere</a> 将基于 ansible 的安装程序更改为使用 Go 语言开发的名为 KubeKey 的新安装程序。使用 KubeKey，您可以轻松、高效、灵活地单独或整体安装 Kubernetes 和 KubeSphere。</p>
+<p>有三种情况可以使用 KubeKey。</p>
+<ul>
+<li>仅安装 Kubernetes</li>
+<li>用一个命令中安装 Kubernetes 和 KubeSphere</li>
+<li>首先安装 Kubernetes，然后使用 <a href="https://github.com/kubesphere/ks-installer" target="_blank" rel="noopener">ks-installer</a> 在其上部署 KubeSphere</li>
+</ul>
+<blockquote>
+<p>重要提示：Kubekey 将会帮您安装 Kubernetes，若已有 Kubernetes 集群请参考 <a href="https://github.com/kubesphere/ks-installer/" target="_blank" rel="noopener">在 Kubernetes 之上安装 KubeSphere</a>。</p>
+</blockquote>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><ul>
+<li>基于 Ansible 的安装程序具有大量软件依赖性，例如 Python。KubeKey 是使用 Go 语言开发的，可以消除在各种环境中出现的问题，从而提高安装成功率。</li>
+<li>KubeKey 使用 Kubeadm 在节点上尽可能多地并行安装 K8s 集群，以降低安装复杂性并提高效率。与较早的安装程序相比，它将大大节省安装时间。</li>
+<li>KubeKey 支持将集群从 all-in-one 扩展到多节点集群甚至 HA 集群。</li>
+<li>KubeKey 旨在将集群当作一个对象操作，即 CaaO。</li>
+</ul>
+<h2 id="支持的环境"><a href="#支持的环境" class="headerlink" title="支持的环境"></a>支持的环境</h2><h3 id="Linux-发行版"><a href="#Linux-发行版" class="headerlink" title="Linux 发行版"></a>Linux 发行版</h3><ul>
+<li><strong>Ubuntu</strong>  <em>16.04, 18.04, 20.04</em></li>
+<li><strong>Debian</strong>  <em>Buster, Stretch</em></li>
+<li><strong>CentOS/RHEL</strong>  <em>7</em></li>
+<li><strong>SUSE Linux Enterprise Server</strong> <em>15</em></li>
+</ul>
+<blockquote>
+<p>建议使用 Linux Kernel 版本: <code>4.15 or later</code> <br>可以通过命令 <code>uname -srm</code> 查看 Linux Kernel 版本。</p>
+</blockquote>
+<h3 id="Kubernetes-版本"><a href="#Kubernetes-版本" class="headerlink" title="Kubernetes 版本"></a><span id="KubernetesVersions">Kubernetes 版本</span></h3><ul>
+<li><strong>v1.17</strong>: &ensp; <em>v1.17.9</em></li>
+<li><strong>v1.18</strong>: &ensp; <em>v1.18.6</em></li>
+<li><strong>v1.19</strong>: &ensp; <em>v1.19.8</em>  </li>
+<li><strong>v1.20</strong>: &ensp; <em>v1.20.6</em></li>
+<li><strong>v1.21</strong>: &ensp; <em>v1.21.5</em>  (default)</li>
+<li><strong>v1.22</strong>: &ensp; <em>v1.22.1</em><blockquote>
+<p>查看更多支持的版本<a href="./docs/kubernetes-versions.md">点击这里</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="要求和建议"><a href="#要求和建议" class="headerlink" title="要求和建议"></a>要求和建议</h2><ul>
+<li>最低资源要求（仅对于最小安装 KubeSphere）：<ul>
+<li>2 核虚拟 CPU</li>
+<li>4 GB 内存</li>
+<li>20 GB 储存空间</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>/var/lib/docker 主要用于存储容器数据，在使用和操作过程中会逐渐增大。对于生产环境，建议 /var/lib/docker 单独挂盘。</p>
+</blockquote>
+<ul>
+<li>操作系统要求：<ul>
+<li><code>SSH</code> 可以访问所有节点。</li>
+<li>所有节点的时间同步。</li>
+<li><code>sudo</code>/<code>curl</code>/<code>openssl</code> 应在所有节点使用。</li>
+<li><code>docker</code> 可以自己安装，也可以通过 KubeKey 安装。</li>
+<li><code>Red Hat</code> 在其 <code>Linux</code> 发行版本中包括了<code>SELinux</code>，建议<a href="./docs/turn-off-SELinux_zh-CN.md">关闭SELinux</a>或者将<a href="./docs/turn-off-SELinux_zh-CN.md">SELinux的模式切换</a>为Permissive[宽容]工作模式</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>建议您的操作系统环境足够干净 (不安装任何其他软件)，否则可能会发生冲突。</li>
+<li>如果在从 dockerhub.io 下载镜像时遇到问题，建议准备一个容器镜像仓库 (加速器)。<a href="https://docs.docker.com/registry/recipes/mirror/#configure-the-docker-daemon" target="_blank" rel="noopener">为 Docker 守护程序配置镜像加速</a>。</li>
+<li>默认情况下，KubeKey 将安装 <a href="https://openebs.io/" target="_blank" rel="noopener">OpenEBS</a> 来为开发和测试环境配置 LocalPV，这对新用户来说非常方便。对于生产，请使用 NFS/Ceph/GlusterFS 或商业化存储作为持久化存储，并在所有节点中安装<a href="./docs/storage-client.md">相关的客户端</a> 。</li>
+<li>如果遇到拷贝时报权限问题Permission denied,建议优先考虑查看<a href="./docs/turn-off-SELinux_zh-CN.md">SELinux的原因</a>。</li>
+</ul>
+</blockquote>
+<ul>
+<li>依赖要求:</li>
+</ul>
+<p>KubeKey 可以同时安装 Kubernetes 和 KubeSphere。根据 KubeSphere 所安装版本的不同，您所需要安装的依赖可能也不同。请参考以下表格查看您是否需要提前在节点上安装有关的依赖。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Kubernetes 版本 ≥ 1.18</th>
+<th>Kubernetes 版本 &lt; 1.18</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>socat</code></td>
+<td>必须安装</td>
+<td>可选，但推荐安装</td>
+</tr>
+<tr>
+<td><code>conntrack</code></td>
+<td>必须安装</td>
+<td>可选，但推荐安装</td>
+</tr>
+<tr>
+<td><code>ebtables</code></td>
+<td>可选，但推荐安装</td>
+<td>可选，但推荐安装</td>
+</tr>
+<tr>
+<td><code>ipset</code></td>
+<td>可选，但推荐安装</td>
+<td>可选，但推荐安装</td>
+</tr>
+</tbody></table>
+<ul>
+<li>网络和 DNS 要求：<ul>
+<li>确保 <code>/etc/resolv.conf</code> 中的 DNS 地址可用。否则，可能会导致集群中出现某些 DNS 问题。</li>
+<li>如果您的网络配置使用防火墙或安全组，则必须确保基础结构组件可以通过特定端口相互通信。建议您关闭防火墙或遵循链接配置：<a href="docs/network-access.md">网络访问</a>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><h3 id="获取安装程序可执行文件"><a href="#获取安装程序可执行文件" class="headerlink" title="获取安装程序可执行文件"></a>获取安装程序可执行文件</h3><ul>
+<li><p>下载KubeKey可执行文件 <a href="https://github.com/kubesphere/kubekey/releases" target="_blank" rel="noopener">Releases page</a> </p>
+<p>下载解压后可直接使用。</p>
+</li>
+<li><p>从源代码生成二进制文件</p>
+  <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/kubesphere/kubekey.git</span><br><span class="line">cd kubekey</span><br><span class="line">./build.sh</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>在构建之前，需要先安装 Docker。</li>
+<li>如果无法访问 <code>https://proxy.golang.org/</code>，比如在大陆，请执行 <code>build.sh -p</code>。</li>
+</ul>
+</blockquote>
+<h3 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h3><h4 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h4><p>快速入门使用 <code>all-in-one</code> 安装，这是熟悉 KubeSphere 的良好开始。</p>
+<blockquote>
+<p>注意： 由于 Kubernetes 暂不支持大写 NodeName， hostname 中包含大写字母将导致后续安装过程无法正常结束</p>
+</blockquote>
+<h5 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h5><blockquote>
+<p>如果无法访问 <code>https://storage.googleapis.com</code>, 请先执行 <code>export KKZONE=cn</code>.</p>
+</blockquote>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create cluster [--with-kubernetes version] [--with-kubesphere version]</span><br></pre></td></tr></table></figure>
+
+<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><ul>
+<li><p>使用默认版本创建一个纯 Kubernetes 集群</p>
+  <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create cluster</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建指定一个（<a href="#KubernetesVersions">支持的版本</a>）的 Kubernetes 集群</p>
+  <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create cluster --with-kubernetes v1.19.8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个部署了 KubeSphere 的 Kubernetes 集群 （例如 <code>--with-kubesphere v3.1.0</code>）</p>
+  <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create cluster --with-kubesphere [version]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h4><p>您可以使用高级安装来控制自定义参数或创建多节点集群。具体来说，通过指定配置文件来创建集群。</p>
+<blockquote>
+<p>如果无法访问 <code>https://storage.googleapis.com</code>, 请先执行 <code>export KKZONE=cn</code>.</p>
+</blockquote>
+<ol>
+<li><p>首先，创建一个示例配置文件</p>
+ <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create config [--with-kubernetes version] [--with-kubesphere version] [(-f | --file) path]</span><br></pre></td></tr></table></figure>
+
+<p><strong>例子：</strong></p>
+<ul>
+<li><p>使用默认配置创建一个示例配置文件。您也可以指定文件名称或文件所在的文件夹。</p>
+   <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create config [-f ~/myfolder/config-sample.yaml]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同时安装 KubeSphere</p>
+   <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create config --with-kubesphere</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>根据您的环境修改配置文件 config-sample.yaml</p>
+<blockquote>
+<p>注意： 由于 Kubernetes 暂不支持大写 NodeName， worker 节点名中包含大写字母将导致后续安装过程无法正常结束</p>
+<p>当指定安装KubeSphere时，要求集群中有可用的持久化存储。默认使用localVolume，如果需要使用其他持久化存储，请参阅 <a href="./docs/addons.md">addons</a> 配置。</p>
+</blockquote>
+</li>
+<li><p>使用配置文件创建集群。</p>
+   <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create cluster -f ~/myfolder/config-sample.yaml</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="启用多集群管理"><a href="#启用多集群管理" class="headerlink" title="启用多集群管理"></a>启用多集群管理</h3><p>默认情况下，Kubekey 将仅安装一个 Solo 模式的单集群，即未开启 Kubernetes 多集群联邦。如果您希望将 KubeSphere 作为一个支持多集群集中管理的中央面板，您需要在 <a href="docs/config-example.md">config-example.yaml</a> 中设置 <code>ClusterRole</code>。关于多集群的使用文档，请参考 <a href="https://github.com/kubesphere/community/blob/master/sig-multicluster/how-to-setup-multicluster-on-kubesphere/README_zh.md" target="_blank" rel="noopener">如何启用多集群</a>。</p>
+<h3 id="开启可插拔功能组件"><a href="#开启可插拔功能组件" class="headerlink" title="开启可插拔功能组件"></a>开启可插拔功能组件</h3><p>KubeSphere 从 2.1.0 版本开始对 Installer 的各功能组件进行了解耦，快速安装将默认仅开启最小化安装（Minimal Installation），Installer 支持在安装前或安装后自定义可插拔的功能组件的安装。使最小化安装更快速轻量且资源占用更少，也方便不同用户按需选择安装不同的功能组件。</p>
+<p>KubeSphere 有多个可插拔功能组件，功能组件的介绍可参考 <a href="docs/config-example.md">配置示例</a>。您可以根据需求，选择开启安装 KubeSphere 的可插拔功能组件。我们非常建议您开启这些功能组件来体验 KubeSphere 完整的功能以及端到端的解决方案。请在安装前确保您的机器有足够的 CPU 与内存资源。开启可插拔功能组件可参考 <a href="https://github.com/kubesphere/ks-installer/blob/master/README_zh.md#%E5%AE%89%E8%A3%85%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">开启可选功能组件</a>。</p>
+<h3 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h3><p>将新节点的信息添加到集群配置文件，然后应用更改。</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk add nodes -f config-sample.yaml</span><br></pre></td></tr></table></figure>
+<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><p>通过以下命令删除节点，nodename指需要删除的节点名。</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk delete node &lt;nodeName&gt; -f config-sample.yaml</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除集群"><a href="#删除集群" class="headerlink" title="删除集群"></a>删除集群</h3><p>您可以通过以下命令删除集群：</p>
+<ul>
+<li>如果您以快速入门（all-in-one）开始：</li>
+</ul>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk delete cluster</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果从高级安装开始（使用配置文件创建的集群）：</li>
+</ul>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk delete cluster [-f config-sample.yaml]</span><br></pre></td></tr></table></figure>
+
+<h3 id="集群升级"><a href="#集群升级" class="headerlink" title="集群升级"></a>集群升级</h3><h4 id="单节点集群"><a href="#单节点集群" class="headerlink" title="单节点集群"></a>单节点集群</h4><p>升级集群到指定版本。</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk upgrade [--with-kubernetes version] [--with-kubesphere version]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--with-kubernetes</code> 指定kubernetes目标版本。</li>
+<li><code>--with-kubesphere</code> 指定kubesphere目标版本。</li>
+</ul>
+<h4 id="多节点集群"><a href="#多节点集群" class="headerlink" title="多节点集群"></a>多节点集群</h4><p>通过指定配置文件对集群进行升级。</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk upgrade [--with-kubernetes version] [--with-kubesphere version] [(-f | --file) path]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--with-kubernetes</code> 指定kubernetes目标版本。</li>
+<li><code>--with-kubesphere</code> 指定kubesphere目标版本。</li>
+<li><code>-f</code> 指定集群安装时创建的配置文件。</li>
+</ul>
+<blockquote>
+<p>注意: 升级多节点集群需要指定配置文件. 如果集群非kubekey创建，或者创建集群时生成的配置文件丢失，需要重新生成配置文件，或使用以下方法生成。</p>
+</blockquote>
+<p>Getting cluster info and generating kubekey’s configuration file (optional).</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kk create config [--from-cluster] [(-f | --file) path] [--kubeconfig path]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--from-cluster</code> 根据已存在集群信息生成配置文件. </li>
+<li><code>-f</code> 指定生成配置文件路径.</li>
+<li><code>--kubeconfig</code> 指定集群kubeconfig文件. </li>
+<li>由于无法全面获取集群配置，生成配置文件后，请根据集群实际信息补全配置文件。</li>
+</ul>
+<h3 id="启用-kubectl-自动补全"><a href="#启用-kubectl-自动补全" class="headerlink" title="启用 kubectl 自动补全"></a>启用 kubectl 自动补全</h3><p>KubeKey 不会启用 kubectl 自动补全功能。请参阅下面的指南并将其打开：</p>
+<p><strong>先决条件</strong>：确保已安装 <code>bash-autocompletion</code> 并可以正常工作。</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装 bash-completion</span></span><br><span class="line">apt-get install bash-completion</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将 completion 脚本添加到你的 ~/.bashrc 文件</span></span><br><span class="line">echo 'source &lt;(kubectl completion bash)' &gt;&gt;~/.bashrc</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将 completion 脚本添加到 /etc/bash_completion.d 目录</span></span><br><span class="line">kubectl completion bash &gt;/etc/bash_completion.d/kubectl</span><br></pre></td></tr></table></figure>
+
+<p>更详细的参考可以在<a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion" target="_blank" rel="noopener">这里</a>找到。</p>
+<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><ul>
+<li><a href="docs/config-example.md">配置示例</a></li>
+<li><a href="docs/addons.md">自定义插件安装</a></li>
+<li><a href="docs/network-access.md">网络访问</a></li>
+<li><a href="docs/storage-client.md">存储客户端</a></li>
+<li><a href="docs/roadmap.md">路线图</a></li>
+<li><a href="docs/check-renew-certificate.md">查看或更新证书</a></li>
+<li><a href="docs/developer-guide.md">开发指南</a></li>
+</ul>
+<h2 id="贡献者-✨"><a href="#贡献者-✨" class="headerlink" title="贡献者 ✨"></a>贡献者 ✨</h2><p>欢迎任何形式的贡献! 感谢这些优秀的贡献者，是他们让我们的项目快速成长。</p>
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/pixiake" target="_blank" rel="noopener"><img src="https://avatars0.githubusercontent.com/u/22290449?v=4?s=100" width="100px;" alt><br><sub><b>pixiake</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=pixiake" target="_blank" rel="noopener" title="Code">💻</a> <a href="https://github.com/kubesphere/kubekey/commits?author=pixiake" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/Forest-L" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/50984129?v=4?s=100" width="100px;" alt><br><sub><b>Forest</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=Forest-L" target="_blank" rel="noopener" title="Code">💻</a> <a href="https://github.com/kubesphere/kubekey/commits?author=Forest-L" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://kubesphere.io/" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/28859385?v=4?s=100" width="100px;" alt><br><sub><b>rayzhou2017</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=rayzhou2017" target="_blank" rel="noopener" title="Code">💻</a> <a href="https://github.com/kubesphere/kubekey/commits?author=rayzhou2017" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://www.chenshaowen.com/" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/43693241?v=4?s=100" width="100px;" alt><br><sub><b>shaowenchen</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=shaowenchen" target="_blank" rel="noopener" title="Code">💻</a> <a href="https://github.com/kubesphere/kubekey/commits?author=shaowenchen" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://surenpi.com/" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/1450685?v=4?s=100" width="100px;" alt><br><sub><b>Zhao Xiaojie</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=LinuxSuRen" target="_blank" rel="noopener" title="Code">💻</a> <a href="https://github.com/kubesphere/kubekey/commits?author=LinuxSuRen" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/zackzhangkai" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/20178386?v=4?s=100" width="100px;" alt><br><sub><b>Zack Zhang</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=zackzhangkai" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://akhilerm.com/" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/7610845?v=4?s=100" width="100px;" alt><br><sub><b>Akhil Mohan</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=akhilerm" target="_blank" rel="noopener" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/FeynmanZhou" target="_blank" rel="noopener"><img src="https://avatars3.githubusercontent.com/u/40452856?v=4?s=100" width="100px;" alt><br><sub><b>pengfei</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=FeynmanZhou" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/min-zh" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/35321102?v=4?s=100" width="100px;" alt><br><sub><b>min zhang</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=min-zh" target="_blank" rel="noopener" title="Code">💻</a> <a href="https://github.com/kubesphere/kubekey/commits?author=min-zh" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/zgldh" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/312404?v=4?s=100" width="100px;" alt><br><sub><b>zgldh</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=zgldh" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/xrjk" target="_blank" rel="noopener"><img src="https://avatars0.githubusercontent.com/u/16330256?v=4?s=100" width="100px;" alt><br><sub><b>xrjk</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=xrjk" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/stoneshi-yunify" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/70880165?v=4?s=100" width="100px;" alt><br><sub><b>yonghongshi</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=stoneshi-yunify" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/shenhonglei" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/20896372?v=4?s=100" width="100px;" alt><br><sub><b>Honglei</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=shenhonglei" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/liucy1983" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/2360302?v=4?s=100" width="100px;" alt><br><sub><b>liucy1983</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=liucy1983" target="_blank" rel="noopener" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/lilien1010" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/3814966?v=4?s=100" width="100px;" alt><br><sub><b>Lien</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=lilien1010" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/klj890" target="_blank" rel="noopener"><img src="https://avatars3.githubusercontent.com/u/19380605?v=4?s=100" width="100px;" alt><br><sub><b>Tony Wang</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=klj890" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/hlwanghl" target="_blank" rel="noopener"><img src="https://avatars3.githubusercontent.com/u/4861515?v=4?s=100" width="100px;" alt><br><sub><b>Hongliang Wang</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=hlwanghl" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://fafucoder.github.io/" target="_blank" rel="noopener"><img src="https://avatars0.githubusercontent.com/u/16442491?v=4?s=100" width="100px;" alt><br><sub><b>dawn</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=fafucoder" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/duanjiong" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/3678855?v=4?s=100" width="100px;" alt><br><sub><b>Duan Jiong</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=duanjiong" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/calvinyv" target="_blank" rel="noopener"><img src="https://avatars3.githubusercontent.com/u/28883416?v=4?s=100" width="100px;" alt><br><sub><b>calvinyv</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=calvinyv" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/benjaminhuo" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/18525465?v=4?s=100" width="100px;" alt><br><sub><b>Benjamin Huo</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=benjaminhuo" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/Sherlock113" target="_blank" rel="noopener"><img src="https://avatars2.githubusercontent.com/u/65327072?v=4?s=100" width="100px;" alt><br><sub><b>Sherlock113</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=Sherlock113" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/Fuchange" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/31716848?v=4?s=100" width="100px;" alt><br><sub><b>fu_changjie</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=Fuchange" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/yuswift" target="_blank" rel="noopener"><img src="https://avatars1.githubusercontent.com/u/37265389?v=4?s=100" width="100px;" alt><br><sub><b>yuswift</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=yuswift" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ruiyaoOps" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/35256376?v=4?s=100" width="100px;" alt><br><sub><b>ruiyaoOps</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=ruiyaoOps" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://www.luxingmin.com" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/1918195?v=4?s=100" width="100px;" alt><br><sub><b>LXM</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=lxm" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/sbhnet" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/2368131?v=4?s=100" width="100px;" alt><br><sub><b>sbhnet</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=sbhnet" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/misteruly" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/31399968?v=4?s=100" width="100px;" alt><br><sub><b>misteruly</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=misteruly" target="_blank" rel="noopener" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://johnniang.me" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/16865714?v=4?s=100" width="100px;" alt><br><sub><b>John Niang</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=JohnNiang" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://alimy.me" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/10525842?v=4?s=100" width="100px;" alt><br><sub><b>Michael Li</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=alimy" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/duguhaotian" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/3174621?v=4?s=100" width="100px;" alt><br><sub><b>独孤昊天</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=duguhaotian" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lshmouse" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/118687?v=4?s=100" width="100px;" alt><br><sub><b>Liu Shaohui</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=lshmouse" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/24sama" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/43993589?v=4?s=100" width="100px;" alt><br><sub><b>Leo Li</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=24sama" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/RolandMa1986" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/1720333?v=4?s=100" width="100px;" alt><br><sub><b>Roland</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=RolandMa1986" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://ops.m114.org" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/2347587?v=4?s=100" width="100px;" alt><br><sub><b>Vinson Zou</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=vinsonzou" target="_blank" rel="noopener" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/tagGeeY" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/35259969?v=4?s=100" width="100px;" alt><br><sub><b>tag_gee_y</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=tagGeeY" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/liulangwa" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/25916792?v=4?s=100" width="100px;" alt><br><sub><b>codebee</b></sub></a><br><a href="https://github.com/kubesphere/kubekey/commits?author=liulangwa" target="_blank" rel="noopener" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/TheApeMachine" target="_blank" rel="noopener"><img src="https://avatars.githubusercontent.com/u/9572060?v=4?s=100" width="100px;" alt><br><sub><b>Daniel Owen van Dommelen</b></sub></a><br><a href="#ideas-TheApeMachine" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/README_zh-CN.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+  
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> XIN LONG
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="我在人间凑数的日子"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Subtitle -->
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+    console.log(err)
+  }
+</script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+
+<script src="/js/clickLove.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+    
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>

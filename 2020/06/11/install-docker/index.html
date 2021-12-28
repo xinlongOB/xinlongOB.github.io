@@ -282,6 +282,7 @@ SIZE：镜像大小</code></pre><p>删除镜像</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push   镜像仓库地址和仓库名称:自定义名称</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker login   --username=qq.com   -p <span class="built_in">test</span>  registry.cn-beijing.aliyuncs.com </span><br><span class="line"><span class="comment"># 标签   52422b211692 为镜像id     images是仓库名称</span></span><br><span class="line">docker tag  52422b211692 registry.cn-beijing.aliyuncs.com/images/game:alpine-1.2</span><br><span class="line"><span class="comment"># 上传(指定公网地址)</span></span><br><span class="line">docker push  registry.cn-beijing.aliyuncs.com/images/game:alpine-1.2</span><br></pre></td></tr></table></figure>
+
       
       <!-- reward -->
       
