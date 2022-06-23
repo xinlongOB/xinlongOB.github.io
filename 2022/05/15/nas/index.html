@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    prometheus+process_exporter监控进程 |  我在人间凑数的日子
+    CentOS7搭建NAS |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -59,7 +59,7 @@ var _hmt = _hmt || [];
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-prometheus-process-exporter" class="article article-type-post" itemscope
+  <article id="post-nas" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -67,7 +67,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  prometheus+process_exporter监控进程
+  CentOS7搭建NAS
 </h1>
  
 
@@ -76,8 +76,8 @@ var _hmt = _hmt || [];
 
     
     <div class="article-meta">
-      <a href="/2022/04/21/prometheus-process-exporter/" class="article-date">
-  <time datetime="2022-04-21T07:04:58.000Z" itemprop="datePublished">2022-04-21</time>
+      <a href="/2022/05/15/nas/" class="article-date">
+  <time datetime="2022-05-15T10:36:11.000Z" itemprop="datePublished">2022-05-15</time>
 </a>
       
   <div class="article-category">
@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">587</span>
+            <span class="post-count">861</span>
         </span>
     </span>
 
@@ -100,7 +100,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">3 分钟</span>
         </span>
     </span>
 </div>
@@ -125,20 +125,24 @@ var _hmt = _hmt || [];
       
 
       
-      <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Prometheus有众多的Exporter可供使用，如在Prometheus+Grafana监控系统搭建一文中提到的Node Exporter就可以用来采集机器的各项指标，从而监控机器的状态。</p>
-<p>如果机器上运行了一些小脚本，想要对其进行监控但又不想用上一些在代码里做信息采集的SDK那么重，比如只是单纯想要监控该脚本是否一直在运行，那么Process-Exporter会是一个现成的好选择。</p>
-<h2 id="安装process-exporter"><a href="#安装process-exporter" class="headerlink" title="安装process-exporter"></a>安装process-exporter</h2><p>安装好了Prometheus的前提下，在被监控机器安装process-exporter</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/ncabatoff/process-exporter/releases/download/v0.5.0/process-exporter-0.5.0.linux-amd64.tar.gz</span><br><span class="line">tar  xf  process-exporter-0.5.0.linux-amd64.tar.gz </span><br><span class="line"><span class="built_in">cd</span>  process-exporter-0.5.0.linux-amd64</span><br><span class="line"><span class="comment"># 创建配置文件</span></span><br><span class="line">vim  process-name.yaml</span><br><span class="line"></span><br><span class="line">process_names:</span><br><span class="line">  - name: <span class="string">"&#123;&#123;.Matches&#125;&#125;"</span></span><br><span class="line">    cmdline:</span><br><span class="line">    - <span class="string">'.+'</span></span><br></pre></td></tr></table></figure>
-<p>这里，在配置文件（process-name.yaml）中，我们添加了监控所有进程，一个process_names就定义了要监控的一组进程，{ {.Matches} }模板表示映射包含应用命令行所产生的所有匹配项，还有其他模板如下：</p>
-<p>模板变量：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; &#123;.Comm&#125; &#125; 包含原始可执行文件的基本名称，即第二个字段 /proc//<span class="built_in">stat</span></span><br><span class="line">&#123; &#123;.ExeBase&#125; &#125; 包含可执行文件的基名</span><br><span class="line">&#123; &#123;.ExeFull&#125; &#125; 包含可执行文件的完全限定路径</span><br><span class="line">&#123; &#123;.Username&#125; &#125; 包含有效用户的用户名</span><br><span class="line">&#123; &#123;.Matches&#125; &#125; map包含应用cmdline regexps产生的所有匹配项</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置后启动</span></span><br><span class="line">nohup ./process-exporter -config.path process-name.yaml &amp;</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">curl http://192.168.1.72:9256/metrics</span><br></pre></td></tr></table></figure>
-
-<h2 id="prometheus服务器添加数据源"><a href="#prometheus服务器添加数据源" class="headerlink" title="prometheus服务器添加数据源"></a>prometheus服务器添加数据源</h2><p>修改配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my global config</span></span><br><span class="line">global:</span><br><span class="line">  scrape_interval:     15s <span class="comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span></span><br><span class="line">  evaluation_interval: 15s <span class="comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span></span><br><span class="line">  <span class="comment"># scrape_timeout is set to the global default (10s).</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Alertmanager configuration</span></span><br><span class="line">alerting:</span><br><span class="line">  alertmanagers:</span><br><span class="line">  - static_configs:</span><br><span class="line">    - targets:</span><br><span class="line">      <span class="comment"># - alertmanager:9093</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load rules once and periodically evaluate them according to the global 'evaluation_interval'.</span></span><br><span class="line">rule_files:</span><br><span class="line">  <span class="comment"># - "first_rules.yml"</span></span><br><span class="line">  <span class="comment"># - "second_rules.yml"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A scrape configuration containing exactly one endpoint to scrape:</span></span><br><span class="line"><span class="comment"># Here it's Prometheus itself.</span></span><br><span class="line">scrape_configs:</span><br><span class="line">  <span class="comment"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span></span><br><span class="line">  - job_name: <span class="string">'prometheus'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># metrics_path defaults to '/metrics'</span></span><br><span class="line">    <span class="comment"># scheme defaults to 'http'.</span></span><br><span class="line"></span><br><span class="line">    static_configs:</span><br><span class="line">    - targets: [<span class="string">'localhost:9090'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新增被监控服务器</span></span><br><span class="line">  - job_name: <span class="string">'process'</span></span><br><span class="line">    static_configs:</span><br><span class="line">    - targets: [<span class="string">'192.168.1.72:9256'</span>]</span><br></pre></td></tr></table></figure>
-<p>控制台查看<br><img src="/2022/04/21/prometheus-process-exporter/1.png" alt></p>
-<p>没问题后添加到grafana-url为prometheus的地址+端口<br><img src="/2022/04/21/prometheus-process-exporter/2.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/3.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/4.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/5.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/6.png" alt></p>
-<p>注：使用process-exporter的时候需要加上node_exporter一块使用，node_exporter作为pull数据的组件</p>
+      <h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 准备挂载目录</span></span><br><span class="line">mkdir  /nas</span><br><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line">chmod 777  /nas</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install iftop</span><br></pre></td></tr></table></figure>
+<p>安装NFS</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nfs-utils rpcbind</span><br></pre></td></tr></table></figure>
+<p>配置挂载目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/exports</span><br><span class="line"><span class="comment"># 共享目录  允许挂载的地址  权限 </span></span><br><span class="line">/nas   192.168.3.0/23(rw,root_squash,all_squash,sync,anonuid=1000,anongid=1000)</span><br></pre></td></tr></table></figure>
+<p>权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rw	<span class="built_in">read</span>-write，表示可读写权限</span><br><span class="line">ro	<span class="built_in">read</span>-only，只读</span><br><span class="line">sync	请求或写入数据时，数据同步写入到NFS Server的硬盘后才返回。优点：数据安全不会丢；缺点：性能比不启用该参数要差。</span><br><span class="line">async	写入时数据会先写到内存缓冲区，只到硬盘有空档才会再写入磁盘，这样可以提升写入效率！风险为若服务器宕机或不正常关机，会损失缓冲区中未写入磁盘的数据（解决办法：服务器主板电池或加UPS不间断电源）</span><br><span class="line">no_root_squash	访问NFS Server共享目录的用户如果是root的话，它对该共享目录具有root权限。这个配置原本是为无盘客户端准备的。用户应避免使用！</span><br><span class="line">root_squash	如果访问NFS Server共享目录的用户是root，则它的权限将被压缩成匿名用户，同时它的UID和GID通常会变成nfsnobody帐号身份。</span><br><span class="line">all_squash	不管访问NFS Server共享目录的用户身份如何，它的权限都将被压缩成匿名用户，同时它的UID和GID都会变成nfsnobody帐号身份。在早期多个NFS客户端同时读写NFS Server数据时，这个参数很有用。</span><br><span class="line">anonuid	参数以anon*开头即指anonymous匿名用户，这个用户的UID设置值通常为nfsnobody的UID值，当然也可以自行设置这个UID值。但是，UID必须存在于/etc/passwd中。在多NFS Clients时，如多台Web Server共享一个NFS目录，通过这个参数可以使得不同的NFS Clients写入的数据对所有NFS Clients保持同样的用户权限，即为配置的匿名UID对应用户权限，这个参数很有用，一般默认即可。</span><br><span class="line">anongid	同anonuid，区别就是把uid（用户id）换成gid（组id）。</span><br></pre></td></tr></table></figure>
+<p>重新加载NFS配置 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exportfs -r</span><br></pre></td></tr></table></figure>
+<p>重启服务、配置服务自动启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart rpcbind.service</span><br><span class="line">systemctl restart nfs-server.service</span><br><span class="line">systemctl <span class="built_in">enable</span> rpcbind</span><br><span class="line">systemctl <span class="built_in">enable</span> nfs-server</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用rpcinfor -p 查看nfs的服务时, 会看到nfs注册了以下服务.</span></span><br><span class="line">rpcinfo -p</span><br><span class="line"></span><br><span class="line">program vers proto   port  service</span><br><span class="line">100000    4   tcp    111  portmapper</span><br><span class="line">100000    3   tcp    111  portmapper</span><br><span class="line">100000    2   tcp    111  portmapper</span><br><span class="line">100000    4   udp    111  portmapper</span><br><span class="line">100000    3   udp    111  portmapper</span><br><span class="line">100000    2   udp    111  portmapper</span><br><span class="line">100005    1   udp  20048  mountd</span><br><span class="line">100005    1   tcp  20048  mountd</span><br><span class="line">100005    2   udp  20048  mountd</span><br><span class="line">100005    2   tcp  20048  mountd</span><br><span class="line">100005    3   udp  20048  mountd</span><br><span class="line">100005    3   tcp  20048  mountd</span><br><span class="line">100024    1   udp    662  status</span><br><span class="line">100024    1   tcp    662  status</span><br><span class="line">100003    3   tcp   2049  nfs</span><br><span class="line">100003    4   tcp   2049  nfs</span><br><span class="line">100227    3   tcp   2049  nfs_acl</span><br><span class="line">100003    3   udp   2049  nfs</span><br><span class="line">100003    4   udp   2049  nfs</span><br><span class="line">100227    3   udp   2049  nfs_acl</span><br><span class="line">100021    1   udp  32769  nlockmgr</span><br><span class="line">100021    3   udp  32769  nlockmgr</span><br><span class="line">100021    4   udp  32769  nlockmgr</span><br><span class="line">100021    1   tcp  32803  nlockmgr</span><br><span class="line">100021    3   tcp  32803  nlockmgr</span><br><span class="line">100021    4   tcp  32803  nlockmgr</span><br></pre></td></tr></table></figure>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install nfs-utils</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">showmount -e 192.168.3.49   //192.168.3.49 为nfs 服务器ip</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建挂载点:</span></span><br><span class="line">mkdir /nas-mount</span><br><span class="line">chmod 777 /nas-mount        //此处权限需要根据实际情况调整, 777 权限过于开放挂载:</span><br><span class="line">mount -t nfs 192.168.3.49:/nas /nas-mount</span><br></pre></td></tr></table></figure>
+<p>```bash</p>
+<h1 id="设置开机自动挂载"><a href="#设置开机自动挂载" class="headerlink" title="设置开机自动挂载"></a>设置开机自动挂载</h1><p>#修改/etc/fstab, 添加一条<br>192.168.3.49:/nas /nas-mount nfs defaults,_rnetdev 1 1<br>#备注：第1个1表示备份文件系统，第2个1表示从/分区的顺序开始fsck磁盘检测，0表示不检测。</p>
+<p>#_rnetdev 表示主机无法挂载直接跳过，避免无法挂载主机无法启动</p>
 
       
       <!-- reward -->
@@ -203,14 +207,14 @@ var _hmt = _hmt || [];
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2022/04/21/prometheus-process-exporter/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2022/05/15/nas/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/prometheus/" rel="tag">prometheus</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nas/" rel="tag">nas</a></li></ul>
 
 
     </footer>
@@ -221,19 +225,19 @@ var _hmt = _hmt || [];
   
   <nav class="article-nav">
     
-      <a href="/2022/05/15/nas/" class="article-nav-link">
+      <a href="/2022/06/23/pip-pipreqs/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            CentOS7搭建NAS
+            Python如何导出导入所有依赖包
           
         </div>
       </a>
     
     
-      <a href="/2022/04/21/prometheus-node-exporter/" class="article-nav-link">
+      <a href="/2022/04/21/prometheus-process-exporter/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">prometheus+node_exporter组件部署监控</div>
+        <div class="article-nav-title">prometheus+process_exporter监控进程</div>
       </a>
     
   </nav>
