@@ -252,8 +252,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -402,8 +402,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>yum</tag>
         <tag>linux</tag>
+        <tag>yum</tag>
       </tags>
   </entry>
   <entry>
@@ -1561,8 +1561,8 @@ max_queued_events:设置inotify实例事件（event）队列可容纳的事件�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>yum</tag>
         <tag>linux</tag>
+        <tag>yum</tag>
       </tags>
   </entry>
   <entry>
@@ -1711,8 +1711,8 @@ max_queued_events:设置inotify实例事件（event）队列可容纳的事件�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -7488,8 +7488,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -7866,8 +7866,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>mongo</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
