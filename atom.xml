@@ -46,6 +46,93 @@
   </entry>
   
   <entry>
+    <title>Python如何导出导入所有依赖包</title>
+    <link href="http://yoursite.com/2022/06/23/pip-pipreqs/"/>
+    <id>http://yoursite.com/2022/06/23/pip-pipreqs/</id>
+    <published>2022-06-23T07:02:34.000Z</published>
+    <updated>2022-06-23T07:08:34.689Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>prometheus+process_exporter监控进程</title>
+    <link href="http://yoursite.com/2022/04/21/prometheus-process-exporter/"/>
+    <id>http://yoursite.com/2022/04/21/prometheus-process-exporter/</id>
+    <published>2022-04-21T07:04:58.000Z</published>
+    <updated>2022-04-21T11:38:47.539Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="prometheus" scheme="http://yoursite.com/tags/prometheus/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>prometheus+node_exporter组件部署监控</title>
+    <link href="http://yoursite.com/2022/04/21/prometheus-node-exporter/"/>
+    <id>http://yoursite.com/2022/04/21/prometheus-node-exporter/</id>
+    <published>2022-04-21T05:38:46.000Z</published>
+    <updated>2022-04-21T06:01:32.476Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="prometheus" scheme="http://yoursite.com/tags/prometheus/"/>
+    
+  </entry>
+  
+  <entry>
     <title>kubesphere部署以及界面操作</title>
     <link href="http://yoursite.com/2022/02/25/kubesphere/"/>
     <id>http://yoursite.com/2022/02/25/kubesphere/</id>
@@ -108,7 +195,7 @@
     <link href="http://yoursite.com/2021/12/28/hexo-error/"/>
     <id>http://yoursite.com/2021/12/28/hexo-error/</id>
     <published>2021-12-28T12:19:01.000Z</published>
-    <updated>2021-12-28T12:25:50.614Z</updated>
+    <updated>2022-04-21T11:37:07.374Z</updated>
     
     <summary type="html">
     
@@ -191,33 +278,6 @@
   </entry>
   
   <entry>
-    <title>1215</title>
-    <link href="http://yoursite.com/2021/12/15/1215/"/>
-    <id>http://yoursite.com/2021/12/15/1215/</id>
-    <published>2021-12-15T07:54:33.000Z</published>
-    <updated>2021-12-23T02:53:25.241Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
     <title>centos下查看某个命令的安装包名</title>
     <link href="http://yoursite.com/2021/12/03/1203/"/>
     <id>http://yoursite.com/2021/12/03/1203/</id>
@@ -274,7 +334,7 @@
     <link href="http://yoursite.com/2021/06/29/file-max-limit/"/>
     <id>http://yoursite.com/2021/06/29/file-max-limit/</id>
     <published>2021-06-29T11:28:11.000Z</published>
-    <updated>2021-10-15T07:00:45.944Z</updated>
+    <updated>2022-06-23T07:04:02.955Z</updated>
     
     <summary type="html">
     
@@ -289,10 +349,10 @@
     </summary>
     
     
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
     
   </entry>
   
@@ -355,7 +415,7 @@
     <link href="http://yoursite.com/2021/06/04/mongod-redis/"/>
     <id>http://yoursite.com/2021/06/04/mongod-redis/</id>
     <published>2021-06-04T07:27:21.000Z</published>
-    <updated>2021-10-15T07:00:45.514Z</updated>
+    <updated>2022-06-23T07:05:30.355Z</updated>
     
     <summary type="html">
     
@@ -370,10 +430,10 @@
     </summary>
     
     
+      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
+    
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
     
   </entry>
   
@@ -519,64 +579,6 @@
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
       <category term="nginx" scheme="http://yoursite.com/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS下使用免密使用sudo命令</title>
-    <link href="http://yoursite.com/2021/04/12/sudo-NOPASSWD/"/>
-    <id>http://yoursite.com/2021/04/12/sudo-NOPASSWD/</id>
-    <published>2021-04-12T08:17:04.000Z</published>
-    <updated>2021-10-15T07:00:44.612Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="sudo" scheme="http://yoursite.com/tags/sudo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Centos中shell脚本里面使用sudo报错</title>
-    <link href="http://yoursite.com/2021/04/06/sudo/"/>
-    <id>http://yoursite.com/2021/04/06/sudo/</id>
-    <published>2021-04-06T03:23:29.000Z</published>
-    <updated>2021-10-15T07:00:45.515Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="运维" scheme="http://yoursite.com/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-      <category term="sudo" scheme="http://yoursite.com/tags/sudo/"/>
     
   </entry>
   

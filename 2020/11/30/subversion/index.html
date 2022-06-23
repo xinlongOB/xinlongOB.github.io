@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">28</span>
+            <span class="post-count">37</span>
         </span>
     </span>
 
@@ -126,6 +126,7 @@ var _hmt = _hmt || [];
       <p>[linux@*****-04 webapps]$ svn up<br>Updating ‘.’:<br>Skipped ‘template’ – Node remains in conflict<br>At revision 133.<br>Summary of conflicts:<br>  Skipped paths: 1</p>
 <p>解决方法：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn revert --depth=infinity template</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">svn remove --force filename</span><br><span class="line">svn resolve --accept=working  filename</span><br><span class="line"></span><br><span class="line">svn update</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       

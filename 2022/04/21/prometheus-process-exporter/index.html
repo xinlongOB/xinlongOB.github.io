@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    1215 |  我在人间凑数的日子
+    prometheus+process_exporter监控进程 |  我在人间凑数的日子
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -59,7 +59,7 @@ var _hmt = _hmt || [];
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-1215" class="article article-type-post" itemscope
+  <article id="post-prometheus-process-exporter" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -67,7 +67,7 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  1215
+  prometheus+process_exporter监控进程
 </h1>
  
 
@@ -76,10 +76,14 @@ var _hmt = _hmt || [];
 
     
     <div class="article-meta">
-      <a href="/2021/12/15/1215/" class="article-date">
-  <time datetime="2021-12-15T07:54:33.000Z" itemprop="datePublished">2021-12-15</time>
+      <a href="/2022/04/21/prometheus-process-exporter/" class="article-date">
+  <time datetime="2022-04-21T07:04:58.000Z" itemprop="datePublished">2022-04-21</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -87,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2</span>
+            <span class="post-count">587</span>
         </span>
     </span>
 
@@ -96,7 +100,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -107,6 +111,8 @@ var _hmt = _hmt || [];
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -119,7 +125,20 @@ var _hmt = _hmt || [];
       
 
       
-      <p>git test</p>
+      <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Prometheus有众多的Exporter可供使用，如在Prometheus+Grafana监控系统搭建一文中提到的Node Exporter就可以用来采集机器的各项指标，从而监控机器的状态。</p>
+<p>如果机器上运行了一些小脚本，想要对其进行监控但又不想用上一些在代码里做信息采集的SDK那么重，比如只是单纯想要监控该脚本是否一直在运行，那么Process-Exporter会是一个现成的好选择。</p>
+<h2 id="安装process-exporter"><a href="#安装process-exporter" class="headerlink" title="安装process-exporter"></a>安装process-exporter</h2><p>安装好了Prometheus的前提下，在被监控机器安装process-exporter</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/ncabatoff/process-exporter/releases/download/v0.5.0/process-exporter-0.5.0.linux-amd64.tar.gz</span><br><span class="line">tar  xf  process-exporter-0.5.0.linux-amd64.tar.gz </span><br><span class="line"><span class="built_in">cd</span>  process-exporter-0.5.0.linux-amd64</span><br><span class="line"><span class="comment"># 创建配置文件</span></span><br><span class="line">vim  process-name.yaml</span><br><span class="line"></span><br><span class="line">process_names:</span><br><span class="line">  - name: <span class="string">"&#123;&#123;.Matches&#125;&#125;"</span></span><br><span class="line">    cmdline:</span><br><span class="line">    - <span class="string">'.+'</span></span><br></pre></td></tr></table></figure>
+<p>这里，在配置文件（process-name.yaml）中，我们添加了监控所有进程，一个process_names就定义了要监控的一组进程，{ {.Matches} }模板表示映射包含应用命令行所产生的所有匹配项，还有其他模板如下：</p>
+<p>模板变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; &#123;.Comm&#125; &#125; 包含原始可执行文件的基本名称，即第二个字段 /proc//<span class="built_in">stat</span></span><br><span class="line">&#123; &#123;.ExeBase&#125; &#125; 包含可执行文件的基名</span><br><span class="line">&#123; &#123;.ExeFull&#125; &#125; 包含可执行文件的完全限定路径</span><br><span class="line">&#123; &#123;.Username&#125; &#125; 包含有效用户的用户名</span><br><span class="line">&#123; &#123;.Matches&#125; &#125; map包含应用cmdline regexps产生的所有匹配项</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置后启动</span></span><br><span class="line">nohup ./process-exporter -config.path process-name.yaml &amp;</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">curl http://192.168.1.72:9256/metrics</span><br></pre></td></tr></table></figure>
+
+<h2 id="prometheus服务器添加数据源"><a href="#prometheus服务器添加数据源" class="headerlink" title="prometheus服务器添加数据源"></a>prometheus服务器添加数据源</h2><p>修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my global config</span></span><br><span class="line">global:</span><br><span class="line">  scrape_interval:     15s <span class="comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span></span><br><span class="line">  evaluation_interval: 15s <span class="comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span></span><br><span class="line">  <span class="comment"># scrape_timeout is set to the global default (10s).</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Alertmanager configuration</span></span><br><span class="line">alerting:</span><br><span class="line">  alertmanagers:</span><br><span class="line">  - static_configs:</span><br><span class="line">    - targets:</span><br><span class="line">      <span class="comment"># - alertmanager:9093</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load rules once and periodically evaluate them according to the global 'evaluation_interval'.</span></span><br><span class="line">rule_files:</span><br><span class="line">  <span class="comment"># - "first_rules.yml"</span></span><br><span class="line">  <span class="comment"># - "second_rules.yml"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A scrape configuration containing exactly one endpoint to scrape:</span></span><br><span class="line"><span class="comment"># Here it's Prometheus itself.</span></span><br><span class="line">scrape_configs:</span><br><span class="line">  <span class="comment"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span></span><br><span class="line">  - job_name: <span class="string">'prometheus'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># metrics_path defaults to '/metrics'</span></span><br><span class="line">    <span class="comment"># scheme defaults to 'http'.</span></span><br><span class="line"></span><br><span class="line">    static_configs:</span><br><span class="line">    - targets: [<span class="string">'localhost:9090'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新增被监控服务器</span></span><br><span class="line">  - job_name: <span class="string">'process'</span></span><br><span class="line">    static_configs:</span><br><span class="line">    - targets: [<span class="string">'192.168.1.72:9256'</span>]</span><br></pre></td></tr></table></figure>
+<p>控制台查看<br><img src="/2022/04/21/prometheus-process-exporter/1.png" alt></p>
+<p>没问题后添加到grafana-url为prometheus的地址+端口<br><img src="/2022/04/21/prometheus-process-exporter/2.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/3.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/4.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/5.png" alt><br><img src="/2022/04/21/prometheus-process-exporter/6.png" alt></p>
+<p>注：使用process-exporter的时候需要加上node_exporter一块使用，node_exporter作为pull数据的组件</p>
 
       
       <!-- reward -->
@@ -184,14 +203,14 @@ var _hmt = _hmt || [];
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2021/12/15/1215/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2022/04/21/prometheus-process-exporter/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/prometheus/" rel="tag">prometheus</a></li></ul>
 
 
     </footer>
@@ -202,19 +221,19 @@ var _hmt = _hmt || [];
   
   <nav class="article-nav">
     
-      <a href="/2021/12/18/openvpn-1/" class="article-nav-link">
+      <a href="/2022/06/23/pip-pipreqs/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            CentOS7 搭建OpenVPN服务器
+            Python如何导出导入所有依赖包
           
         </div>
       </a>
     
     
-      <a href="/2021/12/03/1203/" class="article-nav-link">
+      <a href="/2022/04/21/prometheus-node-exporter/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">centos下查看某个命令的安装包名</div>
+        <div class="article-nav-title">prometheus+node_exporter组件部署监控</div>
       </a>
     
   </nav>

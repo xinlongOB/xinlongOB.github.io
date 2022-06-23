@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">539</span>
+            <span class="post-count">561</span>
         </span>
     </span>
 
@@ -100,7 +100,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">3 分钟</span>
         </span>
     </span>
 </div>
@@ -163,7 +163,10 @@ Python 3.7.0</code></pre><h2 id="报错"><a href="#报错" class="headerlink" ti
 
 将/usr/bin/yum-config-manager的顶部的
 
-#!/usr/bin/python 改为 #!/usr/bin/python2.7 </code></pre><p>最后将pip指向到python3.7</p>
+#!/usr/bin/python 改为 #!/usr/bin/python2.7 </code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 替换</span></span><br><span class="line">sed   -i  s/python/python2.7/      /usr/bin/yum</span><br><span class="line">sed   -i  s/python/python2.7/   /usr/libexec/urlgrabber-ext-down</span><br></pre></td></tr></table></figure>
+
+
+<p>最后将pip指向到python3.7</p>
 <pre><code>[sgsm@bogon Python-3.7.0]$ sudo ln -s /usr/local/sbin/python-3.7/bin/pip3 /usr/bin/pip 
 [sgsm@bogon Python-3.7.0]$ 
 [sgsm@bogon Python-3.7.0]$ pip -v
