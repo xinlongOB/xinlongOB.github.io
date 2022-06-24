@@ -117,6 +117,51 @@
       </tags>
   </entry>
   <entry>
+    <title>python虚拟环境</title>
+    <url>/2022/06/24/python-Virtualization/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="自带pip安装步骤"><a href="#自带pip安装步骤" class="headerlink" title="自带pip安装步骤"></a>自带pip安装步骤</h2><p>虚拟环境其实就是对真实pyhton环境的复制，这样我们在复制的python环境中安装包就不会影响到真实的python环境。通过建立多个虚拟环境，在不同的虚拟环境中开发项目就实现了项目之间的隔离。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install virtualenv</span><br><span class="line">pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
+<p>修改用户家目录下的配置文件.bashrc,添加如下内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> WORKON_HOME=<span class="variable">$HOME</span>/.virtualenvs</span><br><span class="line"><span class="built_in">source</span> /usr/<span class="built_in">local</span>/bin/virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
+<p>生效配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span>  .bashrc</span><br></pre></td></tr></table></figure>
+<p>创建python3虚拟环境的命令如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkvirtualenv -p python3 虚拟环境名称</span><br><span class="line">例：</span><br><span class="line">mkvirtualenv -p python3 py_django</span><br></pre></td></tr></table></figure>
+<p>退出虚拟环境的命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+
+<p>查看所有虚拟环境的命令如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">workon 两次tab键</span><br><span class="line"><span class="comment"># 进入虚拟环境</span></span><br><span class="line">workon 虚拟环境名称</span><br><span class="line">例：</span><br><span class="line">workon py_django</span><br></pre></td></tr></table></figure>
+<p>删除虚拟环境的命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmvirtualenv 虚拟环境名称</span><br><span class="line">例：</span><br><span class="line">先退出：deactivate</span><br><span class="line">再删除：rmvirtualenv py_django</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译安装python创建虚拟环境"><a href="#编译安装python创建虚拟环境" class="headerlink" title="编译安装python创建虚拟环境"></a>编译安装python创建虚拟环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install virtualenv</span><br><span class="line">pip install virtualenvwrapper</span><br><span class="line"></span><br><span class="line"><span class="comment"># .bashrc文件添加</span></span><br><span class="line"><span class="built_in">export</span> WORKON_HOME=<span class="variable">$HOME</span>/.virtualenvs</span><br><span class="line"><span class="built_in">source</span> /usr/<span class="built_in">local</span>/sbin/python-3.7/bin/virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 软连接</span></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/sbin/python-3.7/bin/virtualenv /usr/<span class="built_in">local</span>/bin/virtualenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生效配置</span></span><br><span class="line"><span class="built_in">source</span>  .bashrc</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos7系统中更新pip源</title>
+    <url>/2022/06/24/pip-update/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>创建.pip及pip.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">mkdir .pip</span><br></pre></td></tr></table></figure>
+<p>写入pip.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat &gt;&gt; pip.conf &lt;&lt; EOF</span><br><span class="line">  [global]</span><br><span class="line">  index-url=http://mirrors.aliyun.com/pypi/simple/</span><br><span class="line">  </span><br><span class="line">  [install]</span><br><span class="line">  trusted-host=mirrors.aliyun.com</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python如何导出导入所有依赖包</title>
     <url>/2022/06/23/pip-pipreqs/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="导出所有依赖包"><a href="#导出所有依赖包" class="headerlink" title="导出所有依赖包"></a>导出所有依赖包</h2><p>整个环境的依赖包导出,进入项目目录，执行以下命令</p>
