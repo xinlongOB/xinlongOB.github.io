@@ -117,6 +117,21 @@
       </tags>
   </entry>
   <entry>
+    <title>gunicorn-python项目运行容器</title>
+    <url>/2022/06/30/gunicorn/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># gunicorn.conf</span></span><br><span class="line"><span class="comment"># 并行工作进程数</span></span><br><span class="line">workers = 4</span><br><span class="line"><span class="comment"># 指定每个工作者的线程数</span></span><br><span class="line">threads = 2</span><br><span class="line"><span class="comment"># 监听内网端口5000</span></span><br><span class="line"><span class="built_in">bind</span> = <span class="string">'0.0.0.0:9090'</span></span><br><span class="line"><span class="comment"># 设置守护进程,将进程交给supervisor管理</span></span><br><span class="line">daemon = <span class="string">'false'</span></span><br><span class="line"><span class="comment"># 工作模式协程</span></span><br><span class="line">worker_class = <span class="string">'gevent'</span></span><br><span class="line"><span class="comment"># 设置最大并发量</span></span><br><span class="line">worker_connections = 2000</span><br><span class="line"><span class="comment"># 设置进程文件目录</span></span><br><span class="line">pidfile = <span class="string">'/var/run/gunicorn.pid'</span></span><br><span class="line"><span class="comment"># 设置访问日志和错误信息日志路径</span></span><br><span class="line">accesslog = <span class="string">'/var/log/gunicorn_acess.log'</span></span><br><span class="line">errorlog = <span class="string">'/var/log/gunicorn_error.log'</span></span><br><span class="line"><span class="comment"># 设置日志记录水平</span></span><br><span class="line">loglevel = <span class="string">'warning'</span></span><br></pre></td></tr></table></figure>
+<p>启动项目</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># dailyfresh 是django项目的名字</span></span><br><span class="line">gunicorn dailyfresh.wsgi -c config.py</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python虚拟环境</title>
     <url>/2022/06/24/python-Virtualization/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="自带pip安装步骤"><a href="#自带pip安装步骤" class="headerlink" title="自带pip安装步骤"></a>自带pip安装步骤</h2><p>虚拟环境其实就是对真实pyhton环境的复制，这样我们在复制的python环境中安装包就不会影响到真实的python环境。通过建立多个虚拟环境，在不同的虚拟环境中开发项目就实现了项目之间的隔离。</p>
