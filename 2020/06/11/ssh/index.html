@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">241</span>
+            <span class="post-count">292</span>
         </span>
     </span>
 
@@ -133,7 +133,11 @@ var _hmt = _hmt || [];
 <p>使用 -f 选项</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[sgsm@iZ2ze53g8gh7cdxahhcv95Z .ssh]$ ssh-keygen  -t rsa  -f ~/.ssh/mihua   -P xxx</span><br><span class="line">[sgsm@iZ2ze53g8gh7cdxahhcv95Z .ssh]$ ll</span><br><span class="line">total 32</span><br><span class="line">-rw------- 1 sgsm sgsm  2047 May 16 11:06 authorized_keys</span><br><span class="line">-rw------- 1 sgsm users  816 May 16 11:03 authorized_keys.bak</span><br><span class="line">-rw------- 1 sgsm users 1675 Apr  8 17:45 id_rsa</span><br><span class="line">-rw-r--r-- 1 sgsm users  410 Apr  8 17:45 id_rsa.pub</span><br><span class="line">-rw-r--r-- 1 sgsm users 4728 Apr 17 14:44 known_hosts</span><br><span class="line">-rw------- 1 sgsm users 1766 Jun 11 09:42 mihua</span><br><span class="line">-rw-r--r-- 1 sgsm users  410 Jun 11 09:42 mihua.pub</span><br></pre></td></tr></table></figure>
 <p>现在把mihua.pub 导入需要免密登录的机器中就可以实现免密登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sshpass -p 123456 ssh-copy-id   -o StrictHostKeyChecking=no   12.0.0.<span class="variable">$IP</span></span><br></pre></td></tr></table></figure>
 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HISTTIMEFORMAT=<span class="string">"%Y-%m-%d %H:%M:%S  `whoami` "</span>  &gt;&gt; /etc/profile</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># github下载加速</span></span><br><span class="line">192.30.255.113 github.com</span><br><span class="line">151.101.193.194 github.global.ssl.fastly.net</span><br><span class="line">192.30.255.120 codeload.github.com</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       
@@ -302,7 +306,7 @@ var _hmt = _hmt || [];
     <ul>
       <li>
         Copyrights &copy;
-        2019-2022
+        2019-2023
         <i class="ri-heart-fill heart_icon"></i> XIN LONG
       </li>
     </ul>

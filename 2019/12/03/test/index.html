@@ -134,7 +134,7 @@ var _hmt = _hmt || [];
 </li>
 </ul>
 <p>#</p><h4 id="2">1.1配置环境<br>    环境：centos6.9<br>    软件包：jdk-8u60-linux-x64.tar.gz<br>首先关闭selinux和防火墙<br><br><img src="/2019/12/03/test/1.png" alt><br><br>更改时间      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;–可以写入计划任务中<br><br><img src="/2019/12/03/test/3.png" alt><br><br>创建目录   <p></p>
-<pre><code>mkdir /application/</code></pre><p><br>解压jdk包到创建的目录中<br></p>
+<pre><code>mkdir /application/</code></pre><p><br>解压jdk包到创建的目录中<br><br>    下载地址：<a href="https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.tar.gz" target="_blank" rel="noopener">https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.tar.gz</a></p>
 <pre><code>tar xf jdk-8u60-linux-x64.tar.gz   -C /application/</code></pre><p><br>做软连接<br></p>
 <pre><code>ln -s  /application/jdk1.8.0_60/ /application/jdk</code></pre><p><br>设置环境变量<br></p>
 <pre><code>sed -i.ori &apos;$a export  JAVA_HOME=/application/jdk\nexport PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH\nexport  CLASSPATH=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar&apos;  /etc/profile
@@ -400,7 +400,7 @@ SSLCertificateKeyFile /etc/httpd/ssl/httpd.key</code></pre><p>如果要停用 ht
     <ul>
       <li>
         Copyrights &copy;
-        2019-2022
+        2019-2023
         <i class="ri-heart-fill heart_icon"></i> XIN LONG
       </li>
     </ul>
