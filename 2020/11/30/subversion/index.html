@@ -91,7 +91,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">37</span>
+            <span class="post-count">52</span>
         </span>
     </span>
 
@@ -127,6 +127,9 @@ var _hmt = _hmt || [];
 <p>解决方法：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn revert --depth=infinity template</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">svn remove --force filename</span><br><span class="line">svn resolve --accept=working  filename</span><br><span class="line"></span><br><span class="line">svn update</span><br></pre></td></tr></table></figure>
+
+<p>修改svn地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">svn info</span><br><span class="line">svn sw  --relocate   http://xxxxx/program/   http://wwwww/program/</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       
