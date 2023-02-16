@@ -375,8 +375,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -530,8 +530,8 @@
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>yum</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1689,8 +1689,8 @@ max_queued_events:设置inotify实例事件（event）队列可容纳的事件�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>yum</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1803,6 +1803,18 @@ max_queued_events:设置inotify实例事件（event）队列可容纳的事件�
       </tags>
   </entry>
   <entry>
+    <title>此分类只记录遇到的报错和常用基础，后续代码提交github或coding</title>
+    <url>/2020/10/16/kaifa/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="pass"><a href="#pass" class="headerlink" title="pass"></a>pass</h1>]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>centos中history命令显示时间以及用户</title>
     <url>/2020/09/14/histort-date/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在 /etc/profile 文件中添加</p>
@@ -1844,8 +1856,8 @@ max_queued_events:设置inotify实例事件（event）队列可容纳的事件�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -7626,8 +7638,8 @@ net use  *  /del   /y     # 清除所有账号密码</code></pre><h2 id="Win10�
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
@@ -8004,8 +8016,8 @@ mongorestore   -h  IP   -d    DBNAME     dir/DBNAME/    # 恢复数据库</code>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>mongo</tag>
         <tag>linux</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
